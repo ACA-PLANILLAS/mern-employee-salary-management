@@ -74,6 +74,28 @@
       "code": "EMP-015",
       "status": 500,
       "message": "Terjadi kesalahan pada server"
+    },
+    "SALARY_NOT_FOUND": {
+      "code": "EMP-016",
+      "status": 404,
+      "message": "Data Gaji Untuk Bulan, Tidak di Temukan Pada Pegawai "
+    },
+    "SALARY_BY_YEAR_NOT_FOUND": {
+      "code": "EMP-017",
+      "status": 404,
+      "message": "Data Tahun, Tidak di Temukan"
+    }
+  },
+  "DASHBOARD": {
+    "FETCH_SUCCESS": {
+      "code": "DASH-001",
+      "status": 200,
+      "message": "Data Dashboard berhasil diambil"
+    },
+    "FETCH_FAILED": {
+      "code": "DASH-002",
+      "status": 500,
+      "message": "Gagal mengambil data dashboard"
     }
   }
 }
