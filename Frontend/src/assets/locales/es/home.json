@@ -1,0 +1,35 @@
+{
+  "banner": {
+    "titleLine1": "Sistema de Nómina en Línea",
+    "titleLine2": "PT. Humpuss Carboximetil Celulosa",
+    "description": "Una plataforma empresarial para gestionar el proceso de nómina de empleados de forma eficiente e integrada mediante una plataforma digital.",
+    "login": "Iniciar sesión"
+  },
+  "about": {
+    "heading": "¿Qué es SiPeKa?",
+    "titleLine1": "Acerca de",
+    "titleLine2": "Nosotros",
+    "text1": "SiPeKa (Sistema de Nómina de Empleados) es un sistema que utilizan las empresas para gestionar el proceso de nómina de empleados de manera eficiente y precisa. Este sistema desempeña un papel clave en la automatización de diversas tareas relacionadas con la nómina, como el cálculo de salarios, el procesamiento de asistencias y el pago de sueldos a los empleados.",
+    "text2": "En SiPeKa, la información de los empleados, como sus datos personales, cargo y nivel salarial, se almacena de forma centralizada. Cada mes, el sistema recupera los datos de asistencia de los empleados y calcula los salarios según la información disponible. Esto incluye factores como las horas de trabajo, las licencias, las horas extras y las deducciones pertinentes."
+  },
+  "contact": {
+    "heading": "Contacto",
+    "titleLine1": "Contáctanos",
+    "titleLine2": "",
+    "successMessage": "Su mensaje ha sido enviado",
+    "form": {
+      "namePlaceholder": "Nombre",
+      "emailPlaceholder": "Correo electrónico",
+      "subjectPlaceholder": "Asunto",
+      "messagePlaceholder": "Mensaje",
+      "sendButton": "Enviar"
+    },
+    "info": {
+      "company": "PT. Humpuss Carboximetil Celulosa",
+      "phone": "021-044",
+      "email": "info@hks.com",
+      "address": "Karawang, Java Occidental, Indonesia"
+    },
+    "socialHeading": "Social"
+  }
+}

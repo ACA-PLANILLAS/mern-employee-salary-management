@@ -1,0 +1,11 @@
+{
+  "navbar": {
+    "links": {
+      "home": "Home",
+      "about": "About",
+      "contact": "Contact"
+    },
+    "login": "Login"
+  },
+  "copyright": "© Copyright 2023, PT. Humpuss Carboxymethyl Cellulose. All Rights Reserved"
+}

@@ -1,0 +1,11 @@
+{
+    "navbar": {
+        "links": {
+            "home": "Inicio",
+            "about": "Acerca de",
+            "contact": "Contacto"
+        },
+        "login": "Iniciar sesión"
+    },
+    "copyright": "© Copyright 2023, PT. Humpuss Carboximetil Celulosa. Todos los Derechos Reservados"
+}

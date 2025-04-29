@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import App from './App'
 import './index.css'
 import './satoshi.css'
+import './config/internalization/i18n'; 
 
 import axios from 'axios';
 

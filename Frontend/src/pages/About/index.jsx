@@ -7,7 +7,11 @@ import '../../shared/Shared.css'
 import { BottomLine } from "../../components/atoms";
 import { Footer, Navbar } from "../../components";
 
+import { useTranslation } from 'react-i18next';
+
 const About = () => {
+    const { t } = useTranslation('home');
+
     const location = useLocation();
     const isHomePage = location.pathname === "/";
 
@@ -26,9 +30,9 @@ const About = () => {
                                 transition: { duration: 1, type: "spring" },
                             }}
                         >
-                            <h3 className="text-neutral text-center dark:text-white">Apa itu SiPeKa ?</h3>
+                            <h3 className="text-neutral text-center dark:text-white">{t('about.heading')}</h3>
                             <h1 className="text-4xl font-semibold drop-shadow-md text-center text-accent dark:text-white">
-                                Tentang <span className="text-primary">Kami</span>
+                                {t('about.titleLine1')} <span className="text-primary">{t('about.titleLine2')}</span>
                             </h1>
                             <BottomLine />
                         </motion.div>
@@ -58,14 +62,11 @@ const About = () => {
                                 }}
                             >
                                 <p className="font-medium text-center translate-y-[-60%] sm:translate-y-[-0%] sm:mb-2 md:text-left dark:text-white">
-                                    SiPeKa ( Sistem Penggajian Karyawan ) adalah suatu sistem yang digunakan oleh perusahaan untuk mengelola proses penggajian karyawan secara efisien dan akurat.
-                                    Sistem ini memainkan peran kunci dalam mengotomatisasi berbagai tugas terkait penggajian, seperti perhitungan gaji, pemrosesan absensi, dan pembayaran upah karyawan.
+                                    {t('about.text1')}
                                 </p>
                                 <br />
                                 <p className="font-medium text-center translate-y-[-50%] sm:translate-y-[-0%] sm:mb-2 md:text-left dark:text-white">
-                                    Dalam SiPeKa, informasi karyawan seperti data pribadi, jabatan, dan tingkat gaji disimpan secara terpusat.
-                                    Setiap bulan, sistem akan mengambil data absensi karyawan dan melakukan perhitungan gaji berdasarkan informasi yang ada.
-                                    Hal ini mencakup faktor-faktor seperti jam kerja, cuti, lembur, dan potongan yang relevan.
+                                    {t('about.text2')}
                                 </p>
                             </motion.div>
                         </div>

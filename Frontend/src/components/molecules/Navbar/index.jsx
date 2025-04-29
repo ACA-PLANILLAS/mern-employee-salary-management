@@ -11,17 +11,20 @@ import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 import LogoSipeka from '../../../assets/images/logo/logo-sipeka.png'
 import { ButtonThree, DarkModeSwitcher } from "../../atoms";
+import LanguageSwitcher from "../../atoms/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export default function Navbar() {
+    const { t } = useTranslation('common');
     const [isOpen, setIsOpen] = React.useState(false);
     const toggleDrawer = () => {
         setIsOpen((prevState) => !prevState);
     };
 
     const navLinks = [
-        { title: "Beranda", link: "/", icon: <FaHome /> },
-        { title: "Tentang", link: "/tentang", icon: <RiFolderInfoFill /> },
-        { title: "Kontak", link: "/kontak", icon: <RiContactsBook2Fill /> },
+        { title: t('navbar.links.home'), link: "/", icon: <FaHome /> },
+        { title: t('navbar.links.about'), link: "/tentang", icon: <RiFolderInfoFill /> },
+        { title: t('navbar.links.contact'), link: "/kontak", icon: <RiContactsBook2Fill /> },
     ];
 
     const activeLink = ({ isActive }) => {
@@ -80,12 +83,13 @@ export default function Navbar() {
                             </li>
                         ))}
                         <DarkModeSwitcher />
+                        <LanguageSwitcher />
                         <Link
                             className="mx-4"
                             to={'/login'}
                         >
                             <ButtonThree>
-                                <span>Login</span>
+                                <span>{t('navbar.login')}</span>
                             </ButtonThree>
                         </Link>
                     </ul>
@@ -125,19 +129,23 @@ export default function Navbar() {
                                 <div className=' my-4 mr-3 m-4' >
                                     <DarkModeSwitcher />
                                 </div>
+                                <div className=' my-4 mr-3 m-4' >
+                                    <LanguageSwitcher />
+                                </div>
+
                                 <Link
                                     className="flex items-center my-4 mr-6 m-6"
                                     to={'/login'}
                                 >
                                     <ButtonThree
                                         className="primary-button w-full text-white">
-                                        <span>Login</span>
+                                        <span>{t('navbar.login')}</span>
                                     </ButtonThree>
                                 </Link>
                             </ul>
                             <div className="text-center dark:bg-boxdark">
                                 <p className="text-accent dark:text-white">
-                                    &copy; Copyright 2023, PT. Humpus Karbometil Selulosa. All Rights Reserved
+                                    {t('copyright')}
                                 </p>
                             </div>
                         </Drawer>
