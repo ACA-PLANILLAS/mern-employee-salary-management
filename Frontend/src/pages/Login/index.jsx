@@ -2,8 +2,11 @@ import React from "react";
 import LogoSipeka from "../../assets/images/logo/logo-sipeka.png";
 import LoginImg from "../../assets/images/LoginImg/login.svg";
 import { Footer, LoginInput, Navbar } from "../../components";
+import { useTranslation } from "react-i18next";
 
 function Login() {
+  const { t } = useTranslation('login');
+
   return (
     <div className="min-h-screen rounded-sm border border-stroke pt-10 shadow-default dark:border-strokedark dark:bg-boxdark">
       <Navbar />
@@ -14,15 +17,15 @@ function Login() {
               <img
                 className="w-80"
                 src={LogoSipeka}
-                alt="Logo SiPeKa"
-                title="Logo SiPeKa"
+                alt={t('logoAlt')}
+                title={t('logoAlt')}
               />
             </span>
             <p className="text-black dark:text-white 2xl:px-20">
-              Sistem Penggajian Karyawan Online
-              <br /> PT. Humpuss Karbometil Selulosa
+            {t('titleLine1')}
+              <br /> {t('titleLine2')}
             </p>
-            <img className="mt-15 inline-block" src={LoginImg} alt="Logo" />
+            <img className="mt-15 inline-block" src={LoginImg} alt={t('loginImageAlt')} />
           </div>
         </div>
 

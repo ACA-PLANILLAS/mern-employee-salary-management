@@ -12,7 +12,11 @@ const LanguageSwitcher = () => {
     { code: 'id', name: 'Indonesio', countryCode: 'id' },
   ];
 
-  const current = languages.find(l => l.code === i18n.language) || languages[0];
+  const raw = i18n.language;                      // e.g. "es-419"
+  const code = raw.includes('-') 
+    ? raw.split('-')[0]                            // => "es"
+    : raw;
+  const current = languages.find(l => l.code === code) || languages[0];
 
   const toggleOpen = () => setOpen(o => !o);
   const changeLanguage = (code) => {

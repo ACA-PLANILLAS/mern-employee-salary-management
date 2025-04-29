@@ -1,0 +1,19 @@
+{
+  "logoAlt": "SiPeKa Logo",
+  "logoTitle": "SiPeKa Logo",
+  "titleLine1": "Online Employee Payroll System",
+  "titleLine2": "PT. Humpuss Carboxymethyl Cellulose",
+  "loginImageAlt": "Login Illustration",
+  "input": {
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "Enter username",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter password",
+    "loginButton": "Login",
+    "loading": "Loading..."
+  },
+  "swal": {
+    "errorTitle": "Login Failed",
+    "successTitle": "Login Successful"
+  }
+}
