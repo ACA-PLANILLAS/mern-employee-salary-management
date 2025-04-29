@@ -1,0 +1,9 @@
+{
+  "EMPLOYEE": {
+    "USER_NOT_FOUND": {
+      "code": "AUTH-001",
+      "status": 404,
+      "message": "Data Pegawai Tidak Ditemukan"
+    }
+  }
+}

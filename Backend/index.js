@@ -14,7 +14,8 @@ const app = express();
 
 const sessionStore = SequelizeStore(session.Store);
 const store = new sessionStore({
-    db: db
+    db: db,
+    tableName: "sessions"
 });
 
 /* (async() => {
@@ -34,7 +35,7 @@ app.use(session({
     }
 }));
 
-app.use(cors ({
+app.use(cors({
     credentials: true,
     origin: 'http://localhost:5173'
 }));
