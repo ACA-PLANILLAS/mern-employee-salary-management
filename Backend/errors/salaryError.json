@@ -1,0 +1,73 @@
+{
+  "SALARY_REPORT": {
+    "FETCH_SUCCESS": {
+      "code": "SR-001",
+      "status": 200,
+      "message": "Laporan Gaji Pegawai berhasil diambil"
+    },
+    "NOT_FOUND_BY_MONTH": {
+      "code": "SR-002",
+      "status": 404,
+      "message": "Data tidak ditemukan untuk bulan tersebut"
+    },
+    "NOT_FOUND_BY_YEAR": {
+      "code": "SR-003",
+      "status": 404,
+      "message": "Data tidak ditemukan untuk tahun tersebut"
+    },
+    "NOT_FOUND_BY_NAME": {
+      "code": "SR-004",
+      "status": 404,
+      "message": "Data tidak ditemukan untuk nama tersebut"
+    },
+    "INTERNAL_ERROR": {
+      "code": "SR-005",
+      "status": 500,
+      "message": "Terjadi kesalahan pada server"
+    }
+  },
+  "ATTENDANCE_REPORT": {
+    "FETCH_SUCCESS": {
+      "code": "AR-001",
+      "status": 200,
+      "message": "Laporan Absensi Pegawai berhasil diambil"
+    },
+    "NOT_FOUND_BY_MONTH": {
+      "code": "AR-002",
+      "status": 404,
+      "message": "Data tidak ditemukan untuk bulan tersebut"
+    },
+    "NOT_FOUND_BY_YEAR": {
+      "code": "AR-003",
+      "status": 404,
+      "message": "Data tidak ditemukan untuk tahun tersebut"
+    },
+    "INTERNAL_ERROR": {
+      "code": "AR-004",
+      "status": 500,
+      "message": "Terjadi kesalahan pada server"
+    }
+  },
+  "PAYSLEIP": {
+    "NOT_FOUND_BY_NAME": {
+      "code": "PS-001",
+      "status": 404,
+      "message": "Slip Gaji Pegawai tidak ditemukan untuk nama tersebut"
+    },
+    "NOT_FOUND_BY_MONTH": {
+      "code": "PS-002",
+      "status": 404,
+      "message": "Slip Gaji tidak ditemukan untuk bulan tersebut"
+    },
+    "NOT_FOUND_BY_YEAR": {
+      "code": "PS-003",
+      "status": 404,
+      "message": "Slip Gaji tidak ditemukan untuk tahun tersebut"
+    },
+    "INTERNAL_ERROR": {
+      "code": "PS-004",
+      "status": 500,
+      "message": "Terjadi kesalahan pada server"
+    }
+  }
+}

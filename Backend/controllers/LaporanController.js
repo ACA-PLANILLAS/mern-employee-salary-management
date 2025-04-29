@@ -4,13 +4,14 @@ import {
     viewDataGajiPegawaiByYear
 } from "./TransaksiController.js"
 
+import { SALARY_REPORT, ATTENDANCE_REPORT, PAYSLEIP } from "../errors/salaryError.json";
 // method untuk melihat laporan gaji pegawai
-export const viewLaporanGajiPegawai = async(req, res) => {
+export const viewLaporanGajiPegawai = async (req, res) => {
     try {
         const laporanGajiPegawai = await getDataGajiPegawai(req, res);
-        res.status(200).json(laporanGajiPegawai);
+        res.status(200).json({ response: laporanGajiPegawai, msg: SALARY_REPORT.SUCCESS });
     } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ msg: SALARY_REPORT.INTERNAL_ERROR });
     }
 }
 
@@ -25,7 +26,7 @@ export const viewLaporanGajiPegawaiByMonth = async (req, res) => {
         });
 
         if (filteredData.length === 0) {
-            res.status(404).json({ msg: 'Data tidak ditemukan' });
+            res.status(404).json({ msg: SALARY_REPORT.NOT_FOUND_BY_MONTH });
         } else {
             const formattedData = filteredData.map((data) => {
                 return {
@@ -39,10 +40,10 @@ export const viewLaporanGajiPegawaiByMonth = async (req, res) => {
                     total_gaji: data.total
                 };
             });
-            res.json(formattedData);
+            res.json({ response: formattedData, msg: SALARY_REPORT.SUCCESS });
         }
     } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ msg: SALARY_REPORT.INTERNAL_ERROR });
     }
 };
 
@@ -53,9 +54,9 @@ export const viewLaporanGajiPegawaiByMonth = async (req, res) => {
 // method untuk melihat laporan gaji pegawai berdasarkan tahun
 export const viewLaporanGajiPegawaiByYear = async (req, res) => {
     try {
-         await viewDataGajiPegawaiByYear(req, res);
+        await viewDataGajiPegawaiByYear(req, res);
     } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ msg: SALARY_REPORT.INTERNAL_ERROR });
     }
 };
 
@@ -67,22 +68,22 @@ export const viewLaporanGajiPegawaiByName = async (req, res) => {
         const name = req.params.name.toLowerCase();
 
         const foundData = dataGajiPegawai.filter((data) => {
-          const formattedName = data.nama_pegawai.toLowerCase();
-          const searchKeywords = name.split(" ");
+            const formattedName = data.nama_pegawai.toLowerCase();
+            const searchKeywords = name.split(" ");
 
-          return searchKeywords.every((keyword) => formattedName.includes(keyword));
+            return searchKeywords.every((keyword) => formattedName.includes(keyword));
         });
 
         if (foundData.length === 0) {
-          res.status(404).json({ msg: "Data not found" });
+            res.status(404).json({ msg: SALARY_REPORT.NOT_FOUND_BY_NAME });
         } else {
-          res.json(foundData);
+            res.json({ response: foundData, msg: SALARY_REPORT.SUCCESS });
         }
-      } catch (error) {
+    } catch (error) {
         console.log(error);
-        res.status(500).json({ msg: "Internal server error" });
-      }
-  };
+        res.status(500).json({ msg: SALARY_REPORT.INTERNAL_ERROR });
+    }
+};
 
 // method untuk melihat laporan absensi pegawai berdasarkan bulan (menggunakan DROP DOWN)
 export const viewLaporanAbsensiPegawaiByMonth = async (req, res) => {
@@ -104,12 +105,12 @@ export const viewLaporanAbsensiPegawaiByMonth = async (req, res) => {
         });
 
         if (dataAbsensi.length === 0) {
-            res.status(404).json({ msg: 'Data tidak ditemukan' });
+            res.status(404).json({ msg: ATTENDANCE_REPORT.NOT_FOUND_BY_MONTH });
         } else {
-            res.json(dataAbsensi);
+            res.json({ response: dataAbsensi, msg: ATTENDANCE_REPORT.SUCCESS });
         }
     } catch (error) {
-        res.status(500).json({ msg: 'Internal Server Error' });
+        res.status(500).json({ msg: ATTENDANCE_REPORT.INTERNAL_ERROR });
     }
 };
 
@@ -134,12 +135,12 @@ export const viewLaporanAbsensiPegawaiByYear = async (req, res) => {
         });
 
         if (dataAbsensi.length === 0) {
-            res.status(404).json({ msg: 'Data tidak ditemukan' });
+            res.status(404).json({ msg: ATTENDANCE_REPORT.NOT_FOUND_BY_YEAR });
         } else {
-            res.json(dataAbsensi);
+            res.json({ response: dataAbsensi, msg: ATTENDANCE_REPORT.SUCCESS });
         }
     } catch (error) {
-        res.status(500).json({ msg: 'Internal Server Error' });
+        res.status(500).json({ msg: ATTENDANCE_REPORT.INTERNAL_ERROR });
     }
 };
 
@@ -152,21 +153,21 @@ export const viewSlipGajiByName = async (req, res) => {
         const name = req.params.name.toLowerCase();
 
         const foundData = dataGajiPegawai.filter((data) => {
-          const formattedName = data.nama_pegawai.toLowerCase();
-          const searchKeywords = name.split(" ");
+            const formattedName = data.nama_pegawai.toLowerCase();
+            const searchKeywords = name.split(" ");
 
-          return searchKeywords.every((keyword) => formattedName.includes(keyword));
+            return searchKeywords.every((keyword) => formattedName.includes(keyword));
         });
 
         if (foundData.length === 0) {
-          res.status(404).json({ msg: "Data not found" });
+            res.status(404).json({ msg: PAYSLEIP.NOT_FOUND_BY_NAME });
         } else {
-          res.json(foundData);
+            res.json({ response: foundData, msg: PAYSLEIP.SUCCESS });
         }
-      } catch (error) {
+    } catch (error) {
         console.log(error);
-        res.status(500).json({ msg: "Internal server error" });
-      }
+        res.status(500).json({ msg: PAYSLEIP.INTERNAL_ERROR });
+    }
 }
 
 // method untuk melihat Slip Gaji Pegawai By Month
@@ -180,7 +181,7 @@ export const viewSlipGajiByMonth = async (req, res) => {
         });
 
         if (filteredData.length === 0) {
-            res.status(404).json({ msg: `Data dengan bulan ${month} tidak ditemukan ` });
+            res.status(404).json({ msg: `${PAYSLEIP.NOT_FOUND_BY_MONTH} ${month}` });
         } else {
             const formattedData = filteredData.map((data) => {
                 return {
@@ -195,10 +196,10 @@ export const viewSlipGajiByMonth = async (req, res) => {
                     total_gaji: data.total
                 };
             });
-            res.json(formattedData);
+            res.json({ response: formattedData, msg: PAYSLEIP.SUCCESS });
         }
     } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ msg: PAYSLEIP.INTERNAL_ERROR });
     }
 }
 
@@ -207,6 +208,6 @@ export const viewSlipGajiByYear = async (req, res) => {
     try {
         await viewDataGajiPegawaiByYear(req, res);
     } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ msg: PAYSLEIP.INTERNAL_ERROR });
     }
 }
