@@ -7,5 +7,26 @@
     },
     "login": "Login"
   },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "masterData": "Master Data",
+    "employeeData": "Employee Data",
+    "positionData": "Position Data",
+    "transactions": "Transactions",
+    "attendanceData": "Attendance Data",
+    "deductionsData": "Deductions Data",
+    "salaryData": "Salary Data",
+    "reports": "Reports",
+    "salaryReport": "Salary Report",
+    "attendanceReport": "Attendance Report",
+    "paySlipReport": "Pay Slip",
+    "settings": "Settings",
+    "changePassword": "Change Password",
+    "logout": "Log Out",
+    "logoutConfirmationTitle": "Confirmation",
+    "logoutConfirmationText": "Are you sure you want to log out?",
+    "logoutSuccessTitle": "Logout Successful",
+    "logoutSuccessText": "You have successfully logged out."
+  },
   "copyright": "© Copyright 2023, PT. Humpuss Carboxymethyl Cellulose. All Rights Reserved"
 }

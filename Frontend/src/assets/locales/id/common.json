@@ -7,5 +7,26 @@
     },
     "login": "Login"
   },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "masterData": "Master Data",
+    "employeeData": "Data Pegawai",
+    "positionData": "Data Jabatan",
+    "transactions": "Transaksi",
+    "attendanceData": "Data Kehadiran",
+    "deductionsData": "Data Potongan",
+    "salaryData": "Data Gaji",
+    "reports": "Laporan",
+    "salaryReport": "Laporan Gaji",
+    "attendanceReport": "Laporan Absensi",
+    "paySlipReport": "Slip Gaji",
+    "settings": "Pengaturan",
+    "changePassword": "Ubah Password",
+    "logout": "Log Out",
+    "logoutConfirmationTitle": "Konfirmasi",
+    "logoutConfirmationText": "Apakah Anda yakin ingin keluar?",
+    "logoutSuccessTitle": "Logout Berhasil",
+    "logoutSuccessText": "Anda telah berhasil keluar."
+  },
   "copyright": "© Hak Cipta 2023, PT. Humpuss Karbometil Selulosa. Hak Cipta Dilindungi"
 }
