@@ -190,7 +190,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              {t('sidebar.employeeData')}
+                              {t('sidebar.positionData')}
                             </NavLink>
                           </li>
                         </ul>
