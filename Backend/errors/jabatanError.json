@@ -1,0 +1,44 @@
+{
+  "JOB_POSITION": {
+    "FORBIDDEN_ACCESS": {
+      "code": "DATAJAB-001",
+      "status": 403,
+      "message": "Akses terlarang"
+    },
+    "NOT_FOUND": {
+      "code": "DATAJAB-002",
+      "status": 404,
+      "message": "Data jabatan dengan ID tersebut tidak ditemukan"
+    },
+    "FETCH_SUCCESS": {
+      "code": "DATAJAB-003",
+      "status": 200,
+      "message": "Data Jabatan Berhasil Diambil"
+    },
+    "CREATE_SUCCESS": {
+      "code": "DATAJAB-004",
+      "status": 201,
+      "message": "Data Jabatan Berhasil di Simpan"
+    },
+    "UPDATE_SUCCESS": {
+      "code": "DATAJAB-005",
+      "status": 200,
+      "message": "Data Jabatan Berhasil di Pebarui"
+    },
+    "DELETE_SUCCESS": {
+      "code": "DATAJAB-006",
+      "status": 200,
+      "message": "Data Jabatan Berhasil di Hapus"
+    },
+    "DATA_NOT_FOUND": {
+      "code": "DATAJAB-007",
+      "status": 404,
+      "message": "Data tidak ditemukan"
+    },
+    "INTERNAL_SERVER_ERROR": {
+      "code": "DATAJAB-008",
+      "status": 500,
+      "message": "Terjadi kesalahan pada server"
+    }
+  }
+}
