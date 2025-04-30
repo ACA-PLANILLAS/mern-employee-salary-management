@@ -18,8 +18,10 @@ import { headingAnimation, contactAnimation } from "../../hooks/useAnimation";
 import '../../shared/Shared.css'
 import { BottomLine, ButtonThree } from "../../components/atoms";
 import { Footer, Navbar } from "../../components";
+import { useTranslation } from 'react-i18next';
 
 const Contact = () => {
+    const { t } = useTranslation('home');
     const navigate = useNavigate();
     const form = useRef();
     const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true });
@@ -41,7 +43,7 @@ const Contact = () => {
                     Swal.fire({
                         position: "top-end",
                         icon: "success",
-                        title: "Your Message has been sent",
+                        title: t('contact.successMessage', 'Your Message has been sent'),
                         showConfirmButton: false,
                         timer: 1500,
                     });
@@ -53,7 +55,7 @@ const Contact = () => {
             );
         e.target.reset();
     };
-    
+
     useEffect(() => {
         if (inView) {
             setViewDiv(true);
@@ -72,9 +74,9 @@ const Contact = () => {
                         animate={viewDiv && "visible"}
                         variants={headingAnimation}
                     >
-                        <h3 className="text-neutral text-center dark:text-white">Kontak</h3>
+                        <h3 className="text-neutral text-center dark:text-white">{t('contact.heading')}</h3>
                         <h1 className="text-4xl font-semibold drop-shadow-md text-center text-accent dark:text-white">
-                            Hubungi <span className="text-primary">Kami</span>
+                            {t('contact.titleLine1')} <span className="text-primary">{t('contact.titleLine2')}</span>
                         </h1>
                         <BottomLine />
                     </motion.div>
@@ -93,7 +95,7 @@ const Contact = () => {
                                         type="text"
                                         name="name"
                                         id="name"
-                                        placeholder="Nama"
+                                        placeholder={t('contact.form.namePlaceholder')}
                                         required
                                     />
                                     <input
@@ -101,7 +103,7 @@ const Contact = () => {
                                         type="email"
                                         name="email"
                                         id="email"
-                                        placeholder="Email"
+                                        placeholder={t('contact.form.emailPlaceholder')}
                                         required
                                     />
                                 </div>
@@ -110,7 +112,7 @@ const Contact = () => {
                                     type="text"
                                     name="subject"
                                     id="subject"
-                                    placeholder="Subjek"
+                                    placeholder={t('contact.form.subjectPlaceholder')}
                                     required
                                 />
                                 <textarea
@@ -119,7 +121,7 @@ const Contact = () => {
                                     id="message"
                                     cols="30"
                                     rows="5"
-                                    placeholder="Pesan"
+                                    placeholder={t('contact.form.messagePlaceholder')}
                                     required
                                 ></textarea>
                                 <ButtonThree
@@ -127,7 +129,7 @@ const Contact = () => {
                                     value="Send Message"
                                     className=""
                                 >
-                                    <span>Kirim</span>
+                                    <span>{t('contact.form.sendButton')}</span>
                                     <span><MdSend /></span>
                                 </ButtonThree>
                             </form>
@@ -140,25 +142,25 @@ const Contact = () => {
                         >
                             <div className="flex items-center my-6">
                                 <FaUserAlt className="text-2xl mr-8 text-primary duration-300"></FaUserAlt>
-                                <h3 className="font-medium dark:text-white">PT. Humpus Karbometil Selulosa</h3>
+                                <h3 className="font-medium dark:text-white">{t('contact.info.company')}</h3>
                             </div>
                             <div className="flex items-center my-6">
                                 <FaPhoneAlt className="text-2xl mr-8 text-primary duration-300"></FaPhoneAlt>
-                                <h3 className="font-medium dark:text-white">021-044</h3>
+                                <h3 className="font-medium dark:text-white">{t('contact.info.phone')}</h3>
                             </div>
                             <div className="flex items-center my-6">
                                 <MdEmail className="text-3xl mr-8 text-primary duration-300"></MdEmail>
-                                <h3 className="font-medium dark:text-white">info@hks.com</h3>
+                                <h3 className="font-medium dark:text-white">{t('contact.info.email')}</h3>
                             </div>
                             <div className="flex items-center my-6">
                                 <FaLocationArrow className="text-2xl mr-8 text-primary duration-300"></FaLocationArrow>
 
                                 <h3 className="font-medium dark:text-white">
-                                    Karawang, Jawa Barat, Indonesia
+                                    {t('contact.info.address')}
                                 </h3>
                             </div>
                             <div className="mt-8 flex items-center">
-                                <h3 className="text-xl dark:text-white">Social</h3>
+                                <h3 className="text-xl dark:text-white">{t('contact.socialHeading')}</h3>
                                 <div className="bg-black dark:bg-white w-10 h-[2px] mx-4"></div>
                                 <a
                                     href="/"

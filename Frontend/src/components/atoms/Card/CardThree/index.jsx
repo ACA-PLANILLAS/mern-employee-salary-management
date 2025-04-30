@@ -2,8 +2,10 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDataJabatan } from '../../../../config/redux/action';
 import { FaUserTie } from 'react-icons/fa'
+import { useTranslation } from 'react-i18next';
 
 const CardThree = () => {
+  const { t } = useTranslation('dashboard');
   const dispatch = useDispatch();
   const { dataJabatan } = useSelector((state) => state.dataJabatan);
   const jumlahDataJabatan = dataJabatan.length;
@@ -23,7 +25,7 @@ const CardThree = () => {
           <h4 className='text-title-md font-bold text-black dark:text-white'>
             {jumlahDataJabatan}
           </h4>
-          <span className='text-sm font-medium'>Data Jabatan</span>
+          <span className='text-sm font-medium'>{t('cards.positions')}</span>
         </div>
       </div>
     </div>

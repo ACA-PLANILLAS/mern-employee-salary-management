@@ -1,0 +1,29 @@
+{
+  "cards": {
+    "attendance": "Data Kehadiran",
+    "employees": "Data Pegawai",
+    "positions": "Data Jabatan",
+    "admin": "Data Admin"
+  },
+  "chartsOne": {
+    "dataMale": "Data Laki-Laki",
+    "dataFemale": "Data Perempuan",
+    "dateRange": "14.04.2023 - 14.05.2023",
+    "viewOptions": {
+      "day": "Hari",
+      "week": "Minggu",
+      "month": "Bulan"
+    }
+  },
+  "chartsTwo": {
+    "title": "Status Pegawai",
+    "period": {
+      "monthly": "Bulanan",
+      "yearly": "Tahunan"
+    },
+    "labels": {
+      "permanent": "Karyawan Tetap",
+      "temporary": "Karyawan Tidak Tetap"
+    }
+  }
+}

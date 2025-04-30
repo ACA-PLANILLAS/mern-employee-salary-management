@@ -1,0 +1,19 @@
+{
+  "logoAlt": "Logo SiPeKa",
+  "logoTitle": "Logo SiPeKa",
+  "titleLine1": "Sistema de Nómina en Línea",
+  "titleLine2": "PT. Humpuss Carboximetil Celulosa",
+  "loginImageAlt": "Ilustración de Inicio de Sesión",
+  "input": {
+    "usernameLabel": "Usuario",
+    "usernamePlaceholder": "Introduce el nombre de usuario",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Introduce la contraseña",
+    "loginButton": "Iniciar sesión",
+    "loading": "Cargando..."
+  },
+  "swal": {
+    "errorTitle": "Error de inicio de sesión",
+    "successTitle": "Inicio de sesión exitoso"
+  }
+}

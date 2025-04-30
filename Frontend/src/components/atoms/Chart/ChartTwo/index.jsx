@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import ReactApexChart from 'react-apexcharts'
+import { withTranslation } from 'react-i18next';
 
 class ChartTwo extends Component {
   constructor(props) {
     super(props)
+    const { t } = props;
 
     this.state = {
       series: [6, 4,],
@@ -13,7 +15,7 @@ class ChartTwo extends Component {
           type: 'donut',
         },
         colors: ['#3C50E0', '#0FADCF'],
-        labels: ['Karyawan Tetap', 'Karyawan Tidak Tetap'],
+        labels: [t('chartsTwo.labels.permanent'), t('chartsTwo.labels.temporary')],
         legend: {
           show: false,
           position: 'bottom',
@@ -54,12 +56,14 @@ class ChartTwo extends Component {
   }
 
   render() {
+    const { t } = this.props;
+
     return (
       <div className='col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-5'>
         <div className='mb-3 justify-between gap-4 sm:flex'>
           <div>
             <h5 className='text-xl font-semibold text-black dark:text-white'>
-              Status Pegawai
+              {t('chartsTwo.title')}
             </h5>
           </div>
           <div>
@@ -69,8 +73,12 @@ class ChartTwo extends Component {
                 id=''
                 className='relative z-20 inline-flex appearance-none bg-transparent py-1 pl-3 pr-8 text-sm font-medium outline-none'
               >
-                <option value=''>Monthly</option>
-                <option value=''>Yearly</option>
+                <option value=''>
+                  {t('chartsTwo.period.monthly')}
+                </option>
+                <option value=''>
+                  {t('chartsTwo.period.yearly')}
+                </option>
               </select>
               <span className='absolute top-1/2 right-3 z-10 -translate-y-1/2'>
                 <svg
@@ -111,7 +119,9 @@ class ChartTwo extends Component {
             <div className='flex w-full items-center'>
               <span className='mr-2 block h-3 w-full max-w-3 rounded-full bg-primary'></span>
               <p className='flex w-full justify-between text-sm font-medium text-black dark:text-white'>
-                <span> Karyawan Tetap </span>
+                <span> 
+                  {t('chartsTwo.labels.permanent')}
+                </span>
                 <span> 6 </span>
               </p>
             </div>
@@ -120,7 +130,9 @@ class ChartTwo extends Component {
             <div className='flex w-full items-center'>
               <span className='mr-2 block h-3 w-full max-w-3 rounded-full bg-[#8FD0EF]'></span>
               <p className='flex w-full justify-between text-sm font-medium text-black dark:text-white'>
-                <span> Karyawan Tidak Tetap </span>
+                <span> 
+                  {t('chartsTwo.labels.temporary')}
+                </span>
                 <span> 4 </span>
               </p>
             </div>
@@ -131,4 +143,4 @@ class ChartTwo extends Component {
   }
 }
 
-export default ChartTwo
+export default withTranslation('dashboard')(ChartTwo);

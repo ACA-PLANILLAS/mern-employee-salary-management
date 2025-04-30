@@ -1,0 +1,32 @@
+{
+  "navbar": {
+    "links": {
+      "home": "Inicio",
+      "about": "Acerca de",
+      "contact": "Contacto"
+    },
+    "login": "Iniciar sesión"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "masterData": "Datos Maestros",
+    "employeeData": "Datos de Empleados",
+    "positionData": "Datos de Puestos",
+    "transactions": "Transacciones",
+    "attendanceData": "Datos de Asistencia",
+    "deductionsData": "Datos de Deducciones",
+    "salaryData": "Datos de Sueldos",
+    "reports": "Informes",
+    "salaryReport": "Informe de Sueldos",
+    "attendanceReport": "Informe de Asistencia",
+    "paySlipReport": "Recibo de Sueldo",
+    "settings": "Configuración",
+    "changePassword": "Cambiar Contraseña",
+    "logout": "Cerrar Sesión",
+    "logoutConfirmationTitle": "Confirmación",
+    "logoutConfirmationText": "¿Estás seguro de que quieres cerrar sesión?",
+    "logoutSuccessTitle": "Cierre de sesión exitoso",
+    "logoutSuccessText": "Has cerrado sesión con éxito."
+  },
+  "copyright": "© Copyright 2023, PT. Humpuss Carboximetil Celulosa. Todos los Derechos Reservados"
+}

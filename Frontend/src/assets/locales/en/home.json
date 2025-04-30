@@ -1,0 +1,35 @@
+{
+  "banner": {
+    "titleLine1": "Online Employee Payroll System",
+    "titleLine2": "PT. Humpuss Carboxymethyl Cellulose",
+    "description": "A corporate platform to manage the employee payroll process efficiently and in an integrated way through a digital platform.",
+    "login": "Login"
+  },
+  "about": {
+    "heading": "What is SiPeKa?",
+    "titleLine1": "About",
+    "titleLine2": "Us",
+    "text1": "SiPeKa (Employee Payroll System) is a system used by companies to manage the employee payroll process efficiently and accurately. This system plays a key role in automating various payroll-related tasks, such as salary calculation, attendance processing, and employee wage payments.",
+    "text2": "In SiPeKa, employee information such as personal data, position, and salary level is stored centrally. Each month, the system retrieves employee attendance data and calculates salaries based on the available information. This covers factors such as working hours, leave, overtime, and relevant deductions."
+  },
+  "contact": {
+    "heading": "Contact",
+    "titleLine1": "Contact",
+    "titleLine2": "Us",
+    "successMessage": "Your Message has been sent",
+    "form": {
+      "namePlaceholder": "Name",
+      "emailPlaceholder": "Email",
+      "subjectPlaceholder": "Subject",
+      "messagePlaceholder": "Message",
+      "sendButton": "Send"
+    },
+    "info": {
+      "company": "PT. Humpuss Carboxymethyl Cellulose",
+      "phone": "021-044",
+      "email": "info@hks.com",
+      "address": "Karawang, West Java, Indonesia"
+    },
+    "socialHeading": "Social"
+  }
+}

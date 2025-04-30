@@ -2,6 +2,7 @@ import React from 'react'
 import LogoSipeka from '../../../assets/images/logo/logo-sipeka.png'
 import { DropdownProfil, DarkModeSwitcher } from '../../../components'
 import { Link } from 'react-router-dom'
+import LanguageSwitcher from '../../atoms/LanguageSwitcher'
 
 const Header = (
     props
@@ -65,8 +66,13 @@ const Header = (
 
                 <div className='flex items-center gap-3 2xsm:gap-7'>
                     <ul className='flex items-center gap-2 2xsm:gap-4'>
+                        <LanguageSwitcher />
+                    </ul>
+                    <ul className='flex items-center gap-2 2xsm:gap-4'>
                         <DarkModeSwitcher />
                     </ul>
+
+
                     <DropdownProfil />
                 </div>
             </div>

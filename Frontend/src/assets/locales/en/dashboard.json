@@ -1,0 +1,29 @@
+{
+  "cards": {
+    "attendance": "Attendance Data",
+    "employees": "Employee Data",
+    "positions": "Position Data",
+    "admin": "Admin Data"
+  },
+  "chartsOne": {
+    "dataMale": "Male Data",
+    "dataFemale": "Female Data",
+    "dateRange": "14.04.2023 - 14.05.2023",
+    "viewOptions": {
+      "day": "Day",
+      "week": "Week",
+      "month": "Month"
+    }
+  },
+  "chartsTwo": {
+    "title": "Employee Status",
+    "period": {
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "labels": {
+      "permanent": "Permanent Employees",
+      "temporary": "Temporary Employees"
+    }
+  }
+}

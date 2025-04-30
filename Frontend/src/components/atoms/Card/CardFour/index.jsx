@@ -2,8 +2,10 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDataKehadiran } from '../../../../config/redux/action';
 import { AiFillDatabase } from 'react-icons/ai'
+import { useTranslation } from 'react-i18next';
 
 const CardFour = () => {
+  const { t } = useTranslation('dashboard');
   const dispatch = useDispatch();
   const { dataKehadiran } = useSelector((state) => state.dataKehadiran);
   const jumlahDataKehadiran = dataKehadiran.length;
@@ -23,7 +25,7 @@ const CardFour = () => {
           <h4 className='text-title-md font-bold text-black dark:text-white'>
             {jumlahDataKehadiran}
           </h4>
-          <span className='text-sm font-medium'>Data Kehadiran</span>
+          <span className='text-sm font-medium'>{t('cards.attendance')}</span>
         </div>
       </div>
     </div>
