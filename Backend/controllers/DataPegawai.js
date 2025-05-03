@@ -15,9 +15,9 @@ export const getDataPegawai = async (req, res) => {
                 'status', 'photo', 'hak_akses'
             ]
         });
-        res.status(200).json({ response: response, msg: EMPLOYEE.FETCH_SUCCESS });
+        res.status(200).json(response);
     } catch (error) {
-        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR });
+        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
 }
 
@@ -35,12 +35,12 @@ export const getDataPegawaiByID = async (req, res) => {
             }
         });
         if (response) {
-            res.status(200).json({ response: response, msg: EMPLOYEE.FETCH_SUCCESS });
+            res.status(200).json(response);
         } else {
-            res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_ID })
+            res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_ID.code })
         }
     } catch (error) {
-        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR });
+        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
 }
 
@@ -58,12 +58,12 @@ export const getDataPegawaiByNik = async (req, res) => {
             }
         });
         if (response) {
-            res.status(200).json({ response: response, msg: EMPLOYEE.FETCH_SUCCESS });
+            res.status(200).json(response);
         } else {
-            res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NIK })
+            res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NIK.code })
         }
     } catch (error) {
-        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR });
+        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
 }
 
@@ -82,12 +82,12 @@ export const getDataPegawaiByName = async (req, res) => {
             }
         });
         if (response) {
-            res.status(200).json({ response: response, msg: EMPLOYEE.FETCH_SUCCESS });
+            res.status(200).json(response);
         } else {
-            res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NAME })
+            res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NAME.code })
         }
     } catch (error) {
-        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR });
+        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
 }
 
@@ -101,11 +101,11 @@ export const createDataPegawai = async (req, res) => {
     } = req.body;
 
     if (password !== confPassword) {
-        return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH });
+        return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH.code });
     }
 
     if (!req.files || !req.files.photo) {
-        return res.status(400).json({ msg: EMPLOYEE.PHOTO_REQUIRED });
+        return res.status(400).json({ msg: EMPLOYEE.PHOTO_REQUIRED.code });
     }
 
     const file = req.files.photo;
@@ -116,16 +116,16 @@ export const createDataPegawai = async (req, res) => {
     const allowedTypes = ['.png', '.jpg', '.jpeg'];
 
     if (!allowedTypes.includes(ext.toLowerCase())) {
-        return res.status(422).json({ msg: EMPLOYEE.INVALID_PHOTO_FORMAT });
+        return res.status(422).json({ msg: EMPLOYEE.INVALID_PHOTO_FORMAT.code });
     }
 
     if (fileSize > 2000000) {
-        return res.status(422).json({ msg: EMPLOYEE.PHOTO_TOO_LARGE });
+        return res.status(422).json({ msg: EMPLOYEE.PHOTO_TOO_LARGE.code });
     }
 
     file.mv(`./public/images/${fileName}`, async (err) => {
         if (err) {
-            return res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR });
+            return res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
         }
 
         const hashPassword = await argon2.hash(password);
@@ -145,10 +145,10 @@ export const createDataPegawai = async (req, res) => {
                 hak_akses: hak_akses
             });
 
-            res.status(201).json({ success: true, message: EMPLOYEE.CREATE_SUCCESS });
+            res.status(201).json({ success: true, message: EMPLOYEE.CREATE_SUCCESS.code });
         } catch (error) {
             console.log(error.message);
-            res.status(500).json({ success: false, message: EMPLOYEE.INTERNAL_ERROR });
+            res.status(500).json({ success: false, message: EMPLOYEE.INTERNAL_ERROR.code });
         }
     });
 };
@@ -162,7 +162,7 @@ export const updateDataPegawai = async (req, res) => {
         }
     });
 
-    if (!pegawai) return res.staus(404).json({ msg: EMPLOYEE.USER_NOT_FOUND });
+    if (!pegawai) return res.staus(404).json({ msg: EMPLOYEE.USER_NOT_FOUND.code });
     const {
         nik, nama_pegawai,
         username, jenis_kelamin,
@@ -185,9 +185,9 @@ export const updateDataPegawai = async (req, res) => {
                 id: pegawai.id
             }
         });
-        res.status(200).json({ msg: EMPLOYEE.UPDATE_SUCCESS });
+        res.status(200).json({ msg: EMPLOYEE.UPDATE_SUCCESS.code });
     } catch (error) {
-        res.status(400).json({ msg: EMPLOYEE.INTERNAL_ERROR });
+        res.status(400).json({ msg: EMPLOYEE.UPDATE_FAILED.code });
     }
 }
 
@@ -199,12 +199,12 @@ export const changePasswordAdmin = async (req, res) => {
         }
     });
 
-    if (!pegawai) return res.status(404).json({ msg: EMPLOYEE.USER_NOT_FOUND });
+    if (!pegawai) return res.status(404).json({ msg: EMPLOYEE.USER_NOT_FOUND.code });
 
 
     const { password, confPassword } = req.body;
 
-    if (password !== confPassword) return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH });
+    if (password !== confPassword) return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH.code });
 
     try {
         if (pegawai.hak_akses === "pegawai") {
@@ -221,12 +221,12 @@ export const changePasswordAdmin = async (req, res) => {
                 }
             );
 
-            res.status(200).json({ msg: EMPLOYEE.UPDATE_SUCCESS });
+            res.status(200).json({ msg: EMPLOYEE.UPDATE_SUCCESS.code });
         } else {
-            res.status(403).json({ msg: EMPLOYEE.UNAUTHORIZED });
+            res.status(403).json({ msg: EMPLOYEE.FORBIDDEN.code });
         }
     } catch (error) {
-        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR });
+        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
 };
 
@@ -238,15 +238,15 @@ export const deleteDataPegawai = async (req, res) => {
             id: req.params.id
         }
     });
-    if (!pegawai) return res.status(404).json({ msg: EMPLOYEE.USER_NOT_FOUND });
+    if (!pegawai) return res.status(404).json({ msg: EMPLOYEE.USER_NOT_FOUND.code });
     try {
         await DataPegawai.destroy({
             where: {
                 id: pegawai.id
             }
         });
-        res.status(200).json({ msg: EMPLOYEE.DELETE_SUCCESS });
+        res.status(200).json({ msg: EMPLOYEE.DELETE_SUCCESS.code });
     } catch (error) {
-        res.status(400).json({ msg: EMPLOYEE.INTERNAL_ERROR });
+        res.status(400).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
 }
