@@ -51,7 +51,7 @@ export const Me = async (req, res) => {
     }
   });
   if (!pegawai) return res.status(404).json({ msg: ME.USER_NOT_FOUND.code });
-  res.status(200).json(ME.FETCH_SUCCESS.code);
+  res.status(200).json(pegawai);
 }
 
 export const LogOut = (req, res) => {
