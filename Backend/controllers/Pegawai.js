@@ -22,7 +22,7 @@ export const dashboardPegawai = async (req, res) => {
     ]
   });
 
-  res.status(200).json({ response: response, msg: DASHBOARD.FETCH_SUCCESS });
+  res.status(200).json(response);
 };
 
 // method untuk view gaji single pegawai by month
@@ -66,12 +66,12 @@ export const viewDataGajiSinglePegawaiByMonth = async (req, res) => {
           total_gaji: data_gaji.total,
         };
       });
-      return res.json({ response: dataGajiByMonth, msg: EMPLOYEE.FETCH_SUCCESS });
+      return res.json(dataGajiByMonth);
     }
 
-    res.status(404).json({ msg: `${EMPLOYEE.SALARY_NOT_FOUND} ${user.nama_pegawai}` });
+    res.status(404).json({ msg: `${EMPLOYEE.SALARY_NOT_FOUND.code}` });
   } catch (error) {
-    res.status(500).json({ error: EMPLOYEE.INTERNAL_SERVER_ERROR });
+    res.status(500).json({ error: EMPLOYEE.INTERNAL_ERROR.code });
   }
 };
 
@@ -109,11 +109,11 @@ export const viewDataGajiSinglePegawaiByYear = async (req, res) => {
     });
 
     if (dataGajiByYear.length === 0) {
-      return res.status(404).json({ msg: ` ${EMPLOYEE.SALARY_BY_YEAR_NOT_FOUND} ${year}` });
+      return res.status(404).json({ msg: ` ${EMPLOYEE.SALARY_BY_YEAR_NOT_FOUND.code}` });
     }
-    res.json({ response: dataGajiByYear, msg: EMPLOYEE.SALARY_NOT_FOUND });
+    res.json(dataGajiByYear);
   } catch (error) {
-    res.status(500).json({ error: EMPLOYEE.INTERNAL_SERVER_ERROR });
+    res.status(500).json({ error: EMPLOYEE.INTERNAL_ERROR.code });
   }
 }
 
