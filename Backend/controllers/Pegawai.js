@@ -3,9 +3,7 @@ import DataKehadiran from "../models/DataKehadiranModel.js";
 import { getDataGajiPegawai } from "./TransaksiController.js";
 import { verifyUser } from "../middleware/AuthUser.js";
 
-import { ME } from "../errors/authError.json";
 import { DASHBOARD, EMPLOYEE } from "../errors/pegawaiError.json";
-import { SALARY_REPORT } from "../errors/salaryError.json";
 
 // method untuk dashboard pegawai
 export const dashboardPegawai = async (req, res) => {
