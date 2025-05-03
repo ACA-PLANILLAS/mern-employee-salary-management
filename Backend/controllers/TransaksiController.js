@@ -5,6 +5,9 @@ import PotonganGaji from "../models/PotonganGajiModel.js";
 import moment from "moment";
 import "moment/locale/id.js";
 
+import { ATTENDANCE, DEDUCTION, SALARY } from "../errors/TransaksiError.json"
+import { EMPLOYEE } from "../errors/pegawaiError.json"
+
 // method untuk menampilkan semua Data Kehadiran
 export const viewDataKehadiran = async (req, res) => {
   let resultDataKehadiran = [];
@@ -80,7 +83,7 @@ export const viewDataKehadiranByID = async (req, res) => {
     });
     res.json(dataKehadiran);
   } catch (error) {
-    res.status(500).json({ msg: error.message });
+    res.status(500).json({ msg: ATTENDANCE.INTERNAL_ERROR.code });
   }
 };
 
@@ -122,15 +125,15 @@ export const createDataKehadiran = async (req, res) => {
     });
 
     if (!data_nama_pegawai) {
-      return res.status(404).json({ msg: "Data nama pegawai tidak ditemukan" });
+      return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NAME.code });
     }
 
     if (!data_nama_jabatan) {
-      return res.status(404).json({ msg: "Data nama jabatan tidak ditemukan" });
+      return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_JABATAN.code });
     }
 
     if (!data_nik_pegawai) {
-      return res.status(404).json({ msg: "Data nik tidak ditemukan" });
+      return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NIK.code });
     }
 
     if (!nama_sudah_ada) {
@@ -145,9 +148,9 @@ export const createDataKehadiran = async (req, res) => {
         sakit: sakit,
         alpha: alpha,
       });
-      res.json({ msg: "Tambah Data Kehadiran Berhasil" });
+      res.json({ msg: ATTENDANCE.CREATE_SUCCESS.code });
     } else {
-      res.status(400).json({ msg: "Data nama sudah ada" });
+      res.status(400).json({ msg: ATTENDANCE.ALREADY_EXISTS.code });
     }
   } catch (error) {
     console.log(error);
@@ -162,7 +165,7 @@ export const updateDataKehadiran = async (req, res) => {
         id: req.params.id,
       },
     });
-    res.status(200).json({ msg: "Data kehadiran berhasil diupdate" });
+    res.status(200).json({ msg: ATTENDANCE.UPDATE_SUCCESS.code });
   } catch (error) {
     console.log(error.msg);
   }
@@ -176,7 +179,7 @@ export const deleteDataKehadiran = async (req, res) => {
         id: req.params.id,
       },
     });
-    res.status(200).json({ msg: "Delete data berhasil" });
+    res.status(200).json({ msg: ATTENDANCE.DELETE_SUCCESS.code });
   } catch (error) {
     console.log(error.msg);
   }
@@ -192,14 +195,14 @@ export const createDataPotonganGaji = async (req, res) => {
       },
     });
     if (nama_potongan) {
-      res.status(400).json({ msg: "Data potongan sudah ada !" });
+      res.status(400).json({ msg: DEDUCTION.ALREADY_EXISTS.code });
     } else {
       await PotonganGaji.create({
         id: id,
         potongan: potongan,
         jml_potongan: jml_potongan.toLocaleString(),
       });
-      res.json({ msg: "Tambah Data Potongan Gaji Berhasil" });
+      res.json({ msg: DEDUCTION.CREATE_SUCCESS.code });
     }
   } catch (error) {
     console.log(error);
@@ -241,7 +244,7 @@ export const updateDataPotongan = async (req, res) => {
         id: req.params.id,
       },
     });
-    res.status(200).json({ message: "Data Potongan berhasil diupdate" });
+    res.status(200).json({ message: DEDUCTION.UPDATE_SUCCESS.code });
   } catch (error) {
     console.log(error.message);
   }
@@ -255,7 +258,7 @@ export const deleteDataPotongan = async (req, res) => {
         id: req.params.id,
       },
     });
-    res.status(200).json({ message: "Delete data berhasil" });
+    res.status(200).json({ message: DEDUCTION.DELETE_SUCCESS.code });
   } catch (error) {
     console.log(error.message);
   }
@@ -448,10 +451,10 @@ export const getDataGajiPegawai = async () => {
         (potongan) => potongan.nama_pegawai === pegawai.nama_pegawai
       );
       const total_gaji =
-      (pegawai.gaji_pokok +
-      pegawai.tj_transport +
-      pegawai.uang_makan -
-      (potongan ? potongan.total_potongan : 0)).toLocaleString();
+        (pegawai.gaji_pokok +
+          pegawai.tj_transport +
+          pegawai.uang_makan -
+          (potongan ? potongan.total_potongan : 0)).toLocaleString();
 
       return {
         tahun: potongan ? potongan.tahun : kehadiran ? kehadiran.tahun : 0,
@@ -482,7 +485,7 @@ export const viewDataGajiPegawai = async (req, res) => {
     const dataGajiPegawai = await getDataGajiPegawai();
     res.status(200).json(dataGajiPegawai);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
   }
 };
 
@@ -516,11 +519,11 @@ export const viewDataGajiPegawaiByName = async (req, res) => {
       });
 
     if (dataGajiByName.length === 0) {
-      return res.status(404).json({ msg: 'Data tidak ditemukan' });
+      return res.status(404).json({ msg: SALARY.NOT_FOUND_BY_NAME.code });
     }
     return res.json(dataGajiByName);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
   }
 };
 
@@ -534,13 +537,13 @@ export const viewDataGajiById = async (req, res) => {
     const foundData = dataGajiPegawai.find((data) => data.id === id);
 
     if (!foundData) {
-      res.status(404).json({ msg: "Data not found" });
+      res.status(404).json({ msg: SALARY.NOT_FOUND_BY_ID.code });
     } else {
       res.json(foundData);
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: "Internal server error" });
+    res.status(500).json({ msg: SALARY.INTERNAL_ERROR.code });
   }
 };
 
@@ -558,13 +561,13 @@ export const viewDataGajiByName = async (req, res) => {
     });
 
     if (foundData.length === 0) {
-      res.status(404).json({ msg: "Data not found" });
+      res.status(404).json({ msg: SALARY.NOT_FOUND_BY_NAME.code });
     } else {
       res.json(foundData);
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: "Internal server error" });
+    res.status(500).json({ msg: SalarY.INTERNAL_ERROR.code });
   }
 };
 
@@ -606,9 +609,9 @@ export const viewDataGajiPegawaiByMonth = async (req, res) => {
 
     res
       .status(404)
-      .json({ msg: `Data untuk bulan ${req.params.month} tidak ditemukan` });
+      .json({ msg: SALARY.NOT_FOUND_BY_MONTH.code });
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
   }
 };
 
@@ -645,11 +648,11 @@ export const viewDataGajiPegawaiByYear = async (req, res) => {
     if (dataGajiByYear.length === 0) {
       return res
         .status(404)
-        .json({ msg: `Data tahun ${year} tidak ditemukan` });
+        .json({ msg: SALARY.NOT_FOUND_BY_YEAR.code });
     }
     res.json(dataGajiByYear);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
   }
 };
 
@@ -683,12 +686,12 @@ export const dataLaporanGajiByYear = async (req, res) => {
     if (dataGajiByYear.length === 0) {
       return res
         .status(404)
-        .json({ msg: `Data tahun ${year} tidak ditemukan` });
+        .json({ msg: SALARY.NOT_FOUND_BY_YEAR.code });
     } else {
       const laporanByYear = dataGajiByYear.map((data) => data.tahun)
       console.log(laporanByYear)
     }
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
   }
 };

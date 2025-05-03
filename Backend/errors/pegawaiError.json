@@ -25,6 +25,11 @@
       "status": 404,
       "message": "Data pegawai dengan Nama tersebut tidak ditemukan"
     },
+    "NOT_FOUND_BY_JABATAN": {
+      "code": "EMP-005",
+      "status": 404,
+      "message": "Data pegawai dengan Jabatan tersebut tidak ditemukan"
+    },
     "PHOTO_REQUIRED": {
       "code": "EMP-006",
       "status": 400,
