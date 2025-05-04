@@ -2,8 +2,12 @@ import DataPegawai from "../models/DataPegawaiModel.js";
 import argon2 from "argon2";
 import path from "path";
 
-import { EMPLOYEE } from "../errors/pegawaiError.json";
-import { PASSWORD } from "../errors/authError.json";
+import pegawaiError from "../errors/pegawaiError.json" assert { type: "json" };
+import authError from "../errors/authError.json" assert { type: "json" };
+
+const { EMPLOYEE } = pegawaiError;
+const { PASSWORD } = authError;
+
 
 // menampilkan semua data Pegawai
 export const getDataPegawai = async (req, res) => {

@@ -5,8 +5,11 @@ import PotonganGaji from "../models/PotonganGajiModel.js";
 import moment from "moment";
 import "moment/locale/id.js";
 
-import { ATTENDANCE, DEDUCTION, SALARY } from "../errors/TransaksiError.json"
-import { EMPLOYEE } from "../errors/pegawaiError.json"
+import transaksiError from "../errors/TransaksiError.json" assert { type: "json" };
+import pegawaiError from "../errors/pegawaiError.json" assert { type: "json" };
+
+const { ATTENDANCE, DEDUCTION, SALARY } = transaksiError;
+const { EMPLOYEE } = pegawaiError;
 
 // method untuk menampilkan semua Data Kehadiran
 export const viewDataKehadiran = async (req, res) => {
