@@ -3,8 +3,10 @@ import {
     getDataKehadiran,
     viewDataGajiPegawaiByYear
 } from "./TransaksiController.js"
+import salaryError from "../errors/salaryError.json" assert { type: "json" };
 
-import { SALARY_REPORT, ATTENDANCE_REPORT, PAYSLEIP } from "../errors/salaryError.json";
+const { SALARY_REPORT, ATTENDANCE_REPORT, PAYSLEIP } = salaryError;
+
 // method untuk melihat laporan gaji pegawai
 export const viewLaporanGajiPegawai = async (req, res) => {
     try {

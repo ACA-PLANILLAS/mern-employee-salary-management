@@ -1,8 +1,12 @@
 import DataPegawai from "../models/DataPegawaiModel.js";
 import argon2 from "argon2";
 import { verifyUser } from "../middleware/AuthUser.js";
-import { LOGIN, LOGOUT, ME, PASSWORD } from "../errors/authError.json";
-import { EMPLOYEE } from "../errors/pegawaiError.json";
+
+import authError from "../errors/authError.json" assert { type: "json" };
+import pegawaiError from "../errors/pegawaiError.json" assert { type: "json" };
+
+const { LOGIN, LOGOUT, ME, PASSWORD } = authError;
+const { EMPLOYEE } = pegawaiError;
 
 export const Login = async (req, res) => {
   let user = {};

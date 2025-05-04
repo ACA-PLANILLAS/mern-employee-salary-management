@@ -2,8 +2,9 @@ import DataPegawai from "../models/DataPegawaiModel.js";
 import DataKehadiran from "../models/DataKehadiranModel.js";
 import { getDataGajiPegawai } from "./TransaksiController.js";
 import { verifyUser } from "../middleware/AuthUser.js";
+import pegawaiError from "../errors/pegawaiError.json" assert { type: "json" };
 
-import { DASHBOARD, EMPLOYEE } from "../errors/pegawaiError.json";
+const { DASHBOARD, EMPLOYEE } = pegawaiError;
 
 // method untuk dashboard pegawai
 export const dashboardPegawai = async (req, res) => {

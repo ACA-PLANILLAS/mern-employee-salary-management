@@ -2,7 +2,9 @@ import DataJabatan from "../models/DataJabatanModel.js";
 import DataPegawai from "../models/DataPegawaiModel.js";
 import { Op } from "sequelize";
 
-import { JOB_POSITION } from "../errors/jabatanError.json";
+import jabatanError from "../errors/jabatanError.json" assert { type: "json" };
+
+const { JOB_POSITION } = jabatanError;
 
 // menampilkan semua data jabatan
 export const getDataJabatan = async (req, res) => {
