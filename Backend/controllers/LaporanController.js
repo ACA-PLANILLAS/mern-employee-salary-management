@@ -9,9 +9,9 @@ import { SALARY_REPORT, ATTENDANCE_REPORT, PAYSLEIP } from "../errors/salaryErro
 export const viewLaporanGajiPegawai = async (req, res) => {
     try {
         const laporanGajiPegawai = await getDataGajiPegawai(req, res);
-        res.status(200).json({ response: laporanGajiPegawai, msg: SALARY_REPORT.SUCCESS });
+        res.status(200).json(laporanGajiPegawai);
     } catch (error) {
-        res.status(500).json({ msg: SALARY_REPORT.INTERNAL_ERROR });
+        res.status(500).json({ error: SALARY_REPORT.INTERNAL_ERROR.code });
     }
 }
 
@@ -26,7 +26,7 @@ export const viewLaporanGajiPegawaiByMonth = async (req, res) => {
         });
 
         if (filteredData.length === 0) {
-            res.status(404).json({ msg: SALARY_REPORT.NOT_FOUND_BY_MONTH });
+            res.status(404).json({ msg: SALARY_REPORT.NOT_FOUND_BY_MONTH.code });
         } else {
             const formattedData = filteredData.map((data) => {
                 return {
@@ -40,10 +40,10 @@ export const viewLaporanGajiPegawaiByMonth = async (req, res) => {
                     total_gaji: data.total
                 };
             });
-            res.json({ response: formattedData, msg: SALARY_REPORT.SUCCESS });
+            res.json(formattedData);
         }
     } catch (error) {
-        res.status(500).json({ msg: SALARY_REPORT.INTERNAL_ERROR });
+        res.status(500).json({ error: SALARY_REPORT.INTERNAL_ERROR.code });
     }
 };
 
@@ -56,7 +56,7 @@ export const viewLaporanGajiPegawaiByYear = async (req, res) => {
     try {
         await viewDataGajiPegawaiByYear(req, res);
     } catch (error) {
-        res.status(500).json({ msg: SALARY_REPORT.INTERNAL_ERROR });
+        res.status(500).json({ error: SALARY_REPORT.INTERNAL_ERROR.code });
     }
 };
 
@@ -75,13 +75,13 @@ export const viewLaporanGajiPegawaiByName = async (req, res) => {
         });
 
         if (foundData.length === 0) {
-            res.status(404).json({ msg: SALARY_REPORT.NOT_FOUND_BY_NAME });
+            res.status(404).json({ msg: SALARY_REPORT.NOT_FOUND_BY_NAME.code });
         } else {
-            res.json({ response: foundData, msg: SALARY_REPORT.SUCCESS });
+            res.json(foundData);
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ msg: SALARY_REPORT.INTERNAL_ERROR });
+        res.status(500).json({ msg: SALARY_REPORT.INTERNAL_ERROR.code });
     }
 };
 
@@ -105,12 +105,12 @@ export const viewLaporanAbsensiPegawaiByMonth = async (req, res) => {
         });
 
         if (dataAbsensi.length === 0) {
-            res.status(404).json({ msg: ATTENDANCE_REPORT.NOT_FOUND_BY_MONTH });
+            res.status(404).json({ msg: ATTENDANCE_REPORT.NOT_FOUND_BY_MONTH.code });
         } else {
-            res.json({ response: dataAbsensi, msg: ATTENDANCE_REPORT.SUCCESS });
+            res.json(dataAbsensi);
         }
     } catch (error) {
-        res.status(500).json({ msg: ATTENDANCE_REPORT.INTERNAL_ERROR });
+        res.status(500).json({ msg: ATTENDANCE_REPORT.INTERNAL_ERROR.code });
     }
 };
 
@@ -135,12 +135,12 @@ export const viewLaporanAbsensiPegawaiByYear = async (req, res) => {
         });
 
         if (dataAbsensi.length === 0) {
-            res.status(404).json({ msg: ATTENDANCE_REPORT.NOT_FOUND_BY_YEAR });
+            res.status(404).json({ msg: ATTENDANCE_REPORT.NOT_FOUND_BY_YEAR.code });
         } else {
-            res.json({ response: dataAbsensi, msg: ATTENDANCE_REPORT.SUCCESS });
+            res.json(dataAbsensi);
         }
     } catch (error) {
-        res.status(500).json({ msg: ATTENDANCE_REPORT.INTERNAL_ERROR });
+        res.status(500).json({ msg: ATTENDANCE_REPORT.INTERNAL_ERROR.code });
     }
 };
 
@@ -160,13 +160,13 @@ export const viewSlipGajiByName = async (req, res) => {
         });
 
         if (foundData.length === 0) {
-            res.status(404).json({ msg: PAYSLEIP.NOT_FOUND_BY_NAME });
+            res.status(404).json({ msg: PAYSLEIP.NOT_FOUND_BY_NAME.code });
         } else {
-            res.json({ response: foundData, msg: PAYSLEIP.SUCCESS });
+            res.json(foundData);
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({ msg: PAYSLEIP.INTERNAL_ERROR });
+        res.status(500).json({ msg: PAYSLEIP.INTERNAL_ERROR.code });
     }
 }
 
@@ -181,7 +181,7 @@ export const viewSlipGajiByMonth = async (req, res) => {
         });
 
         if (filteredData.length === 0) {
-            res.status(404).json({ msg: `${PAYSLEIP.NOT_FOUND_BY_MONTH} ${month}` });
+            res.status(404).json({ msg: `${PAYSLEIP.NOT_FOUND_BY_MONTH.code}` });
         } else {
             const formattedData = filteredData.map((data) => {
                 return {
@@ -196,10 +196,10 @@ export const viewSlipGajiByMonth = async (req, res) => {
                     total_gaji: data.total
                 };
             });
-            res.json({ response: formattedData, msg: PAYSLEIP.SUCCESS });
+            res.json(formattedData);
         }
     } catch (error) {
-        res.status(500).json({ msg: PAYSLEIP.INTERNAL_ERROR });
+        res.status(500).json({ error: PAYSLEIP.INTERNAL_ERROR.code });
     }
 }
 
@@ -208,6 +208,6 @@ export const viewSlipGajiByYear = async (req, res) => {
     try {
         await viewDataGajiPegawaiByYear(req, res);
     } catch (error) {
-        res.status(500).json({ msg: PAYSLEIP.INTERNAL_ERROR });
+        res.status(500).json({ error: PAYSLEIP.INTERNAL_ERROR.code });
     }
 }
