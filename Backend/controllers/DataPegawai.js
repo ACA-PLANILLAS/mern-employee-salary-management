@@ -2,6 +2,13 @@ import DataPegawai from "../models/DataPegawaiModel.js";
 import argon2 from "argon2";
 import path from "path";
 
+import pegawaiError from "../errors/pegawaiError.json" assert { type: "json" };
+import authError from "../errors/authError.json" assert { type: "json" };
+
+const { EMPLOYEE } = pegawaiError;
+const { PASSWORD } = authError;
+
+
 // menampilkan semua data Pegawai
 export const getDataPegawai = async (req, res) => {
     try {
@@ -14,7 +21,7 @@ export const getDataPegawai = async (req, res) => {
         });
         res.status(200).json(response);
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
 }
 
@@ -34,10 +41,10 @@ export const getDataPegawaiByID = async (req, res) => {
         if (response) {
             res.status(200).json(response);
         } else {
-            res.status(404).json({ msg: 'Data pegawai dengan ID tersebut tidak ditemukan' })
+            res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_ID.code })
         }
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
 }
 
@@ -57,10 +64,10 @@ export const getDataPegawaiByNik = async (req, res) => {
         if (response) {
             res.status(200).json(response);
         } else {
-            res.status(404).json({ msg: 'Data pegawai dengan NIK tersebut tidak ditemukan' })
+            res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NIK.code })
         }
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
 }
 
@@ -81,10 +88,10 @@ export const getDataPegawaiByName = async (req, res) => {
         if (response) {
             res.status(200).json(response);
         } else {
-            res.status(404).json({ msg: 'Data pegawai dengan Nama tersebut tidak ditemukan' })
+            res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NAME.code })
         }
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
 }
 
@@ -98,11 +105,11 @@ export const createDataPegawai = async (req, res) => {
     } = req.body;
 
     if (password !== confPassword) {
-        return res.status(400).json({ msg: "Password dan Konfirmasi Password Tidak Cocok" });
+        return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH.code });
     }
 
     if (!req.files || !req.files.photo) {
-        return res.status(400).json({ msg: "Upload Foto Gagal Silahkan Upload Foto Ulang" });
+        return res.status(400).json({ msg: EMPLOYEE.PHOTO_REQUIRED.code });
     }
 
     const file = req.files.photo;
@@ -113,16 +120,16 @@ export const createDataPegawai = async (req, res) => {
     const allowedTypes = ['.png', '.jpg', '.jpeg'];
 
     if (!allowedTypes.includes(ext.toLowerCase())) {
-        return res.status(422).json({ msg: "File Foto Tidak Sesuai Dengan Format" });
+        return res.status(422).json({ msg: EMPLOYEE.INVALID_PHOTO_FORMAT.code });
     }
 
     if (fileSize > 2000000) {
-        return res.status(422).json({ msg: "Ukuran Gambar Harus Kurang Dari 2 MB" });
+        return res.status(422).json({ msg: EMPLOYEE.PHOTO_TOO_LARGE.code });
     }
 
     file.mv(`./public/images/${fileName}`, async (err) => {
         if (err) {
-            return res.status(500).json({ msg: err.message });
+            return res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
         }
 
         const hashPassword = await argon2.hash(password);
@@ -142,10 +149,10 @@ export const createDataPegawai = async (req, res) => {
                 hak_akses: hak_akses
             });
 
-            res.status(201).json({ success: true, message: "Registrasi Berhasil" });
+            res.status(201).json({ success: true, message: EMPLOYEE.CREATE_SUCCESS.code });
         } catch (error) {
             console.log(error.message);
-            res.status(500).json({ success: false, message: error.message });
+            res.status(500).json({ success: false, message: EMPLOYEE.INTERNAL_ERROR.code });
         }
     });
 };
@@ -159,7 +166,7 @@ export const updateDataPegawai = async (req, res) => {
         }
     });
 
-    if (!pegawai) return res.staus(404).json({ msg: "Data pegawai tidak ditemukan" });
+    if (!pegawai) return res.staus(404).json({ msg: EMPLOYEE.USER_NOT_FOUND.code });
     const {
         nik, nama_pegawai,
         username, jenis_kelamin,
@@ -182,9 +189,9 @@ export const updateDataPegawai = async (req, res) => {
                 id: pegawai.id
             }
         });
-        res.status(200).json({ msg: "Data Pegawai Berhasil di Perbarui" });
+        res.status(200).json({ msg: EMPLOYEE.UPDATE_SUCCESS.code });
     } catch (error) {
-        res.status(400).json({ msg: error.message });
+        res.status(400).json({ msg: EMPLOYEE.UPDATE_FAILED.code });
     }
 }
 
@@ -196,12 +203,12 @@ export const changePasswordAdmin = async (req, res) => {
         }
     });
 
-    if (!pegawai) return res.status(404).json({ msg: "Data pegawai tidak ditemukan" });
+    if (!pegawai) return res.status(404).json({ msg: EMPLOYEE.USER_NOT_FOUND.code });
 
 
     const { password, confPassword } = req.body;
 
-    if (password !== confPassword) return res.status(400).json({ msg: "Password dan Konfirmasi Password Tidak Cocok" });
+    if (password !== confPassword) return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH.code });
 
     try {
         if (pegawai.hak_akses === "pegawai") {
@@ -218,12 +225,12 @@ export const changePasswordAdmin = async (req, res) => {
                 }
             );
 
-            res.status(200).json({ msg: "Password Pegawai Berhasil di Perbarui" });
+            res.status(200).json({ msg: EMPLOYEE.UPDATE_SUCCESS.code });
         } else {
-            res.status(403).json({ msg: "Forbidden" });
+            res.status(403).json({ msg: EMPLOYEE.FORBIDDEN.code });
         }
     } catch (error) {
-        res.status(500).json({ msg: "Internal Server Error" });
+        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
 };
 
@@ -235,15 +242,15 @@ export const deleteDataPegawai = async (req, res) => {
             id: req.params.id
         }
     });
-    if (!pegawai) return res.status(404).json({ msg: "Data Pegawai tidak ditemukan" });
+    if (!pegawai) return res.status(404).json({ msg: EMPLOYEE.USER_NOT_FOUND.code });
     try {
         await DataPegawai.destroy({
             where: {
                 id: pegawai.id
             }
         });
-        res.status(200).json({ msg: "Data Pegawai Berhasil di Hapus" });
+        res.status(200).json({ msg: EMPLOYEE.DELETE_SUCCESS.code });
     } catch (error) {
-        res.status(400).json({ msg: error.message });
+        res.status(400).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
 }

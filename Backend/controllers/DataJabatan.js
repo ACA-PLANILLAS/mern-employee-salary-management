@@ -2,6 +2,10 @@ import DataJabatan from "../models/DataJabatanModel.js";
 import DataPegawai from "../models/DataPegawaiModel.js";
 import { Op } from "sequelize";
 
+import jabatanError from "../errors/jabatanError.json" assert { type: "json" };
+
+const { JOB_POSITION } = jabatanError;
+
 // menampilkan semua data jabatan
 export const getDataJabatan = async (req, res) => {
     try {
@@ -15,7 +19,7 @@ export const getDataJabatan = async (req, res) => {
                 }]
             });
         } else {
-            if (req.userId !== DataJabatan.userId) return res.status(403).json({ msg: "Akses terlarang" });
+            if (req.userId !== DataJabatan.userId) return res.status(403).json({ msg: JOB_POSITION.FORBIDDEN_ACCESS });
             await DataJabatan.update({
                 nama_jabatan, gaji_pokok, tj_transport, uang_makan
             }, {
@@ -26,7 +30,7 @@ export const getDataJabatan = async (req, res) => {
         }
         res.status(200).json(response);
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+        res.status(500).json({ msg: JOB_POSITION.INTERNAL_SERVER_ERROR.code });
     }
 }
 
@@ -35,19 +39,19 @@ export const getDataJabatanByID = async (req, res) => {
     try {
         const response = await DataJabatan.findOne({
             attributes: [
-                'id','nama_jabatan', 'gaji_pokok', 'tj_transport', 'uang_makan'
+                'id', 'nama_jabatan', 'gaji_pokok', 'tj_transport', 'uang_makan'
             ],
             where: {
                 id: req.params.id
             }
         });
-        if(response){
+        if (response) {
             res.status(200).json(response);
-        }else{
-            res.status(404).json({msg: 'Data jabatan dengan ID tersebut tidak ditemukan'});
+        } else {
+            res.status(404).json({ msg: JOB_POSITION.NOT_FOUND.code });
         }
     } catch (error) {
-        res.status(500).json({msg: error.message});
+        res.status(500).json({ msg: JOB_POSITION.INTERNAL_SERVER_ERROR.code });
     }
 }
 
@@ -67,7 +71,7 @@ export const createDataJabatan = async (req, res) => {
                 userId: req.userId
             });
         } else {
-            if (req.userId !== DataJabatan.userId) return res.status(403).json({ msg: "Akses terlarang" });
+            if (req.userId !== DataJabatan.userId) return res.status(403).json({ msg: JOB_POSITION.FORBIDDEN_ACCESS.code });
             await DataJabatan.update({
                 nama_jabatan, gaji_pokok, tj_transport, uang_makan
             }, {
@@ -76,10 +80,10 @@ export const createDataJabatan = async (req, res) => {
                 },
             });
         }
-        res.status(201).json({ success: true, message: "Data Jabatan Berhasil di Simpan" });
+        res.status(201).json({ success: true, message: JOB_POSITION.CREATE_SUCCESS.code });
     } catch (error) {
         console.log(error.message);
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: JOB_POSITION.INTERNAL_SERVER_ERROR.code });
     }
 
 }
@@ -92,7 +96,7 @@ export const updateDataJabatan = async (req, res) => {
                 id: req.params.id
             }
         });
-        if (!jabatan) return res.status(404).json({ msg: "Data tidak ditemukan" });
+        if (!jabatan) return res.status(404).json({ msg: JOB_POSITION.DATA_NOT_FOUND.code });
         const { nama_jabatan, gaji_pokok, tj_transport, uang_makan } = req.body;
         if (req.hak_akses === "admin") {
             await DataJabatan.update({
@@ -103,7 +107,7 @@ export const updateDataJabatan = async (req, res) => {
                 }
             });
         } else {
-            if (req.userId !== DataJabatan.userId) return res.status(403).json({ msg: "Akses terlarang" });
+            if (req.userId !== DataJabatan.userId) return res.status(403).json({ msg: JOB_POSITION.FORBIDDEN_ACCESS });
             await DataJabatan.update({
                 nama_jabatan, gaji_pokok, tj_transport, uang_makan
             }, {
@@ -112,9 +116,9 @@ export const updateDataJabatan = async (req, res) => {
                 },
             });
         }
-        res.status(200).json({ msg: "Data Jabatan Berhasil di Pebarui" });
+        res.status(200).json({ msg: JOB_POSITION.UPDATE_SUCCESS.code });
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+        res.status(500).json({ msg: JOB_POSITION.INTERNAL_SERVER_ERROR.code });
     }
 }
 
@@ -126,7 +130,7 @@ export const deleteDataJabatan = async (req, res) => {
                 id: req.params.id
             }
         });
-        if (!jabatan) return res.status(404).json({ msg: "Data tidak ditemukan" });
+        if (!jabatan) return res.status(404).json({ msg: JOB_POSITION.DATA_NOT_FOUND.code });
         if (req.hak_akses === "admin") {
             await jabatan.destroy({
                 where: {
@@ -134,16 +138,16 @@ export const deleteDataJabatan = async (req, res) => {
                 }
             });
         } else {
-            if (req.userId !== jabatan.userId) return res.status(403).json({ msg: "Akses terlarang" });
+            if (req.userId !== jabatan.userId) return res.status(403).json({ msg: JOB_POSITION.FORBIDDEN_ACCESS.code });
             await jabatan.destroy({
                 where: {
                     [Op.and]: [{ id_jabatan: jabatan.id_jabatan }, { userId: req.userId }]
                 },
             });
         }
-        res.status(200).json({ msg: "Data Jabatan Berhasil di Hapus" });
+        res.status(200).json({ msg: JOB_POSITION.DELETE_SUCCESS.code });
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+        res.status(500).json({ msg: JOB_POSITION.INTERNAL_SERVER_ERROR.code });
     }
 
 }

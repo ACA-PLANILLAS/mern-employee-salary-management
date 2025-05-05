@@ -1,0 +1,202 @@
+{
+  "EMPLOYEE": {
+    "USER_NOT_FOUND": {
+      "code": "AUTH-001",
+      "status": 404,
+      "message": "Data Pegawai Tidak Ditemukan"
+    },
+    "FETCH_SUCCESS": {
+      "code": "EMP-001",
+      "status": 200,
+      "message": "Data Pegawai berhasil diambil"
+    },
+    "NOT_FOUND_BY_ID": {
+      "code": "EMP-002",
+      "status": 404,
+      "message": "Data pegawai dengan ID tersebut tidak ditemukan"
+    },
+    "NOT_FOUND_BY_NIK": {
+      "code": "EMP-003",
+      "status": 404,
+      "message": "Data pegawai dengan NIK tersebut tidak ditemukan"
+    },
+    "NOT_FOUND_BY_NAME": {
+      "code": "EMP-004",
+      "status": 404,
+      "message": "Data pegawai dengan Nama tersebut tidak ditemukan"
+    },
+    "PHOTO_REQUIRED": {
+      "code": "EMP-006",
+      "status": 400,
+      "message": "Upload Foto Gagal Silahkan Upload Foto Ulang"
+    },
+    "INVALID_PHOTO_FORMAT": {
+      "code": "EMP-007",
+      "status": 422,
+      "message": "File Foto Tidak Sesuai Dengan Format"
+    },
+    "PHOTO_TOO_LARGE": {
+      "code": "EMP-008",
+      "status": 422,
+      "message": "Ukuran Gambar Harus Kurang Dari 2 MB"
+    },
+    "UPLOAD_FAILED": {
+      "code": "EMP-009",
+      "status": 500,
+      "message": "Gagal mengunggah foto"
+    },
+    "CREATE_SUCCESS": {
+      "code": "EMP-010",
+      "status": 201,
+      "message": "Registrasi Berhasil"
+    },
+    "UPDATE_SUCCESS": {
+      "code": "EMP-011",
+      "status": 200,
+      "message": "Data Pegawai Berhasil di Perbarui"
+    },
+    "UPDATE_FAILED": {
+      "code": "EMP-012",
+      "status": 400,
+      "message": "Gagal memperbarui data pegawai"
+    },
+    "DELETE_SUCCESS": {
+      "code": "EMP-013",
+      "status": 200,
+      "message": "Data Pegawai Berhasil di Hapus"
+    },
+    "FORBIDDEN": {
+      "code": "EMP-014",
+      "status": 403,
+      "message": "Forbidden"
+    },
+    "INTERNAL_ERROR": {
+      "code": "EMP-015",
+      "status": 500,
+      "message": "Terjadi kesalahan pada server"
+    },
+    "SALARY_NOT_FOUND": {
+      "code": "EMP-016",
+      "status": 404,
+      "message": "Data Gaji Untuk Bulan, Tidak di Temukan Pada Pegawai"
+    },
+    "SALARY_BY_YEAR_NOT_FOUND": {
+      "code": "EMP-017",
+      "status": 404,
+      "message": "Data Tahun, Tidak di Temukan"
+    }
+  },
+  "ATTENDANCE": {
+    "FETCH_SUCCESS": {
+      "code": "ATT-001",
+      "status": 200,
+      "message": "Data Kehadiran berhasil diambil"
+    },
+    "NOT_FOUND_BY_ID": {
+      "code": "ATT-002",
+      "status": 404,
+      "message": "Data kehadiran dengan ID tersebut tidak ditemukan"
+    },
+    "CREATE_SUCCESS": {
+      "code": "ATT-003",
+      "status": 201,
+      "message": "Tambah Data Kehadiran Berhasil"
+    },
+    "ALREADY_EXISTS": {
+      "code": "ATT-004",
+      "status": 400,
+      "message": "Data Kehadiran sudah ada"
+    },
+    "UPDATE_SUCCESS": {
+      "code": "ATT-005",
+      "status": 200,
+      "message": "Data Kehadiran berhasil diperbarui"
+    },
+    "DELETE_SUCCESS": {
+      "code": "ATT-006",
+      "status": 200,
+      "message": "Data Kehadiran berhasil dihapus"
+    },
+    "INTERNAL_ERROR": {
+      "code": "ATT-007",
+      "status": 500,
+      "message": "Terjadi kesalahan pada server"
+    }
+  },
+  "SALARY": {
+    "FETCH_SUCCESS": {
+      "code": "SAL-001",
+      "status": 200,
+      "message": "Data Gaji Pegawai berhasil diambil"
+    },
+    "NOT_FOUND_BY_NAME": {
+      "code": "SAL-002",
+      "status": 404,
+      "message": "Data Gaji Pegawai dengan nama tersebut tidak ditemukan"
+    },
+    "NOT_FOUND_BY_MONTH": {
+      "code": "SAL-003",
+      "status": 404,
+      "message": "Data Gaji Pegawai untuk bulan tersebut tidak ditemukan"
+    },
+    "NOT_FOUND_BY_YEAR": {
+      "code": "SAL-004",
+      "status": 404,
+      "message": "Data Gaji Pegawai untuk tahun tersebut tidak ditemukan"
+    },
+    "INTERNAL_ERROR": {
+      "code": "SAL-005",
+      "status": 500,
+      "message": "Terjadi kesalahan pada server"
+    },
+    "NOT_FOUND_BY_ID": {
+      "code": "SAL-006",
+      "status": 404,
+      "message": "Data Gaji Pegawai dengan ID tersebut tidak ditemukan"
+    }
+  },
+  "DEDUCTION": {
+    "FETCH_SUCCESS": {
+      "code": "DED-001",
+      "status": 200,
+      "message": "Data Potongan berhasil diambil"
+    },
+    "CREATE_SUCCESS": {
+      "code": "DED-002",
+      "status": 201,
+      "message": "Tambah Data Potongan Berhasil"
+    },
+    "ALREADY_EXISTS": {
+      "code": "DED-003",
+      "status": 400,
+      "message": "Data Potongan sudah ada"
+    },
+    "UPDATE_SUCCESS": {
+      "code": "DED-004",
+      "status": 200,
+      "message": "Data Potongan berhasil diupdate"
+    },
+    "DELETE_SUCCESS": {
+      "code": "DED-005",
+      "status": 200,
+      "message": "Data Potongan berhasil dihapus"
+    },
+    "INTERNAL_ERROR": {
+      "code": "DED-006",
+      "status": 500,
+      "message": "Terjadi kesalahan pada server"
+    }
+  },
+  "DASHBOARD": {
+    "FETCH_SUCCESS": {
+      "code": "DASH-001",
+      "status": 200,
+      "message": "Data Dashboard berhasil diambil"
+    },
+    "FETCH_FAILED": {
+      "code": "DASH-002",
+      "status": 500,
+      "message": "Gagal mengambil data dashboard"
+    }
+  }
+}

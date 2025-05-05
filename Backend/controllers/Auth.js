@@ -2,6 +2,12 @@ import DataPegawai from "../models/DataPegawaiModel.js";
 import argon2 from "argon2";
 import { verifyUser } from "../middleware/AuthUser.js";
 
+import authError from "../errors/authError.json" assert { type: "json" };
+import pegawaiError from "../errors/pegawaiError.json" assert { type: "json" };
+
+const { LOGIN, LOGOUT, ME, PASSWORD } = authError;
+const { EMPLOYEE } = pegawaiError;
+
 export const Login = async (req, res) => {
   let user = {};
   const pegawai = await DataPegawai.findOne({
@@ -11,13 +17,13 @@ export const Login = async (req, res) => {
   });
 
   if (!pegawai) {
-    return res.status(404).json({ msg: "Data Pegawai Tidak Ditemukan" });
+    return res.status(404).json({ msg: EMPLOYEE.USER_NOT_FOUND.code });
   }
 
   const match = await argon2.verify(pegawai.password, req.body.password);
 
   if (!match) {
-    return res.status(400).json({ msg: "Password Salah" });
+    return res.status(400).json({ msg: LOGIN.INVALID_PASSWORD.code });
   }
 
   req.session.userId = pegawai.id_pegawai;
@@ -34,13 +40,13 @@ export const Login = async (req, res) => {
     nama_pegawai: user.nama_pegawai,
     username: user.username,
     hak_akses: user.hak_akses,
-    msg: "Login Berhasil"
+    msg: LOGIN.LOGIN_SUCCESS.code
   });
 };
 
 export const Me = async (req, res) => {
   if (!req.session.userId) {
-    return res.status(401).json({ msg: "Mohon Login ke Akun Anda!" });
+    return res.status(401).json({ msg: ME.NOT_LOGGED_IN.code });
   }
   const pegawai = await DataPegawai.findOne({
     attributes: ['id', 'nik', 'nama_pegawai', 'username', 'hak_akses'],
@@ -48,14 +54,14 @@ export const Me = async (req, res) => {
       id_pegawai: req.session.userId
     }
   });
-  if (!pegawai) return res.status(404).json({ msg: "User Tidak di Temukan" });
+  if (!pegawai) return res.status(404).json({ msg: ME.USER_NOT_FOUND.code });
   res.status(200).json(pegawai);
 }
 
 export const LogOut = (req, res) => {
   req.session.destroy((err) => {
-    if (err) return res.status(400).json({ msg: "Tidak dapat logout" });
-    res.status(200).json({ msg: "Anda Telah Logout" });
+    if (err) return res.status(400).json({ msg: LOGOUT.LOGOUT_FAILED.code });
+    res.status(200).json({ msg: LOGOUT.LOGOUT_SUCCESS.code });
   });
 }
 
@@ -72,7 +78,7 @@ export const changePassword = async (req, res) => {
 
   const { password, confPassword } = req.body;
 
-  if (password !== confPassword) return res.status(400).json({ msg: "Password dan Konfirmasi Password Tidak Cocok" });
+  if (password !== confPassword) return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH.code });
 
   try {
     const hashPassword = await argon2.hash(password);
@@ -87,8 +93,8 @@ export const changePassword = async (req, res) => {
         }
       }
     )
-    res.status(200).json({ msg: "Password Berhasil di Perbarui" });
+    res.status(200).json({ msg: PASSWORD.UPDATE_SUCCESS.code });
   } catch (error) {
-    res.status(400).json({ msg: error.message });
+    res.status(400).json({ msg: PASSWORD.UPDATE_FAILED.code });
   }
 };
