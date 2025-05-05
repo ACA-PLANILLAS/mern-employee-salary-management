@@ -148,7 +148,7 @@ const DataPegawai = () => {
 
     return (
         <Layout>
-            <Breadcrumb pageName="Data Pegawai" />
+            <Breadcrumb pageName={t('title')} />
             <Link to="/data-pegawai/form-data-pegawai/add">
                 <ButtonOne>
                     <span>{t('button.addEmployee')}</span>

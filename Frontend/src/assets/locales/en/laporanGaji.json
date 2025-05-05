@@ -1,28 +1,26 @@
 {
-    "pageTitle": "Employee Salary Report",
-    "filterTitle": "Filter Employee Salary Report",
-    "dataNotFound": "Data not found",
-    "monthLabel": "Month",
-    "monthPlaceholder": "Select Month",
-    "yearLabel": "Year",
-    "yearPlaceholder": "Enter Year...",
-    "submitButton": "Print Salary Report",
-    "months": {
-      "january": "January",
-      "february": "February",
-      "march": "March",
-      "april": "April",
-      "may": "May",
-      "june": "June",
-      "july": "July",
-      "august": "August",
-      "september": "September",
-      "october": "October",
-      "november": "November",
-      "december": "December"
-    },
-    "swal": {
-      "title": "Data not found",
-      "text": "Sorry, the data you're looking for could not be found"
-    }
-  }
+  "pageTitle": "Employee Salary Report",
+  "sectionTitle": "Filter Employee Salary Report",
+  "notFoundMessage": "Data not found",
+  "labelMonth": "Month",
+  "labelYear": "Year",
+  "placeholderYear": "Enter Year...",
+  "selectMonth": "Select Month",
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
+  "printButton": "Print Salary Report",
+  "swalTitle": "Data not found",
+  "swalText": "Sorry, the data you're looking for was not found"
+}

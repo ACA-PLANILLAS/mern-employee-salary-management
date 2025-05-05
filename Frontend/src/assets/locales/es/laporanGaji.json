@@ -1,28 +1,26 @@
 {
-    "pageTitle": "Informe de Salario del Empleado",
-    "filterTitle": "Filtrar Informe de Salario del Empleado",
-    "dataNotFound": "Datos no encontrados",
-    "monthLabel": "Mes",
-    "monthPlaceholder": "Seleccione Mes",
-    "yearLabel": "Año",
-    "yearPlaceholder": "Ingrese Año...",
-    "submitButton": "Imprimir Informe de Salario",
-    "months": {
-      "january": "Enero",
-      "february": "Febrero",
-      "march": "Marzo",
-      "april": "Abril",
-      "may": "Mayo",
-      "june": "Junio",
-      "july": "Julio",
-      "august": "Agosto",
-      "september": "Septiembre",
-      "october": "Octubre",
-      "november": "Noviembre",
-      "december": "Diciembre"
-    },
-    "swal": {
-      "title": "Datos no encontrados",
-      "text": "Lo sentimos, los datos que busca no están disponibles"
-    }
-  }
+  "pageTitle": "Informe de Salarios de Empleados",
+  "sectionTitle": "Filtrar Informe de Salarios de Empleados",
+  "notFoundMessage": "Datos no encontrados",
+  "labelMonth": "Mes",
+  "labelYear": "Año",
+  "placeholderYear": "Ingresa el Año...",
+  "selectMonth": "Seleccionar Mes",
+  "months": {
+    "january": "Enero",
+    "february": "Febrero",
+    "march": "Marzo",
+    "april": "Abril",
+    "may": "Mayo",
+    "june": "Junio",
+    "july": "Julio",
+    "august": "Agosto",
+    "september": "Septiembre",
+    "october": "Octubre",
+    "november": "Noviembre",
+    "december": "Diciembre"
+  },
+  "printButton": "Imprimir Informe de Salarios",
+  "swalTitle": "Datos no encontrados",
+  "swalText": "Lo sentimos, los datos que buscas no fueron encontrados"
+}

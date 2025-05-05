@@ -157,7 +157,7 @@ const DataKehadiran = () => {
 
     return (
         <Layout>
-            <Breadcrumb pageName='Data Kehadiran Pegawai' />
+            <Breadcrumb pageName={t('title')} />
 
             <div className='rounded-sm border border-stroke bg-white px-5 pt-2 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-10 mt-6'>
                 <div className='border-b border-stroke py-2 dark:border-strokedark'>
@@ -345,7 +345,7 @@ const DataKehadiran = () => {
                 <div className="flex justify-between items-center mt-4 flex-col md:flex-row md:justify-between">
                     <div className="flex items-center space-x-2">
                         <span className="text-gray-5 dark:text-gray-4 text-sm py-4">
-                        {t("attendanceData.paginationLabel", {
+                        {t("paginationLabel", {
                         from: startIndex + 1, 
                         to: Math.min(endIndex, filteredDataKehadiran.length), 
                         total: filteredDataKehadiran.length

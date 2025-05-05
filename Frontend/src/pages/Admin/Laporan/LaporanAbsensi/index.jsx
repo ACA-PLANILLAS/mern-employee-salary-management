@@ -72,25 +72,25 @@ const LaporanAbsensi = () => {
 
     return (
         <Layout>
-            <Breadcrumb pageName={t('laporanAbsensi.pageTitle')} />
+            <Breadcrumb pageName={t('pageTitle')} />
 
             <div className='sm:grid-cols-2'>
                 <div className='flex flex-col gap-9'>
                     <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
                         <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
                             <h3 className='font-medium text-black dark:text-white'>
-                                {t('laporanAbsensi.filterTitle')}
+                                {t('filterTitle')}
                             </h3>
                         </div>
                         <form onSubmit={handleSearch}>
                             {showMessage && (
-                                <p className="text-meta-1">{t('laporanAbsensi.notFoundMessage')}</p>
+                                <p className="text-meta-1">{t('notFoundMessage')}</p>
                             )}
                             <div className='p-6.5'>
                                 <div className='mb-4.5 '>
                                     <div className='w-full mb-4'>
                                         <label className='mb-2.5 block text-black dark:text-white'>
-                                            {t('laporanAbsensi.labelMonth')} <span className='text-meta-1'>*</span>
+                                            {t('labelMonth')} <span className='text-meta-1'>*</span>
                                         </label>
                                         <div className='relative z-20 bg-transparent dark:bg-form-input'>
                                             <select
@@ -99,19 +99,19 @@ const LaporanAbsensi = () => {
                                                 onChange={handleSearchMonth}
                                                 required
                                             >
-                                                <option value=''>{t('laporanAbsensi.selectMonth')}</option>
-                                                <option value='Januari'>{t('laporanAbsensi.january')}</option>
-                                                <option value='Februari'>{t('laporanAbsensi.february')}</option>
-                                                <option value='Maret'>{t('laporanAbsensi.march')}</option>
-                                                <option value='April'>{t('laporanAbsensi.april')}</option>
-                                                <option value='Mei'>{t('laporanAbsensi.may')}</option>
-                                                <option value='Juni'>{t('laporanAbsensi.june')}</option>
-                                                <option value='Juli'>{t('laporanAbsensi.july')}</option>
-                                                <option value='Agustus'>{t('laporanAbsensi.august')}</option>
-                                                <option value='September'>{t('laporanAbsensi.september')}</option>
-                                                <option value='Oktober'>{t('laporanAbsensi.october')}</option>
-                                                <option value='November'>{t('laporanAbsensi.november')}</option>
-                                                <option value='Desember'>{t('laporanAbsensi.december')}</option>
+                                                <option value=''>{t('selectMonth')}</option>
+                                                <option value='Januari'>{t('january')}</option>
+                                                <option value='Februari'>{t('february')}</option>
+                                                <option value='Maret'>{t('march')}</option>
+                                                <option value='April'>{t('april')}</option>
+                                                <option value='Mei'>{t('may')}</option>
+                                                <option value='Juni'>{t('june')}</option>
+                                                <option value='Juli'>{t('july')}</option>
+                                                <option value='Agustus'>{t('august')}</option>
+                                                <option value='September'>{t('september')}</option>
+                                                <option value='Oktober'>{t('october')}</option>
+                                                <option value='November'>{t('november')}</option>
+                                                <option value='Desember'>{t('december')}</option>
                                             </select>
                                             <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2 text-2xl'>
                                                 <MdOutlineKeyboardArrowDown />
@@ -121,12 +121,12 @@ const LaporanAbsensi = () => {
 
                                     <div className='w-full mb-4'>
                                         <label className='mb-2.5 block text-black dark:text-white'>
-                                            {t('laporanAbsensi.labelYear')} <span className='text-meta-1'>*</span>
+                                            {t('labelYear')} <span className='text-meta-1'>*</span>
                                         </label>
                                         <div className='relative z-20 bg-transparent dark:bg-form-input'>
                                             <input
                                                 type="number"
-                                                placeholder={t('laporanAbsensi.placeholderYear')}
+                                                placeholder={t('placeholderYear')}
                                                 value={searchYear}
                                                 onChange={handleSearchYear}
                                                 required
@@ -141,7 +141,7 @@ const LaporanAbsensi = () => {
 
                                 <div className='flex flex-col md:flex-row w-full gap-3 text-center'>
                                     <ButtonOne type='submit'>
-                                        <span>{t('laporanAbsensi.printButton')}</span>
+                                        <span>{t('printButton')}</span>
                                         <span>
                                             <TfiPrinter />
                                         </span>

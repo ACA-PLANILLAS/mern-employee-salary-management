@@ -144,7 +144,7 @@ const DataPotongan = () => {
 
     return (
         <Layout>
-            <Breadcrumb pageName='Data Potongan' />
+            <Breadcrumb pageName={t('title')} />
             <Link to="/data-potongan/form-data-potongan/add" >
                 <ButtonOne  >
                     <span>{t('addDeduction')}</span>
