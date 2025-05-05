@@ -1,0 +1,17 @@
+{
+    "dataNotFound": "Datos no encontrados",
+    "errorOccurred": "Ocurrió un error",
+    "salaryData": "Datos de salario",
+    "no": "No",
+    "monthYear": "Mes/Año",
+    "basicSalary": "Salario básico",
+    "transportAllowance": "Subsidio de transporte",
+    "deductions": "Deducciones",
+    "totalSalary": "Salario total",
+    "printPayslip": "Imprimir recibo",
+    "mealAllowance": "Subsidio de alimentación",
+    "showing": "Mostrando",
+    "of": "de",
+    "dataNotFoundDescription": "Lo sentimos, los datos que busca no fueron encontrados",
+    "errorLoadingData": "Ocurrió un error al cargar los datos."
+  }

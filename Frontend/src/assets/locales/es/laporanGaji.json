@@ -1,0 +1,28 @@
+{
+    "pageTitle": "Informe de Salario del Empleado",
+    "filterTitle": "Filtrar Informe de Salario del Empleado",
+    "dataNotFound": "Datos no encontrados",
+    "monthLabel": "Mes",
+    "monthPlaceholder": "Seleccione Mes",
+    "yearLabel": "Año",
+    "yearPlaceholder": "Ingrese Año...",
+    "submitButton": "Imprimir Informe de Salario",
+    "months": {
+      "january": "Enero",
+      "february": "Febrero",
+      "march": "Marzo",
+      "april": "Abril",
+      "may": "Mayo",
+      "june": "Junio",
+      "july": "Julio",
+      "august": "Agosto",
+      "september": "Septiembre",
+      "october": "Octubre",
+      "november": "Noviembre",
+      "december": "Diciembre"
+    },
+    "swal": {
+      "title": "Datos no encontrados",
+      "text": "Lo sentimos, los datos que busca no están disponibles"
+    }
+  }

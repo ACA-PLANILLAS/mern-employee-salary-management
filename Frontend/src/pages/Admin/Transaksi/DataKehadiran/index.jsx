@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { BiSearch } from 'react-icons/bi'
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdOutlineKeyboardArrowDown } from 'react-icons/md'
 import { deleteDataKehadiran, getDataKehadiran, getMe } from '../../../../config/redux/action';
+import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = 4;
 
@@ -17,6 +18,7 @@ const DataKehadiran = () => {
     const [filterTahun, setFilterTahun] = useState("");
     const [filterBulan, setFilterBulan] = useState("");
     const [filterNama, setFilterNama] = useState("");
+    const { t } = useTranslation('dataKehadiran');
 
     const { dataKehadiran } = useSelector((state) => state.dataKehadiran);
     const { isError, user } = useSelector((state) => state.auth);
@@ -67,19 +69,19 @@ const DataKehadiran = () => {
 
     const onDeleteDataKehadiran = (id) => {
         Swal.fire({
-            title: 'Konfirmasi',
-            text: 'Apakah Anda yakin ingin Menghapus?',
+            title: t('confirmation'),
+            text: t('deleteConfirmation'),
             icon: 'question',
             showCancelButton: true,
-            confirmButtonText: 'Ya',
-            cancelButtonText: 'Tidak',
+            confirmButtonText: t('yes'),
+            cancelButtonText: t('noText'),
             reverseButtons: true,
         }).then((result) => {
             if (result.isConfirmed) {
                 dispatch(deleteDataKehadiran(id)).then(() => {
                     Swal.fire({
-                        title: 'Berhasil',
-                        text: 'Data kehadiran berhasil dihapus.',
+                        title: t('success'),
+                        text: t('deleteSuccess'),
                         icon: 'success',
                         timer: 1000,
                         timerProgressBar: true,
@@ -160,14 +162,14 @@ const DataKehadiran = () => {
             <div className='rounded-sm border border-stroke bg-white px-5 pt-2 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-10 mt-6'>
                 <div className='border-b border-stroke py-2 dark:border-strokedark'>
                     <h3 className='font-medium text-black dark:text-white'>
-                        Filter Data Kehadiran Pegawai
+                        {t('filterTitle')}
                     </h3>
                 </div>
 
                 <div className='flex flex-col md:flex-row md:justify-between items-center mt-4'>
                     <div className='relative w-full md:w-1/2 md:mr-2 mb-4 md:mb-0'>
                         <div className='relative'>
-                            <span className='px-6'>Bulan</span>
+                            <span className='px-6'>{t('month')}</span>
                             <span className='absolute top-1/2 left-70 z-30 -translate-y-1/2 text-xl'>
                                 <MdOutlineKeyboardArrowDown />
                             </span>
@@ -176,28 +178,28 @@ const DataKehadiran = () => {
                                 onChange={handleBulanChange}
                                 className='relative appearance-none rounded border border-stroke bg-transparent py-2 px-18 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input'
                             >
-                                <option value=''>Pilih Bulan</option>
-                                <option value='Januari'>Januari</option>
-                                <option value='Februari'>Februari</option>
-                                <option value='Maret'>Maret</option>
-                                <option value='April'>April</option>
-                                <option value='Mei'>Mei</option>
-                                <option value='Juni'>Juni</option>
-                                <option value='Juli'>Juli</option>
-                                <option value='Agustus'>Agustus</option>
-                                <option value='September'>September</option>
-                                <option value='Oktober'>Oktober</option>
-                                <option value='November'>November</option>
-                                <option value='Desember'>Desember</option>
+                                <option value=''>{t('selectMonth')}</option>
+                                <option value='Januari'> {t('january')} </option>
+                                <option value='Februari'>{t('february')} </option>
+                                <option value='Maret'>{t('march')} </option>
+                                <option value='April'>{t('april')} </option>
+                                <option value='Mei'>{t('may')} </option>
+                                <option value='Juni'>{t('june')} </option>
+                                <option value='Juli'>{t('july')} </option>
+                                <option value='Agustus'>{t('august')} </option>
+                                <option value='September'>{t('september')} </option>
+                                <option value='Oktober'>{t('october')} </option>
+                                <option value='November'>{t('november')} </option>
+                                <option value='Desember'>{t('december')} </option>
                             </select>
                         </div>
                     </div>
                     <div className='relative w-full md:w-1/2 md:mr-2 mb-4 md:mb-0'>
                         <div className='relative'>
-                            <span className='px-6'>Tahun</span>
+                            <span className='px-6'>{t('year')}</span>
                             <input
                                 type='number'
-                                placeholder='Masukkan Tahun...'
+                                placeholder= {t('enterYear')}
                                 value={filterTahun}
                                 onChange={handleTahunChange}
                                 className='rounded border-[1.5px] border-stroke bg-transparent py-2 pl-10 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary left-0'
@@ -211,7 +213,7 @@ const DataKehadiran = () => {
                         <div className='w-full md:w-auto'>
                             <Link to='/data-kehadiran/form-data-kehadiran/add'>
                                 <ButtonOne>
-                                    <span>Input Kehadiran</span>
+                                    <span>{t('inputAttendance')}</span>
                                     <span>
                                         <FaPlus />
                                     </span>
@@ -229,9 +231,9 @@ const DataKehadiran = () => {
                         return uniqueEntries;
                     }, []).map(data => (
                         <h2 className="px-4 py-2 text-black dark:text-white" key={`${data.bulan}-${data.tahun}`}>
-                            Menampilkan Data Kehadiran Pegawai Bulan :
+                            {t('showingDataFor')}
                             <span className="font-medium"> {data.bulan} </span>
-                            Tahun :
+                            {t('yearLabel')}
                             <span className="font-medium"> {data.tahun}</span>
                         </h2>
                     ))}
@@ -260,31 +262,31 @@ const DataKehadiran = () => {
                         <thead>
                             <tr className='bg-gray-2 text-left dark:bg-meta-4'>
                                 <th className='py-4 px-4 font-medium text-black dark:text-white'>
-                                    No
+                                    {t('no')}
                                 </th>
                                 <th className='py-4 px-4 font-medium text-center text-black dark:text-white'>
-                                    NIK
+                                    {t('nik')}
                                 </th>
                                 <th className='py-4 px-4 font-medium text-black dark:text-white'>
-                                    Nama Pegawai
+                                    {t('employeeName')}
                                 </th>
                                 <th className='py-4 px-4 font-medium text-black dark:text-white'>
-                                    Jabatan
+                                    {t('position')}
                                 </th>
                                 <th className='py-4 px-4 font-medium text-black dark:text-white'>
-                                    Jenis Kelamin
+                                    {t('gender')}
                                 </th>
                                 <th className='py-4 text-center px-4 font-medium text-black dark:text-white'>
-                                    Hadir
+                                    {t('present')}
                                 </th>
                                 <th className='py-4 text-center px-4 font-medium text-black dark:text-white'>
-                                    Sakit
+                                    {t('sick')}
                                 </th>
                                 <th className='py-4 text-center px-4 font-medium text-black dark:text-white'>
-                                    Alpha
+                                    {t('absent')}
                                 </th>
                                 <th className='py-4 px-4 font-medium text-black dark:text-white'>
-                                    Aksi
+                                    {t('askPermission')}
                                 </th>
                             </tr>
                         </thead>
@@ -343,7 +345,11 @@ const DataKehadiran = () => {
                 <div className="flex justify-between items-center mt-4 flex-col md:flex-row md:justify-between">
                     <div className="flex items-center space-x-2">
                         <span className="text-gray-5 dark:text-gray-4 text-sm py-4">
-                            Menampilkan {startIndex + 1}-{Math.min(endIndex, filteredDataKehadiran.length)} dari {filteredDataKehadiran.length} Data Kehadiran Pegawai
+                        {t("attendanceData.paginationLabel", {
+                        from: startIndex + 1, 
+                        to: Math.min(endIndex, filteredDataKehadiran.length), 
+                        total: filteredDataKehadiran.length
+  })}
                         </span>
                     </div>
                     <div className="flex space-x-2 py-4">

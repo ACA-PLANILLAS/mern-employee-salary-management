@@ -1,0 +1,17 @@
+{
+    "dataNotFound": "Data Tidak Ditemukan",
+    "errorOccurred": "Terjadi Kesalahan",
+    "salaryData": "Data Gaji",
+    "no": "No",
+    "monthYear": "Bulan/Tahun",
+    "basicSalary": "Gaji Pokok",
+    "transportAllowance": "Tunjangan Transportasi",
+    "deductions": "Potongan",
+    "totalSalary": "Total Gaji",
+    "printPayslip": "Cetak Slip",
+    "mealAllowance": "Uang Makan",
+    "showing": "Menampilkan",
+    "of": "dari",
+    "dataNotFoundDescription": "Maaf, data yang anda cari tidak ditemukan",
+    "errorLoadingData": "Terjadi kesalahan saat memuat data."
+}

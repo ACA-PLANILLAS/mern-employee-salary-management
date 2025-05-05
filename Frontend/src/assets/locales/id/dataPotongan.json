@@ -1,0 +1,17 @@
+{
+    "confirmation": "Konfirmasi",
+    "deleteConfirmation": "Apakah Anda yakin ingin menghapus?",
+    "yes": "Ya",
+    "noText": "Tidak",
+    "success": "Berhasil",
+    "deleteSuccess": "Data potongan berhasil dihapus.",
+    "addDeduction": "Tambah Potongan",
+    "no": "No",
+    "deduction": "Potongan Gaji",
+    "amount": "Jumlah Potongan",
+    "action": "Aksi",
+    "searchPlaceholder": "Cari Potongan..",
+    "showing": "Menampilkan",
+    "of": "dari",
+    "deductionData": "Data Potongan"
+}

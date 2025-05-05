@@ -9,12 +9,14 @@ import { BsTrash3 } from 'react-icons/bs'
 import { BiSearch } from 'react-icons/bi'
 import { deleteDataPotongan, getDataPotongan, getMe } from '../../../../config/redux/action';
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from 'react-icons/md';
+import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = 4;
 
 const DataPotongan = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchKeyword, setSearchKeyword] = useState('');
+    const { t } = useTranslation('dataPotongan');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -54,19 +56,19 @@ const DataPotongan = () => {
 
     const onDeletePotongan = (id) => {
         Swal.fire({
-            title: 'Konfirmasi',
-            text: 'Apakah Anda yakin ingin Menghapus?',
+            title: t('confirmation'),
+            text: t('deleteConfirmation'),
             icon: 'question',
             showCancelButton: true,
-            confirmButtonText: 'Ya',
-            cancelButtonText: 'Tidak',
+            confirmButtonText: t('yes'),
+            cancelButtonText: t('noText'),
             reverseButtons: true,
         }).then((result) => {
             if (result.isConfirmed) {
                 dispatch(deleteDataPotongan(id)).then(() => {
                     Swal.fire({
-                        title: 'Berhasil',
-                        text: 'Data potongan berhasil dihapus.',
+                        title: t('success'),
+                        text: t('deleteSuccess'),
                         icon: 'success',
                         timer: 1000,
                         timerProgressBar: true,
@@ -145,7 +147,7 @@ const DataPotongan = () => {
             <Breadcrumb pageName='Data Potongan' />
             <Link to="/data-potongan/form-data-potongan/add" >
                 <ButtonOne  >
-                    <span>Tambah Potongan</span>
+                    <span>{t('addDeduction')}</span>
                     <span>
                         <FaPlus />
                     </span>
@@ -156,7 +158,7 @@ const DataPotongan = () => {
                     <div className="relative flex-2 mb-4 md:mb-0">
                         <input
                             type='text'
-                            placeholder='Cari Potongan..'
+                            placeholder={t('searchPlaceholder')}
                             value={searchKeyword}
                             onChange={handleSearch}
                             className='rounded-lg border-[1.5px] border-stroke bg-transparent py-2 pl-10 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary left-0'
@@ -172,16 +174,16 @@ const DataPotongan = () => {
                         <thead>
                             <tr className='bg-gray-2 text-left dark:bg-meta-4'>
                                 <th className='py-4 px-4 font-medium text-black dark:text-white'>
-                                    No
+                                    {t('no')}
                                 </th>
                                 <th className='py-4 px-4 font-medium text-black dark:text-white'>
-                                    Potongan Gaji
+                                    {t('deduction')}
                                 </th>
                                 <th className='py-4 px-4 font-medium text-black dark:text-white'>
-                                    Jumlah Potongan
+                                    {t('amount')}
                                 </th>
                                 <th className='py-4 px-4 font-medium text-black dark:text-white'>
-                                    Aksi
+                                    {t('action')}
                                 </th>
                             </tr>
                         </thead>
@@ -224,7 +226,7 @@ const DataPotongan = () => {
                 <div className="flex justify-between items-center mt-4 flex-col md:flex-row md:justify-between">
                     <div className="flex items-center space-x-2">
                         <span className="text-gray-5 dark:text-gray-4 text-sm py-4">
-                            Menampilkan {startIndex + 1}-{Math.min(endIndex, filteredDataPotongan.length)} dari {filteredDataPotongan.length} Data Potongan
+                            {t('showing')} {startIndex + 1}-{Math.min(endIndex, filteredDataPotongan.length)} {t('of')} {filteredDataPotongan.length} {t('deductionData')}
                         </span>
                     </div>
                     <div className="flex space-x-2 py-4">
