@@ -1,0 +1,18 @@
+{
+    "breadcrumb_title": "Data Jabatan",
+    "add_position": "Tambah Jabatan",
+    "search_placeholder": "Cari berdasarkan nama jabatan...",
+    "column_number": "No.",
+    "column_position": "Jabatan",
+    "column_base_salary": "Gaji Pokok",
+    "column_transport_allowance": "Tunjangan Transportasi",
+    "column_meal_allowance": "Uang Makan",
+    "column_action": "Aksi",
+    "pagination_text": "Menampilkan {{from}} hingga {{to}} dari {{total}} data",
+    "confirmation_title": "Apakah Anda yakin?",
+    "confirmation_text": "Tindakan ini tidak dapat dibatalkan!",
+    "yes": "Ya",
+    "no": "Tidak",
+    "success_title": "Berhasil Dihapus!",
+    "success_text": "Data berhasil dihapus."
+  }

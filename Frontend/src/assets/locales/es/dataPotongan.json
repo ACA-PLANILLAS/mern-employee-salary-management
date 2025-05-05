@@ -1,0 +1,18 @@
+{
+    "title": "Datos de Descuentos",
+    "confirmation": "Confirmación",
+    "deleteConfirmation": "¿Estás seguro de que deseas eliminar?",
+    "yes": "Sí",
+    "noText": "No",
+    "success": "Éxito",
+    "deleteSuccess": "Los datos de deducción se eliminaron correctamente.",
+    "addDeduction": "Agregar Deducción",
+    "no": "No",
+    "deduction": "Deducción Salarial",
+    "amount": "Monto de la Deducción",
+    "action": "Acción",
+    "searchPlaceholder": "Buscar Deducción...",
+    "showing": "Mostrando",
+    "of": "de",
+    "deductionData": "Datos de Deducción"
+  }

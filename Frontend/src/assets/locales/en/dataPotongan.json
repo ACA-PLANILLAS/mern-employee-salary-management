@@ -1,0 +1,18 @@
+{
+    "title": "Deduction Data",
+    "confirmation": "Confirmation",
+    "deleteConfirmation": "Are you sure you want to delete?",
+    "yes": "Yes",
+    "noText": "No",
+    "success": "Success",
+    "deleteSuccess": "Deduction data was successfully deleted.",
+    "addDeduction": "Add Deduction",
+    "no": "No",
+    "deduction": "Salary Deduction",
+    "amount": "Deduction Amount",
+    "action": "Action",
+    "searchPlaceholder": "Search Deduction...",
+    "showing": "Showing",
+    "of": "of",
+    "deductionData": "Deduction Data"
+  }

@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { deleteDataPegawai, getDataPegawai, getMe } from '../../../../config/redux/action';
 import { BiSearch } from 'react-icons/bi';
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = 4;
 
@@ -20,6 +21,7 @@ const DataPegawai = () => {
     const navigate = useNavigate();
     const { isError, user } = useSelector((state) => state.auth);
     const { dataPegawai } = useSelector((state) => state.dataPegawai);
+    const { t } = useTranslation('dataPegawai');
 
     const totalPages = Math.ceil(dataPegawai.length / ITEMS_PER_PAGE);
 
@@ -58,19 +60,19 @@ const DataPegawai = () => {
 
     const onDeletePegawai = (id) => {
         Swal.fire({
-            title: 'Konfirmasi',
-            text: 'Apakah Anda yakin ingin Menghapus?',
+            title: t('modal.confirmDelete.title'),
+            text: t('modal.confirmDelete.text'),
             icon: 'question',
             showCancelButton: true,
-            confirmButtonText: 'Ya',
-            cancelButtonText: 'Tidak',
+            confirmButtonText: t('modal.confirmDelete.yes'),
+            cancelButtonText: t('modal.confirmDelete.no'),
             reverseButtons: true,
         }).then((result) => {
             if (result.isConfirmed) {
                 dispatch(deleteDataPegawai(id)).then(() => {
                     Swal.fire({
-                        title: 'Berhasil',
-                        text: 'Data pegawai berhasil dihapus.',
+                        title: t('toast.deleteSuccess.title'),
+                        text: t('toast.deleteSuccess.message'),
                         icon: 'success',
                         timer: 1000,
                         timerProgressBar: true,
@@ -146,10 +148,10 @@ const DataPegawai = () => {
 
     return (
         <Layout>
-            <Breadcrumb pageName="Data Pegawai" />
+            <Breadcrumb pageName={t('title')} />
             <Link to="/data-pegawai/form-data-pegawai/add">
                 <ButtonOne>
-                    <span>Tambah Pegawai</span>
+                    <span>{t('button.addEmployee')}</span>
                     <span>
                         <FaPlus />
                     </span>
@@ -168,8 +170,8 @@ const DataPegawai = () => {
                                 className="relative appearance-none rounded border border-stroke bg-transparent py-3 px-8 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
                             >
                                 <option value="">Status</option>
-                                <option value="Karyawan Tetap">Karyawan Tetap</option>
-                                <option value="Karyawan Tidak Tetap">Karyawan Tidak Tetap</option>
+                                <option value="Karyawan Tetap">{t('filter.permanentEmployee')}</option>
+                                <option value="Karyawan Tidak Tetap">{t('filter.nonPermanentEmployee')}</option>
                             </select>
                         </div>
                     </div>
@@ -191,15 +193,15 @@ const DataPegawai = () => {
                     <table className="w-full table-auto">
                         <thead>
                             <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">No</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">Photo</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">NIK</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white">Nama Pegawai</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white">Jenis Kelamin</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white">Tanggal Masuk</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white">Status</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white">Hak Akses</th>
-                                <th className="py-4 px-4 font-medium text-black dark:text-white">Aksi</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">{t('table.header.no')}</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">{t('table.header.photo')}</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">{t('table.header.nik')}</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white">{t('table.header.employeeName')}</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white">{t('table.header.gender')}</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white">{t('table.header.joinDate')}</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white">{t('table.header.status')}</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white">{t('table.header.accessRights')}</th>
+                                <th className="py-4 px-4 font-medium text-black dark:text-white">{t('table.header.actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -258,7 +260,7 @@ const DataPegawai = () => {
                 <div className="flex justify-between items-center mt-4 flex-col md:flex-row md:justify-between">
                     <div className="flex items-center space-x-2">
                         <span className="text-gray-5 dark:text-gray-4 text-sm py-4">
-                            Menampilkan {startIndex + 1}-{Math.min(endIndex, filteredDataPegawai.length)} dari {filteredDataPegawai.length} Data Pegawai
+                            {t('pagination.displaying')} {startIndex + 1}-{Math.min(endIndex, filteredDataPegawai.length)} {t('pagination.of')} {filteredDataPegawai.length} {t('pagination.totalEmployeeData')}
                         </span>
                     </div>
                     <div className="flex space-x-2 py-4">

@@ -3,13 +3,15 @@ import { useNavigate } from "react-router-dom";
 import Layout from '../../../../layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { Breadcrumb, ButtonOne } from '../../../../components';
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
-import { TfiPrinter } from 'react-icons/tfi'
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import { TfiPrinter } from 'react-icons/tfi';
 import Swal from 'sweetalert2';
 import { BiSearch } from 'react-icons/bi';
 import { fetchLaporanAbsensiByMonth, fetchLaporanAbsensiByYear, getMe } from '../../../../config/redux/action';
+import { useTranslation } from 'react-i18next';
 
 const LaporanAbsensi = () => {
+    const { t } = useTranslation('laporanAbsensi');
     const [searchMonth, setSearchMonth] = useState("");
     const [searchYear, setSearchYear] = useState("");
     const [showMessage, setShowMessage] = useState(false);
@@ -43,15 +45,13 @@ const LaporanAbsensi = () => {
 
         if (yearDataFound && monthDataFound) {
             setShowMessage(false);
-            navigate(
-                `/laporan/absensi/print-page?month=${selectedMonth}&year=${selectedYear}`
-            );
+            navigate(`/laporan/absensi/print-page?month=${selectedMonth}&year=${selectedYear}`);
         } else {
             setShowMessage(false);
             Swal.fire({
                 icon: 'error',
-                title: 'Data tidak ditemukan',
-                text: 'Maaf, data yang anda cari tidak ditemukan',
+                title: t('laporanAbsensi.swalTitle'),
+                text: t('laporanAbsensi.swalText'),
                 timer: 2000,
             });
         }
@@ -72,25 +72,25 @@ const LaporanAbsensi = () => {
 
     return (
         <Layout>
-            <Breadcrumb pageName='Laporan Absensi Pegawai' />
+            <Breadcrumb pageName={t('pageTitle')} />
 
             <div className='sm:grid-cols-2'>
                 <div className='flex flex-col gap-9'>
                     <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
                         <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
                             <h3 className='font-medium text-black dark:text-white'>
-                                Filter Laporan Absensi Pegawai
+                                {t('filterTitle')}
                             </h3>
                         </div>
                         <form onSubmit={handleSearch}>
                             {showMessage && (
-                                <p className="text-meta-1">Data tidak ditemukan</p>
+                                <p className="text-meta-1">{t('notFoundMessage')}</p>
                             )}
                             <div className='p-6.5'>
                                 <div className='mb-4.5 '>
                                     <div className='w-full mb-4'>
                                         <label className='mb-2.5 block text-black dark:text-white'>
-                                            Bulan <span className='text-meta-1'>*</span>
+                                            {t('labelMonth')} <span className='text-meta-1'>*</span>
                                         </label>
                                         <div className='relative z-20 bg-transparent dark:bg-form-input'>
                                             <select
@@ -99,19 +99,19 @@ const LaporanAbsensi = () => {
                                                 onChange={handleSearchMonth}
                                                 required
                                             >
-                                                <option value=''>Pilih Bulan</option>
-                                                <option value='Januari'>Januari</option>
-                                                <option value='Februari'>Februari</option>
-                                                <option value='Maret'>Maret</option>
-                                                <option value='April'>April</option>
-                                                <option value='Mei'>Mei</option>
-                                                <option value='Juni'>Juni</option>
-                                                <option value='Juli'>Juli</option>
-                                                <option value='Agustus'>Agustus</option>
-                                                <option value='September'>September</option>
-                                                <option value='Oktober'>Oktober</option>
-                                                <option value='November'>November</option>
-                                                <option value='Desember'>Desember</option>
+                                                <option value=''>{t('selectMonth')}</option>
+                                                <option value='Januari'>{t('january')}</option>
+                                                <option value='Februari'>{t('february')}</option>
+                                                <option value='Maret'>{t('march')}</option>
+                                                <option value='April'>{t('april')}</option>
+                                                <option value='Mei'>{t('may')}</option>
+                                                <option value='Juni'>{t('june')}</option>
+                                                <option value='Juli'>{t('july')}</option>
+                                                <option value='Agustus'>{t('august')}</option>
+                                                <option value='September'>{t('september')}</option>
+                                                <option value='Oktober'>{t('october')}</option>
+                                                <option value='November'>{t('november')}</option>
+                                                <option value='Desember'>{t('december')}</option>
                                             </select>
                                             <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2 text-2xl'>
                                                 <MdOutlineKeyboardArrowDown />
@@ -121,12 +121,12 @@ const LaporanAbsensi = () => {
 
                                     <div className='w-full mb-4'>
                                         <label className='mb-2.5 block text-black dark:text-white'>
-                                            Tahun <span className='text-meta-1'>*</span>
+                                            {t('labelYear')} <span className='text-meta-1'>*</span>
                                         </label>
                                         <div className='relative z-20 bg-transparent dark:bg-form-input'>
                                             <input
                                                 type="number"
-                                                placeholder="Masukkan Tahun..."
+                                                placeholder={t('placeholderYear')}
                                                 value={searchYear}
                                                 onChange={handleSearchYear}
                                                 required
@@ -141,7 +141,7 @@ const LaporanAbsensi = () => {
 
                                 <div className='flex flex-col md:flex-row w-full gap-3 text-center'>
                                     <ButtonOne type='submit'>
-                                        <span>Cetak Laporan Absensi</span>
+                                        <span>{t('printButton')}</span>
                                         <span>
                                             <TfiPrinter />
                                         </span>
@@ -153,7 +153,7 @@ const LaporanAbsensi = () => {
                 </div>
             </div>
         </Layout>
-    )
+    );
 }
 
 export default LaporanAbsensi;
