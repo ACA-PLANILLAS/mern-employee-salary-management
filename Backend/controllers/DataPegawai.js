@@ -117,6 +117,12 @@ export const createDataPegawai = async (req, res) => {
     const ext = path.extname(file.name);
     const fileName = file.md5 + ext;
     const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
+    console.log({
+        fileName: fileName,
+        url: url,
+        ext: ext,
+        fileSize: fileSize
+    })
     const allowedTypes = ['.png', '.jpg', '.jpeg'];
 
     if (!allowedTypes.includes(ext.toLowerCase())) {
