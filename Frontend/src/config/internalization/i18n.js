@@ -123,6 +123,11 @@ import ubahPasswordPegawaiId from '../../assets/locales/id/ubahPasswordPegawai.j
 import ubahPasswordPegawaiEn from '../../assets/locales/en/ubahPasswordPegawai.json';
 import ubahPasswordPegawaiEs from '../../assets/locales/es/ubahPasswordPegawai.json';
 
+
+import notFoundId from '../../assets/locales/id/notFound.json';
+import notFoundEn from '../../assets/locales/en/notFound.json';
+import notFoundEs from '../../assets/locales/es/notFound.json';
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -137,6 +142,7 @@ i18n
         laporanAbsensi: laporanAbsensiId, laporanGaji: laporanGajiId,
         printPdfDataGajiPegawai: printPdfDataGajiPegawaiId, printPdfLaporanAbsensi: printPdfLaporanAbsensiId, printPdfLaporanGaji: printPdfLaporanGajiId, printPdfSlipGaji: printPdfSlipGajiId,
         slipGaji: slipGajiId, ubahPasswordAdmin: ubahPasswordAdminId, ubahPasswordPegawai: ubahPasswordPegawaiId,
+        notFound: notFoundId,
       },
       en: {
         common: commonEN, home: homeEn, login: loginEn, dashboard: dashboardEn,
@@ -147,6 +153,7 @@ i18n
         laporanAbsensi: laporanAbsensiEn, laporanGaji: laporanGajiEn,
         printPdfDataGajiPegawai: printPdfDataGajiPegawaiEn, printPdfLaporanAbsensi: printPdfLaporanAbsensiEn, printPdfLaporanGaji: printPdfLaporanGajiEn, printPdfSlipGaji: printPdfSlipGajiEn,
         slipGaji: slipGajiEn, ubahPasswordAdmin: ubahPasswordAdminEn, ubahPasswordPegawai: ubahPasswordPegawaiEn,
+        notFound: notFoundEn,
       },
       es: {
         common: commonES, home: homeEs, login: loginEs, dashboard: dashboardEs,
@@ -157,6 +164,7 @@ i18n
         laporanAbsensi: laporanAbsensiEs, laporanGaji: laporanGajiEs,
         printPdfDataGajiPegawai: printPdfDataGajiPegawaiEs, printPdfLaporanAbsensi: printPdfLaporanAbsensiEs, printPdfLaporanGaji: printPdfLaporanGajiEs, printPdfSlipGaji: printPdfSlipGajiEs,
         slipGaji: slipGajiEs, ubahPasswordAdmin: ubahPasswordAdminEs, ubahPasswordPegawai: ubahPasswordPegawaiEs,
+        notFound: notFoundEs,
       }
     },
     ns: [
@@ -164,7 +172,7 @@ i18n
       'dataJabatan', 'dataJabatanAddForm', 'dataJabatanEditForm', 'dataKehadiran', 'dataKehadiranAddForm', 'dataKehadiranEditForm',
       'dataPegawai', 'dataPotongan', 'dataPotonganAddForm', 'dataPotonganEditForm', 'laporanAbsensi', 'laporanGaji',
       'printPdfDataGajiPegawai', 'printPdfLaporanAbsensi', 'printPdfLaporanGaji', 'printPdfSlipGaji',
-      'slipGaji', 'ubahPasswordAdmin', 'ubahPasswordPegawai'
+      'slipGaji', 'ubahPasswordAdmin', 'ubahPasswordPegawai', 'notFound',
     ],
     defaultNS: 'common',
     fallbackLng: 'en',
