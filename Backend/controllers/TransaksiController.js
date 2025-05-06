@@ -570,7 +570,7 @@ export const viewDataGajiByName = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ msg: SalarY.INTERNAL_ERROR.code });
+    res.status(500).json({ msg: SALARY.INTERNAL_ERROR.code });
   }
 };
 
