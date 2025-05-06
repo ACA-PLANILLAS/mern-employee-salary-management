@@ -1,0 +1,12 @@
+{
+  "formEditDeduction": "Edit Deduction Data Form",
+  "deduction": "Deduction",
+  "amountDeduction": "Amount of Deduction",
+  "enterDeduction": "Enter deduction",
+  "enterAmountDeduction": "Enter amount of deduction",
+  "update": "Update",
+  "back": "Back",
+  "success": "Successful",
+  "error": "Failed",
+  "errorOccurred": "An error occurred"
+}

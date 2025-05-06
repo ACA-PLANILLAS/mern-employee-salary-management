@@ -1,0 +1,15 @@
+{
+  "printSalaryReport": "Cetak Laporan Gaji",
+  "back": "Kembali",
+  "employeeName": "Nama Pegawai",
+  "nik": "NIK",
+  "position": "Jabatan",
+  "salary": "Gaji Pokok",
+  "transportAllowance": "Tunjangan Transportasi",
+  "mealAllowance": "Uang Makan",
+  "deduction": "Potongan",
+  "totalSalary": "Total Gaji",
+  "finance": "Finance",
+  "signature": "Tanda Tangan",
+  "printedOn": "Dicetak Pada"
+}

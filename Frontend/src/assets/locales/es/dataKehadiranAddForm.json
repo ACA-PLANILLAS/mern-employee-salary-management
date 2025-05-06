@@ -1,0 +1,23 @@
+{
+  "formAddAttendance": "Formulario de Datos de Asistencia del Empleado",
+  "searchEmployee": "Buscar Nombre del Empleado...",
+  "attendanceData": "Datos de Asistencia del Empleado",
+  "present": "Presente",
+  "sick": "Enfermo",
+  "alpha": "Alpha",
+  "save": "Guardar",
+  "back": "Volver",
+  "update": "Actualizar",
+  "employeeName": "Nombre del Empleado",
+  "jobTitle": "Cargo",
+  "gender": "Género",
+  "nik": "NIK",
+  "showingData": "Mostrando",
+  "from": "de",
+  "of": "de",
+  "attendanceDataAlreadySaved": "Los datos de asistencia del empleado ya han sido guardados. ¡Vuelva a ingresarlos cuando cambie el período!",
+  "paginationPrevious": "Anterior",
+  "paginationNext": "Siguiente",
+  "errorOccurred": "Ocurrió un error",
+  "successMessage": "Datos guardados correctamente"
+}

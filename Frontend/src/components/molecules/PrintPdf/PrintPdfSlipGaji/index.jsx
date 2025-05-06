@@ -13,6 +13,7 @@ import {
 import { ButtonOne, ButtonTwo } from "../../../atoms";
 
 const PrintPdfSlipGaji = () => {
+    const { t } = useTranslation("printPdfSlipGaji");
     const componentRef = useRef();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -78,19 +79,20 @@ const PrintPdfSlipGaji = () => {
         setTahun(year);
     }, []);
 
+    
     return (
         <>
             <div className="flex flex-col md:flex-row w-full gap-3 text-center p-6 bg-white dark:bg-meta-4">
                 <div>
                     <ButtonOne onClick={handlePrint}>
-                        <span>Cetak</span>
+                        <span>{t('printSalarySlip')}</span>
                     </ButtonOne>
                 </div>
                 <div>
                     <ButtonTwo
                         onClick={() => navigate(-1)}
                     >
-                        <span>Kembali</span>
+                        <span>{t('back')}</span>
                     </ButtonTwo>
                 </div>
             </div >
@@ -113,35 +115,35 @@ const PrintPdfSlipGaji = () => {
                                 />
                             </div>
                             <h1 className="text-center text-black dark:text-white my-4 text-xl font-medium boder py-2">
-                                Daftar Gaji Pegawai
+                                {t('salaryList')}
                             </h1>
                             <div className="w-full md:text-lg">
                                 <h2 className="font-medium mb-4 block text-black dark:text-white">
-                                    <span className="inline-block w-32 md:w-40">Nama Pegawai</span>
+                                    <span className="inline-block w-32 md:w-40">{t('employeeName')}</span>
                                     <span className="pl-[-8] md:pl-0"></span>
                                     <span className="inline-block w-7">:</span>
                                     {name}
                                 </h2>
                                 <h2 className="font-medium mb-4 block text-black dark:text-white">
-                                    <span className="inline-block w-32 md:w-40">NIK</span>
+                                    <span className="inline-block w-32 md:w-40">{t('nik')}</span>
                                     <span className="pl-[-8] md:pl-0"></span>
                                     <span className="inline-block w-7">:</span>
                                     {data.nik}
                                 </h2>
                                 <h2 className="font-medium mb-4 block text-black dark:text-white">
-                                    <span className="inline-block w-32 md:w-40">Jabatan</span>
+                                    <span className="inline-block w-32 md:w-40">{t('position')}</span>
                                     <span className="pl-[-8] md:pl-0"></span>
                                     <span className="inline-block w-7">:</span>
                                     {data.jabatan}
                                 </h2>
                                 <h2 className="font-medium mb-4 block text-black dark:text-white">
-                                    <span className="inline-block w-32 md:w-40">Bulan</span>
+                                    <span className="inline-block w-32 md:w-40">{t('month')}</span>
                                     <span className="pl-[-8] md:pl-0"></span>
                                     <span className="inline-block w-7">:</span>
                                     {month}
                                 </h2>
                                 <h2 className="font-medium mb-4 block text-black dark:text-white">
-                                    <span className="inline-block w-32 md:w-40">Tahun</span>
+                                    <span className="inline-block w-32 md:w-40">{t('year')}</span>
                                     <span className="inline-block w-7">:</span>
                                     {year}
                                     <span className="pl-[-8] md:pl-0"></span>
@@ -156,10 +158,10 @@ const PrintPdfSlipGaji = () => {
                                                 No
                                             </th>
                                             <th className='py-4 px-4 border-t border-l text-center font-medium text-black dark:text-white'>
-                                                Keterangan
+                                                {t('description')}
                                             </th>
                                             <th className='py-4 px-4 border-t text-center border-l border-r font-medium text-black dark:text-white'>
-                                                Jumlah
+                                                {t('amount')}
                                             </th>
                                         </tr>
                                     </thead>
@@ -169,7 +171,7 @@ const PrintPdfSlipGaji = () => {
                                                 {index + 1}
                                             </td>
                                             <td className='border-b border-black border-t border-l dark:border-white py-5 px-4 text-black dark:text-white'>
-                                                Gaji Pokok
+                                                {t('salary')}
                                             </td>
                                             <td className='border-b border-black border-t border-l border-r dark:border-white py-5 px-4 text-black dark:text-white'>
                                                 Rp. {data.gaji_pokok}
@@ -180,7 +182,7 @@ const PrintPdfSlipGaji = () => {
                                                 {index + 2}
                                             </td>
                                             <td className='border-b border-black border-t border-l dark:border-white py-5 px-4 text-black dark:text-white'>
-                                                Tunjangan Transportasi
+                                                {t('transportAllowance')}
                                             </td>
                                             <td className='border-b border-black border-t border-l border-r dark:border-white py-5 px-4 text-black dark:text-white'>
                                                 Rp. {data.tj_transport}
@@ -191,7 +193,7 @@ const PrintPdfSlipGaji = () => {
                                                 {index + 3}
                                             </td>
                                             <td className='border-b border-black border-t border-l dark:border-white py-5 px-4 text-black dark:text-white'>
-                                                Uang Makan
+                                                {t('mealAllowance')}
                                             </td>
                                             <td className='border-b border-black border-t border-l border-r dark:border-white py-5 px-4 text-black dark:text-white'>
                                                 Rp. {data.uang_makan}
@@ -202,7 +204,7 @@ const PrintPdfSlipGaji = () => {
                                                 {index + 4}
                                             </td>
                                             <td className='border-b border-black border-t border-l dark:border-white py-5 px-4 text-black dark:text-white'>
-                                                Potongan
+                                                {t('deduction')}
                                             </td>
                                             <td className='border-b border-black border-t border-l border-r dark:border-white py-5 px-4 text-black dark:text-white'>
                                                 Rp. {data.potongan}
@@ -212,7 +214,7 @@ const PrintPdfSlipGaji = () => {
                                             <td className='border-b border-black border-t border-l dark:border-white py-5 px-4 text-black dark:text-white'>
                                             </td>
                                             <td className='font-medium border-b border-black dark:border-white py-5 px-2 text-right text-black dark:text-white'>
-                                                Total Gaji :
+                                                {t('totalSalary')} :
                                             </td>
                                             <td className='font-medium border-b border-black border-t border-l border-r dark:border-white py-5 px-4 text-black dark:text-white'>
                                                 Rp. {data.total}
@@ -223,7 +225,7 @@ const PrintPdfSlipGaji = () => {
                             </div>
                             <div className="py-6 flex justify-between items-center">
                                 <div className="font-medium text-black dark:text-white">
-                                    <span className="p-6">Pegawai</span>
+                                    <span className="p-6">{t('employee')}</span>
                                     <br />
                                     <br />
                                     <br />
@@ -231,16 +233,16 @@ const PrintPdfSlipGaji = () => {
                                     <span>{name}</span>
                                 </div>
                                 <div className="font-medium text-black dark:text-white">
-                                    <span className="text-right">Karawang, {`${new Date().getDate()} ${bulan} ${tahun}`}</span>
+                                    <span className="text-right">{t('printedOn')}: {`${new Date().getDate()} ${bulan} ${tahun}`}</span>
                                     <br />
-                                    <span>Finance</span>
+                                    <span>{t('finance')}</span>
                                     <br />
                                     <br />
-                                    <span className="p-8 italic text-black dark:text-white">Tanda Tangan</span>
+                                    <span className="p-8 italic text-black dark:text-white">{t('signature')}</span>
                                 </div>
                             </div>
                             <div className="italic text-black dark:text-white mt-30">
-                                Dicetak Pada : {`${new Date().getDate()} ${bulan} ${tahun}`}
+                                {t('printedOn')}: {`${new Date().getDate()} ${bulan} ${tahun}`}
                             </div>
                         </div>
                     );
@@ -249,5 +251,6 @@ const PrintPdfSlipGaji = () => {
         </>
     );
 };
+
 
 export default PrintPdfSlipGaji;

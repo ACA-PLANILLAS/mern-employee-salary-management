@@ -1,0 +1,13 @@
+{
+  "printSalarySlip": "Imprimir Recibo de Salario",
+  "back": "Volver",
+  "salary": "Salario Base",
+  "transportAllowance": "Asignación de Transporte",
+  "mealAllowance": "Asignación de Comida",
+  "deduction": "Deducción",
+  "totalSalary": "Salario Total",
+  "employee": "Empleado",
+  "finance": "Finanzas",
+  "signature": "Firma",
+  "printedOn": "Impreso El"
+}

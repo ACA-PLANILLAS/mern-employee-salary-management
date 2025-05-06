@@ -10,6 +10,7 @@ import {
   getMe,
 } from "../../../../config/redux/action";
 import { ButtonOne, ButtonTwo } from "../../../atoms";
+import { useTranslation } from 'react-i18next';
 
 const PrintPdfLaporanGaji = () => {
   const componentRef = useRef();
@@ -24,6 +25,7 @@ const PrintPdfLaporanGaji = () => {
 
   const { isError, user } = useSelector((state) => state.auth);
   const { dataLaporanGaji } = useSelector((state) => state.laporanGaji);
+  const { t } = useTranslation("printPdfLaporanGaji");
 
   const getDataByYear = async (selectedYear) => {
     dispatch(fetchLaporanGajiByYear(selectedYear));
@@ -75,24 +77,24 @@ const PrintPdfLaporanGaji = () => {
       <div className="flex flex-col md:flex-row w-full gap-3 text-center p-6 bg-white dark:bg-meta-4">
         <div>
           <ButtonOne onClick={handlePrint}>
-            <span>Cetak</span>
+            <span>{t('printSalaryReport')}</span>
           </ButtonOne>
         </div>
         <div>
           <ButtonTwo
             onClick={() => navigate(-1)}
           >
-            <span>Kembali</span>
+            <span>{t('back')}</span>
           </ButtonTwo>
         </div>
-      </div >
+      </div>
       <div ref={componentRef} className="w-200% h-100% p-10 bg-white dark:bg-meta-4">
         <div className="flex items-center gap-24 object-cover border-b-4 border-black dark:border-white">
           <img className="w-35"
             src={LogoSipeka}
             title="Logo SiPeKa"
             alt="Logo SiPeKa" />
-          <h1 className="text-black text-2xl font-bold boder  dark:text-white">
+          <h1 className="text-black text-2xl font-bold boder dark:text-white">
             PT. Humpuss Karbometil Selulosa
           </h1>
           <img className="w-35"
@@ -102,17 +104,17 @@ const PrintPdfLaporanGaji = () => {
           />
         </div>
         <h1 className="text-center text-black my-4 text-xl font-medium boder py-2 dark:text-white">
-          Daftar Gaji Pegawai
+          {t('salaryList')}
         </h1>
         <div className="w-full md:text-lg">
           <h2 className="font-medium mb-4 block text-black dark:text-white">
-            <span className="inline-block w-32 md:w-40">Bulan</span>
+            <span className="inline-block w-32 md:w-40">{t('month')}</span>
             <span className="pl-[-8] md:pl-0"></span>
             <span className="inline-block w-7">:</span>
             {month}
           </h2>
           <h2 className="font-medium mb-4 block text-black dark:text-white">
-            <span className="inline-block w-32 md:w-40">Tahun</span>
+            <span className="inline-block w-32 md:w-40">{t('year')}</span>
             <span className="inline-block w-7">:</span>
             {year}
             <span className="pl-[-8] md:pl-0"></span>
@@ -126,28 +128,28 @@ const PrintPdfLaporanGaji = () => {
                   No
                 </th>
                 <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  NIK
+                  {t('nik')}
                 </th>
                 <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  Nama <br /> Pegawai
+                  {t('employeeName')}
                 </th>
                 <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  Jabatan
+                  {t('position')}
                 </th>
                 <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  Gaji <br /> Pokok
+                  {t('salary')}
                 </th>
                 <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  Tunjangan <br />Transport
+                  {t('transportAllowance')}
                 </th>
                 <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  Uang <br /> Makan
+                  {t('mealAllowance')}
                 </th>
                 <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  Potongan
+                  {t('deduction')}
                 </th>
                 <th className="font-medium text-black border-t border-l border-b border-r border-black dark:border-white dark:text-white">
-                  Total <br /> Gaji
+                  {t('totalSalary')}
                 </th>
               </tr>
             </thead>
@@ -192,14 +194,14 @@ const PrintPdfLaporanGaji = () => {
           <div className="font-medium text-black text-right dark:text-white">
             <span>Karawang, {`${new Date().getDate()} ${bulan} ${tahun}`}</span>
             <br />
-            <span className="p-26">Finance</span>
+            <span className="p-26">{t('finance')}</span>
             <br />
             <br />
-            <span className="p-8 italic text-black dark:text-white">Tanda Tangan</span>
+            <span className="p-8 italic text-black dark:text-white">{t('signature')}</span>
           </div>
         </div>
         <div className="italic text-black dark:text-white mt-40">
-          Dicetak Pada : {`${new Date().getDate()} ${bulan} ${tahun}`}
+          {t('printedOn')}: {`${new Date().getDate()} ${bulan} ${tahun}`}
         </div>
       </div>
     </>

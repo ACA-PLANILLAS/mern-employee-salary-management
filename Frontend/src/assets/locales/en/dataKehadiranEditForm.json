@@ -1,0 +1,20 @@
+{
+  "formEditAttendance": "Edit Employee Attendance Data Form",
+  "employeeName": "Employee Name",
+  "nik": "NIK",
+  "jobTitle": "Job Title",
+  "present": "Present",
+  "sick": "Sick",
+  "alpha": "Alpha",
+  "enterEmployeeName": "Enter Name",
+  "enterNik": "Enter NIK",
+  "enterJobTitle": "Enter job title",
+  "enterPresent": "Enter present",
+  "enterSick": "Enter sick",
+  "enterAlpha": "Enter alpha",
+  "update": "Update",
+  "back": "Back",
+  "success": "Successful",
+  "error": "Failed",
+  "errorOccurred": "An error occurred"
+}

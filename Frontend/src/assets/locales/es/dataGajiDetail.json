@@ -1,0 +1,10 @@
+{
+  "detailSalaryData": "Detalles del Salario del Empleado",
+  "back": "Volver",
+  "salary": "Salario Base",
+  "transportAllowance": "Asignación de Transporte",
+  "mealAllowance": "Asignación de Comida",
+  "deduction": "Deducción",
+  "totalSalary": "Salario Total",
+  "printSalarySlip": "Imprimir Recibo de Salario"
+}

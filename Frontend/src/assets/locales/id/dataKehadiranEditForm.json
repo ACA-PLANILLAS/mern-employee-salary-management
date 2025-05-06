@@ -1,0 +1,20 @@
+{
+  "formEditAttendance": "Form Edit Data Kehadiran Pegawai",
+  "employeeName": "Nama Pegawai",
+  "nik": "NIK",
+  "jobTitle": "Jabatan",
+  "present": "Hadir",
+  "sick": "Sakit",
+  "alpha": "Alpha",
+  "enterEmployeeName": "Masukkan Nama",
+  "enterNik": "Masukkan NIK",
+  "enterJobTitle": "Masukkan jabatan",
+  "enterPresent": "Masukkan hadir",
+  "enterSick": "Masukkan sakit",
+  "enterAlpha": "Masukkan alpha",
+  "update": "Perbarui",
+  "back": "Kembali",
+  "success": "Berhasil",
+  "error": "Gagal",
+  "errorOccurred": "Terjadi kesalahan"
+}

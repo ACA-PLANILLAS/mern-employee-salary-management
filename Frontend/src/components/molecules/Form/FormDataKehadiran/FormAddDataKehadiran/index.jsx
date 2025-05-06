@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
@@ -8,6 +8,7 @@ import { Breadcrumb, ButtonOne, ButtonTwo } from '../../../../../components';
 import { BiSearch } from 'react-icons/bi';
 import { getMe } from '../../../../../config/redux/action';
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from 'react-icons/md';
+import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = 4;
 
@@ -17,6 +18,8 @@ const FormAddDataKehadiran = () => {
     const [dataKehadiran, setDataKehadiran] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState("");
     const { isError, user } = useSelector((state) => state.auth);
+
+    const { t } = useTranslation("dataKehadiranAddForm");
 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -42,7 +45,6 @@ const FormAddDataKehadiran = () => {
             console.error("Error fetching data:", error);
         }
     };
-
 
     const goToPrevPage = () => {
         if (currentPage > 1) {
@@ -104,8 +106,8 @@ const FormAddDataKehadiran = () => {
                     navigate("/data-kehadiran");
                     Swal.fire({
                         icon: 'success',
-                        title: "Berhasil",
-                        text: "Data Berhasil di Simpan",
+                        title: t('successMessage'),
+                        text: t('successMessage'),
                         showConfirmButton: false,
                         timer: 1500,
                     });
@@ -114,7 +116,7 @@ const FormAddDataKehadiran = () => {
         } catch (error) {
             if (error.response) {
                 Swal.fire({
-                    title: "Error",
+                    title: t('error'),
                     text: error.response.data.msg,
                     icon: "error",
                 });
@@ -187,14 +189,14 @@ const FormAddDataKehadiran = () => {
 
     return (
         <Layout>
-            <Breadcrumb pageName="Form Data Kehadiran Pegawai" />
+            <Breadcrumb pageName={t('formAddAttendance')} />
             <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 mt-6">
                 <form onSubmit={saveDataKehadiran}>
                     <div className="flex justify-between items-center mt-4 flex-col md:flex-row md:justify-between">
                         <div className="relative flex-2 mb-4 md:mb-0">
                             <input
                                 type="text"
-                                placeholder="Cari Nama Pegawai..."
+                                placeholder={t('searchEmployee')}
                                 value={searchKeyword}
                                 onChange={handleSearch}
                                 className="rounded-lg border-[1.5px] border-stroke bg-transparent py-2 pl-10 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary left-0"
@@ -212,25 +214,25 @@ const FormAddDataKehadiran = () => {
                                         No
                                     </th>
                                     <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                                        NIK
+                                        {t('nik')}
                                     </th>
                                     <th className="py-4 px-4 font-medium text-black dark:text-white">
-                                        Nama Pegawai
+                                        {t('employeeName')}
                                     </th>
                                     <th className="py-4 px-4 font-medium text-black dark:text-white">
-                                        Jabatan
+                                        {t('jobTitle')}
                                     </th>
                                     <th className="py-4 px-4 font-medium text-black dark:text-white">
-                                        Jenis Kelamin
+                                        {t('gender')}
                                     </th>
                                     <th className="py-4 px-4 font-medium text-black dark:text-white">
-                                        Hadir
+                                        {t('present')}
                                     </th>
                                     <th className="py-4 px-4 font-medium text-black dark:text-white">
-                                        Sakit
+                                        {t('sick')}
                                     </th>
                                     <th className="py-4 px-4 font-medium text-black dark:text-white">
-                                        Alpha
+                                        {t('alpha')}
                                     </th>
                                 </tr>
                             </thead>
@@ -250,7 +252,7 @@ const FormAddDataKehadiran = () => {
                                             </td>
                                             <td className="py-5 px-4"
                                                 colSpan="8">
-                                                <p className="text-center text-black dark:text-white">Data Kehadiran Pegawai Sudah di Simpan. Input Kembali Ketika Sudah Ganti Periode !</p>
+                                                <p className="text-center text-black dark:text-white">{t('attendanceDataAlreadySaved')}</p>
                                             </td>
                                         </tr>;
                                     }
@@ -311,18 +313,15 @@ const FormAddDataKehadiran = () => {
                                         </tr>
                                     );
                                 })}
-
                             </tbody>
-
                         </table>
                     </div>
 
                     <div className="flex justify-between items-center mt-4 flex-col md:flex-row md:justify-between">
                         <div className="flex items-center space-x-2">
                             <span className="text-gray-5 dark:text-gray-4 text-sm py-4">
-                                Menampilkan {startIndex + 1}-{Math.min(endIndex, filteredDataPegawai.length)} dari {filteredDataPegawai.length} Data Kehadiran Pegawai
+                                {t('showingData')} {startIndex + 1}-{Math.min(endIndex, filteredDataPegawai.length)} {t('from')} {filteredDataPegawai.length} {t('attendanceData')}
                             </span>
-
                         </div>
                         <div className="flex space-x-2 py-4">
                             <button
@@ -345,12 +344,12 @@ const FormAddDataKehadiran = () => {
                     <div className="flex flex-col md:flex-row w-full gap-3 text-center py-4">
                         <div>
                             <ButtonOne type="submit">
-                                <span>Simpan</span>
+                                <span>{t('save')}</span>
                             </ButtonOne>
                         </div>
                         <Link to="/data-kehadiran">
                             <ButtonTwo>
-                                <span>Kembali</span>
+                                <span>{t('back')}</span>
                             </ButtonTwo>
                         </Link>
                     </div>
@@ -359,6 +358,5 @@ const FormAddDataKehadiran = () => {
         </Layout >
     );
 };
-
 
 export default FormAddDataKehadiran;

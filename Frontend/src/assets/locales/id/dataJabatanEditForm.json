@@ -1,0 +1,16 @@
+{
+  "formEditJobTitle": "Form Edit Data Jabatan",
+  "jobTitle": "Jabatan",
+  "basicSalary": "Gaji Pokok",
+  "transportAllowance": "Tunjangan Transport",
+  "mealAllowance": "Uang Makan",
+  "enterJobTitle": "Masukkan jabatan",
+  "enterBasicSalary": "Masukkan gaji pokok",
+  "enterTransportAllowance": "Masukkan tunjangan transport",
+  "enterMealAllowance": "Masukkan uang makan",
+  "update": "Perbarui",
+  "back": "Kembali",
+  "success": "Berhasil",
+  "error": "Gagal",
+  "errorOccurred": "Terjadi kesalahan"
+}

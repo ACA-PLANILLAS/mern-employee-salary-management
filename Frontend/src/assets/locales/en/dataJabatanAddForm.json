@@ -1,0 +1,16 @@
+{
+  "formAddJobTitle": "Job Title Data Form",
+  "jobTitle": "Job Title",
+  "basicSalary": "Basic Salary",
+  "transportAllowance": "Transport Allowance",
+  "mealAllowance": "Meal Allowance",
+  "enterJobTitle": "Enter job title",
+  "enterBasicSalary": "Enter basic salary",
+  "enterTransportAllowance": "Enter transport allowance",
+  "enterMealAllowance": "Enter meal allowance",
+  "save": "Save",
+  "back": "Back",
+  "success": "Successful",
+  "error": "Failed",
+  "errorOccurred": "An error occurred"
+}

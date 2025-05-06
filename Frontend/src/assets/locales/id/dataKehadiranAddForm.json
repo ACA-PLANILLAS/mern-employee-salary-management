@@ -1,0 +1,24 @@
+{
+    "formAddAttendance": "Form Data Kehadiran Pegawai",
+    "searchEmployee": "Cari Nama Pegawai...",
+    "attendanceData": "Data Kehadiran Pegawai",
+    "present": "Hadir",
+    "sick": "Sakit",
+    "alpha": "Alpha",
+    "save": "Simpan",
+    "back": "Kembali",
+    "update": "Perbarui",
+    "employeeName": "Nama Pegawai",
+    "jobTitle": "Jabatan",
+    "gender": "Jenis Kelamin",
+    "nik": "NIK",
+    "showingData": "Menampilkan",
+    "from": "dari",
+    "of": "dari",
+    "attendanceDataAlreadySaved": "Data Kehadiran Pegawai Sudah di Simpan. Input Kembali Ketika Sudah Ganti Periode !",
+    "paginationPrevious": "Previous",
+    "paginationNext": "Next",
+    "errorOccurred": "Terjadi kesalahan",
+    "successMessage": "Data Berhasil di Simpan"
+  }
+  

@@ -1,0 +1,16 @@
+{
+  "formAddJobTitle": "Formulario de Datos de Cargo",
+  "jobTitle": "Cargo",
+  "basicSalary": "Salario Base",
+  "transportAllowance": "Asignación de Transporte",
+  "mealAllowance": "Asignación de Comida",
+  "enterJobTitle": "Ingrese el cargo",
+  "enterBasicSalary": "Ingrese el salario base",
+  "enterTransportAllowance": "Ingrese la asignación de transporte",
+  "enterMealAllowance": "Ingrese la asignación de comida",
+  "save": "Guardar",
+  "back": "Volver",
+  "success": "Exitoso",
+  "error": "Fallido",
+  "errorOccurred": "Ocurrió un error"
+}
