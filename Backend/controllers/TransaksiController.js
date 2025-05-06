@@ -389,7 +389,7 @@ export const getDataPotongan = async () => {
 };
 
 // Logika matematika
-export const getDataGajiPegawai = async () => {
+export const getDataGajiPegawai2 = async () => {
   try {
     // Gaji Pegawai :
     const resultDataPegawai = await getDataPegawai();
@@ -481,6 +481,115 @@ export const getDataGajiPegawai = async () => {
     console.error(error);
   }
 };
+
+export const getDataGajiPegawai = async () => {
+  try {
+    // Gaji Pegawai :
+    const resultDataPegawai = await getDataPegawai();
+    const resultDataJabatan = await getDataJabatan();
+
+    // Log de los datos obtenidos de los empleados y los puestos
+    console.log("resultDataPegawai:", resultDataPegawai);
+    console.log("resultDataJabatan:", resultDataJabatan);
+
+    const gaji_pegawai = resultDataPegawai
+      .filter((pegawai) =>
+        resultDataJabatan.some(
+          (jabatan) => jabatan.nama_jabatan === pegawai.jabatan_pegawai
+        )
+      )
+      .map((pegawai) => {
+        const jabatan = resultDataJabatan.find(
+          (jabatan) => jabatan.nama_jabatan === pegawai.jabatan_pegawai
+        ) || {}; // Si no se encuentra jabatan, usar objeto vacío para evitar error
+
+        return {
+          id: pegawai.id,
+          nik: pegawai.nik,
+          nama_pegawai: pegawai.nama_pegawai,
+          jabatan: pegawai.jabatan_pegawai,
+          gaji_pokok: jabatan.gaji_pokok || 0, // Valor predeterminado si no existe
+          tj_transport: jabatan.tj_transport || 0, // Valor predeterminado si no existe
+          uang_makan: jabatan.uang_makan || 0, // Valor predeterminado si no existe
+        };
+      });
+
+    // Potongan Pegawai :
+    const resultDataKehadiran = await getDataKehadiran();
+    const resultDataPotongan = await getDataPotongan();
+
+    // Log de los datos de asistencia y deducciones
+    console.log("resultDataKehadiran:", resultDataKehadiran);
+    console.log("resultDataPotongan:", resultDataPotongan);
+
+    const potongan_pegawai = resultDataKehadiran.map((kehadiran) => {
+
+      console.log("kehadiran:", kehadiran);
+      const potonganAlpha = kehadiran.alpha > 0 ?
+        resultDataPotongan
+          .filter((potongan) => potongan.nama_potongan.toLowerCase() === "alpha")
+          .reduce((total, potongan) => total + potongan.jml_potongan * kehadiran.alpha, 0) : 0;
+
+      const potonganSakit = kehadiran.sakit > 0 ?
+        resultDataPotongan
+          .filter((potongan) => potongan.nama_potongan.toLowerCase() === "sakit")
+          .reduce((total, potongan) => total + potongan.jml_potongan * kehadiran.sakit, 0) : 0;
+
+      return {
+        tahun: kehadiran.tahun || 0, // Valor predeterminado si no existe
+        bulan: kehadiran.bulan || 'No especificado', // Valor predeterminado si no existe
+        nama_pegawai: kehadiran.nama_pegawai || 'Desconocido', // Valor predeterminado si no existe
+        hadir: kehadiran.hadir || 0, // Valor predeterminado si no existe
+        sakit: kehadiran.sakit || 0, // Valor predeterminado si no existe
+        alpha: kehadiran.alpha || 0, // Valor predeterminado si no existe
+        potonganSakit: potonganSakit,
+        potonganAlpha: potonganAlpha,
+        total_potongan: potonganSakit + potonganAlpha
+      };
+    });
+
+    // Total Gaji Pegawai :
+    const total_gaji_pegawai = gaji_pegawai.map((pegawai) => {
+      const id = pegawai.id;
+      const kehadiran = resultDataKehadiran.find(
+        (kehadiran) => kehadiran.nama_pegawai === pegawai.nama_pegawai
+      ) || {}; // Si no se encuentra kehadiran, usar objeto vacío
+
+      const potongan = potongan_pegawai.find(
+        (potongan) => potongan.nama_pegawai === pegawai.nama_pegawai
+      ) || {}; // Si no se encuentra potongan, usar objeto vacío
+
+      const total_gaji =
+        (pegawai.gaji_pokok +
+          pegawai.tj_transport +
+          pegawai.uang_makan -
+          (potongan.total_potongan || 0)) // Valor predeterminado si no existe
+          .toLocaleString();
+
+      return {
+        tahun: potongan.tahun || kehadiran.tahun || 0,
+        bulan: potongan.bulan || kehadiran.bulan || 'No especificado',
+        id: id,
+        nik: pegawai.nik,
+        nama_pegawai: pegawai.nama_pegawai,
+        jabatan: pegawai.jabatan,
+        gaji_pokok: pegawai.gaji_pokok.toLocaleString(),
+        tj_transport: pegawai.tj_transport.toLocaleString(),
+        uang_makan: pegawai.uang_makan.toLocaleString(),
+        hadir: kehadiran.hadir || 0, // Valor predeterminado si no existe
+        sakit: kehadiran.sakit || 0, // Valor predeterminado si no existe
+        alpha: kehadiran.alpha || 0, // Valor predeterminado si no existe
+        potongan: potongan.total_potongan ? potongan.total_potongan.toLocaleString() : 0, // Valor predeterminado si no existe
+        total: total_gaji,
+      };
+    });
+
+    return total_gaji_pegawai;
+  } catch (error) {
+    console.error("Error en getDataGajiPegawai:", error);
+  }
+};
+
 
 // method untuk melihat data gaji pegawai
 export const viewDataGajiPegawai = async (req, res) => {
