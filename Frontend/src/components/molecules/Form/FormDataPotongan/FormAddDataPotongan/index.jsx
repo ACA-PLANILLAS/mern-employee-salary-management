@@ -5,6 +5,7 @@ import Layout from '../../../../../layout';
 import Swal from 'sweetalert2';
 import { Breadcrumb, ButtonOne, ButtonTwo } from '../../../../../components';
 import { createDataPotongan, getMe } from '../../../../../config/redux/action';
+import { useTranslation } from 'react-i18next';
 
 const FormAddDataPotongan = () => {
     const [formData, setFormData] = useState({
@@ -21,6 +22,8 @@ const FormAddDataPotongan = () => {
     const navigate = useNavigate();
     const { isError, user } = useSelector((state) => state.auth);
 
+    const { t } = useTranslation('dataPotonganAddForm');
+
     const submitDataPotongan = (e) => {
         e.preventDefault();
         const newFormData = new FormData();
@@ -31,7 +34,7 @@ const FormAddDataPotongan = () => {
             .then((response) => {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Berhasil',
+                    title: t('success'),
                     text: response.message,
                     showConfirmButton: false,
                     timer: 1500,
@@ -41,27 +44,26 @@ const FormAddDataPotongan = () => {
                 if (error.response && error.response.data && error.response.data.msg) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Gagal',
+                        title: t('error'),
                         text: error.response.data.msg,
                         confirmButtonText: 'Ok',
                     });
                 } else if (error.message) {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Gagal',
+                        title: t('error'),
                         text: error.message,
                         confirmButtonText: 'Ok',
                     });
                 } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Gagal',
-                        text: 'Terjadi kesalahan',
+                        title: t('error'),
+                        text: t('errorOccurred'),
                         confirmButtonText: 'Ok',
                     });
                 }
             });
-
     };
 
     const handleChange = (e) => {
@@ -86,14 +88,14 @@ const FormAddDataPotongan = () => {
 
     return (
         <Layout>
-            <Breadcrumb pageName='Form Data Potongan' />
+            <Breadcrumb pageName={t('formAddDeduction')} />
 
             <div className='sm:grid-cols-2'>
                 <div className='flex flex-col gap-9'>
                     <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
                         <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
                             <h3 className='font-medium text-black dark:text-white'>
-                                Form Data Potongan
+                                {t('formAddDeduction')}
                             </h3>
                         </div>
                         <form onSubmit={submitDataPotongan}>
@@ -101,7 +103,7 @@ const FormAddDataPotongan = () => {
                                 <div className='mb-4.5 '>
                                     <div className='w-full mb-4'>
                                         <label className='mb-4 block text-black dark:text-white'>
-                                            Potongan <span className='text-meta-1'>*</span>
+                                            {t('deduction')} <span className='text-meta-1'>*</span>
                                         </label>
                                         <input
                                             type='text'
@@ -110,14 +112,14 @@ const FormAddDataPotongan = () => {
                                             value={potongan}
                                             onChange={handleChange}
                                             required={true}
-                                            placeholder='Masukkan potongan'
+                                            placeholder={t('enterDeduction')}
                                             className='w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                                         />
                                     </div>
 
                                     <div className='w-full mb-4'>
                                         <label className='mb-4 block text-black dark:text-white'>
-                                            Jumlah Potongan <span className='text-meta-1'>*</span>
+                                            {t('amountDeduction')} <span className='text-meta-1'>*</span>
                                         </label>
                                         <input
                                             type='number'
@@ -126,7 +128,7 @@ const FormAddDataPotongan = () => {
                                             value={jmlPotongan}
                                             onChange={handleChange}
                                             required
-                                            placeholder='Masukkan jumlah potongan'
+                                            placeholder={t('enterAmountDeduction')}
                                             className='w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                                         />
                                     </div>
@@ -135,12 +137,12 @@ const FormAddDataPotongan = () => {
                                 <div className='flex flex-col md:flex-row w-full gap-3 text-center'>
                                     <div>
                                         <ButtonOne  >
-                                            <span>Simpan</span>
+                                            <span>{t('save')}</span>
                                         </ButtonOne>
                                     </div>
                                     <Link to="/data-potongan" >
                                         <ButtonTwo  >
-                                            <span>Kembali</span>
+                                            <span>{t('back')}</span>
                                         </ButtonTwo>
                                     </Link>
                                 </div>

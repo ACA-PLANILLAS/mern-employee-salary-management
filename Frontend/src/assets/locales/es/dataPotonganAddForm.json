@@ -1,0 +1,12 @@
+{
+  "formAddDeduction": "Formulario de Datos de Deducción",
+  "deduction": "Deducción",
+  "amountDeduction": "Monto de la Deducción",
+  "enterDeduction": "Ingrese la deducción",
+  "enterAmountDeduction": "Ingrese el monto de la deducción",
+  "save": "Guardar",
+  "back": "Volver",
+  "success": "Exitoso",
+  "error": "Fallido",
+  "errorOccurred": "Ocurrió un error"
+}

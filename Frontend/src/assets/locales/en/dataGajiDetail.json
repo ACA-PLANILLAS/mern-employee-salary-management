@@ -1,0 +1,10 @@
+{
+  "detailSalaryData": "Employee Salary Details",
+  "back": "Back",
+  "salary": "Basic Salary",
+  "transportAllowance": "Transport Allowance",
+  "mealAllowance": "Meal Allowance",
+  "deduction": "Deduction",
+  "totalSalary": "Total Salary",
+  "printSalarySlip": "Print Salary Slip"
+}

@@ -1,0 +1,15 @@
+{
+  "printSalaryReport": "Print Salary Report",
+  "back": "Back",
+  "employeeName": "Employee Name",
+  "nik": "NIK",
+  "position": "Position",
+  "salary": "Basic Salary",
+  "transportAllowance": "Transport Allowance",
+  "mealAllowance": "Meal Allowance",
+  "deduction": "Deduction",
+  "totalSalary": "Total Salary",
+  "finance": "Finance",
+  "signature": "Signature",
+  "printedOn": "Printed On"
+}

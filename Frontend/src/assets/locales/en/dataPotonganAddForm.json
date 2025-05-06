@@ -1,0 +1,12 @@
+{
+  "formAddDeduction": "Deduction Data Form",
+  "deduction": "Deduction",
+  "amountDeduction": "Amount of Deduction",
+  "enterDeduction": "Enter deduction",
+  "enterAmountDeduction": "Enter amount of deduction",
+  "save": "Save",
+  "back": "Back",
+  "success": "Successful",
+  "error": "Failed",
+  "errorOccurred": "An error occurred"
+}

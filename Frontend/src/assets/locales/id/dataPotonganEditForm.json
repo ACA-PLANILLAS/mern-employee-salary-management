@@ -1,0 +1,12 @@
+{
+  "formEditDeduction": "Form Edit Data Potongan",
+  "deduction": "Potongan",
+  "amountDeduction": "Jumlah Potongan",
+  "enterDeduction": "Masukkan potongan",
+  "enterAmountDeduction": "Masukkan jumlah potongan",
+  "update": "Perbarui",
+  "back": "Kembali",
+  "success": "Berhasil",
+  "error": "Gagal",
+  "errorOccurred": "Terjadi kesalahan"
+}

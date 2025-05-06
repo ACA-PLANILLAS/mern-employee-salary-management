@@ -1,0 +1,13 @@
+{
+  "printSalarySlip": "Print Salary Slip",
+  "back": "Back",
+  "salary": "Basic Salary",
+  "transportAllowance": "Transport Allowance",
+  "mealAllowance": "Meal Allowance",
+  "deduction": "Deduction",
+  "totalSalary": "Total Salary",
+  "employee": "Employee",
+  "finance": "Finance",
+  "signature": "Signature",
+  "printedOn": "Printed On"
+}

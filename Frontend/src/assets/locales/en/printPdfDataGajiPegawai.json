@@ -1,0 +1,17 @@
+{
+  "employeeSalaryList": "Employee Salary List",
+  "back": "Back",
+  "month": "Month",
+  "year": "Year",
+  "nik": "NIK",
+  "employeeName": "Employee Name",
+  "position": "Position",
+  "basicSalary": "Basic Salary",
+  "transportAllowance": "Transport Allowance",
+  "mealAllowance": "Meal Allowance",
+  "deduction": "Deduction",
+  "totalSalary": "Total Salary",
+  "finance": "Finance",
+  "signature": "Signature",
+  "printedOn": "Printed On"
+}
