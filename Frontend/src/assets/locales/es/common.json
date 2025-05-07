@@ -1,4 +1,14 @@
 {
+  "dropdown": {
+    "confirm": "Confirmar",
+    "areYouSureLogout": "¿Estás seguro de que deseas cerrar sesión?",
+    "yes": "Sí",
+    "no": "No",
+    "logoutSuccessTitle": "Cierre de sesión exitoso",
+    "logoutSuccessText": "Has cerrado sesión correctamente.",
+    "settings": "Configuración",
+    "logout": "Cerrar sesión"
+  },
   "navbar": {
     "links": {
       "home": "Inicio",

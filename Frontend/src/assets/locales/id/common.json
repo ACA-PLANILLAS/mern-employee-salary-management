@@ -1,4 +1,14 @@
 {
+  "dropdown": {
+    "confirm": "Konfirmasi",
+    "areYouSureLogout": "Apakah Anda yakin ingin keluar?",
+    "yes": "Ya",
+    "no": "Tidak",
+    "logoutSuccessTitle": "Logout Berhasil",
+    "logoutSuccessText": "Anda telah berhasil keluar.",
+    "settings": "Pengaturan",
+    "logout": "Log Out"
+  },
   "navbar": {
     "links": {
       "home": "Beranda",

@@ -9,6 +9,7 @@ import 'sweetalert2/dist/sweetalert2.css';
 import { logoutUser } from '../../../../config/redux/action';
 import { reset } from '../../../../config/redux/reducer/authReducer';
 import axios from "axios";
+import { useTranslation } from 'react-i18next';
 
 const DropdownProfil = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -18,23 +19,24 @@ const DropdownProfil = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const [dataPegawai, setDataPegawai] = useState(null);
+  const { t } = useTranslation("common");
 
   const onLogout = () => {
     Swal.fire({
-      title: 'Konfirmasi',
-      text: 'Apakah Anda yakin ingin keluar?',
+      title: t('dropdown.confirm'),
+      text: t('dropdown.areYouSureLogout'),
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'Ya',
-      cancelButtonText: 'Tidak',
+      confirmButtonText: t('dropdown.yes'),
+      cancelButtonText: t('dropdown.no'),
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(logoutUser());
         dispatch(reset());
         Swal.fire({
-          title: 'Logout Berhasil',
-          text: 'Anda telah berhasil keluar.',
+          title:  t('dropdown.logoutSuccessTitle'),
+          text: t('dropdown.logoutSuccessText'),
           icon: 'success',
           timer: 1500,
           timerProgressBar: true,
@@ -132,7 +134,7 @@ const DropdownProfil = () => {
                 className='flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base'
               >
                 <FiSettings className='text-xl' />
-                Pengaturan
+                {t('dropdown.settings')}
               </Link>
             </li>
             <li>
@@ -141,7 +143,7 @@ const DropdownProfil = () => {
                 className='flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base'
               >
                 <BiLogOut className='text-xl' />
-                Log Out
+                {t('dropdown.logout')}
               </button>
             </li>
           </ul>

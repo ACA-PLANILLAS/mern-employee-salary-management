@@ -22,7 +22,7 @@ const FormEditDataKehadiran = () => {
     const navigate = useNavigate();
     const { isError, user } = useSelector((state) => state.auth);
 
-    const { t } = useTranslation();
+    const { t } = useTranslation("dataKehadiranEditForm");
 
     useEffect(() => {
         const getUserById = async () => {
