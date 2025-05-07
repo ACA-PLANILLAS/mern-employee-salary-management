@@ -8,6 +8,7 @@ import Layout from '../../../../../layout';
 import { createDataPegawai, getMe } from '../../../../../config/redux/action';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
+import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
 
 const FormAddDataPegawai = () => {
     const [formData, setFormData] = useState({
@@ -47,6 +48,7 @@ const FormAddDataPegawai = () => {
     const { isError, user } = useSelector((state) => state.auth);
 
     const { t } = useTranslation("dataGajiAddForm");
+    const getErrorMessage = useErrorMessage();
 
     const onLoadImageUpload = (e) => {
         const image = e.target.files[0];
@@ -90,7 +92,7 @@ const FormAddDataPegawai = () => {
                 Swal.fire({
                     icon: 'success',
                     title: t('berhasil'),
-                    text: response.message,
+                    text: getErrorMessage(response.message),
                     showConfirmButton: false,
                     timer: 1500,
                 });
@@ -100,14 +102,14 @@ const FormAddDataPegawai = () => {
                     Swal.fire({
                         icon: 'error',
                         title: t('gagal'),
-                        text: error.response.data.msg,
+                        text: getErrorMessage(error.response.data.msg),
                         confirmButtonText: 'Ok',
                     });
                 } else if (error.message) {
                     Swal.fire({
                         icon: 'error',
                         title: t('gagal'),
-                        text: error.message,
+                        text: getErrorMessage(error.message),
                         confirmButtonText: 'Ok',
                     });
                 } else {

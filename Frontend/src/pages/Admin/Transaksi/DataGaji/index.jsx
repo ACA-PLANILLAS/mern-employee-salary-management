@@ -9,7 +9,6 @@ import Swal from 'sweetalert2';
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdOutlineKeyboardArrowDown } from 'react-icons/md'
 import { TfiPrinter } from 'react-icons/tfi'
 import { fetchLaporanGajiByMonth, fetchLaporanGajiByYear, getDataGaji, getMe } from '../../../../config/redux/action';
-import { Trans } from 'react-i18next';
 import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = 4;
@@ -20,20 +19,20 @@ const DataGaji = () => {
     const [filterBulan, setFilterBulan] = useState("");
     const [filterNama, setFilterNama] = useState("");
     const [showMessage, setShowMessage] = useState(false);
-    const { t } = useTranslation('dataGaji');
 
     const { dataGaji } = useSelector((state) => state.dataGaji);
     const { isError, user } = useSelector((state) => state.auth);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { t } = useTranslation('dataGaji');
 
     const totalPages = Math.ceil(dataGaji.length / ITEMS_PER_PAGE);
 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
 
-    const filteredDataGaji = dataGaji.filter((gajiDataPegawai) => {
+    const filteredDataGaji = Array.isArray(dataGaji) ? dataGaji.filter((gajiDataPegawai) => {
         const isMatchBulan =
             filterBulan === "" ||
             (typeof gajiDataPegawai.bulan === 'string' &&
@@ -45,7 +44,7 @@ const DataGaji = () => {
             (typeof gajiDataPegawai.nama_pegawai === 'string' &&
                 gajiDataPegawai.nama_pegawai.toLowerCase().includes(filterNama.toLowerCase()));
         return isMatchBulan && isMatchTahun && isMatchNama;
-    });
+    }) : [];
 
     const goToPrevPage = () => {
         if (currentPage > 1) {
@@ -95,8 +94,8 @@ const DataGaji = () => {
             setShowMessage(false);
             Swal.fire({
                 icon: 'error',
-                title: t('message.noDataFound'),
-                text: t('message.searchNoResults'),
+                title: t('dataNotFound'),
+                text: t('sorryDataNotFound'),
                 timer: 2000,
             });
         }
@@ -165,22 +164,22 @@ const DataGaji = () => {
     };
     return (
         <Layout>
-            <Breadcrumb pageName='Data Gaji Pegawai' />
+            <Breadcrumb pageName={t('employeeSalaryData')} />
 
             <div className='rounded-sm border border-stroke bg-white px-5 pt-2 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-10 mt-6'>
                 <div className='border-b border-stroke py-2 dark:border-strokedark'>
                     <h3 className='font-medium text-black dark:text-white'>
-                        {t('subtitle.filterEmployeeSalaryData')}
+                        {t('filterEmployeeSalaryData')}
                     </h3>
                 </div>
                 <form onSubmit={handleSearch}>
                     {showMessage && (
-                        <p className="text-meta-1"> {t('message.noDataFound')} </p>
+                        <p className="text-meta-1">{t('dataNotFound')}</p>
                     )}
                     <div className='flex flex-col md:flex-row md:justify-between items-center mt-4'>
                         <div className='relative w-full md:w-1/2 md:mr-2 mb-4 md:mb-0'>
                             <div className='relative'>
-                                <span className='px-6'> {t('table.month')} </span>
+                                <span className='px-6'>{t('month')}</span>
                                 <span className='absolute top-1/2 left-70 z-30 -translate-y-1/2 text-xl'>
                                     <MdOutlineKeyboardArrowDown />
                                 </span>
@@ -190,28 +189,28 @@ const DataGaji = () => {
                                     required
                                     className='relative appearance-none rounded border border-stroke bg-transparent py-2 px-18 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input'
                                 >
-                                    <option value=''> {t('label.selectMonth')} </option>
-                                    <option value='Januari'>{t('month.january')}</option>
-                                    <option value='Februari'>{t('month.february')}</option>
-                                    <option value='Maret'>{t('month.march')}</option>
-                                    <option value='April'>{t('month.april')}</option>
-                                    <option value='Mei'>{t('month.may')}</option>
-                                    <option value='Juni'>{t('month.june')}</option>
-                                    <option value='Juli'>{t('month.july')}</option>
-                                    <option value='Agustus'>{t('month.august')}</option>
-                                    <option value='September'>{t('month.september')}</option>
-                                    <option value='Oktober'>{t('month.october')}</option>
-                                    <option value='November'>{t('month.november')}</option>
-                                    <option value='Desember'>{t('month.december')}</option>
+                                    <option value=''>{t('selectMonth')}</option>
+                                    <option value='Januari'>Januari</option>
+                                    <option value='Februari'>Februari</option>
+                                    <option value='Maret'>Maret</option>
+                                    <option value='April'>April</option>
+                                    <option value='Mei'>Mei</option>
+                                    <option value='Juni'>Juni</option>
+                                    <option value='Juli'>Juli</option>
+                                    <option value='Agustus'>Agustus</option>
+                                    <option value='September'>September</option>
+                                    <option value='Oktober'>Oktober</option>
+                                    <option value='November'>November</option>
+                                    <option value='Desember'>Desember</option>
                                 </select>
                             </div>
                         </div>
                         <div className='relative w-full md:w-1/2 md:mr-2 mb-4 md:mb-0'>
                             <div className='relative'>
-                                <span className='px-6'> {t('text.year')} </span>
+                                <span className='px-6'>{t('year')}</span>
                                 <input
                                     type='number'
-                                    placeholder="{t('placeholder.enterYear)}"
+                                    placeholder={t('enterYear')}
                                     value={filterTahun}
                                     onChange={handleTahunChange}
                                     required
@@ -225,7 +224,7 @@ const DataGaji = () => {
                         <div className='w-full md:w-1/2 flex justify-center md:justify-end'>
                             <div className='w-full md:w-auto'>
                                 <ButtonOne type='submit'>
-                                    <span> {t('button.printSalaryList')} </span>
+                                    <span>{t('printSalaryList')}</span>
                                     <span>
                                         <TfiPrinter />
                                     </span>
@@ -244,9 +243,9 @@ const DataGaji = () => {
                             return uniqueEntries;
                         }, []).map(data => (data.tahun !== 0 && data.bulan !== 0 &&
                             <h2 className="px-4 py-2 text-black dark:text-white" key={`${data.bulan}-${data.tahun}`}>
-                                {t('text.displayingSalaryData')}
+                                {t('displayingSalaryDataMonth')} : 
                                 <span className="font-medium"> {data.bulan} </span>
-                                {t('text.year:')}
+                                {t('year')} :
                                 <span className="font-medium"> {data.tahun}</span>
                             </h2>
                         ))}
@@ -259,7 +258,7 @@ const DataGaji = () => {
                     <div className="relative flex-2 mb-4 md:mb-0">
                         <input
                             type='text'
-                            placeholder='Cari Nama Pegawai...'
+                            placeholder={t('searchEmployeeName')}
                             value={filterNama}
                             onChange={handleNamaChange}
                             className='rounded-lg border-[1.5px] border-stroke bg-transparent py-2 pl-10 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary left-0'
@@ -275,34 +274,34 @@ const DataGaji = () => {
                         <thead>
                             <tr className='bg-gray-2  dark:bg-meta-4'>
                                 <th className='py-2 px-2 font-medium text-black dark:text-white'>
-                                    {t('tableHeader.no')}
+                                    No
                                 </th>
                                 <th className='py-2 px-2 font-medium text-black dark:text-white'>
-                                    {t('tableHeader.nik')}
+                                    NIK
                                 </th>
                                 <th className='py-2 px-2 font-medium text-black dark:text-white'>
-                                <Trans i18nKey="table.employee_name" components={[<br />]} />
+                                    {t('employeeName')}
                                 </th>
                                 <th className='py-2 px-2 font-medium text-black dark:text-white'>
-                                    {t('tableHeader.position')}
+                                    {t('position')}
                                 </th>
                                 <th className='py-2 px-2 font-medium text-black dark:text-white'>
-                                <Trans i18nKey="table.basic_salary" components={[<br />]} />
+                                    {t('basicSalary')}
                                 </th>
                                 <th className='py-2 px-2 font-medium text-black dark:text-white'>
-                                <Trans i18nKey="table.transport_allowance" components={[<br />]} />
+                                    {t('transportAllowance')}
                                 </th>
                                 <th className='py-2 px-2 font-medium text-black dark:text-white'>
-                                <Trans i18nKey="table.meal_allowance" components={[<br />]} />
+                                    {t('mealAllowance')}
                                 </th>
                                 <th className='py-2 px-2 font-medium text-black dark:text-white'>
-                                    {t('tableHeader.deductions')}
+                                    {t('deduction')}
                                 </th>
                                 <th className='py-2 px-2 font-medium text-black dark:text-white'>
-                                <Trans i18nKey="table.total_salary" components={[<br />]} />
+                                    {t('totalSalary')}
                                 </th>
                                 <th className='py-2 px-2 font-medium text-black dark:text-white'>
-                                    {t('table.actions')}
+                                    {t('actions')}
                                 </th>
                             </tr>
                         </thead>
@@ -357,14 +356,7 @@ const DataGaji = () => {
                 <div className="flex justify-between items-center mt-4 flex-col md:flex-row md:justify-between">
                     <div className="flex items-center space-x-2">
                         <span className="text-gray-5 dark:text-gray-4 text-sm py-4">
-                        <Trans
-                            i18nKey="table.displaying_data"
-                            values={{
-                            start: startIndex + 1,
-                            end: Math.min(endIndex, filteredDataGaji.length),
-                            total: filteredDataGaji.length
-                            }}
-                        />
+                            {t('displaying')} {startIndex + 1}-{Math.min(endIndex, filteredDataGaji.length)} {t('of')} {filteredDataGaji.length} {t('employeeSalaryData')}
                         </span>
                     </div>
                     <div className="flex space-x-2 py-4">

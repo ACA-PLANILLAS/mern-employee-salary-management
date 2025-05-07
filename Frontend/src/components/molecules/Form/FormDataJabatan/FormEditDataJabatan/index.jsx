@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { Breadcrumb, ButtonOne, ButtonTwo} from '../../../../../components';
 import { getMe } from '../../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
+import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
 
 const FormEditDataJabatan = () => {
     const [namaJabatan, setNamaJabatan] = useState('');
@@ -21,6 +22,7 @@ const FormEditDataJabatan = () => {
     
     const { isError, user } = useSelector((state) => state.auth);
     const { t } = useTranslation("dataJabatanEditForm");
+    const getErrorMessage = useErrorMessage();
 
     useEffect(() => {
         const getUserById = async () => {
@@ -32,7 +34,7 @@ const FormEditDataJabatan = () => {
                 setUangMakan(response.data.uang_makan);
             } catch (error) {
                 if (error.response) {
-                    setMsg(error.response.data.msg);
+                    setMsg(getErrorMessage(error.response.data.msg));
                 }
             }
         }
@@ -53,20 +55,20 @@ const FormEditDataJabatan = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            setMsg(response.data.msg);
+            setMsg(getErrorMessage(response.data.msg));
             Swal.fire({
                 icon: 'success',
                 title: t('success'),
                 timer: 1500,
-                text: response.data.msg
+                text: getErrorMessage(response.data.msg)
             });
             navigate('/data-jabatan');
         } catch (error) {
-            setMsg(error.response.data.msg);
+            setMsg(getErrorMessage(error.response.data.msg));
             Swal.fire({
                 icon: 'error',
                 title: t('error'),
-                text: error.response.data.msg
+                text: getErrorMessage(error.response.data.msg)
             });
         }
     };

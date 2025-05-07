@@ -7,6 +7,7 @@ import Layout from '../../../../../layout';
 import { Breadcrumb, ButtonOne, ButtonTwo } from '../../../../../components';
 import { getMe } from '../../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
+import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
 
 const FormEditDataPotongan = () => {
     const [potongan, setPotongan] = useState('');
@@ -20,6 +21,7 @@ const FormEditDataPotongan = () => {
     const { isError, user } = useSelector((state) => state.auth);
 
     const { t } = useTranslation();
+    const getErrorMessage = useErrorMessage();
 
     const updateDataPotongan = async (e) => {
         e.preventDefault();
@@ -33,20 +35,20 @@ const FormEditDataPotongan = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            setMsg(response.data.msg);
+            setMsg(getErrorMessage(response.data.msg));
             Swal.fire({
                 icon: 'success',
                 title: t('success'),
                 timer: 1500,
-                text: response.data.msg
+                text: getErrorMessage(response.data.msg)
             });
             navigate('/data-potongan');
         } catch (error) {
-            setMsg(error.response.data.msg);
+            setMsg(getErrorMessage(error.response.data.msg));
             Swal.fire({
                 icon: 'error',
                 title: t('error'),
-                text: error.response.data.msg
+                text: getErrorMessage(error.response.data.msg)
             });
         }
     };
@@ -59,7 +61,7 @@ const FormEditDataPotongan = () => {
                 setJmlPotongan(response.data.jml_potongan);
             } catch (error) {
                 if (error.response) {
-                    setMsg(error.response.data.msg);
+                    setMsg(getErrorMessage(error.response.data.msg));
                 }
             }
         }

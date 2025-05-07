@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { Breadcrumb, ButtonOne, ButtonTwo } from '../../../../../components';
 import { createDataPotongan, getMe } from '../../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
+import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
 
 const FormAddDataPotongan = () => {
     const [formData, setFormData] = useState({
@@ -23,6 +24,7 @@ const FormAddDataPotongan = () => {
     const { isError, user } = useSelector((state) => state.auth);
 
     const { t } = useTranslation('dataPotonganAddForm');
+    const getErrorMessage = useErrorMessage();
 
     const submitDataPotongan = (e) => {
         e.preventDefault();
@@ -35,7 +37,7 @@ const FormAddDataPotongan = () => {
                 Swal.fire({
                     icon: 'success',
                     title: t('success'),
-                    text: response.message,
+                    text: getErrorMessage(response.message),
                     showConfirmButton: false,
                     timer: 1500,
                 });
@@ -45,14 +47,14 @@ const FormAddDataPotongan = () => {
                     Swal.fire({
                         icon: 'error',
                         title: t('error'),
-                        text: error.response.data.msg,
+                        text: getErrorMessage(error.response.data.msg),
                         confirmButtonText: 'Ok',
                     });
                 } else if (error.message) {
                     Swal.fire({
                         icon: 'error',
                         title: t('error'),
-                        text: error.message,
+                        text: getErrorMessage(error.message),
                         confirmButtonText: 'Ok',
                     });
                 } else {

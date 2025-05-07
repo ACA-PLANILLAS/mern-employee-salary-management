@@ -35,5 +35,6 @@
     "present": "Hadir",
     "absent": "Alpha",
     "sick": "Sakit",
-    "askPermission": "Aski"
+    "askPermission": "Aski",
+    "searchPlaceholder": "Cari Nama Pegawai..."
 }

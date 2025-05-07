@@ -8,6 +8,7 @@ import axios from 'axios';
 import { getMe } from '../../../../../config/redux/action';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
+import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
 
 const FormEditDataPegawai = () => {
     const [nik, setNik] = useState('');
@@ -26,6 +27,7 @@ const FormEditDataPegawai = () => {
     const { isError, user } = useSelector((state) => state.auth);
 
     const { t } = useTranslation('dataGajiEditForm');
+    const getErrorMessage = useErrorMessage();
 
     const updateUser = async (e) => {
         e.preventDefault();
@@ -45,20 +47,20 @@ const FormEditDataPegawai = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            setMsg(response.data.msg);
+            setMsg(getErrorMessage(response.data.msg));
             Swal.fire({
                 icon: 'success',
                 title: t('berhasil'),
                 timer: 1500,
-                text: response.data.msg
+                text: getErrorMessage(response.data.msg)
             });
             navigate('/data-pegawai');
         } catch (error) {
-            setMsg(error.response.data.msg);
+            setMsg(getErrorMessage(error.response.data.msg));
             Swal.fire({
                 icon: 'error',
                 title: t('gagal'),
-                text: error.response.data.msg
+                text: getErrorMessage(error.response.data.msg)
             });
         }
     };
@@ -78,7 +80,7 @@ const FormEditDataPegawai = () => {
                 setHakAkses(data.hak_akses);
             } catch (error) {
                 if (error.response) {
-                    setMsg(error.response.data.msg);
+                    setMsg(getErrorMessage(error.response.data.msg));
                 }
             }
         };

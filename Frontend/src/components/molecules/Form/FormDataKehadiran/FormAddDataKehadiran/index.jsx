@@ -9,6 +9,7 @@ import { BiSearch } from 'react-icons/bi';
 import { getMe } from '../../../../../config/redux/action';
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
+import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
 
 const ITEMS_PER_PAGE = 4;
 
@@ -20,6 +21,7 @@ const FormAddDataKehadiran = () => {
     const { isError, user } = useSelector((state) => state.auth);
 
     const { t } = useTranslation("dataKehadiranAddForm");
+    const getErrorMessage = useErrorMessage();
 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -117,7 +119,7 @@ const FormAddDataKehadiran = () => {
             if (error.response) {
                 Swal.fire({
                     title: t('error'),
-                    text: error.response.data.msg,
+                    text: getErrorMessage(error.response.data.msg),
                     icon: "error",
                 });
             }
