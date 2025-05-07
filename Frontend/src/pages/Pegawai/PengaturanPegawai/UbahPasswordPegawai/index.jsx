@@ -7,9 +7,12 @@ import Swal from 'sweetalert2';
 import { TfiLock } from 'react-icons/tfi';
 import { changePassword, getMe } from '../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
+import { useErrorMessage } from '../../../../hooks/useErrorMessage';
 
 const UbahPasswordPegawai = () => {
   const { t } = useTranslation('ubahPasswordPegawai');
+  const getErrorMessage = useErrorMessage();
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
@@ -33,7 +36,7 @@ const UbahPasswordPegawai = () => {
         Swal.fire({
           icon: 'error',
           title: t('errorTitle'),
-          text: error.response?.data?.msg || t('defaultError'),
+          text: getErrorMessage(error.response?.data?.msg) || t('defaultError'),
           confirmButtonText: t('okButton'),
         });
       }

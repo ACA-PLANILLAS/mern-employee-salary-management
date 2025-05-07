@@ -246,7 +246,7 @@ const DataKehadiran = () => {
                     <div className="relative flex-2 mb-4 md:mb-0">
                         <input
                             type='text'
-                            placeholder='Cari Nama Pegawai...'
+                            placeholder={t('searchPlaceholder')}
                             value={filterNama}
                             onChange={handleNamaChange}
                             className='rounded-lg border-[1.5px] border-stroke bg-transparent py-2 pl-10 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary left-0'

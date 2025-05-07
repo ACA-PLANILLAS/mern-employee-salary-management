@@ -35,5 +35,6 @@
     "present": "Present",
     "absent": "Unauthorized Absence",
     "sick": "Sick",
-    "askPermission": "Permission Requested"
+    "askPermission": "Permission Requested",
+    "searchPlaceholder": "Search Employee Name..."
   }
