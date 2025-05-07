@@ -5,9 +5,12 @@ import { loginUser } from "../../../../config/redux/action";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useErrorMessage } from "../../../../hooks/useErrorMessage";
 
 function LoginInput() {
   const { t } = useTranslation("login");
+  const getErrorMessage = useErrorMessage();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
@@ -33,13 +36,13 @@ function LoginInput() {
       Swal.fire({
         icon: "error",
         title: t("swal.errorTitle"),
-        text: message,
+        text: getErrorMessage(message),
       }).then(() => {});
     } else if (isSuccess && user) {
       Swal.fire({
         icon: "success",
         title: t("swal.successTitle"),
-        text: message,
+        text: getErrorMessage(message),
         timer: 1500,
       }).then(() => {});
     }
