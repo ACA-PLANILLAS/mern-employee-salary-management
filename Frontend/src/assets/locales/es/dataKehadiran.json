@@ -35,5 +35,6 @@
     "present": "Presente",
     "absent": "Ausencia Injustificada",
     "sick": "Enfermo",
-    "askPermission": "Permiso Solicitado"
+    "askPermission": "Permiso Solicitado",
+    "searchPlaceholder": "Buscar Nombre del Empleado..."
   }

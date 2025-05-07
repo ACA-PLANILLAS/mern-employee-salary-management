@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { Breadcrumb, ButtonOne, ButtonTwo, ButtonThree } from '../../../../../components';
 import { getMe } from '../../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
+import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
 
 const FormEditDataKehadiran = () => {
     const [nik, setNik] = useState('');
@@ -23,6 +24,7 @@ const FormEditDataKehadiran = () => {
     const { isError, user } = useSelector((state) => state.auth);
 
     const { t } = useTranslation("dataKehadiranEditForm");
+    const getErrorMessage = useErrorMessage();
 
     useEffect(() => {
         const getUserById = async () => {
@@ -36,7 +38,7 @@ const FormEditDataKehadiran = () => {
                 setAlpha(response.data.alpha);
             } catch (error) {
                 if (error.response) {
-                    setMsg(error.response.data.msg);
+                    setMsg(getErrorMessage(error.response.data.msg));
                 }
             }
         }
@@ -59,20 +61,20 @@ const FormEditDataKehadiran = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            setMsg(response.data.msg);
+            setMsg(getErrorMessage(response.data.msg));
             Swal.fire({
                 icon: 'success',
                 title: t('success'),
                 timer: 1500,
-                text: response.data.msg
+                text: getErrorMessage(response.data.msg)
             });
             navigate('/data-kehadiran');
         } catch (error) {
-            setMsg(error.response.data.msg);
+            setMsg(getErrorMessage(error.response.data.msg));
             Swal.fire({
                 icon: 'error',
                 title: t('error'),
-                text: error.response.data.msg
+                text: getErrorMessage(error.response.data.msg)
             });
         }
     };
