@@ -13,6 +13,8 @@ import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
 
 const ITEMS_PER_PAGE = 4;
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const FormAddDataKehadiran = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [dataPegawai, setDataPegawai] = useState([]);
@@ -35,13 +37,13 @@ const FormAddDataKehadiran = () => {
     );
 
     const getDataPegawai = async () => {
-        const response = await axios.get("http://localhost:5000/data_pegawai");
+        const response = await axios.get(`${API_URL}/data_pegawai`);
         setDataPegawai(response.data);
     };
 
     const getDataKehadiran = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/data_kehadiran");
+            const response = await axios.get(`${API_URL}/data_kehadiran`);
             setDataKehadiran(response.data);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -96,7 +98,7 @@ const FormAddDataKehadiran = () => {
                 );
 
                 if (!isNamaAda) {
-                    await axios.post("http://localhost:5000/data_kehadiran", {
+                    await axios.post(`${API_URL}/data_kehadiran`, {
                         nik: dataPegawai[i].nik,
                         nama_pegawai: dataPegawai[i].nama_pegawai,
                         nama_jabatan: dataPegawai[i].jabatan,

@@ -3,6 +3,7 @@ import {
     GET_DATA_GAJI_SINGLE_PEGAWAI_SUCCESS,
     GET_DATA_GAJI_SINGLE_PEGAWAI_FAILURE,
 } from "./dataGajiPegawaiPrintActionTypes";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const viewDataGajiSinglePegawaiSuccess = (data) => ({
     type: GET_DATA_GAJI_SINGLE_PEGAWAI_SUCCESS,
@@ -17,7 +18,7 @@ export const viewDataGajiSinglePegawaiFailure = (error) => ({
 export const viewGajiSinglePegawaiByYear = (dataYear) => async (dispatch) => {
     try {
         const response = await axios.get(
-            `http://localhost:5000/data_gaji/month/${dataYear}`
+            `${API_URL}/data_gaji/month/${dataYear}`
         );
         const data = response.data;
         dispatch(viewDataGajiSinglePegawaiSuccess(data));
@@ -31,7 +32,7 @@ export const viewGajiSinglePegawaiByYear = (dataYear) => async (dispatch) => {
 export const viewGajiSinglePegawaiByMonth = (dataMonth) => async (dispatch) => {
     try {
         const response = await axios.get(
-            `http://localhost:5000/data_gaji/month/${dataMonth}`
+            `${API_URL}/data_gaji/month/${dataMonth}`
         );
         const data = response.data;
         dispatch(viewDataGajiSinglePegawaiSuccess(data));
@@ -45,7 +46,7 @@ export const viewGajiSinglePegawaiByMonth = (dataMonth) => async (dispatch) => {
 export const viewGajiSinglePegawaiByName = (nama_pegawai) => async (dispatch) => {
     try {
         const response = await axios.get(
-            `http://localhost:5000/data_gaji/name/${nama_pegawai}`
+            `${API_URL}/data_gaji/name/${nama_pegawai}`
         );
         const data = response.data;
         dispatch(viewDataGajiSinglePegawaiSuccess(data));

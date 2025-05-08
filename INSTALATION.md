@@ -109,7 +109,6 @@ Con los usuarios creados ya pueden acceder al frontend, correrlo y en login pone
 - Crear un archivo `.env` dentro de la carpeta `/Backend`
 - copiar, pegar y AJUSTAR las configuración dependiendo de como configuraron la datos de MySQL:
   - Los que probablemente deban tocar sean DB_PASSWORD, DB_USER y talvez DB_PORT, DB_HOST
-  - El puerto donde correra Express (APP_PORT=5000) esta **PROHIBIDO cambiarlo** 
 
 ```
 # Puerto donde correrá Express
@@ -127,3 +126,28 @@ DB_NAME=db_penggajian3
 DB_DIALECT=mysql
 ```
 
+
+- Correr proyecto
+  - Ingresar a la carpeta: `cd ./Backend`
+  - Instalar dependencias: `npm install`
+  - Correr proyecto: `npm run start`
+
+
+# Configurar proyecto Frontend
+
+- Crear un archivo `.env` dentro de la carpeta `/Frontend`
+- copiar, pegar y AJUSTAR las configuración 
+
+```
+VITE_API_URL=http://localhost:5000
+```
+
+
+# OJO   del http://localhost:5000 debe terminar en el mismo puerto que la base de datos en APP_PORT=5000
+
+## Si colocaron APP_PORT=3000, el frontend debe tener: VITE_API_URL=http://localhost:3000
+
+- Correr proyecto
+  - Ingresar a la carpeta: `cd ./Frontend`
+  - Instalar dependencias: `npm install`
+  - Correr proyecto: `npm run dev`

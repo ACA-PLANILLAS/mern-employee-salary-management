@@ -3,6 +3,7 @@ import axios from "axios";
 export const FETCH_LAPORAN_GAJI_SUCCESS = "FETCH_LAPORAN_GAJI_SUCCESS";
 export const FETCH_LAPORAN_GAJI_FAILURE = "FETCH_LAPORAN_GAJI_FAILURE";
 export const CLEAR_LAPORAN_GAJI = "CLEAR_LAPORAN_GAJI";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const fetchLaporanGajiSuccess = (data) => ({
     type: FETCH_LAPORAN_GAJI_SUCCESS,
@@ -21,7 +22,7 @@ export const clearLaporanGaji = () => ({
 export const fetchLaporanGajiByYear = (selectedYear, onDataFound) => async (dispatch) => {
     try {
         const response = await axios.get(
-            `http://localhost:5000/laporan/gaji/year/${selectedYear}`
+            `${API_URL}/laporan/gaji/year/${selectedYear}`
         );
         const data = response.data;
         dispatch(fetchLaporanGajiSuccess(data));
@@ -36,7 +37,7 @@ export const fetchLaporanGajiByYear = (selectedYear, onDataFound) => async (disp
 export const fetchLaporanGajiByMonth = (selectedMonth, onDataFound) => async (dispatch) => {
     try {
         const response = await axios.get(
-            `http://localhost:5000/laporan/gaji/month/${selectedMonth}`
+            `${API_URL}/laporan/gaji/month/${selectedMonth}`
         );
         const data = response.data;
         dispatch(fetchLaporanGajiSuccess(data));

@@ -11,6 +11,7 @@ import { BiSearch } from 'react-icons/bi';
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
 import { useDisplayValue } from '../../../../hooks/useDisplayValue';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const ITEMS_PER_PAGE = 4;
 
@@ -216,7 +217,7 @@ const DataPegawai = () => {
                                         <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark">
                                             <div className="h-12.5 w-15">
                                                 <div className="rounded-full overflow-hidden">
-                                                    <img src={`http://localhost:5000/images/${data.photo}`} alt="Photo Profil" />
+                                                    <img src={`${API_URL}/images/${data.photo}`} alt="Photo Profil" />
                                                 </div>
                                             </div>
                                         </td>
