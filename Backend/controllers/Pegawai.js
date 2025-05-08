@@ -2,7 +2,11 @@ import DataPegawai from "../models/DataPegawaiModel.js";
 import DataKehadiran from "../models/DataKehadiranModel.js";
 import { getDataGajiPegawai } from "./TransaksiController.js";
 import { verifyUser } from "../middleware/AuthUser.js";
-import pegawaiError from "../errors/pegawaiError.json" assert { type: "json" };
+
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+const pegawaiError  = require("../errors/pegawaiError.json");
 
 const { DASHBOARD, EMPLOYEE } = pegawaiError;
 

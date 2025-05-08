@@ -2,7 +2,10 @@ import DataJabatan from "../models/DataJabatanModel.js";
 import DataPegawai from "../models/DataPegawaiModel.js";
 import { Op } from "sequelize";
 
-import jabatanError from "../errors/jabatanError.json" assert { type: "json" };
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+const jabatanError = require( "../errors/jabatanError.json");
 
 const { JOB_POSITION } = jabatanError;
 

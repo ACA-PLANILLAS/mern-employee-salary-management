@@ -5,8 +5,12 @@ import PotonganGaji from "../models/PotonganGajiModel.js";
 import moment from "moment";
 import "moment/locale/id.js";
 
-import transaksiError from "../errors/TransaksiError.json" assert { type: "json" };
-import pegawaiError from "../errors/pegawaiError.json" assert { type: "json" };
+
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+const transaksiError = require( "../errors/TransaksiError.json");
+const pegawaiError = require( "../errors/pegawaiError.json");
 
 const { ATTENDANCE, DEDUCTION, SALARY } = transaksiError;
 const { EMPLOYEE } = pegawaiError;
