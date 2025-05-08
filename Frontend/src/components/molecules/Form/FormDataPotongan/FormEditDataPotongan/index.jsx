@@ -8,6 +8,7 @@ import { Breadcrumb, ButtonOne, ButtonTwo } from '../../../../../components';
 import { getMe } from '../../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
 import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const FormEditDataPotongan = () => {
     const [potongan, setPotongan] = useState('');
@@ -30,7 +31,7 @@ const FormEditDataPotongan = () => {
             formData.append('potongan', potongan);
             formData.append('jml_potongan', jmlPotongan);
 
-            const response = await axios.patch(`http://localhost:5000/data_potongan/update/${id}`, formData, {
+            const response = await axios.patch(`${API_URL}/data_potongan/update/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -56,7 +57,7 @@ const FormEditDataPotongan = () => {
     useEffect(() => {
         const getDataById = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/data_potongan/${id}`);
+                const response = await axios.get(`${API_URL}/data_potongan/${id}`);
                 setPotongan(response.data.potongan);
                 setJmlPotongan(response.data.jml_potongan);
             } catch (error) {

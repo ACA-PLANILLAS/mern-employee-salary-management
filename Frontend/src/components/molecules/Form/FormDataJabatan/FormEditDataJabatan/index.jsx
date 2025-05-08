@@ -8,6 +8,7 @@ import { Breadcrumb, ButtonOne, ButtonTwo} from '../../../../../components';
 import { getMe } from '../../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
 import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const FormEditDataJabatan = () => {
     const [namaJabatan, setNamaJabatan] = useState('');
@@ -27,7 +28,7 @@ const FormEditDataJabatan = () => {
     useEffect(() => {
         const getUserById = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/data_jabatan/${id}`);
+                const response = await axios.get(`${API_URL}/data_jabatan/${id}`);
                 setNamaJabatan(response.data.nama_jabatan);
                 setGajiPokok(response.data.gaji_pokok);
                 setTjTransport(response.data.tj_transport);
@@ -50,7 +51,7 @@ const FormEditDataJabatan = () => {
             formData.append('tj_transport', tjTransport);
             formData.append('uang_makan', uangMakan);
 
-            const response = await axios.patch(`http://localhost:5000/data_jabatan/${id}`, formData, {
+            const response = await axios.patch(`${API_URL}/data_jabatan/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

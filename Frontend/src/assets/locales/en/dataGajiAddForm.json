@@ -25,5 +25,9 @@
   "kembali": "Back",
   "berhasil": "Successful",
   "gagal": "Failed",
-  "terjadiKesalahan": "An error occurred"
+  "terjadiKesalahan": "An error occurred",
+  "male": "Male",
+  "female": "Female",
+  "nonPermanentEmployee": "Temporary Employee",
+  "permanentEmployee": "Permanent Employee"
 }

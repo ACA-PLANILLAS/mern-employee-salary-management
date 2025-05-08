@@ -7,6 +7,7 @@ import Layout from '../../../layout';
 import { Breadcrumb, ButtonOne, ButtonTwo } from '../../../components';
 import { TfiPrinter } from 'react-icons/tfi';
 import { useTranslation } from 'react-i18next';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const DetailDataGaji = () => {
     const [data, setData] = useState({
@@ -36,7 +37,7 @@ const DetailDataGaji = () => {
     useEffect(() => {
         const getDataPegawai = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/data_gaji/name/${name}`);
+                const response = await axios.get(`${API_URL}/data_gaji/name/${name}`);
                 const data = response.data[0];
 
                 setData(data);

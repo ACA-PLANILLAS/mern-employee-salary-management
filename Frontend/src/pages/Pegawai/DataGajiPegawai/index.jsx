@@ -9,6 +9,7 @@ import axios from "axios";
 import { TfiPrinter } from "react-icons/tfi";
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const ITEMS_PER_PAGE = 4;
 
@@ -120,7 +121,7 @@ const DataGajiPegawai = () => {
   useEffect(() => {
     const getDataPegawai = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/data_gaji/name/${nama_pegawai}`);
+        const response = await axios.get(`${API_URL}/data_gaji/name/${nama_pegawai}`);
         const data = response.data;
 
         setDataGajiPegawai(data);

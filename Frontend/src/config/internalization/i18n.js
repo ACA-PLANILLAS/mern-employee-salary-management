@@ -133,6 +133,11 @@ import databaseMessagesId from '../../assets/locales/id/databaseMessages.json';
 import databaseMessagesEn from '../../assets/locales/en/databaseMessages.json';
 import databaseMessagesEs from '../../assets/locales/es/databaseMessages.json';
 
+// CATALOGS
+import catalogsId from '../../assets/locales/id/catalogs.json';
+import catalogsEn from '../../assets/locales/en/catalogs.json';
+import catalogsEs from '../../assets/locales/es/catalogs.json';
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
@@ -147,7 +152,7 @@ i18n
         laporanAbsensi: laporanAbsensiId, laporanGaji: laporanGajiId,
         printPdfDataGajiPegawai: printPdfDataGajiPegawaiId, printPdfLaporanAbsensi: printPdfLaporanAbsensiId, printPdfLaporanGaji: printPdfLaporanGajiId, printPdfSlipGaji: printPdfSlipGajiId,
         slipGaji: slipGajiId, ubahPasswordAdmin: ubahPasswordAdminId, ubahPasswordPegawai: ubahPasswordPegawaiId,
-        notFound: notFoundId, databaseMessages: databaseMessagesId,
+        notFound: notFoundId, databaseMessages: databaseMessagesId, catalogs: catalogsId,
       },
       en: {
         common: commonEN, home: homeEn, login: loginEn, dashboard: dashboardEn,
@@ -158,7 +163,7 @@ i18n
         laporanAbsensi: laporanAbsensiEn, laporanGaji: laporanGajiEn,
         printPdfDataGajiPegawai: printPdfDataGajiPegawaiEn, printPdfLaporanAbsensi: printPdfLaporanAbsensiEn, printPdfLaporanGaji: printPdfLaporanGajiEn, printPdfSlipGaji: printPdfSlipGajiEn,
         slipGaji: slipGajiEn, ubahPasswordAdmin: ubahPasswordAdminEn, ubahPasswordPegawai: ubahPasswordPegawaiEn,
-        notFound: notFoundEn, databaseMessages: databaseMessagesEn,
+        notFound: notFoundEn, databaseMessages: databaseMessagesEn, catalogs: catalogsEn,
       },
       es: {
         common: commonES, home: homeEs, login: loginEs, dashboard: dashboardEs,
@@ -169,7 +174,7 @@ i18n
         laporanAbsensi: laporanAbsensiEs, laporanGaji: laporanGajiEs,
         printPdfDataGajiPegawai: printPdfDataGajiPegawaiEs, printPdfLaporanAbsensi: printPdfLaporanAbsensiEs, printPdfLaporanGaji: printPdfLaporanGajiEs, printPdfSlipGaji: printPdfSlipGajiEs,
         slipGaji: slipGajiEs, ubahPasswordAdmin: ubahPasswordAdminEs, ubahPasswordPegawai: ubahPasswordPegawaiEs,
-        notFound: notFoundEs, databaseMessages: databaseMessagesEs,
+        notFound: notFoundEs, databaseMessages: databaseMessagesEs, catalogs: catalogsEs,
       }
     },
     ns: [
@@ -177,7 +182,7 @@ i18n
       'dataJabatan', 'dataJabatanAddForm', 'dataJabatanEditForm', 'dataKehadiran', 'dataKehadiranAddForm', 'dataKehadiranEditForm',
       'dataPegawai', 'dataPotongan', 'dataPotonganAddForm', 'dataPotonganEditForm', 'laporanAbsensi', 'laporanGaji',
       'printPdfDataGajiPegawai', 'printPdfLaporanAbsensi', 'printPdfLaporanGaji', 'printPdfSlipGaji',
-      'slipGaji', 'ubahPasswordAdmin', 'ubahPasswordPegawai', 'notFound', 'databaseMessages'
+      'slipGaji', 'ubahPasswordAdmin', 'ubahPasswordPegawai', 'notFound', 'databaseMessages', 'catalogs',
     ],
     defaultNS: 'common',
     fallbackLng: 'en',
