@@ -10,6 +10,7 @@ import { deleteDataPegawai, getDataPegawai, getMe } from '../../../../config/red
 import { BiSearch } from 'react-icons/bi';
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
+import { useDisplayValue } from '../../../../hooks/useDisplayValue';
 
 const ITEMS_PER_PAGE = 4;
 
@@ -22,6 +23,7 @@ const DataPegawai = () => {
     const { isError, user } = useSelector((state) => state.auth);
     const { dataPegawai } = useSelector((state) => state.dataPegawai);
     const { t } = useTranslation('dataPegawai');
+    const getDisplayValue = useDisplayValue();
 
     const totalPages = Math.ceil(dataPegawai.length / ITEMS_PER_PAGE);
 
@@ -222,18 +224,23 @@ const DataPegawai = () => {
                                             <p className="text-black dark:text-white text-center">{data.nik}</p>
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                            {/* Nombre del Empleado */}
                                             <p className="text-black dark:text-white">{data.nama_pegawai}</p>
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                                            <p className="text-black dark:text-white">{data.jenis_kelamin}</p>
+                                            {/* Género */}
+                                            <p className="text-black dark:text-white">{getDisplayValue(data.jenis_kelamin)}</p>
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                            {/* Fecha de Ingreso */}
                                             <p className="text-black dark:text-white">{data.tanggal_masuk}</p>
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                            {/* Estado */}
                                             <p className="text-black dark:text-white">{data.status}</p>
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                                            {/* Derechos de Acceso */}
                                             <p className="text-black dark:text-white">{data.hak_akses}</p>
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

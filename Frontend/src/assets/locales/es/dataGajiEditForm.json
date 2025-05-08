@@ -23,5 +23,9 @@
   "dataTidakDitemukan": "Datos no encontrados",
   "dataTersimpan": "Datos guardados correctamente",
   "perbaruiData": "Actualizar Datos",
-  "cetakLaporan": "Imprimir Reporte"
+  "cetakLaporan": "Imprimir Reporte",
+  "male": "Hombre",
+  "female": "Mujer",
+  "nonPermanentEmployee": "Empleado Temporal",
+  "permanentEmployee": "Empleado Permanente"
 }
