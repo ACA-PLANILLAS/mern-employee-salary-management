@@ -23,5 +23,9 @@
   "dataTidakDitemukan": "Data not found",
   "dataTersimpan": "Data successfully saved",
   "perbaruiData": "Update Data",
-  "cetakLaporan": "Print Report"
+  "cetakLaporan": "Print Report",
+  "male": "Male",
+  "female": "Female",
+  "nonPermanentEmployee": "Temporary Employee",
+  "permanentEmployee": "Permanent Employee"
 }

@@ -2,8 +2,11 @@ import DataPegawai from "../models/DataPegawaiModel.js";
 import argon2 from "argon2";
 import { verifyUser } from "../middleware/AuthUser.js";
 
-import authError from "../errors/authError.json" assert { type: "json" };
-import pegawaiError from "../errors/pegawaiError.json" assert { type: "json" };
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+const authError = require('../errors/authError.json');
+const pegawaiError = require('../errors/pegawaiError.json');
 
 const { LOGIN, LOGOUT, ME, PASSWORD } = authError;
 const { EMPLOYEE } = pegawaiError;

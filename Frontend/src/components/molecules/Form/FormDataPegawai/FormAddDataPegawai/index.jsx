@@ -251,8 +251,8 @@ const FormAddDataPegawai = () => {
                                                 required={true}
                                             >
                                                 <option value='' disabled={true}>{t('pilihJenisKelamin')}</option>
-                                                <option value='laki-laki'>Laki-Laki</option>
-                                                <option value='perempuan'>Perempuan</option>
+                                                <option value='laki-laki'>{t('male')}</option>
+                                                <option value='perempuan'>{t('female')}</option>
                                             </select>
                                             <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2 text-2xl'>
                                                 <MdOutlineKeyboardArrowDown />
@@ -306,8 +306,8 @@ const FormAddDataPegawai = () => {
                                                 required={true}
                                             >
                                                 <option value='' disabled={true}>{t('pilihStatus')}</option>
-                                                <option value='karyawan tetap'>{t('karyawanTetap')}</option>
-                                                <option value='karyawan tidak tetap'>{t('karyawanTidakTetap')}</option>
+                                                <option value='karyawan tetap'>{t('permanentEmployee')}</option>
+                                                <option value='karyawan tidak tetap'>{t('nonPermanentEmployee')}</option>
                                             </select>
                                             <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2 text-2xl'>
                                                 <MdOutlineKeyboardArrowDown />

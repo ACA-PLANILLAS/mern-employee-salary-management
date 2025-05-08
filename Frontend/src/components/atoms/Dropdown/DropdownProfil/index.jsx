@@ -10,6 +10,7 @@ import { logoutUser } from '../../../../config/redux/action';
 import { reset } from '../../../../config/redux/reducer/authReducer';
 import axios from "axios";
 import { useTranslation } from 'react-i18next';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const DropdownProfil = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -53,7 +54,7 @@ const DropdownProfil = () => {
       try {
         if (user && user.nama_pegawai) {
           const response = await axios.get(
-            `http://localhost:5000/data_pegawai/name/${user.nama_pegawai}`
+            `${API_URL}/data_pegawai/name/${user.nama_pegawai}`
           );
           const data = response.data;
           setDataPegawai(data);
@@ -114,7 +115,7 @@ const DropdownProfil = () => {
           <div className='h-12 w-12 rounded-full overflow-hidden'>
             <img
               className='h-full w-full object-cover'
-              src={`http://localhost:5000/images/${dataPegawai.photo}`}
+              src={`${API_URL}/images/${dataPegawai.photo}`}
               alt='Profil'
             />
           </div>

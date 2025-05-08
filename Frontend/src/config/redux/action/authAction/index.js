@@ -1,11 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (user, thunkAPI) => {
     try {
-      const response = await axios.post('http://localhost:5000/login', {
+      const response = await axios.post(`${API_URL}/login`, {
         username: user.username,
         password: user.password
       });
@@ -21,7 +22,7 @@ export const loginUser = createAsyncThunk(
 
 export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
   try {
-    const response = await axios.get('http://localhost:5000/me');
+    const response = await axios.get(`${API_URL}/me`);
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -33,7 +34,7 @@ export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
 
 export const logoutUser = createAsyncThunk("user/logoutUser", async () => {
   try {
-    const response = await axios.delete("http://localhost:5000/logout");
+    const response = await axios.delete(`${API_URL}/logout`);
     return response.data;
   } catch (error) {
     if (error.response) {

@@ -9,6 +9,7 @@ import { getMe } from '../../../../../config/redux/action';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const FormEditDataPegawai = () => {
     const [nik, setNik] = useState('');
@@ -42,7 +43,7 @@ const FormEditDataPegawai = () => {
             formData.append('status', status);
             formData.append('hak_akses', hakAkses);
 
-            const response = await axios.patch(`http://localhost:5000/data_pegawai/${id}`, formData, {
+            const response = await axios.patch(`${API_URL}/data_pegawai/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -68,7 +69,7 @@ const FormEditDataPegawai = () => {
     useEffect(() => {
         const getUserById = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/data_pegawai/id/${id}`);
+                const response = await axios.get(`${API_URL}/data_pegawai/id/${id}`);
                 const data = response.data;
                 setNik(data.nik);
                 setNamaPegawai(data.nama_pegawai);
@@ -177,8 +178,8 @@ const FormEditDataPegawai = () => {
                                                 required={true}
                                             >
                                                 <option value='' disabled={true}>{t('pilihJenisKelamin')}</option>
-                                                <option value='laki-laki'>Laki-Laki</option>
-                                                <option value='perempuan'>Perempuan</option>
+                                                <option value='laki-laki'>{t('male')}</option>
+                                                <option value='perempuan'>{t('female')}</option>
                                             </select>
                                             <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2 text-2xl'>
                                                 <MdOutlineKeyboardArrowDown />
@@ -233,8 +234,8 @@ const FormEditDataPegawai = () => {
                                                 required={true}
                                             >
                                                 <option value='' disabled={true}>{t('pilihStatus')}</option>
-                                                <option value='karyawan tetap'>{t('karyawanTetap')}</option>
-                                                <option value='karyawan tidak tetap'>{t('karyawanTidakTetap')}</option>
+                                                <option value='karyawan tetap'>{t('permanentEmployee')}</option>
+                                                <option value='karyawan tidak tetap'>{t('nonPermanentEmployee')}</option>
                                             </select>
                                             <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2 text-2xl'>
                                                 <MdOutlineKeyboardArrowDown />

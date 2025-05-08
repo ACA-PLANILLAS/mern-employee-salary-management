@@ -25,5 +25,9 @@
   "kembali": "Kembali",
   "berhasil": "Berhasil",
   "gagal": "Gagal",
-  "terjadiKesalahan": "Terjadi kesalahan"
+  "terjadiKesalahan": "Terjadi kesalahan",
+  "male": "Laki-laki",
+  "female": "Perempuan",
+  "nonPermanentEmployee": "Karyawan Tetap",
+  "permanentEmployee": "Karyawan Tidak Tetap"
 }

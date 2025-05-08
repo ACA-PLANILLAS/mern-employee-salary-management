@@ -25,5 +25,9 @@
   "kembali": "Volver",
   "berhasil": "Exitoso",
   "gagal": "Fallido",
-  "terjadiKesalahan": "Ocurrió un error"
+  "terjadiKesalahan": "Ocurrió un error",
+  "male": "Hombre",
+  "female": "Mujer",
+  "nonPermanentEmployee": "Empleado Temporal",
+  "permanentEmployee": "Empleado Permanente"
 }
