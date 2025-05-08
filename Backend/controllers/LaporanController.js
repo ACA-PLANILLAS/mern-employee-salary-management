@@ -3,7 +3,11 @@ import {
     getDataKehadiran,
     viewDataGajiPegawaiByYear
 } from "./TransaksiController.js"
-import salaryError from "../errors/salaryError.json" assert { type: "json" };
+
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+const salaryError = require("../errors/salaryError.json");
 
 const { SALARY_REPORT, ATTENDANCE_REPORT, PAYSLEIP } = salaryError;
 
