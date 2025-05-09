@@ -9,8 +9,8 @@ import "moment/locale/id.js";
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
-const transaksiError = require( "../errors/TransaksiError.json");
-const pegawaiError = require( "../errors/pegawaiError.json");
+const transaksiError = require("../errors/TransaksiError.json");
+const pegawaiError = require("../errors/pegawaiError.json");
 
 const { ATTENDANCE, DEDUCTION, SALARY } = transaksiError;
 const { EMPLOYEE } = pegawaiError;
@@ -425,16 +425,6 @@ export const getDataGajiPegawai = async () => {
     const resultDataPotongan = await getDataPotongan();
 
     const potongan_pegawai = resultDataKehadiran.map((kehadiran) => {
-      const potonganAlpha = kehadiran.alpha > 0 ?
-        resultDataPotongan
-          .filter((potongan) => potongan.nama_potongan.toLowerCase() === "alpha")
-          .reduce((total, potongan) => total + potongan.jml_potongan * kehadiran.alpha, 0) : 0;
-
-      const potonganSakit = kehadiran.sakit > 0 ?
-        resultDataPotongan
-          .filter((potongan) => potongan.nama_potongan.toLowerCase() === "sakit")
-          .reduce((total, potongan) => total + potongan.jml_potongan * kehadiran.sakit, 0) : 0;
-
       return {
         tahun: kehadiran.tahun,
         bulan: kehadiran.bulan,
@@ -442,9 +432,6 @@ export const getDataGajiPegawai = async () => {
         hadir: kehadiran.hadir,
         sakit: kehadiran.sakit,
         alpha: kehadiran.alpha,
-        potonganSakit: potonganSakit,
-        potonganAlpha: potonganAlpha,
-        total_potongan: potonganSakit + potonganAlpha
       };
     });
 
@@ -457,11 +444,30 @@ export const getDataGajiPegawai = async () => {
       const potongan = potongan_pegawai.find(
         (potongan) => potongan.nama_pegawai === pegawai.nama_pegawai
       );
+
+      //getting total employee salary with subsidy
+      const total_gaji_no_deductions =
+        pegawai.gaji_pokok +
+        pegawai.tj_transport +
+        pegawai.uang_makan;
+
+      const totalDeductions = [];
+      let totalValueDeducted = 0;
+
+      resultDataPotongan.forEach(deduction => {
+        const valueDeducted = total_gaji_no_deductions * deduction.jml_potongan;
+        totalDeductions.push({
+          ...deduction,
+          valueDeducted: valueDeducted
+        })
+        totalValueDeducted += valueDeducted
+      })
+
       const total_gaji =
         (pegawai.gaji_pokok +
           pegawai.tj_transport +
           pegawai.uang_makan -
-          (potongan ? potongan.total_potongan : 0)).toLocaleString();
+          totalValueDeducted).toLocaleString();
 
       return {
         tahun: potongan ? potongan.tahun : kehadiran ? kehadiran.tahun : 0,
@@ -476,7 +482,7 @@ export const getDataGajiPegawai = async () => {
         hadir: kehadiran.hadir,
         sakit: kehadiran.sakit,
         alpha: kehadiran.alpha,
-        potongan: potongan ? potongan.total_potongan.toLocaleString() : 0,
+        potongan: totalValueDeducted.toLocaleString(),
         total: total_gaji,
       };
     });
