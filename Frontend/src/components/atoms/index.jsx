@@ -13,6 +13,8 @@ import DarkModeSwitcher from './DarkModeSwitcher';
 import DropdownDefault from './Dropdown/DropdownDefault';
 import DropdownProfil from './Dropdown/DropdownProfil';
 import LoginInput from "./Input/LoginInput";
+import CurrencySwitcher from "./CurrencySwitcher";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 export {
     BottomLine,
@@ -29,5 +31,7 @@ export {
     DarkModeSwitcher,
     DropdownDefault,
     DropdownProfil,
-    LoginInput
+    LoginInput,
+    CurrencySwitcher,
+    LanguageSwitcher
 };

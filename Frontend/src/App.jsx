@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Routes, store } from './config';
 import { Provider } from 'react-redux';
+import { CurrencyProvider } from './config/currency/CurrencyContext';
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -19,7 +20,9 @@ function App() {
   return (
     !loading && (
       <Provider store={store}>
-        <Routes />
+        <CurrencyProvider>
+          <Routes />
+        </CurrencyProvider>
       </Provider>
     )
   )

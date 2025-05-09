@@ -43,7 +43,7 @@ const LanguageSwitcher = () => {
     <li className="relative" ref={ref}>
       <button
         onClick={toggleOpen}
-        className="flex items-center gap-2 px-3 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+        className="flex items-center gap-2 px-3 py-1 rounded hover:bg-gray-100 border border-strokedark/30 dark:hover:bg-gray-700"
       >
         <img
           src={flagUrl(current.countryCode)}
@@ -54,7 +54,7 @@ const LanguageSwitcher = () => {
       </button>
 
       {open && (
-        <ul className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 rounded-lg shadow-lg z-50">
+        <ul className="absolute right-0 mt-2 w-40 bg-white dark:border-strokedark dark:bg-boxdark rounded-lg shadow-lg z-50">
           {languages.map(({ code, name, countryCode }) => (
             <li key={code}>
               <button
