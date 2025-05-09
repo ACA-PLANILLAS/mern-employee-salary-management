@@ -10,6 +10,7 @@ import { BiSearch } from 'react-icons/bi'
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdOutlineKeyboardArrowDown } from 'react-icons/md'
 import { deleteDataKehadiran, getDataKehadiran, getMe } from '../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
+import { useDisplayValue } from '../../../../hooks/useDisplayValue';
 
 const ITEMS_PER_PAGE = 4;
 
@@ -19,6 +20,7 @@ const DataKehadiran = () => {
     const [filterBulan, setFilterBulan] = useState("");
     const [filterNama, setFilterNama] = useState("");
     const { t } = useTranslation('dataKehadiran');
+    const getDisplayValue = useDisplayValue();
 
     const { dataKehadiran } = useSelector((state) => state.dataKehadiran);
     const { isError, user } = useSelector((state) => state.auth);
@@ -232,7 +234,7 @@ const DataKehadiran = () => {
                     }, []).map(data => (
                         <h2 className="px-4 py-2 text-black dark:text-white" key={`${data.bulan}-${data.tahun}`}>
                             {t('showingDataFor')}
-                            <span className="font-medium"> {data.bulan} </span>
+                            <span className="font-medium"> {getDisplayValue(data.bulan)} </span>
                             {t('yearLabel')}
                             <span className="font-medium"> {data.tahun}</span>
                         </h2>
@@ -304,21 +306,27 @@ const DataKehadiran = () => {
                                             <p className='text-black text-center dark:text-white'>{data.nik}</p>
                                         </td>
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
+                                            {/* nombre */}
                                             <p className='text-black dark:text-white'>{data.nama_pegawai}</p>
                                         </td>
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
+                                            {/* puesto */}
                                             <p className='text-black dark:text-white'>{data.jabatan_pegawai}</p>
                                         </td>
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                                            <p className='text-black dark:text-white'>{data.jenis_kelamin}</p>
+                                            {/* genero */}
+                                            <p className='text-black dark:text-white'>{getDisplayValue(data.jenis_kelamin)}</p>
                                         </td>
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
+                                            {/* Dias presentes */}
                                             <p className='text-center text-black dark:text-white'>{data.hadir}</p>
                                         </td>
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
+                                            {/* Dias enfermos */}
                                             <p className='text-center text-black dark:text-white'>{data.sakit}</p>
                                         </td>
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
+                                            {/* Dias con ausencia injustificada */}
                                             <p className='text-center text-black dark:text-white'>{data.alpha}</p>
                                         </td>
                                         <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
