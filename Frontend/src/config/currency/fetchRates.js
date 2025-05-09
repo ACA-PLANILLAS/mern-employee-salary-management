@@ -13,8 +13,8 @@ export const fetchRates = async () => {
     }
 
     setCurrentRates(rates);
-    console.log("✔️ Rates loaded from API", rates);
+    console.log(" Rates loaded from API", rates);
   } catch (error) {
-    console.warn("⚠️ Could not fetch rates, using backup");
+    console.warn(" Could not fetch rates, using backup");
   }
 };

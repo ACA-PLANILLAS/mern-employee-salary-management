@@ -1,25 +1,20 @@
 {
-    "base_currency": "USD",
-    "currencies": {
-      "USD": {
-        "name": "United States Dollar",
-        "symbol": "$",
-        "backup_rate": 1
-      },
-      "CRC": {
-        "name": "Costa Rican Col\u00f3n",
-        "symbol": "\u20a1",
-        "backup_rate": 8.7362
-      },
-      "IDR": {
-        "name": "Indonesian Rupiah",
-        "symbol": "Rp",
-        "backup_rate": 15650.12
-      },
-      "EUR": {
-        "name": "Euro",
-        "symbol": "\u20ac",
-        "backup_rate": 0.93
-      }
+  "base_currency": "USD",
+  "currencies": {
+    "USD": {
+      "name": "United States Dollar",
+      "symbol": "$",
+      "backup_rate": 1
+    },
+    "SVC": {
+      "name": "Salvadoran Colón",
+      "symbol": "₡",
+      "backup_rate": 8.75
+    },
+    "EUR": {
+      "name": "Euro",
+      "symbol": "€",
+      "backup_rate": 0.93
     }
   }
+}
