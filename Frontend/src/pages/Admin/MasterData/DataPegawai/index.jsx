@@ -238,11 +238,11 @@ const DataPegawai = () => {
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                             {/* Estado */}
-                                            <p className="text-black dark:text-white">{data.status}</p>
+                                            <p className="text-black dark:text-white">{getDisplayValue(data.status)}</p>
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                             {/* Derechos de Acceso */}
-                                            <p className="text-black dark:text-white">{data.hak_akses}</p>
+                                            <p className="text-black dark:text-white">{getDisplayValue(data.hak_akses)}</p>
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                             <div className="flex items-center space-x-3.5">

@@ -10,6 +10,7 @@ import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdOutlineKeyboar
 import { TfiPrinter } from 'react-icons/tfi'
 import { fetchLaporanGajiByMonth, fetchLaporanGajiByYear, getDataGaji, getMe } from '../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
+import { useDisplayValue } from '../../../../hooks/useDisplayValue';
 
 const ITEMS_PER_PAGE = 4;
 
@@ -26,6 +27,7 @@ const DataGaji = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { t } = useTranslation('dataGaji');
+    const getDisplayValue = useDisplayValue();
 
     const totalPages = Math.ceil(dataGaji.length / ITEMS_PER_PAGE);
 
@@ -244,7 +246,7 @@ const DataGaji = () => {
                         }, []).map(data => (data.tahun !== 0 && data.bulan !== 0 &&
                             <h2 className="px-4 py-2 text-black dark:text-white" key={`${data.bulan}-${data.tahun}`}>
                                 {t('displayingSalaryDataMonth')} : 
-                                <span className="font-medium"> {data.bulan} </span>
+                                <span className="font-medium"> {getDisplayValue(data.bulan)} </span>
                                 {t('year')} :
                                 <span className="font-medium"> {data.tahun}</span>
                             </h2>
