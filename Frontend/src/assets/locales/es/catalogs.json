@@ -1,5 +1,20 @@
 {
-    "laki-laki": "Hombre",
-    "perempuan": "Mujer"
-  }
-  
+  "laki-laki": "Hombre",
+  "perempuan": "Mujer",
+  "karyawan tidak tetap": "Empleado Temporal",
+  "karyawan tetap": "Empleado Permanente",
+  "pegawai": "Empleado",
+  "admin": "Administrador",
+  "januari": "enero",
+  "februari": "febrero",
+  "maret": "marzo",
+  "april": "abril",
+  "mei": "mayo",
+  "juni": "junio",
+  "juli": "julio",
+  "agustus": "agosto",
+  "september": "septiembre",
+  "oktober": "octubre",
+  "november": "noviembre",
+  "desember": "diciembre"
+}
