@@ -19,6 +19,7 @@
     "labelYear": "Año",
     "placeholderYear": "Ingresa el año...",
     "printButton": "Imprimir Informe de Asistencia",
+    "printButtonExcel": "Exportar a Excel",
     "swalTitle": "Datos no encontrados",
     "swalText": "Lo sentimos, no se encontraron los datos que buscabas"
   }

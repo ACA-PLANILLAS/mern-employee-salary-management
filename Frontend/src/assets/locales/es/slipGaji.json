@@ -21,5 +21,8 @@
     "masukkanTahun": "Ingrese el año...",
     "namaPegawai": "Nombre del empleado",
     "pilihNamaPegawai": "Seleccionar nombre del empleado",
-    "cetakSlipGaji": "Imprimir recibo de sueldo"
+    "cetakSlipGaji": "Imprimir recibo de sueldo",
+    "printButtonExcel": "Exportar a Excel",
+    "swalTitle": "Datos no encontrados",
+    "swalText": "Lo sentimos, no se encontraron los datos que estaba buscando"
   }

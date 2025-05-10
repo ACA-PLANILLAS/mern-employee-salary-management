@@ -11,6 +11,7 @@ import {
     getMe
 } from "../../../../config/redux/action";
 import { ButtonOne, ButtonTwo } from "../../../atoms";
+import { useTranslation } from "react-i18next";
 
 const PrintPdfSlipGaji = () => {
     const { t } = useTranslation("printPdfSlipGaji");

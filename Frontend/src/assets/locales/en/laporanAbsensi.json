@@ -19,6 +19,7 @@
     "labelYear": "Year",
     "placeholderYear": "Enter year...",
     "printButton": "Print Attendance Report",
+    "printButtonExcel": "Export to Excel",
     "swalTitle": "Data not found",
     "swalText": "Sorry, the data you are looking for could not be found"
   }

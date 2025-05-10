@@ -19,6 +19,7 @@
     "labelYear": "Tahun",
     "placeholderYear": "Masukkan Tahun...",
     "printButton": "Cetak Laporan Absensi",
+    "printButtonExcel": "Ekspor ke Excel",
     "swalTitle": "Data tidak ditemukan",
     "swalText": "Maaf, data yang anda cari tidak ditemukan"
   }

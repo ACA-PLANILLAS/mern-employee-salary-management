@@ -21,5 +21,8 @@
     "masukkanTahun": "Masukkan Tahun...",
     "namaPegawai": "Nama Pegawai",
     "pilihNamaPegawai": "Pilih Nama Pegawai",
-    "cetakSlipGaji": "Cetak Slip Gaji"
+    "cetakSlipGaji": "Cetak Slip Gaji",
+    "printButtonExcel": "Ekspor ke Excel",
+    "swalTitle": "Data tidak ditemukan",
+    "swalText": "Maaf, data yang anda cari tidak ditemukan"
   }

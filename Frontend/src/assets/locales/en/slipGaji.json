@@ -21,5 +21,8 @@
     "masukkanTahun": "Enter year...",
     "namaPegawai": "Employee Name",
     "pilihNamaPegawai": "Select Employee Name",
-    "cetakSlipGaji": "Print Payslip"
+    "cetakSlipGaji": "Print Payslip",
+    "printButtonExcel": "Export to Excel",
+    "swalTitle": "Data not found",
+    "swalText": "Sorry, the data you are looking for was not found"
   }
