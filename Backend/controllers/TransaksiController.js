@@ -2,6 +2,7 @@ import DataKehadiran from "../models/DataKehadiranModel.js";
 import DataPegawai from "../models/DataPegawaiModel.js";
 import DataJabatan from "../models/DataJabatanModel.js";
 import PotonganGaji from "../models/PotonganGajiModel.js";
+import Parameter from "../models/ParameterModel.js";
 import moment from "moment";
 import "moment/locale/id.js";
 
@@ -424,6 +425,14 @@ export const getDataGajiPegawai = async () => {
     const resultDataKehadiran = await getDataKehadiran();
     const resultDataPotongan = await getDataPotongan();
 
+    // getting job total work days and hours
+    const workDaysInWeeks = await Parameter.findOne({ where: { type: "DWEK" } });
+    const workHoursInWeeks = await Parameter.findOne({ where: { type: "HWEK" } });
+
+    const totalDaysWorkedOnMonth = workHoursInWeeks.value * 4;
+
+
+
     const potongan_pegawai = resultDataKehadiran.map((kehadiran) => {
       return {
         tahun: kehadiran.tahun,
@@ -463,11 +472,12 @@ export const getDataGajiPegawai = async () => {
         totalValueDeducted += valueDeducted
       })
 
+      const totalUnassitence = parseFloat((pegawai.gaji_pokok * 8) / totalDaysWorkedOnMonth) * (parseFloat(kehadiran.sakit) + parseFloat(kehadiran.alpha));
       const total_gaji =
         (pegawai.gaji_pokok +
           pegawai.tj_transport +
           pegawai.uang_makan -
-          totalValueDeducted).toLocaleString();
+          (totalValueDeducted + totalUnassitence)).toFixed(2).toLocaleString();
 
       return {
         tahun: potongan ? potongan.tahun : kehadiran ? kehadiran.tahun : 0,
@@ -483,7 +493,7 @@ export const getDataGajiPegawai = async () => {
         sakit: kehadiran.sakit,
         alpha: kehadiran.alpha,
         potongan: totalValueDeducted.toLocaleString(),
-        total: total_gaji,
+        total: (total_gaji).toLocaleString(),
       };
     });
     return total_gaji_pegawai;
