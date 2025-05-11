@@ -5,28 +5,14 @@ import { adminOnly, verifyUser } from '../middleware/AuthUser.js';
 
 /* === import Controllers === */
 import {
-    getAllEmployees,
-    getEmployeeById,
-    createEmployee,
-    updateEmployee,
-    deleteEmployee,
+    getDataPegawai,
+    getDataPegawaiByID,
+    createDataPegawai,
+    updateDataPegawai,
+    deleteDataPegawai,
+    getDataPegawaiByNik,
+    getDataPegawaiByName,
 } from '../controllers/DataPegawai.js';
-
-import {
-    getAllPositionHistories,
-    getPositionHistoryById,
-    createPositionHistory,
-    updatePositionHistory,
-    deletePositionHistory
-  } from '../controllers/PositionHistoryController.js';
-  
-  import {
-    getAllPensionInstitutions,
-    getPensionInstitutionByCode,
-    createPensionInstitution,
-    updatePensionInstitution,
-    deletePensionInstitution
-  } from '../controllers/PensionInstitutionController.js';
 
 import {
     getDataJabatan,
@@ -84,35 +70,13 @@ const router = express.Router();
 
 /* ==== Master Data ==== */
 // Data Pegawai
-// router.get('/data_pegawai', verifyUser, adminOnly, getDataPegawai);
-// router.get('/data_pegawai/id/:id', verifyUser, adminOnly, getDataPegawaiByID);
-// router.get('/data_pegawai/nik/:nik', verifyUser, adminOnly, getDataPegawaiByNik);
-// router.get('/data_pegawai/name/:name', verifyUser, getDataPegawaiByName);
-// router.post('/data_pegawai',verifyUser, adminOnly, createDataPegawai);
-// router.patch('/data_pegawai/:id', verifyUser, adminOnly, updateDataPegawai);
-// router.delete('/data_pegawai/:id', verifyUser, adminOnly, deleteDataPegawai);
-router.get('/data_pegawai',          verifyUser, adminOnly, getAllEmployees);
-router.get('/data_pegawai/:id',      verifyUser, adminOnly, getEmployeeById);
-router.post('/data_pegawai',         verifyUser, adminOnly, createEmployee);
-router.patch('/data_pegawai/:id',    verifyUser, adminOnly, updateEmployee);
-router.delete('/data_pegawai/:id',   verifyUser, adminOnly, deleteEmployee);
-
-// PositionHistory Routes
-router.get('/position_history',      verifyUser, adminOnly, getAllPositionHistories);
-router.get('/position_history/:id',  verifyUser, adminOnly, getPositionHistoryById);
-router.post('/position_history',     verifyUser, adminOnly, createPositionHistory);
-router.patch('/position_history/:id',verifyUser, adminOnly, updatePositionHistory);
-router.delete('/position_history/:id',verifyUser, adminOnly, deletePositionHistory);
-
-// PensionInstitution Routes
-router.get('/pension_institutions',          verifyUser, adminOnly, getAllPensionInstitutions);
-router.get('/pension_institutions/:code',    verifyUser, adminOnly, getPensionInstitutionByCode);
-router.post('/pension_institutions',         verifyUser, adminOnly, createPensionInstitution);
-router.patch('/pension_institutions/:code',  verifyUser, adminOnly, updatePensionInstitution);
-router.delete('/pension_institutions/:code', verifyUser, adminOnly, deletePensionInstitution);
-
-
-// Change Password
+router.get('/data_pegawai', verifyUser, adminOnly, getDataPegawai);
+router.get('/data_pegawai/id/:id', verifyUser, adminOnly, getDataPegawaiByID);
+router.get('/data_pegawai/nik/:nik', verifyUser, adminOnly, getDataPegawaiByNik);
+router.get('/data_pegawai/name/:name', verifyUser, getDataPegawaiByName);
+router.post('/data_pegawai',verifyUser, adminOnly, createDataPegawai);
+router.patch('/data_pegawai/:id', verifyUser, adminOnly, updateDataPegawai);
+router.delete('/data_pegawai/:id', verifyUser, adminOnly, deleteDataPegawai);
 router.patch('/data_pegawai/:id/change_password', verifyUser, adminOnly, changePassword);
 // Data Jabatan
 router.get('/data_jabatan', verifyUser, adminOnly, getDataJabatan);

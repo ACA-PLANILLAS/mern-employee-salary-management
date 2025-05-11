@@ -1,264 +1,300 @@
-import DataPegawai from "../models/DataPegawaiModel.js";
+import PositionHistory from "../models/PositionHistoryModel.js";
+import PensionInstitution from "../models/PensionInstitutionModel.js"; 
+ import DataPegawai from "../models/DataPegawaiModel.js";
 import argon2 from "argon2";
 import path from "path";
 
-import { createRequire } from 'module';
+import { createRequire } from "module";
+
 const require = createRequire(import.meta.url);
 
-const pegawaiError  = require("../errors/pegawaiError.json");
-const authError  = require("../errors/authError.json");
-
+const pegawaiError = require("../errors/pegawaiError.json");
+const authError = require("../errors/authError.json");
 const { EMPLOYEE } = pegawaiError;
 const { PASSWORD } = authError;
 
-// menampilkan semua data Pegawai
-export const getDataPegawai = async (req, res) => {
-    try {
-        const response = await DataPegawai.findAll({
-            attributes: [
-                'id', 'nik', 'nama_pegawai',
-                'jenis_kelamin', 'jabatan', 'tanggal_masuk',
-                'status', 'photo', 'hak_akses'
-            ]
-        });
-        res.status(200).json(response);
-    } catch (error) {
-        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
-    }
-}
-
-// method untuk mencari data Pegawai berdasarkan ID
-export const getDataPegawaiByID = async (req, res) => {
-    try {
-        const response = await DataPegawai.findOne({
-            attributes: [
-                'id', 'nik', 'nama_pegawai',
-                'jenis_kelamin', 'jabatan', 'username', 'tanggal_masuk',
-                'status', 'photo', 'hak_akses'
-            ],
-            where: {
-                id: req.params.id
-            }
-        });
-        if (response) {
-            res.status(200).json(response);
-        } else {
-            res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_ID.code })
-        }
-    } catch (error) {
-        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
-    }
-}
-
-// method untuk mencari data pegawai berdasarkan NIK
-export const getDataPegawaiByNik = async (req, res) => {
-    try {
-        const response = await DataPegawai.findOne({
-            attributes: [
-                'id', 'nik', 'nama_pegawai',
-                'jenis_kelamin', 'jabatan', 'tanggal_masuk',
-                'status', 'photo', 'hak_akses'
-            ],
-            where: {
-                nik: req.params.nik
-            }
-        });
-        if (response) {
-            res.status(200).json(response);
-        } else {
-            res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NIK.code })
-        }
-    } catch (error) {
-        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
-    }
-}
-
-
-// method untuk mencari data pegawai berdasarkan Nama
-export const getDataPegawaiByName = async (req, res) => {
-    try {
-        const response = await DataPegawai.findOne({
-            attributes: [
-                'id', 'nik', 'nama_pegawai',
-                'jenis_kelamin', 'jabatan', 'tanggal_masuk',
-                'status', 'photo', 'hak_akses'
-            ],
-            where: {
-                nama_pegawai: req.params.name
-            }
-        });
-        if (response) {
-            res.status(200).json(response);
-        } else {
-            res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NAME.code })
-        }
-    } catch (error) {
-        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
-    }
-}
-
-//  method untuk tambah data Pegawai
-export const createDataPegawai = async (req, res) => {
-    const {
-        nik, nama_pegawai,
-        username, password, confPassword, jenis_kelamin,
-        jabatan, tanggal_masuk,
-        status, hak_akses
-    } = req.body;
-
-    if (password !== confPassword) {
-        return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH.code });
-    }
-
-    if (!req.files || !req.files.photo) {
-        return res.status(400).json({ msg: EMPLOYEE.PHOTO_REQUIRED.code });
-    }
-
-    const file = req.files.photo;
-    const fileSize = file.data.length;
-    const ext = path.extname(file.name);
-    const fileName = file.md5 + ext;
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
-    console.log({
-        fileName: fileName,
-        url: url,
-        ext: ext,
-        fileSize: fileSize
-    })
-    const allowedTypes = ['.png', '.jpg', '.jpeg'];
-
-    if (!allowedTypes.includes(ext.toLowerCase())) {
-        return res.status(422).json({ msg: EMPLOYEE.INVALID_PHOTO_FORMAT.code });
-    }
-
-    if (fileSize > 2000000) {
-        return res.status(422).json({ msg: EMPLOYEE.PHOTO_TOO_LARGE.code });
-    }
-
-    file.mv(`./public/images/${fileName}`, async (err) => {
-        if (err) {
-            return res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
-        }
-
-        const hashPassword = await argon2.hash(password);
-
-        try {
-            await DataPegawai.create({
-                nik: nik,
-                nama_pegawai: nama_pegawai,
-                username: username,
-                password: hashPassword,
-                jenis_kelamin: jenis_kelamin,
-                jabatan: jabatan,
-                tanggal_masuk: tanggal_masuk,
-                status: status,
-                photo: fileName,
-                url: url,
-                hak_akses: hak_akses
-            });
-
-            res.status(201).json({ success: true, message: EMPLOYEE.CREATE_SUCCESS.code });
-        } catch (error) {
-            console.log(error.message);
-            res.status(500).json({ success: false, message: EMPLOYEE.INTERNAL_ERROR.code });
-        }
+// Get all employees
+export const getAllEmployees = async (req, res) => {
+  try {
+    const employees = await DataPegawai.findAll({
+      attributes: [
+        "id",
+        "nik",
+        "dui_or_nit",
+        "document_type",
+        "isss_affiliation_number",
+        "pension_institution_code",
+        "first_name",
+        "middle_name",
+        "last_name",
+        "second_last_name",
+        "maiden_name",
+        "jenis_kelamin",
+        "hire_date",
+        "status",
+        "jabatan",
+        "last_position_change_date",
+        "monthly_salary",
+        "has_active_loan",
+        "loan_original_amount",
+        "loan_outstanding_balance",
+        "loan_monthly_installment",
+        "loan_start_date",
+        "username",
+        "photo",
+        "url",
+        "hak_akses",
+      ],
     });
+    res.status(200).json(employees);
+  } catch (error) {
+    res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
+  }
 };
 
-
-// method untuk update data Pegawai
-export const updateDataPegawai = async (req, res) => {
-    const pegawai = await DataPegawai.findOne({
-        where: {
-            id: req.params.id
-        }
+// Get employee by ID
+export const getEmployeeById = async (req, res) => {
+  try {
+    const emp = await DataPegawai.findByPk(req.params.id, {
+      attributes: [
+        "id",
+        "nik",
+        "dui_or_nit",
+        "document_type",
+        "isss_affiliation_number",
+        "pension_institution_code",
+        "first_name",
+        "middle_name",
+        "last_name",
+        "second_last_name",
+        "maiden_name",
+        "jenis_kelamin",
+        "hire_date",
+        "status",
+        "jabatan",
+        "last_position_change_date",
+        "monthly_salary",
+        "has_active_loan",
+        "loan_original_amount",
+        "loan_outstanding_balance",
+        "loan_monthly_installment",
+        "loan_start_date",
+        "username",
+        "photo",
+        "url",
+        "hak_akses",
+      ],
+      include: [{ model: PensionInstitution, as: "pensionInstitution" }],
     });
-
-    if (!pegawai) return res.staus(404).json({ msg: EMPLOYEE.USER_NOT_FOUND.code });
-    const {
-        nik, nama_pegawai,
-        username, jenis_kelamin,
-        jabatan, tanggal_masuk,
-        status, hak_akses
-    } = req.body;
-
-    try {
-        await DataPegawai.update({
-            nik: nik,
-            nama_pegawai: nama_pegawai,
-            username: username,
-            jenis_kelamin: jenis_kelamin,
-            jabatan: jabatan,
-            tanggal_masuk: tanggal_masuk,
-            status: status,
-            hak_akses: hak_akses
-        }, {
-            where: {
-                id: pegawai.id
-            }
-        });
-        res.status(200).json({ msg: EMPLOYEE.UPDATE_SUCCESS.code });
-    } catch (error) {
-        res.status(400).json({ msg: EMPLOYEE.UPDATE_FAILED.code });
-    }
-}
-
-// Method untuk update password Pegawai
-export const changePasswordAdmin = async (req, res) => {
-    const pegawai = await DataPegawai.findOne({
-        where: {
-            id: req.params.id
-        }
-    });
-
-    if (!pegawai) return res.status(404).json({ msg: EMPLOYEE.USER_NOT_FOUND.code });
-
-
-    const { password, confPassword } = req.body;
-
-    if (password !== confPassword) return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH.code });
-
-    try {
-        if (pegawai.hak_akses === "pegawai") {
-            const hashPassword = await argon2.hash(password);
-
-            await DataPegawai.update(
-                {
-                    password: hashPassword
-                },
-                {
-                    where: {
-                        id: pegawai.id
-                    }
-                }
-            );
-
-            res.status(200).json({ msg: EMPLOYEE.UPDATE_SUCCESS.code });
-        } else {
-            res.status(403).json({ msg: EMPLOYEE.FORBIDDEN.code });
-        }
-    } catch (error) {
-        res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
-    }
+    if (!emp) return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND.code });
+    res.status(200).json(emp);
+  } catch (error) {
+    res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
+  }
 };
 
+// Create new employee
+export const createEmployee = async (req, res) => {
+  const {
+    nik,
+    dui_or_nit,
+    document_type,
+    isss_affiliation_number,
+    pension_institution_code,
+    first_name,
+    middle_name,
+    last_name,
+    second_last_name,
+    maiden_name,
+    jenis_kelamin,
+    hire_date,
+    status,
+    jabatan,
+    last_position_change_date,
+    monthly_salary,
+    has_active_loan,
+    loan_original_amount,
+    loan_outstanding_balance,
+    loan_monthly_installment,
+    loan_start_date,
+    username,
+    password,
+    confPassword,
+    hak_akses,
+  } = req.body;
 
-// method untuk delete data Pegawai
-export const deleteDataPegawai = async (req, res) => {
-    const pegawai = await DataPegawai.findOne({
-        where: {
-            id: req.params.id
-        }
-    });
-    if (!pegawai) return res.status(404).json({ msg: EMPLOYEE.USER_NOT_FOUND.code });
+  if (password !== confPassword) {
+    return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH.code });
+  }
+  // photo upload logic
+  if (!req.files?.photo) {
+    return res.status(400).json({ msg: EMPLOYEE.PHOTO_REQUIRED.code });
+  }
+
+  const file = req.files.photo;
+  const fileSize = file.data.length;
+  const ext = path.extname(file.name).toLowerCase();
+  const allowed = [".png", ".jpg", ".jpeg"];
+
+  if (fileSize > 2000000) {
+    return res.status(422).json({ msg: EMPLOYEE.PHOTO_TOO_LARGE.code });
+  }
+
+  if (!allowed.includes(ext) || file.data.length > 2e6) {
+    return res.status(422).json({ msg: EMPLOYEE.INVALID_PHOTO_FORMAT.code });
+  }
+  const filename = file.md5 + ext;
+  const url = `${req.protocol}://${req.get("host")}/images/${filename}`;
+
+  file.mv(`./public/images/${filename}`, async (err) => {
+    if (err) return res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
+    const hashed = await argon2.hash(password);
     try {
-        await DataPegawai.destroy({
-            where: {
-                id: pegawai.id
-            }
-        });
-        res.status(200).json({ msg: EMPLOYEE.DELETE_SUCCESS.code });
-    } catch (error) {
-        res.status(400).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
+      const newEmp = await DataPegawai.create({
+        nik,
+        dui_or_nit,
+        document_type,
+        isss_affiliation_number,
+        pension_institution_code,
+        first_name,
+        middle_name,
+        last_name,
+        second_last_name,
+        maiden_name,
+        jenis_kelamin,
+        hire_date,
+        status,
+        jabatan,
+        last_position_change_date,
+        monthly_salary,
+        has_active_loan,
+        loan_original_amount,
+        loan_outstanding_balance,
+        loan_monthly_installment,
+        loan_start_date,
+        username,
+        password: hashed,
+        photo: filename,
+        url,
+        hak_akses,
+      });
+      // record initial position history
+      await PositionHistory.create({
+        employee_id: newEmp.id,
+        position_id: null, // set proper job ID lookup
+        start_date: last_position_change_date || hire_date,
+      });
+      res
+        .status(201)
+        .json({ success: true, message: EMPLOYEE.CREATE_SUCCESS.code });
+    } catch (e) {
+      res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
-}
+  });
+};
+
+// Update employee
+export const updateEmployee = async (req, res) => {
+  const emp = await DataPegawai.findByPk(req.params.id);
+  if (!emp) return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND.code });
+  const {
+    nik,
+    dui_or_nit,
+    document_type,
+    isss_affiliation_number,
+    pension_institution_code,
+    first_name,
+    middle_name,
+    last_name,
+    second_last_name,
+    maiden_name,
+    jenis_kelamin,
+    hire_date,
+    status,
+    jabatan,
+    last_position_change_date,
+    monthly_salary,
+    has_active_loan,
+    loan_original_amount,
+    loan_outstanding_balance,
+    loan_monthly_installment,
+    loan_start_date,
+    username,
+    hak_akses,
+  } = req.body;
+  try {
+    // if position changed, record history
+    if (emp.jabatan !== jabatan) {
+      await PositionHistory.create({
+        employee_id: emp.id,
+        position_id: null, // lookup new job ID
+        start_date: last_position_change_date,
+      });
+    }
+    await DataPegawai.update(
+      {
+        nik,
+        dui_or_nit,
+        document_type,
+        isss_affiliation_number,
+        pension_institution_code,
+        first_name,
+        middle_name,
+        last_name,
+        second_last_name,
+        maiden_name,
+        jenis_kelamin,
+        hire_date,
+        status,
+        jabatan,
+        last_position_change_date,
+        monthly_salary,
+        has_active_loan,
+        loan_original_amount,
+        loan_outstanding_balance,
+        loan_monthly_installment,
+        loan_start_date,
+        username,
+        hak_akses,
+      },
+      { where: { id: emp.id } }
+    );
+    res.status(200).json({ msg: EMPLOYEE.UPDATE_SUCCESS.code });
+  } catch (e) {
+    res.status(400).json({ msg: EMPLOYEE.UPDATE_FAILED.code });
+  }
+};
+
+// Delete employee
+export const deleteEmployee = async (req, res) => {
+  const emp = await DataPegawai.findByPk(req.params.id);
+  if (!emp) return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND.code });
+  try {
+    await DataPegawai.destroy({ where: { id: emp.id } });
+    res.status(200).json({ msg: EMPLOYEE.DELETE_SUCCESS.code });
+  } catch (e) {
+    res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
+  }
+};
+
+// Get all pension institutions
+export const getAllPensionInstitutions = async (req, res) => {
+  try {
+    const list = await PensionInstitution.findAll();
+    res.status(200).json(list);
+  } catch (e) {
+    res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
+  }
+};
+
+// Get position history for an employee
+export const getPositionHistory = async (req, res) => {
+  try {
+    const history = await PositionHistory.findAll({
+      where: { employee_id: req.params.id },
+    });
+    res.status(200).json(history);
+  } catch (e) {
+    res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
+  }
+};
