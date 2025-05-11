@@ -36,41 +36,45 @@ const FormAddDataJabatan = () => {
         newFormData.append('gaji_pokok', gajiPokok);
         newFormData.append('tj_transport', tjTransport);
         newFormData.append('uang_makan', uangMakan);
-
         dispatch(createDataJabatan(newFormData, navigate))
-            .then((response) => {
-                Swal.fire({
-                    icon: 'success',
-                    title: t('success'),
-                    text: getErrorMessage(response.message),
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.msg) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: t('error'),
-                        text: getErrorMessage(error.response.data.msg),
-                        confirmButtonText: 'Ok',
-                    });
-                } else if (error.message) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: t('error'),
-                        text: getErrorMessage(error.message),
-                        confirmButtonText: 'Ok',
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: t('error'),
-                        text: t('errorOccurred'),
-                        confirmButtonText: 'Ok',
-                    });
-                }
+        .then((response) => {
+          Swal.fire({
+            icon: 'success',
+            title: t('success'),
+            text: getErrorMessage(response.message),
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        })
+        .catch((error) => {
+          const swalOptions = {
+            icon: 'error',
+            title: t('error'),
+            confirmButtonText: 'Aceptar',
+            buttonsStyling: false,
+            customClass: {
+              confirmButton: 'bg-[#3C50E0] text-white px-4 py-2 rounded-md shadow font-medium hover:bg-[#2f3fb6]'
+            }
+          };
+      
+          if (error.response?.data?.msg) {
+            Swal.fire({
+              ...swalOptions,
+              text: getErrorMessage(error.response.data.msg),
             });
+          } else if (error.message) {
+            Swal.fire({
+              ...swalOptions,
+              text: getErrorMessage(error.message),
+            });
+          } else {
+            Swal.fire({
+              ...swalOptions,
+              text: t('errorOccurred'),
+            });
+          }
+        });
+      
     };
 
     const handleChange = (e) => {
