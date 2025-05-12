@@ -129,6 +129,9 @@ const FormEditDataPegawai = () => {
       try {
         const res = await axios.get(`${API_URL}/data_pegawai/${id}`);
         const d = res.data;
+
+        console.log("aaa", d);
+        console.log("bbb", d.positionHistory[0]?.position?.id);
         setFormData({
           ...formData,
           dui_or_nit: d.dui_or_nit || "",
@@ -143,7 +146,7 @@ const FormEditDataPegawai = () => {
           jenis_kelamin: d.jenis_kelamin || "",
           hire_date: d.hire_date?.split("T")[0] || "",
           status: d.status || "",
-          position_id: d.jabatan || "",
+          jabatan: d.positionHistory[0]?.position?.id || "",
           last_position_change_date:
             d.last_position_change_date?.split("T")[0] || "",
           monthly_salary: d.monthly_salary || "",
@@ -306,6 +309,10 @@ const FormEditDataPegawai = () => {
                     <label className="mb-2.5 block text-black dark:text-white">
                       {t("pensionInstitutionCode")}
                     </label>
+                    <p>
+                      aaaaaaaaaaaaa
+                      {pension_institution_code}
+                    </p>
                     <select
                       name="pension_institution_code"
                       value={pension_institution_code}
@@ -470,6 +477,9 @@ const FormEditDataPegawai = () => {
                     <label className="mb-2.5 block text-black dark:text-white">
                       {t("jabatan")} <span className="text-meta-1">*</span>
                     </label>
+                    <p>
+                    {jabatan}
+                    </p>
                     <select
                       name="jabatan"
                       value={jabatan}

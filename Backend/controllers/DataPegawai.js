@@ -55,7 +55,7 @@ export const getAllEmployees = async (req, res) => {
           model: PositionHistory,
           as: "positionHistory",
           limit: 1,
-          order: [["start_date", "DESC"]],
+          order: [["createdAt", "DESC"]],
           attributes: ["position_id", "start_date", "end_date"],
           include: [
             {
@@ -117,7 +117,14 @@ export const getEmployeeById = async (req, res) => {
           as: "positionHistory",
           attributes: ["position_id", "start_date", "end_date"],
           limit: 1,
-          order: [["start_date", "DESC"]],
+          order: [["createdAt", "DESC"]],
+          include: [
+            {
+              model: DataJabatan,
+              as: "position",
+              attributes: ['id', 'nama_jabatan', 'gaji_pokok', 'tj_transport', 'uang_makan'],
+            },
+          ],
         },
       ],
     });
@@ -193,7 +200,6 @@ export const createEmployee = async (req, res) => {
     
     try {
       const hashed = await argon2.hash(password);
-
 
       const newEmp = await DataPegawai.create({
         nik,
@@ -280,14 +286,16 @@ export const updateEmployee = async (req, res) => {
   // Obtener el ultimo cambio de puesto del empleado
   const lastPositionHistory = await PositionHistory.findOne({
     where: { employee_id: emp.id },
-    order: [["start_date", "DESC"]],
+    order: [["createdAt", "DESC"]],
   });
 
   const t = await db.transaction(); // 🔐 inicia transacción
 
   try {
     // if position changed, record history
+    console.log(">>POSITION IF", lastPositionHistory.position_id, position_id);
     if (String(lastPositionHistory.position_id) !== String(position_id)) {
+      console.log(">>>POSITION CHANGED");
       // Crear un nuevo registro de historial de posición
       await PositionHistory.create({
         employee_id: emp.id,
