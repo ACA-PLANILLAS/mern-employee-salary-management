@@ -18,7 +18,7 @@ export const getDataJabatan = async (req, res) => {
                 attributes: ['id', 'nama_jabatan', 'gaji_pokok', 'tj_transport', 'uang_makan'],
                 include: [{
                     model: DataPegawai,
-                    attributes: ['nama_pegawai', 'username', 'hak_akses'],
+                    attributes: ['first_name', 'username', 'hak_akses'],
                 }]
             });
         } else {

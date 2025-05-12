@@ -1,3 +1,72 @@
+
+const normalizeDecimal = (val) => val === '' ? null : val;
+
+
+ALTER TABLE `data_pegawai`
+DROP COLUMN jabatan
+
+ALTER TABLE `position_history`
+  DROP COLUMN created_at,
+  DROP COLUMN updated_at;
+
+ALTER TABLE `position_history`
+  ADD COLUMN createdAt datetime NOT NULL,
+  ADD COLUMN updatedAt datetime NOT NULL,
+  
+
+  const appendIfExists = (formData, key, value) => {
+    if (value !== '' && value !== null && value !== undefined && value !== 'Invalid date') {
+      formData.append(key, value);
+    }
+  };
+
+  
+  appendIfExists(newFormData, 'loan_original_amount', loan_original_amount);
+
+
+  appendIfExists(newFormData, 'loan_original_amount', loan_original_amount);
+appendIfExists(newFormData, 'loan_outstanding_balance', loan_outstanding_balance);
+appendIfExists(newFormData, 'loan_monthly_installment', loan_monthly_installment);
+appendIfExists(newFormData, 'loan_start_date', loan_start_date);
+appendIfExists(newFormData, 'middle_name', middle_name);
+appendIfExists(newFormData, 'second_last_name', second_last_name);
+appendIfExists(newFormData, 'maiden_name', maiden_name);
+appendIfExists(newFormData, 'last_position_change_date', last_position_change_date);
+
+
+
+ALTER TABLE `data_pegawai`
+  DROP COLUMN `nit_dui`,
+  DROP COLUMN `tipo_documento`,
+  DROP COLUMN `numero_afiliacion_isss`,
+  DROP COLUMN `primer_nombre`,
+  DROP COLUMN `segundo_nombre`,
+  DROP COLUMN `primer_apellido`,
+  DROP COLUMN `segundo_apellido`,
+  DROP COLUMN `apellido_casada`,
+  DROP COLUMN `fecha_ingreso`,
+  DROP COLUMN `fecha_ultimo_cambio_puesto`,
+  DROP COLUMN `salario`,
+  DROP COLUMN `tiene_prestamo`,
+  DROP COLUMN `prestamo_monto_inicial`,
+  DROP COLUMN `prestamo_saldo_actual`,
+  DROP COLUMN `prestamo_cuota_mensual`,
+  DROP COLUMN `prestamo_fecha_inicio`;
+
+ALTER TABLE `data_pegawai`
+DROP COLUMN `nama_pegawai`,
+DROP COLUMN `tanggal_masuk`,
+  DROP COLUMN `institucion_previsional`,
+
+
+
+
+
+
+
+
+
+
 import express from 'express';
 
 /* === import Middleware === */

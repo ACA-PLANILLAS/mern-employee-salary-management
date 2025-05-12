@@ -1,5 +1,7 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
+import PensionInstitution from "./PensionInstitutionModel.js";
+import PositionHistory from "./PositionHistoryModel.js";
 
 const { DataTypes } = Sequelize;
 
@@ -19,7 +21,7 @@ const DataPegawai = db.define(
     },
     nik: {
       type: DataTypes.STRING(16),
-      allowNull: false,
+      allowNull: true,
     },
     dui_or_nit: {
       type: DataTypes.STRING(14),
@@ -111,6 +113,10 @@ const DataPegawai = db.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    status: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
     hak_akses: {
       type: DataTypes.STRING(255),
       allowNull: false,
@@ -120,29 +126,6 @@ const DataPegawai = db.define(
   {
     freezeTableName: true,
     timestamps: true,
-  }
-);
-
-// PensionInstitution model
-const PensionInstitution = db.define(
-  "pension_institutions",
-  {
-    code: {
-      type: DataTypes.CHAR(3),
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    institution_type: {
-      type: DataTypes.ENUM("AFP", "ISS", "ISP"),
-      allowNull: false,
-    },
-  },
-  {
-    freezeTableName: true,
-    timestamps: false,
   }
 );
 

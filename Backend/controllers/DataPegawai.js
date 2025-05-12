@@ -1,10 +1,11 @@
-import PositionHistory from "../models/PositionHistoryModel.js";
-import PensionInstitution from "../models/PensionInstitutionModel.js"; 
- import DataPegawai from "../models/DataPegawaiModel.js";
+
+import { DataPegawai, PositionHistory, PensionInstitution, DataJabatan } from '../models/index.js';
+
 import argon2 from "argon2";
 import path from "path";
 
 import { createRequire } from "module";
+import db from "../config/Database.js";
 
 const require = createRequire(import.meta.url);
 
@@ -32,7 +33,6 @@ export const getAllEmployees = async (req, res) => {
         "jenis_kelamin",
         "hire_date",
         "status",
-        "jabatan",
         "last_position_change_date",
         "monthly_salary",
         "has_active_loan",
@@ -45,9 +45,32 @@ export const getAllEmployees = async (req, res) => {
         "url",
         "hak_akses",
       ],
+      include: [
+        {
+          model: PensionInstitution,
+          as: "pensionInstitution",
+          attributes: ["code", "name", "institution_type"],
+        },
+        {
+          model: PositionHistory,
+          as: "positionHistory",
+          limit: 1,
+          order: [["start_date", "DESC"]],
+          attributes: ["position_id", "start_date", "end_date"],
+          include: [
+            {
+              model: DataJabatan,
+              as: "position",
+              attributes: ["nama_jabatan"],
+            },
+          ],
+        },
+      ],
     });
+
     res.status(200).json(employees);
   } catch (error) {
+    console.log("\n>>> ", error.message);
     res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
   }
 };
@@ -71,7 +94,6 @@ export const getEmployeeById = async (req, res) => {
         "jenis_kelamin",
         "hire_date",
         "status",
-        "jabatan",
         "last_position_change_date",
         "monthly_salary",
         "has_active_loan",
@@ -84,18 +106,34 @@ export const getEmployeeById = async (req, res) => {
         "url",
         "hak_akses",
       ],
-      include: [{ model: PensionInstitution, as: "pensionInstitution" }],
+      include: [
+        {
+          model: PensionInstitution,
+          as: "pensionInstitution",
+          attributes: ["code", "name", "institution_type"],
+        },
+        {
+          model: PositionHistory,
+          as: "positionHistory",
+          attributes: ["position_id", "start_date", "end_date"],
+          limit: 1,
+          order: [["start_date", "DESC"]],
+        },
+      ],
     });
+
     if (!emp) return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND.code });
+
     res.status(200).json(emp);
   } catch (error) {
+    console.log("\n>>> ", error.message);
     res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
   }
 };
 
+
 // Create new employee
 export const createEmployee = async (req, res) => {
-  console.log("1111");
   const {
     nik,
     dui_or_nit,
@@ -110,7 +148,7 @@ export const createEmployee = async (req, res) => {
     jenis_kelamin,
     hire_date,
     status,
-    jabatan,
+    // jabatan,
     last_position_change_date,
     monthly_salary,
     has_active_loan,
@@ -122,8 +160,8 @@ export const createEmployee = async (req, res) => {
     password,
     confPassword,
     hak_akses,
+    position_id = 1, // default position ID
   } = req.body;
-  console.log("222");
 
   if (password !== confPassword) {
     return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH.code });
@@ -132,14 +170,12 @@ export const createEmployee = async (req, res) => {
   if (!req.files?.photo) {
     return res.status(400).json({ msg: EMPLOYEE.PHOTO_REQUIRED.code });
   }
-  console.log("--333");
 
   const file = req.files.photo;
   const fileSize = file.data.length;
   const ext = path.extname(file.name).toLowerCase();
-  const allowed = [".png", ".jpg", ".jpeg"];
+  const allowed = [".png", ".jpg", ".jpeg", ".webp"];
 
-  console.log("--4444");
   if (fileSize > 2000000) {
     return res.status(422).json({ msg: EMPLOYEE.PHOTO_TOO_LARGE.code });
   }
@@ -147,19 +183,18 @@ export const createEmployee = async (req, res) => {
   if (!allowed.includes(ext) || file.data.length > 2e6) {
     return res.status(422).json({ msg: EMPLOYEE.INVALID_PHOTO_FORMAT.code });
   }
-  console.log("--6666");
   const filename = file.md5 + ext;
   const url = `${req.protocol}://${req.get("host")}/images/${filename}`;
 
-  console.log("--7777");
-
   file.mv(`./public/images/${filename}`, async (err) => {
-    console.log("--888", err);
     if (err) return res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
-    console.log("--7777");
 
-    const hashed = await argon2.hash(password);
+    const t = await db.transaction(); // 🔐 inicia transacción
+    
     try {
+      const hashed = await argon2.hash(password);
+
+
       const newEmp = await DataPegawai.create({
         nik,
         dui_or_nit,
@@ -174,7 +209,7 @@ export const createEmployee = async (req, res) => {
         jenis_kelamin,
         hire_date,
         status,
-        jabatan,
+        // jabatan,
         last_position_change_date,
         monthly_salary,
         has_active_loan,
@@ -187,28 +222,26 @@ export const createEmployee = async (req, res) => {
         photo: filename,
         url,
         hak_akses,
-      });
+      }, { transaction: t });
 
-      console.log("--4444");
+      console.log("\n>>> ", newEmp.id);
 
       // record initial position history
       await PositionHistory.create({
         employee_id: newEmp.id,
-        position_id: null, // set proper job ID lookup
+        position_id: position_id, // set proper job ID lookup
         start_date: last_position_change_date || hire_date,
-      });
+      }, { transaction: t });
 
-
-      console.log("--66666");
+      await t.commit(); // ✅ Si todo sale bien, confirmamos
 
       res
         .status(201)
         .json({ success: true, message: EMPLOYEE.CREATE_SUCCESS.code });
     } catch (e) {
+      await t.rollback(); // ❌ Revierte todo si algo falla
 
-      console.log("-------------->");
-      console.log(e);
-      console.log("-------------->", e.message);
+      console.log("\n>>> ", e.message);
       res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
   });
@@ -232,7 +265,7 @@ export const updateEmployee = async (req, res) => {
     jenis_kelamin,
     hire_date,
     status,
-    jabatan,
+    // jabatan,
     last_position_change_date,
     monthly_salary,
     has_active_loan,
@@ -245,13 +278,13 @@ export const updateEmployee = async (req, res) => {
   } = req.body;
   try {
     // if position changed, record history
-    if (emp.jabatan !== jabatan) {
-      await PositionHistory.create({
-        employee_id: emp.id,
-        position_id: null, // lookup new job ID
-        start_date: last_position_change_date,
-      });
-    }
+    // if (emp.jabatan !== jabatan) {
+    //   await PositionHistory.create({
+    //     employee_id: emp.id,
+    //     position_id: null, // lookup new job ID
+    //     start_date: last_position_change_date,
+    //   });
+    // }
     await DataPegawai.update(
       {
         nik,
@@ -282,6 +315,7 @@ export const updateEmployee = async (req, res) => {
     );
     res.status(200).json({ msg: EMPLOYEE.UPDATE_SUCCESS.code });
   } catch (e) {
+    console.log("\n>>> ", e.message);
     res.status(400).json({ msg: EMPLOYEE.UPDATE_FAILED.code });
   }
 };
@@ -294,6 +328,7 @@ export const deleteEmployee = async (req, res) => {
     await DataPegawai.destroy({ where: { id: emp.id } });
     res.status(200).json({ msg: EMPLOYEE.DELETE_SUCCESS.code });
   } catch (e) {
+    console.log("\n>>> ", e.message);
     res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
   }
 };
@@ -304,6 +339,7 @@ export const getAllPensionInstitutions = async (req, res) => {
     const list = await PensionInstitution.findAll();
     res.status(200).json(list);
   } catch (e) {
+    console.log("\n>>> ", e.message);
     res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
   }
 };
@@ -316,6 +352,7 @@ export const getPositionHistory = async (req, res) => {
     });
     res.status(200).json(history);
   } catch (e) {
+    console.log("\n>>> ", e.message);
     res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
   }
 };

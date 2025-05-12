@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
+import DataPegawai from "./DataPegawaiModel.js";
 
 const { DataTypes } = Sequelize;
 

@@ -23,7 +23,7 @@ ALTER TABLE `data_pegawai`
 
   -- Identification
   ADD COLUMN `dui_or_nit`                 VARCHAR(14)   DEFAULT NULL   AFTER `nik`,                         -- “nit_dui”
-  ADD COLUMN `document_type`              CHAR(2)       DEFAULT NULL   AFTER `dui_or_nit`,                -- “tipo_documento”
+  ADD COLUMN `document_type`              VARCHAR(16)       DEFAULT NULL   AFTER `dui_or_nit`,                -- “tipo_documento”
   ADD COLUMN `isss_affiliation_number`    CHAR(9)       DEFAULT NULL   AFTER `document_type`,             -- “numero_afiliacion_isss”
   ADD COLUMN `pension_institution_code`   CHAR(5)       DEFAULT NULL   AFTER `isss_affiliation_number`,   -- “institucion_previsional”
 
@@ -81,8 +81,8 @@ CREATE TABLE `position_history` (
   `position_id`        INT(11) NOT NULL,  -- data_jabatan.id
   `start_date`         DATE    NOT NULL,  -- fecha_inicio
   `end_date`           DATE    DEFAULT NULL, -- fecha_fin
-  `created_at`         DATETIME NOT NULL,
-  `updated_at`         DATETIME NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_pos_hist_emp` (`employee_id`),
   KEY `fk_pos_hist_pos` (`position_id`),
@@ -95,4 +95,9 @@ CREATE TABLE `position_history` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8; 
 
 ALTER TABLE `data_pegawai`
-  MODIFY COLUMN `nik` VARCHAR(16) NULL;
+  MODIFY COLUMN `nik` VARCHAR(16) NULL, 
+  MODIFY COLUMN `document_type` VARCHAR(16) NULL;
+
+
+ALTER TABLE `data_pegawai`
+  DROP COLUMN jabatan;
