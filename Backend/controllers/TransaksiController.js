@@ -278,12 +278,17 @@ export const deleteDataPotongan = async (req, res) => {
 export const getDataPegawai = async () => {
   let resultDataPegawai = [];
 
+  console.log(" ''''''''''''''''''''''''' ");
+    console.log(" ////////////////////// ");
+
   try {
     // Get data pegawai:
     const data_pegawai = await DataPegawai.findAll({
-      attributes: ["id", "nik", "nama_pegawai", "jenis_kelamin", "jabatan"],
+      attributes: ["id", "first_name", "jenis_kelamin"],
       distinct: true,
     });
+
+    console.log("data_pegawai", data_pegawai);
 
     resultDataPegawai = data_pegawai.map((pegawai) => {
       const id = pegawai.id;
@@ -421,6 +426,12 @@ export const getDataGajiPegawai = async () => {
         };
       });
 
+
+      console.log(" @@@@@@ ")
+      console.log(" .. resultDataPegawai ", resultDataPegawai)
+      console.log(" .. resultDataJabatan ", resultDataJabatan)
+      console.log(" @@@@@@ ")
+
     // Potongan Pegawai :
     const resultDataKehadiran = await getDataKehadiran();
     const resultDataPotongan = await getDataPotongan();
@@ -456,7 +467,7 @@ export const getDataGajiPegawai = async () => {
 
       //getting total employee salary with subsidy
       const total_gaji_no_deductions =
-        pegawai.gaji_pokok +
+        pegawai.gaji_pokok +9
         pegawai.tj_transport +
         pegawai.uang_makan;
 
@@ -642,6 +653,10 @@ export const viewDataGajiPegawaiByMonth = async (req, res) => {
 export const viewDataGajiPegawaiByYear = async (req, res) => {
   try {
     const dataGajiPegawai = await getDataGajiPegawai();
+    console.log("//////////////////////");
+    console.log("//////////////////////");
+
+    console.log("dataGajiPegawai", dataGajiPegawai);
     const { year } = req.params;
 
     const dataGajiByYear = dataGajiPegawai

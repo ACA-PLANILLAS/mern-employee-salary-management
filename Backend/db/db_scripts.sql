@@ -3,10 +3,23 @@ USE db_penggajian3;
 ALTER TABLE potongan_gaji MODIFY jml_potongan DOUBLE(10,2);
 
 CREATE TABLE parameters (
- 	id int(11) NOT NULL AUTO_INCREMENT KEY,
-	name varchar(100),
-	value int(5)
-);
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(100) DEFAULT NULL,
+  value int DEFAULT NULL,
+  type varchar(4) NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY type (type)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO parameters
+(id, name, value, type)
+VALUES(1, 'horas semanales', 44, 'HWEK');
+INSERT INTO parameters
+(id, name, value, type)
+VALUES(2, 'dias semanales', 6, 'DWEK');
+INSERT INTO parameters
+(id, name, value, type)
+VALUES(3, 'pagos en mes', 2, 'PMON');
 
 -- aaaaaaaaaaaaaaaaaaaaaaaa
 -- aaaaaaaaaaaaaaaaaaaaaaaa
