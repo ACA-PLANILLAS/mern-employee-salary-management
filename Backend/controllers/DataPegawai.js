@@ -61,7 +61,7 @@ export const getAllEmployees = async (req, res) => {
             {
               model: DataJabatan,
               as: "position",
-              attributes: ["nama_jabatan"],
+              attributes: ['id', 'nama_jabatan', 'gaji_pokok', 'tj_transport', 'uang_makan'],
             },
           ],
         },
@@ -160,7 +160,7 @@ export const createEmployee = async (req, res) => {
     password,
     confPassword,
     hak_akses,
-    position_id = 1, // default position ID
+    position_id,
   } = req.body;
 
   if (password !== confPassword) {
@@ -224,8 +224,6 @@ export const createEmployee = async (req, res) => {
         hak_akses,
       }, { transaction: t });
 
-      console.log("\n>>> ", newEmp.id);
-
       // record initial position history
       await PositionHistory.create({
         employee_id: newEmp.id,
@@ -251,6 +249,7 @@ export const createEmployee = async (req, res) => {
 export const updateEmployee = async (req, res) => {
   const emp = await DataPegawai.findByPk(req.params.id);
   if (!emp) return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND.code });
+  
   const {
     nik,
     dui_or_nit,
@@ -275,16 +274,41 @@ export const updateEmployee = async (req, res) => {
     loan_start_date,
     username,
     hak_akses,
+    position_id
   } = req.body;
+
+  // Obtener el ultimo cambio de puesto del empleado
+  const lastPositionHistory = await PositionHistory.findOne({
+    where: { employee_id: emp.id },
+    order: [["start_date", "DESC"]],
+  });
+
+  const t = await db.transaction(); // 🔐 inicia transacción
+
   try {
     // if position changed, record history
-    // if (emp.jabatan !== jabatan) {
-    //   await PositionHistory.create({
-    //     employee_id: emp.id,
-    //     position_id: null, // lookup new job ID
-    //     start_date: last_position_change_date,
-    //   });
-    // }
+    if (String(lastPositionHistory.position_id) !== String(position_id)) {
+      // Crear un nuevo registro de historial de posición
+      await PositionHistory.create({
+        employee_id: emp.id,
+        position_id: position_id, // set proper job ID lookup
+        start_date: last_position_change_date || hire_date,
+      }, { transaction: t });
+
+      // Actualizar el registro anterior para establecer la fecha de finalización
+      await PositionHistory.update(
+        { end_date: last_position_change_date || hire_date },
+        {
+          where: {
+            employee_id: emp.id,
+            position_id: lastPositionHistory.position_id,
+            end_date: null,
+          },
+          transaction: t,
+        }
+      );
+    }
+
     await DataPegawai.update(
       {
         nik,
@@ -300,7 +324,7 @@ export const updateEmployee = async (req, res) => {
         jenis_kelamin,
         hire_date,
         status,
-        jabatan,
+        // jabatan,
         last_position_change_date,
         monthly_salary,
         has_active_loan,
@@ -311,10 +335,15 @@ export const updateEmployee = async (req, res) => {
         username,
         hak_akses,
       },
-      { where: { id: emp.id } }
-    );
+      { where: { id: emp.id }, transaction: t },
+    )
+
+    await t.commit(); // ✅ Si todo sale bien, confirmamos
+
     res.status(200).json({ msg: EMPLOYEE.UPDATE_SUCCESS.code });
   } catch (e) {
+    await t.rollback(); // ❌ Revierte todo si algo falla
+
     console.log("\n>>> ", e.message);
     res.status(400).json({ msg: EMPLOYEE.UPDATE_FAILED.code });
   }

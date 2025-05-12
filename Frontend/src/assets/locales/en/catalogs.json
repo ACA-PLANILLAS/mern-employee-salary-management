@@ -16,5 +16,7 @@
   "september": "september",
   "oktober": "october",
   "november": "november",
-  "desember": "december"
+  "desember": "december",
+  "true": "Yes",
+  "false": "No"
 }

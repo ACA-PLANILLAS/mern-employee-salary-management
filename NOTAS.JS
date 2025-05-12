@@ -20,6 +20,17 @@ ALTER TABLE `position_history`
     }
   };
 
+
+  useEffect(() => {
+    if (isError) {
+        navigate('/login');
+    }
+    if (user && user.hak_akses !== 'admin') {
+        navigate('/dashboard');
+    }
+}, [isError, user, navigate]);
+
+
   
   appendIfExists(newFormData, 'loan_original_amount', loan_original_amount);
 

@@ -250,6 +250,7 @@ const DataPegawai = () => {
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.status")}
                 </th>
+                {/* Empleos */}
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.position")}
                 </th>
@@ -369,14 +370,22 @@ const DataPegawai = () => {
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                       {getDisplayValue(data.status)}
                     </td>
+                    {/* Empleos */}
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                      {data.jabatan}
+                      {/* positionHistory es un array y necesito obeteer  position.nama_jabatan */}
+                      {data.positionHistory && data.positionHistory.length > 0
+                        ? data.positionHistory[0]?.position?.nama_jabatan
+                        : "-"}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                      {data.last_position_change_date || "-"}
+                      {data.positionHistory && data.positionHistory.length > 0
+                        ? data.positionHistory[0]?.start_date
+                        : "-"}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                      {data.monthly_salary != null ? data.monthly_salary : "-"}
+                      {data.positionHistory && data.positionHistory.length > 0
+                        ? data.positionHistory[0]?.position?.gaji_pokok
+                        : "-"}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                       {data.has_active_loan != null
