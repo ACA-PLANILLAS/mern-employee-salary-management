@@ -95,6 +95,7 @@ export const getEmployeeById = async (req, res) => {
 
 // Create new employee
 export const createEmployee = async (req, res) => {
+  console.log("1111");
   const {
     nik,
     dui_or_nit,
@@ -122,6 +123,7 @@ export const createEmployee = async (req, res) => {
     confPassword,
     hak_akses,
   } = req.body;
+  console.log("222");
 
   if (password !== confPassword) {
     return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH.code });
@@ -130,12 +132,14 @@ export const createEmployee = async (req, res) => {
   if (!req.files?.photo) {
     return res.status(400).json({ msg: EMPLOYEE.PHOTO_REQUIRED.code });
   }
+  console.log("--333");
 
   const file = req.files.photo;
   const fileSize = file.data.length;
   const ext = path.extname(file.name).toLowerCase();
   const allowed = [".png", ".jpg", ".jpeg"];
 
+  console.log("--4444");
   if (fileSize > 2000000) {
     return res.status(422).json({ msg: EMPLOYEE.PHOTO_TOO_LARGE.code });
   }
@@ -143,11 +147,17 @@ export const createEmployee = async (req, res) => {
   if (!allowed.includes(ext) || file.data.length > 2e6) {
     return res.status(422).json({ msg: EMPLOYEE.INVALID_PHOTO_FORMAT.code });
   }
+  console.log("--6666");
   const filename = file.md5 + ext;
   const url = `${req.protocol}://${req.get("host")}/images/${filename}`;
 
+  console.log("--7777");
+
   file.mv(`./public/images/${filename}`, async (err) => {
+    console.log("--888", err);
     if (err) return res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
+    console.log("--7777");
+
     const hashed = await argon2.hash(password);
     try {
       const newEmp = await DataPegawai.create({
@@ -178,16 +188,27 @@ export const createEmployee = async (req, res) => {
         url,
         hak_akses,
       });
+
+      console.log("--4444");
+
       // record initial position history
       await PositionHistory.create({
         employee_id: newEmp.id,
         position_id: null, // set proper job ID lookup
         start_date: last_position_change_date || hire_date,
       });
+
+
+      console.log("--66666");
+
       res
         .status(201)
         .json({ success: true, message: EMPLOYEE.CREATE_SUCCESS.code });
     } catch (e) {
+
+      console.log("-------------->");
+      console.log(e);
+      console.log("-------------->", e.message);
       res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
     }
   });
