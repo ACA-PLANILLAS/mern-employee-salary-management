@@ -52,9 +52,9 @@ const FormAddDataJabatan = () => {
             title: t('error'),
             confirmButtonText: 'Aceptar',
             buttonsStyling: false,
-            customClass: {
-              confirmButton: 'bg-[#3C50E0] text-white px-4 py-2 rounded-md shadow font-medium hover:bg-[#2f3fb6]'
-            }
+            // customClass: {
+            //   confirmButton: 'bg-[#3C50E0] text-white px-4 py-2 rounded-md shadow font-medium hover:bg-[#2f3fb6]'
+            // }
           };
       
           if (error.response?.data?.msg) {

@@ -46,6 +46,16 @@ CREATE TABLE potongan_gaji (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO potongan_gaji
+  (`id`, `potongan`, `jml_potongan`, `from`, `until`, `value_d`, `type`, `createdAt`, `updatedAt`)
+VALUES
+  (1, 'ISSS',  0.13, 0.0,   0.0,   0.0, 'STA', '2025-05-06 03:26:19', '2025-05-08 22:30:00'),
+  (2, 'AFP',   0.15, 0.0,   0.0,   0.0, 'STA', '2025-05-06 03:26:19', '2025-05-08 22:30:00'),
+  (3, 'RENTA', 0.00, 0.0, 500.0,   0.0, 'DIN', '2025-05-06 03:26:19', '2025-05-06 03:26:19');
+
+ALTER TABLE data_kehadiran
+  ADD COLUMN `month` int(6),
+  ADD COLUMN `day` int(6);
 
 -- aaaaaaaaaaaaaaaaaaaaaaaa
 -- aaaaaaaaaaaaaaaaaaaaaaaa
