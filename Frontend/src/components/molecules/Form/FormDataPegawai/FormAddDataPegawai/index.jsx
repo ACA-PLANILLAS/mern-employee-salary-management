@@ -78,11 +78,13 @@ const FormAddDataPegawai = () => {
     hak_akses,
   } = formData;
 
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
   const { t } = useTranslation("dataGajiAddForm");
   const getErrorMessage = useErrorMessage();
+
 
   useEffect(() => {
     const fetchCatalogs = async () => {
