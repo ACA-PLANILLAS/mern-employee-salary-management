@@ -14,6 +14,10 @@ const DataKehadiran = db.define('data_kehadiran', {
         type: DataTypes.STRING(15),
         allowNull: false
     },
+    tahun: {
+        type: DataTypes.INTEGER(6),
+        allowNull: false
+    },
     nik: {
         type: DataTypes.STRING(16),
         allowNull: false
@@ -49,10 +53,10 @@ const DataKehadiran = db.define('data_kehadiran', {
     vacation_payments: {
         type: DataTypes.DECIMAL(2),
     },
-    comments_01: {
+    comment_01: {
         type: DataTypes.STRING(255)
     },
-    comments_02: {
+    comment_02: {
         type: DataTypes.STRING(255)
     },
 }, { freezeTableName: true });

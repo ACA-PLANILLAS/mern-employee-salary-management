@@ -28,6 +28,7 @@ export const viewDataKehadiran = async (req, res) => {
       attributes: [
         "id",
         "bulan",
+        "tahun",
         "nik",
         "nama_pegawai",
         "jenis_kelamin",
@@ -47,9 +48,8 @@ export const viewDataKehadiran = async (req, res) => {
     });
 
     resultDataKehadiran = data_Kehadiran.map(({
-      id, bulan, nik, nama_pegawai, nama_jabatan, jenis_kelamin, hadir, sakit, alpha, createdAt, worked_hours, additional_payments, vacation_days, vacation_payments, comments_01, comments_02
+      id, bulan, tahun, nik, nama_pegawai, nama_jabatan, jenis_kelamin, hadir, sakit, alpha, createdAt, worked_hours, additional_payments, vacation_days, vacation_payments, comments_01, comments_02
     }) => {
-      const tahun = new Date(createdAt).getFullYear();
 
       return {
         id,
@@ -83,6 +83,7 @@ export const viewDataKehadiranByID = async (req, res) => {
       attributes: [
         "id",
         "bulan",
+        "tahun",
         "nik",
         "nama_pegawai",
         "jenis_kelamin",
@@ -147,9 +148,22 @@ export const createDataKehadiran = async (req, res) => {
       },
     });
 
-    const nama_sudah_ada = await DataKehadiran.findOne({
+    const paymentsOnMonth = await Parameter.findOne({
       where: {
-        nama_pegawai: nama_pegawai,
+        type: PARAMS.PMON,
+      },
+    }) || 1;
+
+
+    //current month and year
+    const month = moment().locale("id").format("MMMM");
+    const year = moment().locale("id").format("YYYY");
+
+    const nama_sudah_ada = await DataKehadiran.findAll({
+      where: {
+        nik,
+        bulan: month,
+        tahun: year
       },
     });
 
@@ -165,10 +179,12 @@ export const createDataKehadiran = async (req, res) => {
       return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NIK.code });
     }
 
-    if (!nama_sudah_ada) {
-      const month = moment().locale("id").format("MMMM");
+    console.log({ evaluation: nama_sudah_ada != null })
+
+    if (nama_sudah_ada != null && nama_sudah_ada.length < paymentsOnMonth.value) {
       await DataKehadiran.create({
-        bulan: month.toLowerCase(),
+        bulan: month,
+        tahun: year,
         nik: nik,
         nama_pegawai: data_nama_pegawai.nama_pegawai,
         jenis_kelamin: jenis_kelamin,
