@@ -1,3 +1,83 @@
+
+const normalizeDecimal = (val) => val === '' ? null : val;
+
+
+ALTER TABLE `data_pegawai`
+DROP COLUMN jabatan
+
+ALTER TABLE `position_history`
+  DROP COLUMN created_at,
+  DROP COLUMN updated_at;
+
+ALTER TABLE `position_history`
+  ADD COLUMN createdAt datetime NOT NULL,
+  ADD COLUMN updatedAt datetime NOT NULL,
+  
+
+  const appendIfExists = (formData, key, value) => {
+    if (value !== '' && value !== null && value !== undefined && value !== 'Invalid date') {
+      formData.append(key, value);
+    }
+  };
+
+
+  useEffect(() => {
+    if (isError) {
+        navigate('/login');
+    }
+    if (user && user.hak_akses !== 'admin') {
+        navigate('/dashboard');
+    }
+}, [isError, user, navigate]);
+
+
+  
+  appendIfExists(newFormData, 'loan_original_amount', loan_original_amount);
+
+
+  appendIfExists(newFormData, 'loan_original_amount', loan_original_amount);
+appendIfExists(newFormData, 'loan_outstanding_balance', loan_outstanding_balance);
+appendIfExists(newFormData, 'loan_monthly_installment', loan_monthly_installment);
+appendIfExists(newFormData, 'loan_start_date', loan_start_date);
+appendIfExists(newFormData, 'middle_name', middle_name);
+appendIfExists(newFormData, 'second_last_name', second_last_name);
+appendIfExists(newFormData, 'maiden_name', maiden_name);
+appendIfExists(newFormData, 'last_position_change_date', last_position_change_date);
+
+
+
+ALTER TABLE `data_pegawai`
+  DROP COLUMN `nit_dui`,
+  DROP COLUMN `tipo_documento`,
+  DROP COLUMN `numero_afiliacion_isss`,
+  DROP COLUMN `primer_nombre`,
+  DROP COLUMN `segundo_nombre`,
+  DROP COLUMN `primer_apellido`,
+  DROP COLUMN `segundo_apellido`,
+  DROP COLUMN `apellido_casada`,
+  DROP COLUMN `fecha_ingreso`,
+  DROP COLUMN `fecha_ultimo_cambio_puesto`,
+  DROP COLUMN `salario`,
+  DROP COLUMN `tiene_prestamo`,
+  DROP COLUMN `prestamo_monto_inicial`,
+  DROP COLUMN `prestamo_saldo_actual`,
+  DROP COLUMN `prestamo_cuota_mensual`,
+  DROP COLUMN `prestamo_fecha_inicio`;
+
+ALTER TABLE `data_pegawai`
+DROP COLUMN `nama_pegawai`,
+DROP COLUMN `tanggal_masuk`,
+  DROP COLUMN `institucion_previsional`,
+
+
+
+
+
+
+
+
+
+
 import express from 'express';
 
 /* === import Middleware === */
@@ -5,28 +85,14 @@ import { adminOnly, verifyUser } from '../middleware/AuthUser.js';
 
 /* === import Controllers === */
 import {
-    getAllEmployees,
-    getEmployeeById,
-    createEmployee,
-    updateEmployee,
-    deleteEmployee,
+    getDataPegawai,
+    getDataPegawaiByID,
+    createDataPegawai,
+    updateDataPegawai,
+    deleteDataPegawai,
+    getDataPegawaiByNik,
+    getDataPegawaiByName,
 } from '../controllers/DataPegawai.js';
-
-import {
-    getAllPositionHistories,
-    getPositionHistoryById,
-    createPositionHistory,
-    updatePositionHistory,
-    deletePositionHistory
-  } from '../controllers/PositionHistoryController.js';
-  
-  import {
-    getAllPensionInstitutions,
-    getPensionInstitutionByCode,
-    createPensionInstitution,
-    updatePensionInstitution,
-    deletePensionInstitution
-  } from '../controllers/PensionInstitutionController.js';
 
 import {
     getDataJabatan,
@@ -84,35 +150,13 @@ const router = express.Router();
 
 /* ==== Master Data ==== */
 // Data Pegawai
-// router.get('/data_pegawai', verifyUser, adminOnly, getDataPegawai);
-// router.get('/data_pegawai/id/:id', verifyUser, adminOnly, getDataPegawaiByID);
-// router.get('/data_pegawai/nik/:nik', verifyUser, adminOnly, getDataPegawaiByNik);
-// router.get('/data_pegawai/name/:name', verifyUser, getDataPegawaiByName);
-// router.post('/data_pegawai',verifyUser, adminOnly, createDataPegawai);
-// router.patch('/data_pegawai/:id', verifyUser, adminOnly, updateDataPegawai);
-// router.delete('/data_pegawai/:id', verifyUser, adminOnly, deleteDataPegawai);
-router.get('/data_pegawai',          verifyUser, adminOnly, getAllEmployees);
-router.get('/data_pegawai/:id',      verifyUser, adminOnly, getEmployeeById);
-router.post('/data_pegawai',         verifyUser, adminOnly, createEmployee);
-router.patch('/data_pegawai/:id',    verifyUser, adminOnly, updateEmployee);
-router.delete('/data_pegawai/:id',   verifyUser, adminOnly, deleteEmployee);
-
-// PositionHistory Routes
-router.get('/position_history',      verifyUser, adminOnly, getAllPositionHistories);
-router.get('/position_history/:id',  verifyUser, adminOnly, getPositionHistoryById);
-router.post('/position_history',     verifyUser, adminOnly, createPositionHistory);
-router.patch('/position_history/:id',verifyUser, adminOnly, updatePositionHistory);
-router.delete('/position_history/:id',verifyUser, adminOnly, deletePositionHistory);
-
-// PensionInstitution Routes
-router.get('/pension_institutions',          verifyUser, adminOnly, getAllPensionInstitutions);
-router.get('/pension_institutions/:code',    verifyUser, adminOnly, getPensionInstitutionByCode);
-router.post('/pension_institutions',         verifyUser, adminOnly, createPensionInstitution);
-router.patch('/pension_institutions/:code',  verifyUser, adminOnly, updatePensionInstitution);
-router.delete('/pension_institutions/:code', verifyUser, adminOnly, deletePensionInstitution);
-
-
-// Change Password
+router.get('/data_pegawai', verifyUser, adminOnly, getDataPegawai);
+router.get('/data_pegawai/id/:id', verifyUser, adminOnly, getDataPegawaiByID);
+router.get('/data_pegawai/nik/:nik', verifyUser, adminOnly, getDataPegawaiByNik);
+router.get('/data_pegawai/name/:name', verifyUser, getDataPegawaiByName);
+router.post('/data_pegawai',verifyUser, adminOnly, createDataPegawai);
+router.patch('/data_pegawai/:id', verifyUser, adminOnly, updateDataPegawai);
+router.delete('/data_pegawai/:id', verifyUser, adminOnly, deleteDataPegawai);
 router.patch('/data_pegawai/:id/change_password', verifyUser, adminOnly, changePassword);
 // Data Jabatan
 router.get('/data_jabatan', verifyUser, adminOnly, getDataJabatan);
@@ -137,8 +181,8 @@ router.delete('/data_potongan/:id', adminOnly, verifyUser, deleteDataPotongan);
 // Data Gaji
 router.get('/data_gaji_pegawai', viewDataGajiPegawai);
 router.get('/data_gaji/name/:name', verifyUser, viewDataGajiByName);
-// router.get('/data_gaji_pegawai/month/:month', viewDataGajiPegawaiByMonth);
-// router.get('/data_gaji_pegawai/year/:year', viewDataGajiPegawaiByYear);
+router.get('/data_gaji_pegawai/month/:month', viewDataGajiPegawaiByMonth);
+router.get('/data_gaji_pegawai/year/:year', viewDataGajiPegawaiByYear);
 
 /* ====  Laporan  ==== */
 // laporan Gaji Pegawai
@@ -173,3 +217,49 @@ router.delete('/logout', LogOut);
 
 
 export default router;
+
+
+TRUNCATE TABLE data_kehadiran;
+
+
+TRUNCATE TABLE historial_puestos;
+
+TRUNCATE TABLE data_pegawai;
+
+
+TRUNCATE TABLE data_jabatan;
+
+INSERT INTO data_pegawai (
+  id_pegawai,
+  nik,
+  first_name,
+    last_name,
+
+  username,
+  password,
+  jenis_kelamin,
+  status,
+  photo,
+  url,
+  hak_akses,
+  createdAt,
+  updatedAt
+) VALUES (
+  'a1b2c3d4-e5f6-7890-ab12-cd34ef56gh12',  -- id_pegawai (UUID)
+  '334455',                               -- NIK
+    '1',                               -- Username
+      '2',                               -- Username
+  'user',                               -- Username
+  '$argon2i$v=19$m=16,t=2,p=1$S2xtQ0xkOU16ckt5enZvWFNtcTI5cEZtSDdHb0ZrXzM$sQch0yEbQ0L5/oY7+hzwHQ',   -- Password (hash Argon2id)
+  'Laki-Laki',                            -- Género
+  'karyawan tetap',                       -- Estado
+  'carlos.jpg',                           -- Nombre de archivo foto
+  'http://localhost:5000/images/carlos.jpg', -- URL foto
+  'admin',                              -- Rol/hak_akses
+  NOW(),                                  -- createdAt
+  NOW()                                   -- updatedAt
+);
+
+UPDATE data_pegawai
+SET hire_date = STR_TO_DATE('01-07-23', '%d-%m-%y')
+WHERE id = 1;  
