@@ -36,22 +36,20 @@ export const viewDataKehadiran = async (req, res) => {
         "sakit",
         "alpha",
         "createdAt",
+        "worked_hours",
+        "additional_payments",
+        "vacation_days",
+        "vacation_payments",
+        "comments_01",
+        "comments_02",
       ],
       distinct: true,
     });
 
-    resultDataKehadiran = data_Kehadiran.map((kehadiran) => {
-      const id = kehadiran.id;
-      const createdAt = new Date(kehadiran.createdAt);
-      const tahun = createdAt.getFullYear();
-      const bulan = kehadiran.bulan;
-      const nik = kehadiran.nik;
-      const nama_pegawai = kehadiran.nama_pegawai;
-      const jabatan_pegawai = kehadiran.nama_jabatan;
-      const jenis_kelamin = kehadiran.jenis_kelamin;
-      const hadir = kehadiran.hadir;
-      const sakit = kehadiran.sakit;
-      const alpha = kehadiran.alpha;
+    resultDataKehadiran = data_Kehadiran.map(({
+      id, bulan, nik, nama_pegawai, nama_jabatan, jenis_kelamin, hadir, sakit, alpha, createdAt, worked_hours, additional_payments, vacation_days, vacation_payments, comments_01, comments_02
+    }) => {
+      const tahun = new Date(createdAt).getFullYear();
 
       return {
         id,
@@ -59,11 +57,17 @@ export const viewDataKehadiran = async (req, res) => {
         tahun,
         nik,
         nama_pegawai,
-        jabatan_pegawai,
+        jabatan_pegawai: nama_jabatan,
         jenis_kelamin,
         hadir,
         sakit,
         alpha,
+        worked_hours,
+        additional_payments,
+        vacation_days,
+        vacation_payments,
+        comments_01,
+        comments_02
       };
     });
     res.json(resultDataKehadiran);
@@ -87,6 +91,12 @@ export const viewDataKehadiranByID = async (req, res) => {
         "sakit",
         "alpha",
         "createdAt",
+        "worked_hours",
+        "additional_payments",
+        "vacation_days",
+        "vacation_payments",
+        "comments_01",
+        "comments_02",
       ],
       where: {
         id: req.params.id,
