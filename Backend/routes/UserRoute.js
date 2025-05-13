@@ -74,7 +74,7 @@ router.get('/data_pegawai', verifyUser, adminOnly, getDataPegawai);
 router.get('/data_pegawai/id/:id', verifyUser, adminOnly, getDataPegawaiByID);
 router.get('/data_pegawai/nik/:nik', verifyUser, adminOnly, getDataPegawaiByNik);
 router.get('/data_pegawai/name/:name', verifyUser, getDataPegawaiByName);
-router.post('/data_pegawai',verifyUser, adminOnly, createDataPegawai);
+router.post('/data_pegawai', verifyUser, adminOnly, createDataPegawai);
 router.patch('/data_pegawai/:id', verifyUser, adminOnly, updateDataPegawai);
 router.delete('/data_pegawai/:id', verifyUser, adminOnly, deleteDataPegawai);
 router.patch('/data_pegawai/:id/change_password', verifyUser, adminOnly, changePassword);
@@ -89,8 +89,8 @@ router.delete('/data_jabatan/:id', verifyUser, adminOnly, deleteDataJabatan);
 // Data Kehadiran
 router.get('/data_kehadiran', verifyUser, adminOnly, viewDataKehadiran);
 router.get('/data_kehadiran/:id', verifyUser, adminOnly, viewDataKehadiranByID);
-router.post('/data_kehadiran',verifyUser, adminOnly, createDataKehadiran);
-router.patch('/data_kehadiran/update/:id',verifyUser, adminOnly, updateDataKehadiran);
+router.post('/data_kehadiran', verifyUser, adminOnly, createDataKehadiran); //TODO doing
+router.patch('/data_kehadiran/update/:id', verifyUser, adminOnly, updateDataKehadiran);
 router.delete('/data_kehadiran/:id', verifyUser, adminOnly, deleteDataKehadiran);
 // Data Potongan
 router.get('/data_potongan', adminOnly, verifyUser, viewDataPotongan);
@@ -106,17 +106,17 @@ router.get('/data_gaji_pegawai/year/:year', viewDataGajiPegawaiByYear);
 
 /* ====  Laporan  ==== */
 // laporan Gaji Pegawai
-router.get('/laporan/gaji',verifyUser, adminOnly, viewLaporanGajiPegawai);
-router.get('/laporan/gaji/name/:name',verifyUser, adminOnly, viewLaporanGajiPegawaiByName);
-router.get('/laporan/gaji/month/:month', verifyUser, adminOnly,viewLaporanGajiPegawaiByMonth);
-router.get('/laporan/gaji/year/:year', verifyUser, adminOnly,viewLaporanGajiPegawaiByYear);
+router.get('/laporan/gaji', verifyUser, adminOnly, viewLaporanGajiPegawai);
+router.get('/laporan/gaji/name/:name', verifyUser, adminOnly, viewLaporanGajiPegawaiByName);
+router.get('/laporan/gaji/month/:month', verifyUser, adminOnly, viewLaporanGajiPegawaiByMonth);
+router.get('/laporan/gaji/year/:year', verifyUser, adminOnly, viewLaporanGajiPegawaiByYear);
 // Laporan Absensi Pegawai
-router.get('/laporan/absensi/month/:month', verifyUser, adminOnly,viewLaporanAbsensiPegawaiByMonth);
-router.get('/laporan/absensi/year/:year', verifyUser, adminOnly,viewLaporanAbsensiPegawaiByYear);
+router.get('/laporan/absensi/month/:month', verifyUser, adminOnly, viewLaporanAbsensiPegawaiByMonth);
+router.get('/laporan/absensi/year/:year', verifyUser, adminOnly, viewLaporanAbsensiPegawaiByYear);
 // Slip Gaji Pegawai
-router.get('/laporan/slip_gaji/name/:name', verifyUser, adminOnly,viewSlipGajiByName);
-router.get('/laporan/slip_gaji/month/:month',verifyUser, adminOnly, viewSlipGajiByMonth);
-router.get('/laporan/slip_gaji/year/:year',verifyUser, adminOnly, viewSlipGajiByYear);
+router.get('/laporan/slip_gaji/name/:name', verifyUser, adminOnly, viewSlipGajiByName);
+router.get('/laporan/slip_gaji/month/:month', verifyUser, adminOnly, viewSlipGajiByMonth);
+router.get('/laporan/slip_gaji/year/:year', verifyUser, adminOnly, viewSlipGajiByYear);
 
 /* ==== Ubah Password ==== */
 router.patch('/change_password', verifyUser, changePassword);

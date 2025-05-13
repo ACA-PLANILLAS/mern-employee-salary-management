@@ -98,6 +98,8 @@ export const viewDataKehadiranByID = async (req, res) => {
   }
 };
 
+
+//TODO doing
 // method untuk menambah data kehadiran
 export const createDataKehadiran = async (req, res) => {
   const {
@@ -108,6 +110,12 @@ export const createDataKehadiran = async (req, res) => {
     hadir,
     sakit,
     alpha,
+    worked_hours,
+    additional_payments,
+    vacation_days,
+    vacation_payments,
+    comments_01,
+    comments_02
   } = req.body;
 
   try {
@@ -158,6 +166,12 @@ export const createDataKehadiran = async (req, res) => {
         hadir: hadir,
         sakit: sakit,
         alpha: alpha,
+        worked_hours: worked_hours,
+        additional_payments: additional_payments,
+        vacation_days: vacation_days,
+        vacation_payments: vacation_payments,
+        comments_01: comments_01,
+        comments_02: comments_02
       });
       res.json({ msg: ATTENDANCE.CREATE_SUCCESS.code });
     } else {
