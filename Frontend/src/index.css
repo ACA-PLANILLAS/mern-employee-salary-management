@@ -150,9 +150,9 @@ span.flatpickr-weekday,
   display: none !important;
 }
 
-
+/*
 .my-ok-button {
-  background-color: #2563eb; /* azul Tailwind blue-600 */
+  background-color: #2563eb; /* azul Tailwind blue-600 *
   color: white;
   padding: 0.5rem 1rem;
   border: none;
@@ -162,5 +162,5 @@ span.flatpickr-weekday,
 }
 
 .my-ok-button:hover {
-  background-color: #1d4ed8; /* blue-700 */
-}
+  background-color: #1d4ed8; /* blue-700 *
+}*/

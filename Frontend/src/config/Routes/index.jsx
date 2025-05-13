@@ -45,10 +45,12 @@ const AppRoutes = () => {
       <Route path='/kontak' element={<Contact />} />
       <Route path='/login' element={<Login />} />
       <Route path='/dashboard' element={<Dashboard />} />
-      <Route path='/parametros' element={<Parametros />} />
+
 
       {/* Route Admin */}
       {/* Master Data Admin */}
+      <Route path='/parameters' element={<Parametros />} />
+
       <Route
         path='/data-pegawai'
         element={<DataPegawai />}

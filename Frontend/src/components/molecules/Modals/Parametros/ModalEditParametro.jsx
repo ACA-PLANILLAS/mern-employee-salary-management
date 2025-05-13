@@ -1,4 +1,5 @@
-import { useState } from "react";
+// src/components/molecules/Modals/Parametros/ModalEditParametro.jsx
+import { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -8,19 +9,24 @@ import {
   Button,
   Box,
   IconButton,
-} from "@mui/material";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+} from '@mui/material';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-const ModalEditParametro = ({ open, onClose, data }) => {
-  const [form, setForm] = useState({ ...data });
+const ModalEditParametro = ({ open, onClose, data, onSave }) => {
+  const [form, setForm] = useState({ id: '', name: '', value: 0 });
+
+  useEffect(() => {
+    if (data) {
+      setForm({ id: data.id, name: data.name, value: data.value });
+    }
+  }, [data]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSave = () => {
-    console.log("Guardado:", form);
-    onClose();
+    onSave(form);
   };
 
   return (
@@ -33,10 +39,9 @@ const ModalEditParametro = ({ open, onClose, data }) => {
         >
           <CloseRoundedIcon className="text-gray-500 hover:text-black" />
         </IconButton>
-
         <DialogTitle>
           <div className="text-center text-lg font-bold text-black">
-            Editar Parámetros
+            Editar Parámetro
           </div>
         </DialogTitle>
       </div>

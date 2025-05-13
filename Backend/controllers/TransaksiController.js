@@ -22,10 +22,9 @@ const { PARAMS } = params;
 //TODO. modifier by month
 // method untuk menampilkan semua Data Kehadiran
 export const viewDataKehadiran = async (req, res) => {
-  let resultDataKehadiran = [];
   try {
     // Get data kehadiran
-    const data_Kehadiran = await DataKehadiran.findAll({
+    const entries = await DataKehadiran.findAll({
       attributes: [
         "id",
         "bulan",
@@ -37,7 +36,6 @@ export const viewDataKehadiran = async (req, res) => {
         "hadir",
         "sakit",
         "alpha",
-        "createdAt",
         "worked_hours",
         "additional_payments",
         "vacation_days",
@@ -48,30 +46,39 @@ export const viewDataKehadiran = async (req, res) => {
       distinct: true,
     });
 
-    resultDataKehadiran = data_Kehadiran.map(({
-      id, bulan, tahun, nik, nama_pegawai, nama_jabatan, jenis_kelamin, hadir, sakit, alpha, createdAt, worked_hours, additional_payments, vacation_days, vacation_payments, comments_01, comments_02
-    }) => {
+    const resultDataKehadiran = await Promise.all(
+      entries.map(async (item) => {
+        const peg = await DataPegawai.findOne({
+          where: { id: item.nik },
+        });
 
-      return {
-        id,
-        bulan,
-        tahun,
-        nik,
-        nama_pegawai,
-        jabatan_pegawai: nama_jabatan,
-        jenis_kelamin,
-        hadir,
-        sakit,
-        alpha,
-        worked_hours,
-        additional_payments,
-        vacation_days,
-        vacation_payments,
-        comments_01,
-        comments_02
-      };
-    });
-    res.json(resultDataKehadiran);
+        const complete_name = peg
+          ? `${peg.first_name} ${peg.middle_name} ${peg.last_name} ${peg.second_last_name} ${peg.maiden_name}`
+          : "";
+
+        return {
+          id: item.id,
+          bulan: item.bulan,
+          tahun: item.tahun,
+          nik: item.nik,
+          nama_pegawai: item.nama_pegawai,
+          jabatan_pegawai: item.nama_jabatan,
+          jenis_kelamin: item.jenis_kelamin,
+          hadir: item.hadir,
+          sakit: item.sakit,
+          alpha: item.alpha,
+          worked_hours: item.worked_hours,
+          additional_payments: item.additional_payments,
+          vacation_days: item.vacation_days,
+          vacation_payments: item.vacation_payments,
+          comment_01: item.comment_01,
+          comment_02: item.comment_02,
+          complete_name,
+        };
+      })
+    );
+
+    return res.json(resultDataKehadiran);
   } catch (error) {
     console.log(error);
   }
@@ -126,7 +133,7 @@ export const createDataKehadiran = async (req, res) => {
     vacation_days,
     vacation_payments,
     comment_01,
-    comment_02
+    comment_02,
   } = req.body;
 
   try {
@@ -145,12 +152,12 @@ export const createDataKehadiran = async (req, res) => {
     // });
     console.log("----------2");
 
-    const paymentsOnMonth = await Parameter.findOne({
-      where: {
-        type: PARAMS.PMON,
-      },
-    }) || 1;
-
+    const paymentsOnMonth =
+      (await Parameter.findOne({
+        where: {
+          type: PARAMS.PMON,
+        },
+      })) || 1;
 
     //current month and year
     const month = moment().locale("id").format("MMMM");
@@ -160,7 +167,7 @@ export const createDataKehadiran = async (req, res) => {
       where: {
         nik,
         bulan: month,
-        tahun: year
+        tahun: year,
       },
     });
 
@@ -176,7 +183,10 @@ export const createDataKehadiran = async (req, res) => {
       return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NIK.code });
     }
 
-    if (nama_sudah_ada != null && nama_sudah_ada.length < paymentsOnMonth.value) {
+    if (
+      nama_sudah_ada != null &&
+      nama_sudah_ada.length < paymentsOnMonth.value
+    ) {
       // Guardar el mes en formato de numero, enero = 1, febrero = 2, etc.
       const monthNumber = moment().format("M");
 
@@ -195,7 +205,7 @@ export const createDataKehadiran = async (req, res) => {
         vacation_days: vacation_days,
         vacation_payments: vacation_payments,
         comment_01: comment_01,
-        comment_02: comment_02
+        comment_02: comment_02,
       });
       res.json({ msg: ATTENDANCE.CREATE_SUCCESS.code });
     } else {
@@ -374,10 +384,8 @@ export const getDataPegawai = async () => {
       const monthly_salary = pegawai.monthly_salary;
       const has_active_loan = pegawai.has_active_loan;
       const loan_original_amount = pegawai.loan_original_amount;
-      const loan_outstanding_balance =
-        pegawai.loan_outstanding_balance || 0; // Default to 0 if null
-      const loan_monthly_installment =
-        pegawai.loan_monthly_installment || 0; // Default to 0 if null
+      const loan_outstanding_balance = pegawai.loan_outstanding_balance || 0; // Default to 0 if null
+      const loan_monthly_installment = pegawai.loan_monthly_installment || 0; // Default to 0 if null
       const loan_start_date = pegawai.loan_start_date || null; // Default to null if not provided
       const username = pegawai.username || "";
       const photo = pegawai.photo || "";
@@ -625,7 +633,6 @@ export const getDataGajiPegawai = async (year, month) => {
         };
       })
     );
-
 
     return salariosConDeducciones;
   } catch (error) {
