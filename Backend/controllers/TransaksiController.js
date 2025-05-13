@@ -40,8 +40,8 @@ export const viewDataKehadiran = async (req, res) => {
         "additional_payments",
         "vacation_days",
         "vacation_payments",
-        "comments_01",
-        "comments_02",
+        "comment_01",
+        "comment_02",
       ],
       distinct: true,
     });
@@ -95,8 +95,8 @@ export const viewDataKehadiranByID = async (req, res) => {
         "additional_payments",
         "vacation_days",
         "vacation_payments",
-        "comments_01",
-        "comments_02",
+        "comment_01",
+        "comment_02",
       ],
       where: {
         id: req.params.id,
@@ -124,8 +124,8 @@ export const createDataKehadiran = async (req, res) => {
     additional_payments,
     vacation_days,
     vacation_payments,
-    comments_01,
-    comments_02
+    comment_01,
+    comment_02
   } = req.body;
 
   try {
@@ -180,8 +180,8 @@ export const createDataKehadiran = async (req, res) => {
         additional_payments: additional_payments,
         vacation_days: vacation_days,
         vacation_payments: vacation_payments,
-        comments_01: comments_01,
-        comments_02: comments_02
+        comment_01: comment_01,
+        comment_02: comment_02
       });
       res.json({ msg: ATTENDANCE.CREATE_SUCCESS.code });
     } else {
