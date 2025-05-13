@@ -1,3 +1,45 @@
+
+> INSERT INTO data_pegawai (
+    ->   id_pegawai,
+    ->   nik,
+    ->   first_name,
+    ->     last_name,
+    ->
+    ->   username,
+    ->   password,
+    ->   jenis_kelamin,
+    ->   status,
+    ->   photo,
+    ->   url,
+    ->   hak_akses,
+    ->   createdAt,
+    ->   updatedAt
+    -> ) VALUES (
+    ->   'a1b2c3d4-e5f6-7890-ab12-cd34ef56gh12',  -- id_pegawai (UUID)
+    ->   '334455',                               -- NIK
+    ->     '1',                               -- Username
+    ->       '2',                               -- Username
+    ->   'user',                               -- Username
+    ->   '$argon2i$v=19$m=16,t=2,p=1$S2xtQ0xkOU16ckt5enZvWFNtcTI5cEZtSDdHb0ZrXzM$sQch0yEbQ0L5/oY7+hzwHQ',   -- Password (hash Argon2id)
+    ->   'Laki-Laki',                            -- Gnero
+    ->   'karyawan tetap',                       -- Estado
+    ->   'carlos.jpg',                           -- Nombre de archivo foto
+    ->   'http://localhost:5000/images/carlos.jpg', -- URL foto
+    ->   'admin',                              -- Rol/hak_akses
+    ->   NOW(),                                  -- createdAt
+    ->   NOW()                                   -- updatedAt
+    -> );
+
+
+    
+Query OK, 1 row affected (0.
+
+
+
+
+
+
+
 import DataKehadiran from "../models/DataKehadiranModel.js";
 import DataPegawai from "../models/DataPegawaiModel.js";
 import DataJabatan from "../models/DataJabatanModel.js";
@@ -489,7 +531,7 @@ export const getDataGajiPegawai = async (year, month) => {
       const totalUnassitence =
         parseFloat((pegawai.gaji_pokok * 8) / totalDaysWorkedOnMonth) *
         (parseFloat(kehadiran.sakit) + parseFloat(kehadiran.alpha));
-        
+
       const total_gaji =
         total_gaji_no_deductions - (totalValueDeducted + totalUnassitence);
 
