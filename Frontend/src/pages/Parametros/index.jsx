@@ -33,9 +33,9 @@ const Parametros = () => {
   useEffect(() => {
     // Datos quemados por ahora
     setParameters([
-      { id: 1, name: 'Días Laborales', value: 5, daily_hours: 8, payment_type: 'mensual' },
-      { id: 2, name: 'Vacaciones', value: 15, daily_hours: 0, payment_type: 'mensual' },
-      { id: 3, name: 'Medio Tiempo', value: 3, daily_hours: 4, payment_type: 'semanal' }
+      { id: 1, name: 'Días Laborales', value: 5 },
+      { id: 2, name: 'Vacaciones', value: 15 },
+      { id: 3, name: 'Medio Tiempo', value: 3 }
     ]);
   }, []);
 
@@ -50,16 +50,14 @@ const Parametros = () => {
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="py-4 px-4 font-medium text-black dark:text-white">N.º</th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white">Nombre</th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white">Valor</th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white">Horas por Día</th>
-                <th className="py-4 px-4 font-medium text-black dark:text-white">Tipo de Pago</th>
+                <th className="py-4 px-4 font-medium text-black dark:text-white">Días de Trabajo</th>
                 <th className="py-4 px-4 font-medium text-black dark:text-white">Acción</th>
               </tr>
             </thead>
             <tbody>
               {parameters.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="text-center py-4 text-gray-400 dark:text-gray-500">
+                  <td colSpan="4" className="text-center py-4 text-gray-400 dark:text-gray-500">
                     No hay parámetros registrados
                   </td>
                 </tr>
@@ -74,12 +72,6 @@ const Parametros = () => {
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       {param.value}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      {param.daily_hours}
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark capitalize">
-                      {param.payment_type}
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <div className="flex gap-2">

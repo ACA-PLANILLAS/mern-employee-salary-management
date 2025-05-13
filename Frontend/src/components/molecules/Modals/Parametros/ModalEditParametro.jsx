@@ -6,7 +6,6 @@ import {
   DialogActions,
   TextField,
   Button,
-  MenuItem,
   Box,
   IconButton,
 } from "@mui/material";
@@ -27,7 +26,6 @@ const ModalEditParametro = ({ open, onClose, data }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <div className="relative">
-        {/* Botón de cerrar */}
         <IconButton
           onClick={onClose}
           className="!absolute right-2 top-2 z-10"
@@ -38,7 +36,7 @@ const ModalEditParametro = ({ open, onClose, data }) => {
 
         <DialogTitle>
           <div className="text-center text-lg font-bold text-black">
-            Editar Parámetro
+            Editar Parámetros
           </div>
         </DialogTitle>
       </div>
@@ -60,26 +58,6 @@ const ModalEditParametro = ({ open, onClose, data }) => {
             onChange={handleChange}
             fullWidth
           />
-          <TextField
-            label="Horas por Día"
-            name="daily_hours"
-            type="number"
-            value={form.daily_hours}
-            onChange={handleChange}
-            fullWidth
-          />
-          <TextField
-            select
-            label="Tipo de Pago"
-            name="payment_type"
-            value={form.payment_type}
-            onChange={handleChange}
-            fullWidth
-          >
-            <MenuItem value="semanal">Semanal</MenuItem>
-            <MenuItem value="quincenal">Quincenal</MenuItem>
-            <MenuItem value="mensual">Mensual</MenuItem>
-          </TextField>
         </Box>
       </DialogContent>
 

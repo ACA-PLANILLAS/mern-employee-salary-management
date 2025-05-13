@@ -25,7 +25,7 @@ const ModalViewParametro = ({ open, onClose, data }) => {
 
         <DialogTitle>
           <div className="text-center text-lg font-bold text-black">
-            Ver Parámetro
+            Ver Parámetros
           </div>
         </DialogTitle>
       </div>
@@ -34,18 +34,6 @@ const ModalViewParametro = ({ open, onClose, data }) => {
         <Box display="flex" flexDirection="column" gap={2} mt={1}>
           <TextField label="Nombre" value={data.name} fullWidth disabled />
           <TextField label="Valor" value={data.value} fullWidth disabled />
-          <TextField
-            label="Horas por Día"
-            value={data.daily_hours}
-            fullWidth
-            disabled
-          />
-          <TextField
-            label="Tipo de Pago"
-            value={data.payment_type}
-            fullWidth
-            disabled
-          />
         </Box>
       </DialogContent>
 
