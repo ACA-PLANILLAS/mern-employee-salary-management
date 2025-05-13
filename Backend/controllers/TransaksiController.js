@@ -321,11 +321,59 @@ export const getDataPegawai = async () => {
     resultDataPegawai = data_pegawai.map((pegawai) => {
       const id = pegawai.id;
       const nik = pegawai.nik;
-      const nama_pegawai = pegawai.nama_pegawai;
+      const dui_or_nit = pegawai.dui_or_nit;
+      const document_type = pegawai.document_type;
+      const isss_affiliation_number = pegawai.isss_affiliation_number;
+      const pension_institution_code = pegawai.pension_institution_code;
+      const first_name = pegawai.first_name;
+      const middle_name = pegawai.middle_name;
+      const last_name = pegawai.last_name;
+      const second_last_name = pegawai.second_last_name;
+      const maiden_name = pegawai.maiden_name;
       const jenis_kelamin = pegawai.jenis_kelamin;
-      const jabatan_pegawai = pegawai.jabatan;
+      const hire_date = pegawai.hire_date;
+      const status = pegawai.status;
+      const last_position_change_date = pegawai.last_position_change_date;
+      const monthly_salary = pegawai.monthly_salary;
+      const has_active_loan = pegawai.has_active_loan;
+      const loan_original_amount = pegawai.loan_original_amount;
+      const loan_outstanding_balance =
+        pegawai.loan_outstanding_balance || 0; // Default to 0 if null
+      const loan_monthly_installment =
+        pegawai.loan_monthly_installment || 0; // Default to 0 if null
+      const loan_start_date = pegawai.loan_start_date || null; // Default to null if not provided
+      const username = pegawai.username || "";
+      const photo = pegawai.photo || "";
+      const url = pegawai.url || "";
+      const hak_akses = pegawai.hak_akses;
 
-      return { id, nik, nama_pegawai, jenis_kelamin, jabatan_pegawai };
+      return {
+        id,
+        nik,
+        dui_or_nit,
+        document_type,
+        isss_affiliation_number,
+        pension_institution_code,
+        first_name,
+        middle_name,
+        last_name,
+        second_last_name,
+        maiden_name,
+        jenis_kelamin,
+        hire_date,
+        status,
+        last_position_change_date,
+        monthly_salary,
+        has_active_loan,
+        loan_original_amount,
+        loan_outstanding_balance,
+        loan_monthly_installment,
+        loan_start_date,
+        username,
+        photo,
+        url,
+        hak_akses,
+      };
     });
   } catch (error) {
     console.error(error);
@@ -521,6 +569,7 @@ export const getDataGajiPegawai = async (year, month) => {
 
         return {
           ...pegawai,
+          ...datosPuesto?.dataValues,
           idPuesto,
           salarioBruto: salarioBruto.toFixed(2),
           // potaciones: totalValueDeducted.toFixed(2),
@@ -540,7 +589,6 @@ export const getDataGajiPegawai = async (year, month) => {
       })
     );
 
-    console.log("salariosConDeducciones", salariosConDeducciones);
 
     return salariosConDeducciones;
   } catch (error) {
