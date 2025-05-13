@@ -16,5 +16,7 @@
   "september": "septiembre",
   "oktober": "octubre",
   "november": "noviembre",
-  "desember": "diciembre"
+  "desember": "diciembre",
+  "true": "Sí",
+  "false": "No"
 }
