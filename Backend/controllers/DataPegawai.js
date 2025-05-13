@@ -1,5 +1,9 @@
-
-import { DataPegawai, PositionHistory, PensionInstitution, DataJabatan } from '../models/index.js';
+import {
+  DataPegawai,
+  PositionHistory,
+  PensionInstitution,
+  DataJabatan,
+} from "../models/index.js";
 
 import argon2 from "argon2";
 import path from "path";
@@ -61,7 +65,13 @@ export const getAllEmployees = async (req, res) => {
             {
               model: DataJabatan,
               as: "position",
-              attributes: ['id', 'nama_jabatan', 'gaji_pokok', 'tj_transport', 'uang_makan'],
+              attributes: [
+                "id",
+                "nama_jabatan",
+                "gaji_pokok",
+                "tj_transport",
+                "uang_makan",
+              ],
             },
           ],
         },
@@ -122,7 +132,13 @@ export const getEmployeeById = async (req, res) => {
             {
               model: DataJabatan,
               as: "position",
-              attributes: ['id', 'nama_jabatan', 'gaji_pokok', 'tj_transport', 'uang_makan'],
+              attributes: [
+                "id",
+                "nama_jabatan",
+                "gaji_pokok",
+                "tj_transport",
+                "uang_makan",
+              ],
             },
           ],
         },
@@ -137,7 +153,6 @@ export const getEmployeeById = async (req, res) => {
     res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
   }
 };
-
 
 // Create new employee
 export const createEmployee = async (req, res) => {
@@ -197,45 +212,51 @@ export const createEmployee = async (req, res) => {
     if (err) return res.status(500).json({ msg: EMPLOYEE.INTERNAL_ERROR.code });
 
     const t = await db.transaction(); // 🔐 inicia transacción
-    
+
     try {
       const hashed = await argon2.hash(password);
 
-      const newEmp = await DataPegawai.create({
-        nik,
-        dui_or_nit,
-        document_type,
-        isss_affiliation_number,
-        pension_institution_code,
-        first_name,
-        middle_name,
-        last_name,
-        second_last_name,
-        maiden_name,
-        jenis_kelamin,
-        hire_date,
-        status,
-        // jabatan,
-        last_position_change_date,
-        monthly_salary,
-        has_active_loan,
-        loan_original_amount,
-        loan_outstanding_balance,
-        loan_monthly_installment,
-        loan_start_date,
-        username,
-        password: hashed,
-        photo: filename,
-        url,
-        hak_akses,
-      }, { transaction: t });
+      const newEmp = await DataPegawai.create(
+        {
+          nik,
+          dui_or_nit,
+          document_type,
+          isss_affiliation_number,
+          pension_institution_code,
+          first_name,
+          middle_name,
+          last_name,
+          second_last_name,
+          maiden_name,
+          jenis_kelamin,
+          hire_date,
+          status,
+          // jabatan,
+          last_position_change_date,
+          monthly_salary,
+          has_active_loan,
+          loan_original_amount,
+          loan_outstanding_balance,
+          loan_monthly_installment,
+          loan_start_date,
+          username,
+          password: hashed,
+          photo: filename,
+          url,
+          hak_akses,
+        },
+        { transaction: t }
+      );
 
       // record initial position history
-      await PositionHistory.create({
-        employee_id: newEmp.id,
-        position_id: position_id, // set proper job ID lookup
-        start_date: last_position_change_date || hire_date,
-      }, { transaction: t });
+      await PositionHistory.create(
+        {
+          employee_id: newEmp.id,
+          position_id: position_id, // set proper job ID lookup
+          start_date: last_position_change_date || hire_date,
+        },
+        { transaction: t }
+      );
 
       await t.commit(); // ✅ Si todo sale bien, confirmamos
 
@@ -255,7 +276,7 @@ export const createEmployee = async (req, res) => {
 export const updateEmployee = async (req, res) => {
   const emp = await DataPegawai.findByPk(req.params.id);
   if (!emp) return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND.code });
-  
+
   const {
     nik,
     dui_or_nit,
@@ -280,43 +301,60 @@ export const updateEmployee = async (req, res) => {
     loan_start_date,
     username,
     hak_akses,
-    position_id
+    position_id,
   } = req.body;
 
+  console.log(">>11111111");
   // Obtener el ultimo cambio de puesto del empleado
   const lastPositionHistory = await PositionHistory.findOne({
     where: { employee_id: emp.id },
     order: [["createdAt", "DESC"]],
   });
+  console.log(">>2222222222");
 
   const t = await db.transaction(); // 🔐 inicia transacción
 
   try {
     // if position changed, record history
-    console.log(">>POSITION IF", lastPositionHistory.position_id, position_id);
-    if (String(lastPositionHistory.position_id) !== String(position_id)) {
-      console.log(">>>POSITION CHANGED");
+    if (String(lastPositionHistory?.position_id) !== String(position_id)) {
+      console.log(
+        ">>>POSITION CHANGED",
+        last_position_change_date,
+        " . ",
+        hire_date
+      );
       // Crear un nuevo registro de historial de posición
-      await PositionHistory.create({
-        employee_id: emp.id,
-        position_id: position_id, // set proper job ID lookup
-        start_date: last_position_change_date || hire_date,
-      }, { transaction: t });
+      console.log(">>3333333333333333");
+      await PositionHistory.create(
+        {
+          employee_id: emp.id,
+          position_id: position_id, // set proper job ID lookup
+          start_date: Date.now(),
+        },
+        { transaction: t }
+      );
+
+      console.log(">>444444444");
 
       // Actualizar el registro anterior para establecer la fecha de finalización
-      await PositionHistory.update(
-        { end_date: last_position_change_date || hire_date },
-        {
-          where: {
-            employee_id: emp.id,
-            position_id: lastPositionHistory.position_id,
-            end_date: null,
-          },
-          transaction: t,
-        }
-      );
+      if (lastPositionHistory && lastPositionHistory.position_id) {
+        console.log(">> 555");
+        await PositionHistory.update(
+          { end_date: Date.now() },
+          {
+            where: {
+              employee_id: emp.id,
+              position_id: lastPositionHistory?.position_id,
+              end_date: null,
+            },
+            transaction: t,
+          }
+        );
+        console.log(">> 666");
+      }
     }
 
+    console.log(">> aaaa");
     await DataPegawai.update(
       {
         nik,
@@ -343,8 +381,8 @@ export const updateEmployee = async (req, res) => {
         username,
         hak_akses,
       },
-      { where: { id: emp.id }, transaction: t },
-    )
+      { where: { id: emp.id }, transaction: t }
+    );
 
     await t.commit(); // ✅ Si todo sale bien, confirmamos
 

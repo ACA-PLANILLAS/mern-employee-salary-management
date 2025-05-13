@@ -137,8 +137,8 @@ router.delete('/data_potongan/:id', adminOnly, verifyUser, deleteDataPotongan);
 // Data Gaji
 router.get('/data_gaji_pegawai', viewDataGajiPegawai);
 router.get('/data_gaji/name/:name', verifyUser, viewDataGajiByName);
-router.get('/data_gaji_pegawai/month/:month', viewDataGajiPegawaiByMonth);
-router.get('/data_gaji_pegawai/year/:year', viewDataGajiPegawaiByYear);
+// router.get('/data_gaji_pegawai/month/:month', viewDataGajiPegawaiByMonth);
+// router.get('/data_gaji_pegawai/year/:year', viewDataGajiPegawaiByYear);
 
 /* ====  Laporan  ==== */
 // laporan Gaji Pegawai

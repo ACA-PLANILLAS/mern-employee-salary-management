@@ -7,8 +7,6 @@ import moment from "moment";
 import "moment/locale/id.js";
 
 import { createRequire } from "module";
-import PositionHistory from "../models/PositionHistoryModel.js";
-import { Op } from "sequelize";
 const require = createRequire(import.meta.url);
 
 const transaksiError = require("../errors/TransaksiError.json");
@@ -99,13 +97,12 @@ export const viewDataKehadiranByID = async (req, res) => {
   }
 };
 
-// TODO
 // method untuk menambah data kehadiran
 export const createDataKehadiran = async (req, res) => {
   const {
-    nik, // id
-    nama_pegawai, // id
-    nama_jabatan, // id empleo
+    nik,
+    nama_pegawai,
+    nama_jabatan,
     jenis_kelamin,
     hadir,
     sakit,
@@ -113,20 +110,23 @@ export const createDataKehadiran = async (req, res) => {
   } = req.body;
 
   try {
-    console.log("----------1", nik);
-    const data_nik_pegawai = await DataPegawai.findOne({
+    const data_nama_pegawai = await DataPegawai.findOne({
       where: {
-        id: nik,
+        nama_pegawai: nama_pegawai,
       },
     });
-    console.log("----------2");
 
-    // const data_nama_jabatan = await DataJabatan.findOne({
-    //   where: {
-    //     nama_jabatan: nama_jabatan,
-    //   },
-    // });
-    console.log("----------2");
+    const data_nama_jabatan = await DataJabatan.findOne({
+      where: {
+        nama_jabatan: nama_jabatan,
+      },
+    });
+
+    const data_nik_pegawai = await DataPegawai.findOne({
+      where: {
+        nik: nik,
+      },
+    });
 
     const nama_sudah_ada = await DataKehadiran.findOne({
       where: {
@@ -134,28 +134,26 @@ export const createDataKehadiran = async (req, res) => {
       },
     });
 
-    // if (!data_nama_pegawai) {
-    //   return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NAME.code });
-    // }
+    if (!data_nama_pegawai) {
+      return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NAME.code });
+    }
 
-    // if (!data_nama_jabatan) {
-    //   return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_JABATAN.code });
-    // }
+    if (!data_nama_jabatan) {
+      return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_JABATAN.code });
+    }
 
     if (!data_nik_pegawai) {
       return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NIK.code });
     }
 
     if (!nama_sudah_ada) {
-      // Guardar el mes en formato de numero, enero = 1, febrero = 2, etc.
-      const monthNumber = moment().format("M");
-
+      const month = moment().locale("id").format("MMMM");
       await DataKehadiran.create({
-        bulan: monthNumber,
-        nik: data_nik_pegawai.id,
-        nama_pegawai: data_nik_pegawai.id, //data_nama_pegawai.id,
+        bulan: month.toLowerCase(),
+        nik: nik,
+        nama_pegawai: data_nama_pegawai.nama_pegawai,
         jenis_kelamin: jenis_kelamin,
-        nama_jabatan: "", //data_nama_jabatan.id,
+        nama_jabatan: data_nama_jabatan.nama_jabatan,
         hadir: hadir,
         sakit: sakit,
         alpha: alpha,
@@ -288,35 +286,11 @@ export const getDataPegawai = async () => {
   try {
     // Get data pegawai:
     const data_pegawai = await DataPegawai.findAll({
-      attributes: [
-        "id",
-        "nik",
-        "dui_or_nit",
-        "document_type",
-        "isss_affiliation_number",
-        "pension_institution_code",
-        "first_name",
-        "middle_name",
-        "last_name",
-        "second_last_name",
-        "maiden_name",
-        "jenis_kelamin",
-        "hire_date",
-        "status",
-        "last_position_change_date",
-        "monthly_salary",
-        "has_active_loan",
-        "loan_original_amount",
-        "loan_outstanding_balance",
-        "loan_monthly_installment",
-        "loan_start_date",
-        "username",
-        "photo",
-        "url",
-        "hak_akses",
-      ],
+      attributes: ["id", "first_name", "jenis_kelamin"],
       distinct: true,
     });
+
+    console.log("data_pegawai", data_pegawai);
 
     resultDataPegawai = data_pegawai.map((pegawai) => {
       const id = pegawai.id;
@@ -429,27 +403,40 @@ export const getDataPotongan = async () => {
 // Logika matematika
 export const getDataGajiPegawai = async (year, month) => {
   try {
-    // 1) recuperar y filtrar asistencia
+    // Gaji Pegawai :
+    const resultDataPegawai = await getDataPegawai();
+    const resultDataJabatan = await getDataJabatan();
 
-    const allKehadiran = await getDataKehadiran();
-    const attendance = allKehadiran.filter((a) => {
-      return (
-        a.tahun === parseInt(year) &&
-        a.bulan.toLowerCase() === month.toLowerCase()
-      );
-    });
+    const gaji_pegawai = resultDataPegawai
+      .filter((pegawai) =>
+        resultDataJabatan.some(
+          (jabatan) => jabatan.nama_jabatan === pegawai.jabatan_pegawai
+        )
+      )
+      .map((pegawai) => {
+        const jabatan = resultDataJabatan.find(
+          (jabatan) => jabatan.nama_jabatan === pegawai.jabatan_pegawai
+        );
+        return {
+          id: pegawai.id,
+          nik: pegawai.nik,
+          nama_pegawai: pegawai.nama_pegawai,
+          jabatan: pegawai.jabatan_pegawai,
+          gaji_pokok: jabatan.gaji_pokok,
+          tj_transport: jabatan.tj_transport,
+          uang_makan: jabatan.uang_makan,
+        };
+      });
 
-    // 2) traer sólo esos empleados
-    const allPegawai = await getDataPegawai();
-    const empleados = allPegawai.filter((p) =>
-      attendance.some((a) => {
-        return a.nik === String(p.id);
-      })
-    );
+    console.log(" @@@@@@ ");
+    console.log(" .. resultDataPegawai ", resultDataPegawai);
+    console.log(" .. resultDataJabatan ", resultDataJabatan);
+    console.log(" @@@@@@ ");
 
+    // Potongan Pegawai :
+    const resultDataKehadiran = await getDataKehadiran();
     const resultDataPotongan = await getDataPotongan();
 
-    // 3) Recuperar parámetros de deducciones
     // getting job total work days and hours
     const workHoursInWeeks = await Parameter.findOne({
       where: { type: PARAMS.HWEK },
@@ -457,92 +444,74 @@ export const getDataGajiPegawai = async (year, month) => {
     const totalPaymentsInMonth = await Parameter.findOne({
       where: { type: PARAMS.PMON },
     });
+
     const totalDaysWorkedOnMonth = workHoursInWeeks.value * 4;
 
-    // 4) Calcular salario mes a mes + deducciones
-    // const endOfMonth = new Date(parseInt(year), parseInt(month) - 1 + 1, 0);
-    const endOfMonth = new Date(parseInt(year), parseInt(month), 0);
-    const startOfMonth = new Date(parseInt(year), parseInt(month) - 1, 1);
+    const potongan_pegawai = resultDataKehadiran.map((kehadiran) => {
+      return {
+        tahun: kehadiran.tahun,
+        bulan: kehadiran.bulan,
+        nama_pegawai: kehadiran.nama_pegawai,
+        hadir: kehadiran.hadir,
+        sakit: kehadiran.sakit,
+        alpha: kehadiran.alpha,
+      };
+    });
 
-    const salariosConDeducciones = await Promise.all(
-      empleados.map(async (pegawai) => {
-        // 4a) Sacar el último puesto que tuvo el empleado en o antes de endOfMonth
-        const history = await PositionHistory.findOne({
-          where: {
-            employee_id: pegawai.id,
-            start_date: { [Op.lte]: endOfMonth },
-            [Op.or]: [
-              { end_date: { [Op.gte]: startOfMonth } }, // aún vigente en el mes
-              { end_date: null }, // sin fecha de fin
-            ],
-          },
-          order: [["start_date", "DESC"]],
+    // Total Gaji Pegawai :
+    const total_gaji_pegawai = gaji_pegawai.map((pegawai) => {
+      const id = pegawai.id;
+      const kehadiran = resultDataKehadiran.find(
+        (kehadiran) => kehadiran.nama_pegawai === pegawai.nama_pegawai
+      );
+      const potongan = potongan_pegawai.find(
+        (potongan) => potongan.nama_pegawai === pegawai.nama_pegawai
+      );
+
+      //getting total employee salary with subsidy
+      const total_gaji_no_deductions =
+        parseFloat(
+          pegawai.gaji_pokok + pegawai.tj_transport + pegawai.uang_makan
+        ) / parseFloat(totalPaymentsInMonth.value);
+
+      const totalDeductions = [];
+      let totalValueDeducted = 0;
+
+      resultDataPotongan.forEach((deduction) => {
+        const valueDeducted = total_gaji_no_deductions * deduction.jml_potongan;
+        totalDeductions.push({
+          ...deduction,
+          valueDeducted: valueDeducted,
         });
+        totalValueDeducted += valueDeducted;
+      });
 
-        const idPuesto = history ? history.position_id : 0;
+      const totalUnassitence =
+        parseFloat((pegawai.gaji_pokok * 8) / totalDaysWorkedOnMonth) *
+        (parseFloat(kehadiran.sakit) + parseFloat(kehadiran.alpha));
+        
+      const total_gaji =
+        total_gaji_no_deductions - (totalValueDeducted + totalUnassitence);
 
-        // 4b) Recuperar las cifras salariales de ese puesto
-        const datosPuesto = await DataJabatan.findOne({
-          where: { id: idPuesto },
-        });
+      return {
+        tahun: potongan ? potongan.tahun : kehadiran ? kehadiran.tahun : 0,
+        bulan: potongan ? potongan.bulan : kehadiran ? kehadiran.bulan : 0,
+        id: id,
+        nik: pegawai.nik,
+        nama_pegawai: pegawai.nama_pegawai,
+        jabatan: pegawai.jabatan,
+        gaji_pokok: pegawai.gaji_pokok.toLocaleString(),
+        tj_transport: pegawai.tj_transport.toLocaleString(),
+        uang_makan: pegawai.uang_makan.toLocaleString(),
+        hadir: kehadiran.hadir,
+        sakit: kehadiran.sakit,
+        alpha: kehadiran.alpha,
+        potongan: totalValueDeducted.toLocaleString(),
+        total: (total_gaji < 0 ? 0 : total_gaji).toFixed(2).toLocaleString(),
+      };
+    });
 
-        //  gaji_pokok: 10000,
-        // tj_transport: 200,
-        // uang_makan: 122,
-
-        // 4c) Cálculo del salario bruto prorrateado
-        const salarioBruto =
-          (datosPuesto.gaji_pokok +
-            datosPuesto.tj_transport +
-            datosPuesto.uang_makan) /
-          parseFloat(totalPaymentsInMonth.value);
-
-        // 4d) Deducciones fijas
-        const totalDeductions = [];
-        let totalValueDeducted = 0;
-
-        resultDataPotongan.forEach((deduction) => {
-          const valueDeducted = salarioBruto * deduction.jml_potongan;
-          totalDeductions.push({
-            ...deduction,
-            valueDeducted: valueDeducted,
-          });
-          totalValueDeducted += valueDeducted;
-        });
-
-        const kehadiran = attendance.find((a) => a.nik === String(pegawai.id));
-
-        const totalUnassitence =
-          parseFloat((datosPuesto.gaji_pokok * 8) / totalDaysWorkedOnMonth) *
-          (parseFloat(kehadiran.sakit) + parseFloat(kehadiran.alpha));
-
-        const total_gaji =
-          salarioBruto - (totalValueDeducted + totalUnassitence);
-
-        return {
-          ...pegawai,
-          idPuesto,
-          salarioBruto: salarioBruto.toFixed(2),
-          // potaciones: totalValueDeducted.toFixed(2),
-          // deduccionAusencias: deduccionAusencias.toFixed(2),
-          // total: neto.toFixed(2),
-          id: pegawai.id,
-          // gaji_pokok: pegawai.gaji_pokok.toLocaleString(),
-          // tj_transport: pegawai.tj_transport.toLocaleString(),
-          // uang_makan: pegawai.uang_makan.toLocaleString(),
-          hadir: kehadiran.hadir,
-          sakit: kehadiran.sakit,
-          alpha: kehadiran.alpha,
-          deducciones: totalValueDeducted.toLocaleString(),
-          castigo_ausencias: totalUnassitence.toLocaleString(),
-          total: (total_gaji < 0 ? 0 : total_gaji).toFixed(2).toLocaleString(),
-        };
-      })
-    );
-
-    console.log("salariosConDeducciones", salariosConDeducciones);
-
-    return salariosConDeducciones;
+    return total_gaji_pegawai;
   } catch (error) {
     console.error(error);
   }
@@ -552,7 +521,7 @@ export const getDataGajiPegawai = async (year, month) => {
 export const viewDataGajiPegawai = async (req, res) => {
   try {
     // Obtener año y fecha de los parametros de la solicitud
-    const { year, month } = req.query;
+    const { year, month } = req.params;
 
     const dataGajiPegawai = await getDataGajiPegawai(year, month);
     res.status(200).json(dataGajiPegawai);
@@ -686,6 +655,10 @@ export const viewDataGajiPegawaiByMonth = async (req, res) => {
 export const viewDataGajiPegawaiByYear = async (req, res) => {
   try {
     const dataGajiPegawai = await getDataGajiPegawai();
+    console.log("//////////////////////");
+    console.log("//////////////////////");
+
+    console.log("dataGajiPegawai", dataGajiPegawai);
     const { year } = req.params;
 
     const dataGajiByYear = dataGajiPegawai
@@ -752,6 +725,7 @@ export const dataLaporanGajiByYear = async (req, res) => {
       return res.status(404).json({ msg: SALARY.NOT_FOUND_BY_YEAR.code });
     } else {
       const laporanByYear = dataGajiByYear.map((data) => data.tahun);
+      console.log(laporanByYear);
     }
   } catch (error) {
     res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });

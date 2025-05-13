@@ -33,8 +33,14 @@ const FormAddDataKehadiran = () => {
     const navigate = useNavigate();
 
     const filteredDataPegawai = dataPegawai.filter((pegawai) =>
-        pegawai.nama_pegawai.toLowerCase().includes(searchKeyword.toLowerCase())
+        pegawai.first_name?.toLowerCase()?.includes(searchKeyword?.toLowerCase()) ||
+        pegawai.middle_name?.toLowerCase()?.includes(searchKeyword?.toLowerCase()) ||
+        pegawai.last_name?.toString()?.includes(searchKeyword?.toLowerCase()) ||
+        pegawai.second_last_name?.toLowerCase()?.includes(searchKeyword?.toLowerCase()) ||
+        pegawai.maiden_name?.toLowerCase()?.includes(searchKeyword?.toLowerCase())
     );
+
+    console.log("searchKeyword", searchKeyword);
 
     const getDataPegawai = async () => {
         const response = await axios.get(`${API_URL}/data_pegawai`);
@@ -99,8 +105,8 @@ const FormAddDataKehadiran = () => {
 
                 if (!isNamaAda) {
                     await axios.post(`${API_URL}/data_kehadiran`, {
-                        nik: dataPegawai[i].nik,
-                        nama_pegawai: dataPegawai[i].nama_pegawai,
+                        nik: dataPegawai[i].id,
+                        nama_pegawai: dataPegawai[i].id,
                         nama_jabatan: dataPegawai[i].jabatan,
                         jenis_kelamin: dataPegawai[i].jenis_kelamin,
                         hadir: hadir[i] || 0,
