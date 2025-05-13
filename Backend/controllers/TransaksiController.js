@@ -12,10 +12,13 @@ const require = createRequire(import.meta.url);
 
 const transaksiError = require("../errors/TransaksiError.json");
 const pegawaiError = require("../errors/pegawaiError.json");
+const params = require("../const/Params.json");
 
 const { ATTENDANCE, DEDUCTION, SALARY } = transaksiError;
 const { EMPLOYEE } = pegawaiError;
+const { PARAMS } = params;
 
+//TODO. modifier by month
 // method untuk menampilkan semua Data Kehadiran
 export const viewDataKehadiran = async (req, res) => {
   let resultDataKehadiran = [];
@@ -426,8 +429,8 @@ export const getDataGajiPegawai = async () => {
     const resultDataPotongan = await getDataPotongan();
 
     // getting job total work days and hours
-    const workDaysInWeeks = await Parameter.findOne({ where: { type: "DWEK" } });
-    const workHoursInWeeks = await Parameter.findOne({ where: { type: "HWEK" } });
+    const workHoursInWeeks = await Parameter.findOne({ where: { type: PARAMS.HWEK } });
+    const totalPaymentsInMonth = await Parameter.findOne({ where: { type: PARAMS.PMON } });
 
     const totalDaysWorkedOnMonth = workHoursInWeeks.value * 4;
 
@@ -456,9 +459,9 @@ export const getDataGajiPegawai = async () => {
 
       //getting total employee salary with subsidy
       const total_gaji_no_deductions =
-        pegawai.gaji_pokok +
-        pegawai.tj_transport +
-        pegawai.uang_makan;
+        parseFloat(pegawai.gaji_pokok +
+          pegawai.tj_transport +
+          pegawai.uang_makan) / parseFloat(totalPaymentsInMonth.value);
 
       const totalDeductions = [];
       let totalValueDeducted = 0;
@@ -473,11 +476,8 @@ export const getDataGajiPegawai = async () => {
       })
 
       const totalUnassitence = parseFloat((pegawai.gaji_pokok * 8) / totalDaysWorkedOnMonth) * (parseFloat(kehadiran.sakit) + parseFloat(kehadiran.alpha));
-      const total_gaji =
-        (pegawai.gaji_pokok +
-          pegawai.tj_transport +
-          pegawai.uang_makan -
-          (totalValueDeducted + totalUnassitence)).toFixed(2).toLocaleString();
+      const total_gaji = total_gaji_no_deductions -
+        (totalValueDeducted + totalUnassitence);
 
       return {
         tahun: potongan ? potongan.tahun : kehadiran ? kehadiran.tahun : 0,
@@ -493,7 +493,7 @@ export const getDataGajiPegawai = async () => {
         sakit: kehadiran.sakit,
         alpha: kehadiran.alpha,
         potongan: totalValueDeducted.toLocaleString(),
-        total: (total_gaji).toLocaleString(),
+        total: (total_gaji < 0 ? 0 : total_gaji).toFixed(2).toLocaleString(),
       };
     });
     return total_gaji_pegawai;
