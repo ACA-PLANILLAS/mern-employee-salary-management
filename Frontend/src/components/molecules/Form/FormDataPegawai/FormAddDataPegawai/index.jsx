@@ -94,6 +94,9 @@ const FormAddDataPegawai = () => {
                     title: t('berhasil'),
                     text: getErrorMessage(response.message),
                     showConfirmButton: false,
+                    customClass: {
+                        confirmButton: 'bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 focus:outline-none'
+                      },
                     timer: 1500,
                 });
             })
@@ -104,6 +107,9 @@ const FormAddDataPegawai = () => {
                         title: t('gagal'),
                         text: getErrorMessage(error.response.data.msg),
                         confirmButtonText: 'Ok',
+                        customClass: {
+                            confirmButton: 'bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 focus:outline-none'
+                          }
                     });
                 } else if (error.message) {
                     Swal.fire({
@@ -111,6 +117,10 @@ const FormAddDataPegawai = () => {
                         title: t('gagal'),
                         text: getErrorMessage(error.message),
                         confirmButtonText: 'Ok',
+                        customClass: {
+                            confirmButton: 'bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 focus:outline-none'
+                          }, 
+
                     });
                 } else {
                     Swal.fire({
@@ -118,6 +128,9 @@ const FormAddDataPegawai = () => {
                         title: t('gagal'),
                         text: t('terjadiKesalahan'),
                         confirmButtonText: 'Ok',
+                        customClass: {
+                            confirmButton: 'bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 focus:outline-none'
+                          }
                     });
                 }
             });
