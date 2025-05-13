@@ -157,12 +157,12 @@ const FormAddDataPegawai = () => {
     newFormData.append("status", status);
     newFormData.append("position_id", jabatan);
 
-    appendIfExists(newFormData, 'last_position_change_date', last_position_change_date);
-    newFormData.append("has_active_loan", has_active_loan);
-    appendIfExists(newFormData, 'loan_original_amount', loan_original_amount);
-    appendIfExists(newFormData, 'loan_outstanding_balance', loan_outstanding_balance);
-    appendIfExists(newFormData, 'loan_monthly_installment', loan_monthly_installment);
-    appendIfExists(newFormData, 'loan_start_date', loan_start_date);
+    // appendIfExists(newFormData, 'last_position_change_date', last_position_change_date);
+    // newFormData.append("has_active_loan", has_active_loan);
+    // appendIfExists(newFormData, 'loan_original_amount', loan_original_amount);
+    // appendIfExists(newFormData, 'loan_outstanding_balance', loan_outstanding_balance);
+    // appendIfExists(newFormData, 'loan_monthly_installment', loan_monthly_installment);
+    // appendIfExists(newFormData, 'loan_start_date', loan_start_date);
 
     newFormData.append("username", username);
     newFormData.append("password", password);
@@ -547,7 +547,7 @@ const FormAddDataPegawai = () => {
                 </div> */}
 
                 {/* — Préstamo — */}
-                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
+                {/* <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
                       {t("hasActiveLoan")}
@@ -583,7 +583,7 @@ const FormAddDataPegawai = () => {
                       className="active… w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-medium outline-none transition focus:border-primary dark:focus:border-primary"
                     />
                   </div>
-                </div>
+                </div> 
 
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
@@ -630,6 +630,8 @@ const FormAddDataPegawai = () => {
                   </div>
                   <div className="w-full xl:w-1/2"></div>
                 </div>
+
+                 */}
 
                 <br /><hr className="border-stroke dark:border-strokedark" /><br />
 

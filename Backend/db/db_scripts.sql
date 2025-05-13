@@ -59,6 +59,16 @@ ALTER TABLE `data_pegawai`
   ADD COLUMN `loan_monthly_installment`   DECIMAL(11,2) DEFAULT NULL   AFTER `loan_outstanding_balance`,  -- “prestamo_cuota_mensual”
   ADD COLUMN `loan_start_date`            DATE          DEFAULT NULL   AFTER `loan_monthly_installment`; -- “prestamo_fecha_inicio”
 
+ALTER TABLE `data_pegawai`
+
+  -- Identification
+  ADD COLUMN `dui_or_nit`                 VARCHAR(14)   DEFAULT NULL   AFTER `nik`,                         -- “nit_dui”
+  ADD COLUMN `document_type`              VARCHAR(16)       DEFAULT NULL   AFTER `dui_or_nit`, 
+
+
+
+
+
 -- 2) Pension institutions catalog in English
 DROP TABLE IF EXISTS `pension_institutions`;
 CREATE TABLE `pension_institutions` (

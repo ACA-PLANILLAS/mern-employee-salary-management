@@ -11,7 +11,7 @@
   "table.header.url": "Photo URL",
   "table.header.id": "ID",
   "table.header.nik": "NIK",
-  "table.header.duiOrNit": "DUI/NIT",
+  "table.header.duiOrNit": "Document",
   "table.header.documentType": "Document Type",
   "table.header.isssAffiliationNumber": "ISSS Affiliation Number",
   "table.header.pensionInstitutionCode": "Pension Institution Code",

@@ -260,7 +260,7 @@ const DataPegawai = () => {
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.monthlySalary")}
                 </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
+                {/* <th className="px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.hasActiveLoan")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white min-w-[180px]">
@@ -274,7 +274,7 @@ const DataPegawai = () => {
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white min-w-[180px]">
                   {t("table.header.loanStartDate")}
-                </th>
+                </th> */}
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.username")}
                 </th>
@@ -387,7 +387,7 @@ const DataPegawai = () => {
                         ? data.positionHistory[0]?.position?.gaji_pokok
                         : "-"}
                     </td>
-                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                    {/* <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                       {data.has_active_loan != null
                         ? getDisplayValue(data.has_active_loan)
                         : "-"}
@@ -409,7 +409,7 @@ const DataPegawai = () => {
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                       {data.loan_start_date || "-"}
-                    </td>
+                    </td> */}
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                       {data.username}
                     </td>
