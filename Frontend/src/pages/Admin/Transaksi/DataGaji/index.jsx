@@ -311,28 +311,28 @@ const DataGaji = () => {
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("no")}
                 </th>
-                <th className="px-2 py-2 font-medium text-black dark:text-white">
+                {/* <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("id")}
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("nik")}
-                </th>
+                </th> */}
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("duiOrNit")}
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("documentType")}
                 </th>
-                <th className="px-2 py-2 font-medium text-black dark:text-white">
+                {/* <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("isssAffiliationNumber")}
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("pensionInstitutionCode")}
+                </th> */}
+                <th className="px-2 py-2 font-medium text-black dark:text-white min-w-[380px]">
+                  {t("name")}
                 </th>
-                <th className="px-2 py-2 font-medium text-black dark:text-white">
-                  {t("firstName")}
-                </th>
-                <th className="px-2 py-2 font-medium text-black dark:text-white">
+                {/* <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("middleName")}
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
@@ -343,8 +343,8 @@ const DataGaji = () => {
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("maidenName")}
-                </th>
-                <th className="px-2 py-2 font-medium text-black dark:text-white">
+                </th> */}
+                {/* <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("gender")}
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
@@ -352,8 +352,8 @@ const DataGaji = () => {
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("status")}
-                </th>
-                <th className="px-2 py-2 font-medium text-black dark:text-white">
+                </th> */}
+                {/* <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("lastPositionChangeDate")}
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
@@ -388,22 +388,22 @@ const DataGaji = () => {
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("positionId")}
-                </th>
+                </th> */}
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("positionName")}
                 </th>
-                <th className="px-2 py-2 font-medium text-black dark:text-white">
+                {/* <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("userId")}
-                </th>
-                <th className="px-2 py-2 font-medium text-black dark:text-white">
+                </th> */}
+                {/* <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("createdAt")}
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("updatedAt")}
-                </th>
-                <th className="px-2 py-2 font-medium text-black dark:text-white">
+                </th> */}
+                {/* <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("dataPegawaiId")}
-                </th>
+                </th> */}
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("grossSalary")}
                 </th>
@@ -438,28 +438,28 @@ const DataGaji = () => {
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {startIndex + index + 1}
                     </td>
-                    <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
+                    {/* <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.id}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.nik}
-                    </td>
+                    </td> */}
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.dui_or_nit}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.document_type}
                     </td>
-                    <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
+                    {/* <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.isss_affiliation_number}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.pension_institution_code}
-                    </td>
+                    </td> */}
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                      {data.first_name}
+                      {data.first_name} {data.middle_name} {data.last_name} {data.second_last_name} {data.maiden_name}
                     </td>
-                    <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
+                    {/* <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.middle_name}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
@@ -470,8 +470,8 @@ const DataGaji = () => {
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.maiden_name}
-                    </td>
-                    <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
+                    </td> */}
+                    {/* <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.jenis_kelamin}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
@@ -479,8 +479,8 @@ const DataGaji = () => {
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.status}
-                    </td>
-                    <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
+                    </td> */}
+                    {/* <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.last_position_change_date}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
@@ -519,12 +519,13 @@ const DataGaji = () => {
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.hak_akses}
                     </td>
+                    
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.id_jabatan}
-                    </td>
+                    </td> */}
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.nama_jabatan}
-                    </td>
+                    </td> {/*
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.userId}
                     </td>
@@ -533,10 +534,10 @@ const DataGaji = () => {
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.updatedAt}
-                    </td>
-                    <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
+                    </td> */}
+                    {/* <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.dataPegawaiId}
-                    </td>
+                    </td> */}
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.salarioBruto}
                     </td>
