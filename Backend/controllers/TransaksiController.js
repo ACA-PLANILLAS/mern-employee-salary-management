@@ -29,6 +29,7 @@ export const viewDataKehadiran = async (req, res) => {
       attributes: [
         "id",
         "bulan",
+        "tahun",
         "nik",
         "nama_pegawai",
         "jenis_kelamin",
@@ -37,22 +38,19 @@ export const viewDataKehadiran = async (req, res) => {
         "sakit",
         "alpha",
         "createdAt",
+        "worked_hours",
+        "additional_payments",
+        "vacation_days",
+        "vacation_payments",
+        "comment_01",
+        "comment_02",
       ],
       distinct: true,
     });
 
-    resultDataKehadiran = data_Kehadiran.map((kehadiran) => {
-      const id = kehadiran.id;
-      const createdAt = new Date(kehadiran.createdAt);
-      const tahun = createdAt.getFullYear();
-      const bulan = kehadiran.bulan;
-      const nik = kehadiran.nik;
-      const nama_pegawai = kehadiran.nama_pegawai;
-      const jabatan_pegawai = kehadiran.nama_jabatan;
-      const jenis_kelamin = kehadiran.jenis_kelamin;
-      const hadir = kehadiran.hadir;
-      const sakit = kehadiran.sakit;
-      const alpha = kehadiran.alpha;
+    resultDataKehadiran = data_Kehadiran.map(({
+      id, bulan, tahun, nik, nama_pegawai, nama_jabatan, jenis_kelamin, hadir, sakit, alpha, createdAt, worked_hours, additional_payments, vacation_days, vacation_payments, comments_01, comments_02
+    }) => {
 
       return {
         id,
@@ -60,11 +58,17 @@ export const viewDataKehadiran = async (req, res) => {
         tahun,
         nik,
         nama_pegawai,
-        jabatan_pegawai,
+        jabatan_pegawai: nama_jabatan,
         jenis_kelamin,
         hadir,
         sakit,
         alpha,
+        worked_hours,
+        additional_payments,
+        vacation_days,
+        vacation_payments,
+        comments_01,
+        comments_02
       };
     });
     res.json(resultDataKehadiran);
@@ -80,6 +84,7 @@ export const viewDataKehadiranByID = async (req, res) => {
       attributes: [
         "id",
         "bulan",
+        "tahun",
         "nik",
         "nama_pegawai",
         "jenis_kelamin",
@@ -88,6 +93,12 @@ export const viewDataKehadiranByID = async (req, res) => {
         "sakit",
         "alpha",
         "createdAt",
+        "worked_hours",
+        "additional_payments",
+        "vacation_days",
+        "vacation_payments",
+        "comment_01",
+        "comment_02",
       ],
       where: {
         id: req.params.id,
@@ -99,7 +110,7 @@ export const viewDataKehadiranByID = async (req, res) => {
   }
 };
 
-// TODO
+//TODO doing
 // method untuk menambah data kehadiran
 export const createDataKehadiran = async (req, res) => {
   const {
@@ -110,6 +121,12 @@ export const createDataKehadiran = async (req, res) => {
     hadir,
     sakit,
     alpha,
+    worked_hours,
+    additional_payments,
+    vacation_days,
+    vacation_payments,
+    comment_01,
+    comment_02
   } = req.body;
 
   try {
@@ -128,9 +145,22 @@ export const createDataKehadiran = async (req, res) => {
     // });
     console.log("----------2");
 
-    const nama_sudah_ada = await DataKehadiran.findOne({
+    const paymentsOnMonth = await Parameter.findOne({
       where: {
-        nama_pegawai: nama_pegawai,
+        type: PARAMS.PMON,
+      },
+    }) || 1;
+
+
+    //current month and year
+    const month = moment().locale("id").format("MMMM");
+    const year = moment().locale("id").format("YYYY");
+
+    const nama_sudah_ada = await DataKehadiran.findAll({
+      where: {
+        nik,
+        bulan: month,
+        tahun: year
       },
     });
 
@@ -146,12 +176,13 @@ export const createDataKehadiran = async (req, res) => {
       return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NIK.code });
     }
 
-    if (!nama_sudah_ada) {
+    if (nama_sudah_ada != null && nama_sudah_ada.length < paymentsOnMonth.value) {
       // Guardar el mes en formato de numero, enero = 1, febrero = 2, etc.
       const monthNumber = moment().format("M");
 
       await DataKehadiran.create({
         bulan: monthNumber,
+        tahun: year,
         nik: data_nik_pegawai.id,
         nama_pegawai: data_nik_pegawai.id, //data_nama_pegawai.id,
         jenis_kelamin: jenis_kelamin,
@@ -159,6 +190,12 @@ export const createDataKehadiran = async (req, res) => {
         hadir: hadir,
         sakit: sakit,
         alpha: alpha,
+        worked_hours: worked_hours,
+        additional_payments: additional_payments,
+        vacation_days: vacation_days,
+        vacation_payments: vacation_payments,
+        comment_01: comment_01,
+        comment_02: comment_02
       });
       res.json({ msg: ATTENDANCE.CREATE_SUCCESS.code });
     } else {
