@@ -263,14 +263,14 @@ export const createDataPotonganGaji = async (req, res) => {
     let nama_potongan;
 
     if (deduction_group == undefined || deduction_group == null) {
-      console.log("1")
+      console.log("1");
       await PotonganGaji.findOne({
         where: {
           potongan: potongan,
         },
       });
     } else {
-      console.log("2")
+      console.log("2");
       await PotonganGaji.findOne({
         where: {
           potongan: potongan,
@@ -564,16 +564,35 @@ export const getDataPotongan = async () => {
   try {
     // get data potongan :
     const data_potongan = await PotonganGaji.findAll({
-      attributes: ["id", "potongan", "jml_potongan", "from", "until", "value_d", "type"],
+      attributes: [
+        "id",
+        "potongan",
+        "jml_potongan",
+        "from",
+        "until",
+        "value_d",
+        "type",
+        "payment_frequency",
+        "deduction_group",
+        "createdAt",
+        "updatedAt",
+      ],
       distinct: true,
     });
-    resultDataPotongan = data_potongan.map((potongan) => {
-      const id = potongan.id;
-      const nama_potongan = potongan.potongan;
-      const jml_potongan = potongan.jml_potongan;
 
-      return { id, nama_potongan, jml_potongan };
-    });
+    resultDataPotongan = data_potongan.map((p) => ({
+      id: p.id,
+      nama_potongan: p.potongan,
+      jml_potongan: p.jml_potongan,
+      from: p.from,
+      until: p.until,
+      value_d: p.value_d,
+      type: p.type,
+      payment_frequency: p.payment_frequency,
+      deduction_group: p.deduction_group,
+      createdAt: p.createdAt,
+      updatedAt: p.updatedAt,
+    }));
   } catch (error) {
     console.error(error);
   }
@@ -592,6 +611,7 @@ export const getDataGajiPegawai = async (year, month) => {
         a.bulan.toLowerCase() === month.toLowerCase()
       );
     });
+    console.log("attendance", attendance.length )
 
     // 2) traer sólo esos empleados
     const allPegawai = await getDataPegawai();
@@ -654,21 +674,33 @@ export const getDataGajiPegawai = async (year, month) => {
         // 4d) Deducciones fijas
         const totalDeductions = [];
         let totalValueDeducted = 0;
+        let subtotalStandarDeductions = 0;
+        let subtotalDynamicDeductions = 0;
 
-        resultDataPotongan.forEach(deduction => {
-
+        resultDataPotongan.forEach((deduction) => {
           let valueDeducted = 0;
 
-          if (deduction.type === "STA")
+          if (deduction.type === "STA") {
             valueDeducted = datosPuesto.gaji_pokok * deduction.jml_potongan;
-          else if (deduction.type === "DIN" && datosPuesto.gaji_pokok > deduction.from && datosPuesto.gaji_pokok <= deduction.until)
-            valueDeducted = deduction.value_d + ((datosPuesto.gaji_pokok - deduction.from) * deduction.jml_potongan);
+            subtotalStandarDeductions += valueDeducted;
+          } else if (
+            deduction.type === "DIN" &&
+            datosPuesto.gaji_pokok > deduction.from &&
+            datosPuesto.gaji_pokok <= deduction.until
+          ) {
+            valueDeducted =
+              deduction.value_d +
+              (datosPuesto.gaji_pokok - deduction.from) *
+                deduction.jml_potongan;
+
+            subtotalDynamicDeductions += valueDeducted;
+          }
 
           totalDeductions.push({
             ...deduction,
-            valueDeducted: valueDeducted
-          })
-          totalValueDeducted += valueDeducted
+            valueDeducted: valueDeducted,
+          });
+          totalValueDeducted += valueDeducted;
         });
 
         const kehadiran = attendance.find((a) => a.nik === String(pegawai.id));
@@ -680,11 +712,11 @@ export const getDataGajiPegawai = async (year, month) => {
         const total_gaji =
           salarioBruto - (totalValueDeducted + totalUnassitence);
 
-
         return {
           ...pegawai,
           ...datosPuesto?.dataValues,
           idPuesto,
+          salarioEmpleo: datosPuesto?.gaji_pokok, // El salario sin nada
           salarioBruto: salarioBruto.toFixed(2),
           // potaciones: totalValueDeducted.toFixed(2),
           // deduccionAusencias: deduccionAusencias.toFixed(2),
@@ -698,10 +730,12 @@ export const getDataGajiPegawai = async (year, month) => {
           alpha: kehadiran.alpha,
           deducciones: totalValueDeducted.toLocaleString(),
           castigo_ausencias: totalUnassitence.toLocaleString(),
+          subtotalStandarDeductions: subtotalStandarDeductions.toLocaleString(),
+          subtotalDynamicDeductions: subtotalDynamicDeductions.toLocaleString(),
           total: (total_gaji < 0 ? 0 : total_gaji).toFixed(2).toLocaleString(),
           year: kehadiran.tahun,
           month: kehadiran.month,
-          day: kehadiran.day
+          day: kehadiran.day,
         };
       })
     );

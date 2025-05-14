@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Layout from "../../../../layout";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,6 +33,7 @@ const DataGaji = () => {
   const [filterTahun, setFilterTahun] = useState(DEFAULT_YEAR);
   const [filterBulan, setFilterBulan] = useState(DEFAULT_MONTH);
   const [filterNama, setFilterNama] = useState("");
+  const [filterDate, setFilterDate] = useState("");
   const [showMessage, setShowMessage] = useState(false);
 
   const { dataGaji } = useSelector((state) => state.dataGaji);
@@ -48,20 +49,41 @@ const DataGaji = () => {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
 
-  const filteredDataGaji = Array.isArray(dataGaji) ? dataGaji : [];
-  // const filteredDataGaji = Array.isArray(dataGaji) ? dataGaji.filter((gajiDataPegawai) => {
-  //     const isMatchBulan =
-  //         filterBulan === "" ||
-  //         (typeof gajiDataPegawai.bulan === 'string' &&
-  //             gajiDataPegawai.bulan.toLowerCase().includes(filterBulan.toLowerCase()));
-  //     const isMatchTahun =
-  //         filterTahun === "" || gajiDataPegawai.tahun.toString() === filterTahun;
-  //     const isMatchNama =
-  //         filterNama === "" ||
-  //         (typeof gajiDataPegawai.nama_pegawai === 'string' &&
-  //             gajiDataPegawai.nama_pegawai.toLowerCase().includes(filterNama.toLowerCase()));
-  //     return isMatchBulan && isMatchTahun && isMatchNama;
-  // }) : [];
+    const dateOptions = useMemo(() => {
+    //  filtramos por año/mes
+    const relevant = dataGaji.filter(
+      (d) =>
+        d.year.toString() === filterTahun && d.month.toString() === filterBulan
+    );
+    // extraemos strings únicos "YYYY-M-D"
+    const combos = Array.from(
+      new Set(relevant.map((d) => `${d.year}-${d.month}-${d.day}`))
+    ).sort();
+    // devolvemos objetos con valor y etiqueta formateada
+    return combos.map((str) => {
+      const [yyyy, m, d] = str.split("-");
+      const mm = m.padStart(2, "0"),
+        dd = d.padStart(2, "0");
+      return { value: str, label: `${dd}/${mm}/${yyyy}` };
+    });
+  }, [dataGaji, filterTahun, filterBulan]);
+  
+    const filteredDataGaji = dataGaji
+    .filter((d) => {
+      // primero por año/mes (como ya hacías en el useEffect)
+      const byMonthYear =
+        d.year.toString() === filterTahun &&
+        d.month.toString() === filterBulan;
+      if (!byMonthYear) return false;
+      // si hay fecha seleccionada, comparar full string
+      if (filterDate) {
+        return `${d.year}-${d.month}-${d.day}` === filterDate;
+      }
+      return true;
+    });
+
+
+
 
   const goToPrevPage = () => {
     if (currentPage > 1) {
@@ -77,10 +99,12 @@ const DataGaji = () => {
 
   const handleBulanChange = (event) => {
     setFilterBulan(event.target.value);
+    setFilterDate("");
   };
 
   const handleTahunChange = (event) => {
     setFilterTahun(event.target.value);
+    setFilterDate("");
   };
 
   const handleNamaChange = (event) => {
@@ -90,20 +114,6 @@ const DataGaji = () => {
   const handleSearch = async (event) => {
     event.preventDefault();
 
-    const selectedMonth = filterBulan;
-    const selectedYear = filterTahun;
-
-    // let yearDataFound = false;
-    // let monthDataFound = false;
-
-    // await Promise.all([
-    //   dispatch(
-    //     fetchLaporanGajiByYear(selectedYear, () => (yearDataFound = true))
-    //   ),
-    //   dispatch(
-    //     fetchLaporanGajiByMonth(selectedMonth, () => (monthDataFound = true))
-    //   ),
-    // ]);
     let dataFound = Array.isArray(dataGaji);
     setShowMessage(true);
 
@@ -247,6 +257,25 @@ const DataGaji = () => {
                 </span>
               </div>
             </div>
+
+            <div className="relative mb-4 w-full md:mb-0 md:mr-2 md:w-1/2">
+              <div className="relative">
+                <span className="px-6">Fecha</span>
+                <select
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                  className="relative appearance-none rounded border border-stroke bg-transparent px-18 py-2 outline-none transition focus:border-primary"
+                >
+                  <option value="">{t("allDates")}</option>
+                  {dateOptions.map(({ value, label }) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
             <div className="flex w-full justify-center md:w-1/2 md:justify-end">
               <div className="w-full md:w-auto">
                 <ButtonOne type="submit">
@@ -330,7 +359,7 @@ const DataGaji = () => {
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("pensionInstitutionCode")}
                 </th> */}
-                <th className="px-2 py-2 font-medium text-black dark:text-white min-w-[380px]">
+                <th className="min-w-[380px] px-2 py-2 font-medium text-black dark:text-white">
                   {t("name")}
                 </th>
                 {/* <th className="px-2 py-2 font-medium text-black dark:text-white">
@@ -458,7 +487,8 @@ const DataGaji = () => {
                       {data.pension_institution_code}
                     </td> */}
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                      {data.first_name} {data.middle_name} {data.last_name} {data.second_last_name} {data.maiden_name}
+                      {data.first_name} {data.middle_name} {data.last_name}{" "}
+                      {data.second_last_name} {data.maiden_name}
                     </td>
                     {/* <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.middle_name}
@@ -526,7 +556,8 @@ const DataGaji = () => {
                     </td> */}
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.nama_jabatan}
-                    </td> {/*
+                    </td>{" "}
+                    {/*
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.userId}
                     </td>
