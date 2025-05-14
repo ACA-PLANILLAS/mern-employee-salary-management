@@ -32,6 +32,7 @@
     "paySlipReport": "Recibo de Sueldo",
     "settings": "Configuración",
     "changePassword": "Cambiar Contraseña",
+    "parameters": "Parametros",
     "logout": "Cerrar Sesión",
     "logoutConfirmationTitle": "Confirmación",
     "logoutConfirmationText": "¿Estás seguro de que quieres cerrar sesión?",

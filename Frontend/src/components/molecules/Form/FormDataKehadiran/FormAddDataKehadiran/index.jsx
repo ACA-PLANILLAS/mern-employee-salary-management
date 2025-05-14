@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'; 
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
@@ -12,355 +12,351 @@ import { useTranslation } from 'react-i18next';
 import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
 
 const ITEMS_PER_PAGE = 4;
-
 const API_URL = import.meta.env.VITE_API_URL;
 
+const OBSERVATION_CODES = [
+  { code: '00', label: 'Sin observación' },
+  { code: '01', label: 'Sin cambios con respecto al mes anterior' },
+  { code: '02', label: 'Pagos adicionales' },
+  { code: '03', label: 'Aprendices' },
+  { code: '04', label: 'Pensionado' },
+  { code: '05', label: 'Licencia' },
+  { code: '06', label: 'Incapacidad' },
+  { code: '07', label: 'Retiro del Trabajador de la empresa' },
+  { code: '08', label: 'Ingreso o Reingreso del Trabajador' },
+  { code: '09', label: 'Vacaciones' },
+  { code: '10', label: 'Vacaciones más pagos adicionales' },
+  { code: '11', label: 'Planillas catorcenales y semanales fraccionadas' },
+  { code: '12', label: 'Cotizaciones patronales por subsidios del ISSS' },
+  { code: '13', label: 'Cotizante al IPSFA' },
+  { code: '14', label: 'Cotizante Bienestar Magisterial' },
+  { code: '15', label: 'Régimen especial del Sector Doméstico' },
+  { code: '16', label: 'Régimen especial de Marino mercante' },
+  { code: '17', label: 'Régimen especial de regidores' },
+  { code: '18', label: 'Complemento de salario' },
+  { code: '19', label: 'Retiro por fallecimiento del trabajador' },
+  { code: '20', label: 'Vacaciones Salario Mixto' },
+  { code: '21', label: 'Pagos Adicionales y Vacaciones Salario Mixto' },
+  { code: '22', label: 'Pago de complemento por subsidio' },
+  { code: '23', label: 'Trabajador independiente régimen general' },
+];
+
 const FormAddDataKehadiran = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [dataPegawai, setDataPegawai] = useState([]);
-    const [dataKehadiran, setDataKehadiran] = useState([]);
-    const [searchKeyword, setSearchKeyword] = useState("");
-    const { isError, user } = useSelector((state) => state.auth);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [dataPegawai, setDataPegawai] = useState([]);
+  const [dataKehadiran, setDataKehadiran] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const { isError, user } = useSelector((state) => state.auth);
+  const { t } = useTranslation("dataKehadiranAddForm");
+  const getErrorMessage = useErrorMessage();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    const { t } = useTranslation("dataKehadiranAddForm");
-    const getErrorMessage = useErrorMessage();
+  // Campos de asistencia
+  const [hadir, setHadir] = useState([]);
+  const [sakit, setSakit] = useState([]);
+  const [alpha, setAlpha] = useState([]);
 
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-    const totalPages = Math.ceil(dataPegawai.length / ITEMS_PER_PAGE);
+  // Nuevos campos
+  const [workedHours, setWorkedHours] = useState([]);
+  const [additionalPayments, setAdditionalPayments] = useState([]);
+  const [vacationPayments, setVacationPayments] = useState([]);
+  const [vacationDays, setVacationDays] = useState([]);
+  const [comment01, setComment01] = useState([]);
+  const [comment02, setComment02] = useState([]);
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  // Paginación
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const filteredDataPegawai = dataPegawai.filter((pegawai) =>
+    pegawai.first_name?.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+    pegawai.middle_name?.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+    pegawai.last_name?.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+    pegawai.second_last_name?.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+    pegawai.maiden_name?.toLowerCase().includes(searchKeyword.toLowerCase())
+  );
+  const totalPages = Math.ceil(filteredDataPegawai.length / ITEMS_PER_PAGE);
 
-    const filteredDataPegawai = dataPegawai.filter((pegawai) =>
-        pegawai.nama_pegawai.toLowerCase().includes(searchKeyword.toLowerCase())
-    );
+  // Fecha actual para campos automáticos
+  const now = new Date();
+  const bulanName = now.toLocaleString('es-ES', { month: 'long' });
+  const monthNum = now.getMonth() + 1;
+  const dayNum = now.getDate();
+  const yearNum = now.getFullYear();
 
-    const getDataPegawai = async () => {
-        const response = await axios.get(`${API_URL}/data_pegawai`);
-        setDataPegawai(response.data);
-    };
+  // Handlers básicos
+  const handleSearch = (e) => setSearchKeyword(e.target.value);
+  const goToPrevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
+  const goToNextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
 
-    const getDataKehadiran = async () => {
-        try {
-            const response = await axios.get(`${API_URL}/data_kehadiran`);
-            setDataKehadiran(response.data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
+  // Handlers asistencia
+  const handleHadir = (i, v) => { const a = [...hadir]; a[i] = v; setHadir(a); };
+  const handleSakit = (i, v) => { const a = [...sakit]; a[i] = v; setSakit(a); };
+  const handleAlpha = (i, v) => { const a = [...alpha]; a[i] = v; setAlpha(a); };
 
-    const goToPrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage((prev) => prev - 1);
-        }
-    };
+  // Handlers nuevos campos
+  const handleWorkedHours = (i, v) => { const a = [...workedHours]; a[i] = v; setWorkedHours(a); };
+  const handleAdditionalPayments = (i, v) => { const a = [...additionalPayments]; a[i] = v; setAdditionalPayments(a); };
+  const handleVacationPayments = (i, v) => { const a = [...vacationPayments]; a[i] = v; setVacationPayments(a); };
+  const handleVacationDays = (i, v) => { const a = [...vacationDays]; a[i] = v; setVacationDays(a); };
+  const handleComment01 = (i, v) => { const a = [...comment01]; a[i] = v; setComment01(a); };
+  const handleComment02 = (i, v) => { const a = [...comment02]; a[i] = v; setComment02(a); };
 
-    const goToNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage((prev) => prev + 1);
-        }
-    };
+  // Fetch datos
+  const getDataPegawai = async () => {
+    const res = await axios.get(`${API_URL}/data_pegawai`);
+    setDataPegawai(res.data);
+  };
+  const getDataKehadiran = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/data_kehadiran`);
+      setDataKehadiran(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-    const [hadir, setHadir] = useState([]);
-    const [sakit, setSakit] = useState([]);
-    const [alpha, setAlpha] = useState([]);
+  useEffect(() => {
+    getDataPegawai();
+    getDataKehadiran();
+    dispatch(getMe());
+  }, [dispatch]);
 
-    const handleHadir = (index, value) => {
-        const updateHadir = [...hadir];
-        updateHadir[index] = value;
-        setHadir(updateHadir);
-    };
+  useEffect(() => {
+    if (isError) navigate('/login');
+    if (user && user.hak_akses !== 'admin') navigate('/dashboard');
+  }, [isError, user, navigate]);
 
-    const handleSakit = (index, value) => {
-        const updateSakit = [...sakit];
-        updateSakit[index] = value;
-        setSakit(updateSakit);
-    };
+  // Guardar
+  const saveDataKehadiran = async (e) => {
+    e.preventDefault();
+    try {
+      for (let i = 0; i < dataPegawai.length; i++) {
+        const emp = dataPegawai[i];
+        const exists = dataKehadiran.some(d => d.nama_pegawai === emp.nama_pegawai);
+        if (exists) continue;
 
-    const handleAlpha = (index, value) => {
-        const updateAlpha = [...alpha];
-        updateAlpha[index] = value;
-        setAlpha(updateAlpha);
-    };
+        await axios.post(`${API_URL}/data_kehadiran`, {
+          nik: emp.id,
+          nama_pegawai: emp.id,
+          nama_jabatan: emp.id,
+          jenis_kelamin: emp.jenis_kelamin,
+          hadir: parseInt(hadir[i] ?? 0, 10),
+          sakit: parseInt(sakit[i] ?? 0, 10),
+          alpha: parseInt(alpha[i] ?? 0, 10),
+          worked_hours: parseInt(workedHours[i] ?? 0, 10),
+          additional_payments: parseFloat(additionalPayments[i] ?? 0),
+          vacation_payments: parseFloat(vacationPayments[i] ?? 0),
+          vacation_days: parseInt(vacationDays[i] ?? 0, 10),
+          comment_01: comment01[i] || '00',
+          comment_02: comment02[i] || '00',
+          bulan: bulanName,
+          month: monthNum,
+          day: dayNum,
+          tahun: yearNum,
+        });
+      }
+      Swal.fire({ icon: 'success', title: t('successMessage'), showConfirmButton: false, timer: 1500 });
+      navigate("/data-kehadiran");
+    } catch (err) {
+      Swal.fire({ title: t('error'), text: getErrorMessage(err.response?.data?.msg), icon: "error" });
+    }
+  };
 
-    const handleSearch = (e) => {
-        setSearchKeyword(e.target.value);
-    };
+  // Paginación dinámica
+  const paginationItems = () => {
+    const items = []; const maxVisible = 5;
+    let start = Math.max(1, currentPage - Math.floor(maxVisible/2));
+    let end = Math.min(totalPages, start + maxVisible - 1);
+    if (start > 1) items.push(<p key="start-ellipsis" className="px-3">…</p>);
+    for (let p = start; p <= end; p++) {
+      items.push(
+        <button
+          key={p}
+          onClick={() => setCurrentPage(p)}
+          className={`px-3 py-1 border ${p===currentPage ? 'bg-primary text-white' : ''}`}
+        >{p}</button>
+      );
+    }
+    if (end < totalPages) items.push(<p key="end-ellipsis" className="px-3">…</p>);
+    return items;
+  };
 
-    const saveDataKehadiran = async (e) => {
-        e.preventDefault();
-
-        try {
-            for (let i = 0; i < dataPegawai.length; i++) {
-                const isNamaAda = dataKehadiran.some(
-                    (kehadiran) => kehadiran.nama_pegawai === dataPegawai[i].nama_pegawai
-                );
-
-                if (!isNamaAda) {
-                    await axios.post(`${API_URL}/data_kehadiran`, {
-                        nik: dataPegawai[i].nik,
-                        nama_pegawai: dataPegawai[i].nama_pegawai,
-                        nama_jabatan: dataPegawai[i].jabatan,
-                        jenis_kelamin: dataPegawai[i].jenis_kelamin,
-                        hadir: hadir[i] || 0,
-                        sakit: sakit[i] || 0,
-                        alpha: alpha[i] || 0,
-                    });
-                    navigate("/data-kehadiran");
-                    Swal.fire({
-                        icon: 'success',
-                        title: t('successMessage'),
-                        text: t('successMessage'),
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                }
-            }
-        } catch (error) {
-            if (error.response) {
-                Swal.fire({
-                    title: t('error'),
-                    text: getErrorMessage(error.response.data.msg),
-                    icon: "error",
-                });
-            }
-        }
-    };
-
-    const paginationItems = () => {
-        const items = [];
-        const maxVisiblePages = 5;
-
-        const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-        const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-        for (let page = startPage; page <= endPage; page++) {
-            items.push(
-                <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`py-2 px-4 border border-gray-2 text-black font-semibold dark:text-white dark:border-strokedark ${currentPage === page ? 'bg-primary text-white hover:bg-primary dark:bg-primary dark:hover:bg-primary' : 'hover:bg-gray-2 dark:hover:bg-stroke'
-                        } rounded-lg`}
-                >
-                    {page}
-                </button>
-            );
-        }
-
-        if (startPage > 2) {
-            items.unshift(
-                <p
-                    key="start-ellipsis"
-                    className="py-2 px-4 border border-gray-2 dark:bg-transparent text-black font-medium bg-gray dark:border-strokedark dark:text-white"
-                >
-                    ...
-                </p>
-            );
-        }
-
-        if (endPage < totalPages - 1) {
-            items.push(
-                <p
-                    key="end-ellipsis"
-                    className="py-2 px-4 border border-gray-2 dark:bg-transparent text-black font-medium bg-gray dark:border-strokedark dark:text-white"
-                >
-                    ...
-                </p>
-            );
-        }
-
-        return items;
-    };
-
-    useEffect(() => {
-        getDataPegawai();
-        getDataKehadiran();
-    }, []);
-
-    useEffect(() => {
-        dispatch(getMe());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (isError) {
-            navigate('/login');
-        }
-        if (user && user.hak_akses !== 'admin') {
-            navigate('/dashboard');
-        }
-    }, [isError, user, navigate]);
-
-    return (
-        <Layout>
-            <Breadcrumb pageName={t('formAddAttendance')} />
-            <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 mt-6">
-                <form onSubmit={saveDataKehadiran}>
-                    <div className="flex justify-between items-center mt-4 flex-col md:flex-row md:justify-between">
-                        <div className="relative flex-2 mb-4 md:mb-0">
-                            <input
-                                type="text"
-                                placeholder={t('searchEmployee')}
-                                value={searchKeyword}
-                                onChange={handleSearch}
-                                className="rounded-lg border-[1.5px] border-stroke bg-transparent py-2 pl-10 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary left-0"
-                            />
-                            <span className="absolute left-2 py-3 text-xl">
-                                <BiSearch />
-                            </span>
-                        </div>
-                    </div>
-                    <div className="max-w-full overflow-x-auto py-4">
-                        <table className="w-full table-auto">
-                            <thead>
-                                <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                                    <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                                        No
-                                    </th>
-                                    <th className="py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                                        {t('nik')}
-                                    </th>
-                                    <th className="py-4 px-4 font-medium text-black dark:text-white">
-                                        {t('employeeName')}
-                                    </th>
-                                    <th className="py-4 px-4 font-medium text-black dark:text-white">
-                                        {t('jobTitle')}
-                                    </th>
-                                    <th className="py-4 px-4 font-medium text-black dark:text-white">
-                                        {t('gender')}
-                                    </th>
-                                    <th className="py-4 px-4 font-medium text-black dark:text-white">
-                                        {t('present')}
-                                    </th>
-                                    <th className="py-4 px-4 font-medium text-black dark:text-white">
-                                        {t('sick')}
-                                    </th>
-                                    <th className="py-4 px-4 font-medium text-black dark:text-white">
-                                        {t('alpha')}
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredDataPegawai.slice(startIndex, endIndex).map((data, index) => {
-                                    const isNamaAda = dataKehadiran.some(
-                                        (kehadiran) => kehadiran.nama_pegawai === data.nama_pegawai
-                                    );
-
-                                    if (isNamaAda) {
-                                        return <tr
-                                            key={data.id}
-                                            className="border-b border-[#eee] dark:border-strokedark"
-                                        >
-                                            <td className="py-5 px-4">
-                                                <p className="text-center text-black dark:text-white">{startIndex + index + 1}</p>
-                                            </td>
-                                            <td className="py-5 px-4"
-                                                colSpan="8">
-                                                <p className="text-center text-black dark:text-white">{t('attendanceDataAlreadySaved')}</p>
-                                            </td>
-                                        </tr>;
-                                    }
-
-                                    return (
-                                        <tr
-                                            key={data.id}
-                                            className="border-b border-[#eee] dark:border-strokedark"
-                                        >
-                                            <td className="py-5 px-4">
-                                                <p className="text-center text-black dark:text-white">{startIndex + index + 1}</p>
-                                            </td>
-                                            <td className="py-5 px-4">
-                                                <p className="text-black dark:text-white">{data.nik}</p>
-                                            </td>
-                                            <td className="py-5 px-4">
-                                                <p className="text-black dark:text-white">{data.nama_pegawai}</p>
-                                            </td>
-                                            <td className="py-5 px-4">
-                                                <p className="text-black dark:text-white">{data.jabatan}</p>
-                                            </td>
-                                            <td className="py-5 px-4">
-                                                <p className="text-black dark:text-white">{data.jenis_kelamin}</p>
-                                            </td>
-                                            <td className="py-5 px-4">
-                                                <input
-                                                    type="number"
-                                                    placeholder="0"
-                                                    value={hadir[index] || ""}
-                                                    onChange={(e) => handleHadir(index, e.target.value)}
-                                                    className="form-input h-8 w-10 text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
-                                                    min="0"
-                                                    required
-                                                />
-                                            </td>
-                                            <td className="py-5 px-4">
-                                                <input
-                                                    type="number"
-                                                    placeholder="0"
-                                                    value={sakit[index] || ""}
-                                                    onChange={(e) => handleSakit(index, e.target.value)}
-                                                    className="form-input h-8 w-10 text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
-                                                    min="0"
-                                                    required
-                                                />
-                                            </td>
-                                            <td className="py-5 px-4">
-                                                <input
-                                                    type="number"
-                                                    placeholder="0"
-                                                    value={alpha[index] || ""}
-                                                    onChange={(e) => handleAlpha(index, e.target.value)}
-                                                    className="form-input h-8 w-10 text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
-                                                    min="0"
-                                                    required
-                                                />
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div className="flex justify-between items-center mt-4 flex-col md:flex-row md:justify-between">
-                        <div className="flex items-center space-x-2">
-                            <span className="text-gray-5 dark:text-gray-4 text-sm py-4">
-                                {t('showingData')} {startIndex + 1}-{Math.min(endIndex, filteredDataPegawai.length)} {t('from')} {filteredDataPegawai.length} {t('attendanceData')}
-                            </span>
-                        </div>
-                        <div className="flex space-x-2 py-4">
-                            <button
-                                disabled={currentPage === 1}
-                                onClick={goToPrevPage}
-                                className="py-2 px-6 rounded-lg border border-primary text-primary font-semibold hover:bg-primary hover:text-white dark:text-white dark:border-primary dark:hover:bg-primary dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                < MdKeyboardDoubleArrowLeft />
-                            </button>
-                            {paginationItems()}
-                            <button
-                                disabled={currentPage === totalPages}
-                                onClick={goToNextPage}
-                                className="py-2 px-6 rounded-lg border border-primary text-primary font-semibold hover:bg-primary hover:text-white dark:text-white dark:border-primary dark:hover:bg-primary dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                < MdKeyboardDoubleArrowRight />
-                            </button>
-                        </div>
-                    </div>
-                    <div className="flex flex-col md:flex-row w-full gap-3 text-center py-4">
-                        <div>
-                            <ButtonOne type="submit">
-                                <span>{t('save')}</span>
-                            </ButtonOne>
-                        </div>
-                        <Link to="/data-kehadiran">
-                            <ButtonTwo>
-                                <span>{t('back')}</span>
-                            </ButtonTwo>
-                        </Link>
-                    </div>
-                </form>
+  return (
+    <Layout>
+      <Breadcrumb pageName={t('formAddAttendance')} />
+      <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 mt-6">
+        <form onSubmit={saveDataKehadiran}>
+          <div className="flex justify-between items-center mt-4 flex-col md:flex-row">
+            <div className="relative mb-4 md:mb-0">
+              <input
+                type="text"
+                placeholder={t('searchEmployee')}
+                value={searchKeyword}
+                onChange={handleSearch}
+                className="rounded-lg border-[1.5px] border-stroke bg-transparent py-2 pl-10 font-medium outline-none focus:border-primary"
+              />
+              <span className="absolute left-2 py-3 text-xl"><BiSearch/></span>
             </div>
-        </Layout >
-    );
+          </div>
+          <div className="overflow-x-auto py-4">
+            <table className="w-full table-auto">
+              <thead>
+                <tr className="bg-gray-2 text-left dark:bg-meta-4">
+                  <th className="py-4 px-4">No</th>
+                  <th className="py-4 px-4">{t('nik')}</th>
+                  <th className="py-4 px-4">{t('employeeName')}</th>
+                  <th className="py-4 px-4">{t('jobTitle')}</th>
+                  <th className="py-4 px-4">{t('gender')}</th>
+                  <th className="py-4 px-4">{t('present')}</th>
+                  <th className="py-4 px-4">{t('sick')}</th>
+                  <th className="py-4 px-4">{t('alpha')}</th>
+                  <th className="py-4 px-4">Horas Trabajadas</th>
+                  <th className="py-4 px-4">Pago Adicional</th>
+                  <th className="py-4 px-4">Monto Vacaciones</th>
+                  <th className="py-4 px-4">Días Vacaciones</th>
+                  <th className="py-4 px-4">Obs. 1</th>
+                  <th className="py-4 px-4">Obs. 2</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredDataPegawai.slice(startIndex, endIndex).map((emp, idx) => {
+                  const globalIndex = startIndex + idx;
+                  const exists = dataKehadiran.some(d => d.nama_pegawai === emp.nama_pegawai);
+                  if (exists) {
+                    return (
+                      <tr key={emp.id} className="border-b">
+                        <td className="py-5 px-4 text-center">{globalIndex+1}</td>
+                        <td colSpan="13" className="py-5 px-4 text-center">{t('attendanceDataAlreadySaved')}</td>
+                      </tr>
+                    );
+                  }
+                  return (
+                    <tr key={emp.id} className="border-b">
+                      <td className="py-5 px-4 text-center">{globalIndex+1}</td>
+                      <td className="py-5 px-4">{emp.nik}</td>
+                      <td className="py-5 px-4">{emp.nama_pegawai}</td>
+                      <td className="py-5 px-4">{emp.jabatan}</td>
+                      <td className="py-5 px-4">{emp.jenis_kelamin}</td>
+                      <td className="py-5 px-4">
+                        <input
+                          type="number" min="0" required
+                          value={hadir[idx] ?? 0}
+                          onChange={e=>handleHadir(idx, e.target.value)}
+                          className="form-input h-8 w-10 text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
+                        />
+                      </td>
+                      <td className="py-5 px-4">
+                        <input
+                          type="number" min="0" required
+                          value={sakit[idx] ?? 0}
+                          onChange={e=>handleSakit(idx, e.target.value)}
+                          className="form-input h-8 w-10 text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
+                        />
+                      </td>
+                      <td className="py-5 px-4">
+                        <input
+                          type="number" min="0" required
+                          value={alpha[idx] ?? 0}
+                          onChange={e=>handleAlpha(idx, e.target.value)}
+                          className="form-input h-8 w-10 text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
+                        />
+                      </td>
+                      <td className="py-5 px-4">
+                        <input
+                          type="number" min="0" required
+                          value={workedHours[idx] ?? 0}
+                          onChange={e=>handleWorkedHours(idx, e.target.value)}
+                          className="form-input h-8 w-10 text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
+                        />
+                      </td>
+                      <td className="py-5 px-4">
+                        <input
+                          type="number" step="0.01" min="0"
+                          value={additionalPayments[idx] ?? 0}
+                          onChange={e=>handleAdditionalPayments(idx, e.target.value)}
+                          className="form-input h-8 w-[7rem] text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
+                        />
+                      </td>
+                      <td className="py-5 px-4">
+                        <input
+                          type="number" step="0.01" min="0"
+                          value={vacationPayments[idx] ?? 0}
+                          onChange={e=>handleVacationPayments(idx, e.target.value)}
+                          className="form-input h-8 w-[7rem] text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
+                        />
+                      </td>
+                      <td className="py-5 px-4">
+                        <input
+                          type="number" min="0"
+                          value={vacationDays[idx] ?? 0}
+                          onChange={e=>handleVacationDays(idx, e.target.value)}
+                          className="form-input h-8 w-10 text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
+                        />
+                      </td>
+                      <td className="py-5 px-4">
+                        <select
+                          value={comment01[idx] || '00'}
+                          onChange={e=>handleComment01(idx, e.target.value)}
+                          className="form-input h-8 w-[11rem] text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
+                          required
+                        >
+                          {OBSERVATION_CODES.map(c=> (
+                            <option key={c.code} value={c.code}>{c.code} – {c.label}</option>
+                          ))}
+                        </select>
+                      </td>
+                      <td className="py-5 px-4">
+                        <select
+                          value={comment02[idx] || '00'}
+                          onChange={e=>handleComment02(idx, e.target.value)}
+                          className="form-input h-8 w-[11rem] text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
+                        >
+                          {OBSERVATION_CODES.map(c=> (
+                            <option key={c.code} value={c.code}>{c.code} – {c.label}</option>
+                          ))}
+                        </select>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="flex justify-between items-center mt-4 flex-col md:flex-row">
+            <span className="text-sm">
+              {t('showingData')} {startIndex+1}-{Math.min(endIndex, filteredDataPegawai.length)} {t('from')} {filteredDataPegawai.length}
+            </span>
+            <div className="flex items-center space-x-2 py-4">
+              <button
+                disabled={currentPage===1}
+                onClick={goToPrevPage}
+                className="py-2 px-6 rounded-lg border border-primary text-primary disabled:opacity-50"
+              >
+                <MdKeyboardDoubleArrowLeft/>
+              </button>
+              {paginationItems()}
+              <button
+                disabled={currentPage===totalPages}
+                onClick={goToNextPage}
+                className="py-2 px-6 rounded-lg border border-primary text-primary disabled:opacity-50"
+              >
+                <MdKeyboardDoubleArrowRight/>
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-3 text-center py-4">
+            <ButtonOne type="submit"><span>{t('save')}</span></ButtonOne>
+            <Link to="/data-kehadiran">
+              <ButtonTwo><span>{t('back')}</span></ButtonTwo>
+            </Link>
+          </div>
+        </form>
+      </div>
+    </Layout>
+  );
 };
 
 export default FormAddDataKehadiran;

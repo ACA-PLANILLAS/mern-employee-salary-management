@@ -4,9 +4,9 @@ import { getAllParameter, getParameterById, getParameterByType, updateParameter 
 const router = express.Router();
 
 
-router.get('/', getAllParameter);
-router.get('/:id', getParameterById);
-router.get('/type/:type', getParameterByType);
-router.put('/', updateParameter);
+router.get('/parameters/', getAllParameter);
+router.get('/parameters/:id', getParameterById);
+router.get('/parameters/type/:type', getParameterByType);
+router.put('/parameters/', updateParameter);
 
 export default router;

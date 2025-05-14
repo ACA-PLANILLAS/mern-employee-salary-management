@@ -6,8 +6,9 @@ import Parameter from "../models/ParameterModel.js";
 import moment from "moment";
 import "moment/locale/id.js";
 
-
-import { createRequire } from 'module';
+import { createRequire } from "module";
+import PositionHistory from "../models/PositionHistoryModel.js";
+import { Op } from "sequelize";
 const require = createRequire(import.meta.url);
 
 const transaksiError = require("../errors/TransaksiError.json");
@@ -21,10 +22,9 @@ const { PARAMS } = params;
 //TODO. modifier by month
 // method untuk menampilkan semua Data Kehadiran
 export const viewDataKehadiran = async (req, res) => {
-  let resultDataKehadiran = [];
   try {
     // Get data kehadiran
-    const data_Kehadiran = await DataKehadiran.findAll({
+    const entries = await DataKehadiran.findAll({
       attributes: [
         "id",
         "bulan",
@@ -36,7 +36,6 @@ export const viewDataKehadiran = async (req, res) => {
         "hadir",
         "sakit",
         "alpha",
-        "createdAt",
         "worked_hours",
         "additional_payments",
         "vacation_days",
@@ -47,30 +46,39 @@ export const viewDataKehadiran = async (req, res) => {
       distinct: true,
     });
 
-    resultDataKehadiran = data_Kehadiran.map(({
-      id, bulan, tahun, nik, nama_pegawai, nama_jabatan, jenis_kelamin, hadir, sakit, alpha, createdAt, worked_hours, additional_payments, vacation_days, vacation_payments, comments_01, comments_02
-    }) => {
+    const resultDataKehadiran = await Promise.all(
+      entries.map(async (item) => {
+        const peg = await DataPegawai.findOne({
+          where: { id: item.nik },
+        });
 
-      return {
-        id,
-        bulan,
-        tahun,
-        nik,
-        nama_pegawai,
-        jabatan_pegawai: nama_jabatan,
-        jenis_kelamin,
-        hadir,
-        sakit,
-        alpha,
-        worked_hours,
-        additional_payments,
-        vacation_days,
-        vacation_payments,
-        comments_01,
-        comments_02
-      };
-    });
-    res.json(resultDataKehadiran);
+        const complete_name = peg
+          ? `${peg.first_name} ${peg.middle_name} ${peg.last_name} ${peg.second_last_name} ${peg.maiden_name}`
+          : "";
+
+        return {
+          id: item.id,
+          bulan: item.bulan,
+          tahun: item.tahun,
+          nik: item.nik,
+          nama_pegawai: item.nama_pegawai,
+          jabatan_pegawai: item.nama_jabatan,
+          jenis_kelamin: item.jenis_kelamin,
+          hadir: item.hadir,
+          sakit: item.sakit,
+          alpha: item.alpha,
+          worked_hours: item.worked_hours,
+          additional_payments: item.additional_payments,
+          vacation_days: item.vacation_days,
+          vacation_payments: item.vacation_payments,
+          comment_01: item.comment_01,
+          comment_02: item.comment_02,
+          complete_name,
+        };
+      })
+    );
+
+    return res.json(resultDataKehadiran);
   } catch (error) {
     console.log(error);
   }
@@ -101,7 +109,7 @@ export const viewDataKehadiranByID = async (req, res) => {
       ],
       where: {
         id: req.params.id,
-      }
+      },
     });
     res.json(dataKehadiran);
   } catch (error) {
@@ -109,14 +117,13 @@ export const viewDataKehadiranByID = async (req, res) => {
   }
 };
 
-
 //TODO doing
 // method untuk menambah data kehadiran
 export const createDataKehadiran = async (req, res) => {
   const {
-    nik,
-    nama_pegawai,
-    nama_jabatan,
+    nik, // id
+    nama_pegawai, // id
+    nama_jabatan, // id empleo
     jenis_kelamin,
     hadir,
     sakit,
@@ -126,69 +133,65 @@ export const createDataKehadiran = async (req, res) => {
     vacation_days,
     vacation_payments,
     comment_01,
-    comment_02
+    comment_02,
   } = req.body;
 
   try {
-    const data_nama_pegawai = await DataPegawai.findOne({
-      where: {
-        nama_pegawai: nama_pegawai,
-      },
-    });
-
-    const data_nama_jabatan = await DataJabatan.findOne({
-      where: {
-        nama_jabatan: nama_jabatan,
-      },
-    });
-
     const data_nik_pegawai = await DataPegawai.findOne({
       where: {
-        nik: nik,
+        id: nik,
       },
     });
+    // const data_nama_jabatan = await DataJabatan.findOne({
+    //   where: {
+    //     nama_jabatan: nama_jabatan,
+    //   },
+    // });
 
-    const paymentsOnMonth = await Parameter.findOne({
+    const paymentsOnMonth = (await Parameter.findOne({
       where: {
         type: PARAMS.PMON,
       },
-    }) || 1;
-
+    })) || { value: 1 };
 
     //current month and year
-    const month = moment().locale("id").format("MMMM");
+    const month = moment().locale("id").format("M");
     const year = moment().locale("id").format("YYYY");
 
-    const nama_sudah_ada = await DataKehadiran.findAll({
-      where: {
-        nik,
-        bulan: month,
-        tahun: year
-      },
-    });
+    // if (!data_nama_pegawai) {
+    //   return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NAME.code });
+    // }
 
-    if (!data_nama_pegawai) {
-      return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NAME.code });
-    }
-
-    if (!data_nama_jabatan) {
-      return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_JABATAN.code });
-    }
+    // if (!data_nama_jabatan) {
+    //   return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_JABATAN.code });
+    // }
 
     if (!data_nik_pegawai) {
       return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NIK.code });
     }
 
-    console.log({ evaluation: nama_sudah_ada != null })
-
-    if (nama_sudah_ada != null && nama_sudah_ada.length < paymentsOnMonth.value) {
-      await DataKehadiran.create({
+    const nama_sudah_ada = await DataKehadiran.findAll({
+      where: {
+        nik: data_nik_pegawai.id,
         bulan: month,
         tahun: year,
-        nik: nik,
-        nama_pegawai: data_nama_pegawai.nama_pegawai,
+      },
+    });
+
+    if (
+      nama_sudah_ada != null &&
+      nama_sudah_ada.length < paymentsOnMonth.value
+    ) {
+      // Guardar el mes en formato de numero, enero = 1, febrero = 2, etc.
+      const monthNumber = moment().format("M");
+
+      await DataKehadiran.create({
+        bulan: monthNumber,
+        tahun: year,
+        nik: data_nik_pegawai.id,
+        nama_pegawai: data_nik_pegawai.id, //data_nama_pegawai.id,
         jenis_kelamin: jenis_kelamin,
-        nama_jabatan: data_nama_jabatan.nama_jabatan,
+        nama_jabatan: "", //data_nama_jabatan.id,
         hadir: hadir,
         sakit: sakit,
         alpha: alpha,
@@ -197,7 +200,7 @@ export const createDataKehadiran = async (req, res) => {
         vacation_days: vacation_days,
         vacation_payments: vacation_payments,
         comment_01: comment_01,
-        comment_02: comment_02
+        comment_02: comment_02,
       });
       res.json({ msg: ATTENDANCE.CREATE_SUCCESS.code });
     } else {
@@ -238,13 +241,41 @@ export const deleteDataKehadiran = async (req, res) => {
 
 // method untuk create data potongan gaji
 export const createDataPotonganGaji = async (req, res) => {
-  const { id, potongan, jml_potongan } = req.body;
+  const {
+    id,
+    potongan, //npmbre
+    jml_potongan,
+    from,
+    until,
+    value_d,
+    type,
+    payment_frequency,
+    deduction_group,
+  } = req.body;
+
+  console.log("req.body", req.body);
+
   try {
-    const nama_potongan = await PotonganGaji.findOne({
-      where: {
-        potongan: potongan,
-      },
-    });
+    // Si tienen el mismo nombre y mismo alias
+    let nama_potongan;
+
+    if (deduction_group == undefined || deduction_group == null) {
+      console.log("1")
+      await PotonganGaji.findOne({
+        where: {
+          potongan: potongan,
+        },
+      });
+    } else {
+      console.log("2")
+      await PotonganGaji.findOne({
+        where: {
+          potongan: potongan,
+          deduction_group: deduction_group,
+        },
+      });
+    }
+
     if (nama_potongan) {
       res.status(400).json({ msg: DEDUCTION.ALREADY_EXISTS.code });
     } else {
@@ -252,6 +283,12 @@ export const createDataPotonganGaji = async (req, res) => {
         id: id,
         potongan: potongan,
         jml_potongan: jml_potongan.toLocaleString(),
+        from: from,
+        until: until,
+        value_d: value_d,
+        type: type,
+        payment_frequency: payment_frequency,
+        deduction_group: deduction_group,
       });
       res.json({ msg: DEDUCTION.CREATE_SUCCESS.code });
     }
@@ -264,7 +301,17 @@ export const createDataPotonganGaji = async (req, res) => {
 export const viewDataPotongan = async (req, res) => {
   try {
     const dataPotongan = await PotonganGaji.findAll({
-      attributes: ["id", "potongan", "jml_potongan"],
+      attributes: [
+        "id",
+        "potongan",
+        "jml_potongan",
+        "from",
+        "until",
+        "value_d",
+        "type",
+        "payment_frequency",
+        "deduction_group",
+      ],
     });
     res.json(dataPotongan);
   } catch (error) {
@@ -276,7 +323,17 @@ export const viewDataPotongan = async (req, res) => {
 export const viewDataPotonganByID = async (req, res) => {
   try {
     const dataPotongan = await PotonganGaji.findOne({
-      attributes: ["id", "potongan", "jml_potongan"],
+      attributes: [
+        "id",
+        "potongan",
+        "jml_potongan",
+        "from",
+        "until",
+        "value_d",
+        "type",
+        "payment_frequency",
+        "deduction_group",
+      ],
       where: {
         id: req.params.id,
       },
@@ -321,21 +378,96 @@ export const deleteDataPotongan = async (req, res) => {
 export const getDataPegawai = async () => {
   let resultDataPegawai = [];
 
+  console.log(" ''''''''''''''''''''''''' ");
+  console.log(" ////////////////////// ");
+
   try {
     // Get data pegawai:
     const data_pegawai = await DataPegawai.findAll({
-      attributes: ["id", "nik", "nama_pegawai", "jenis_kelamin", "jabatan"],
+      attributes: [
+        "id",
+        "nik",
+        "dui_or_nit",
+        "document_type",
+        "isss_affiliation_number",
+        "pension_institution_code",
+        "first_name",
+        "middle_name",
+        "last_name",
+        "second_last_name",
+        "maiden_name",
+        "jenis_kelamin",
+        "hire_date",
+        "status",
+        "last_position_change_date",
+        "monthly_salary",
+        "has_active_loan",
+        "loan_original_amount",
+        "loan_outstanding_balance",
+        "loan_monthly_installment",
+        "loan_start_date",
+        "username",
+        "photo",
+        "url",
+        "hak_akses",
+      ],
       distinct: true,
     });
 
     resultDataPegawai = data_pegawai.map((pegawai) => {
       const id = pegawai.id;
       const nik = pegawai.nik;
-      const nama_pegawai = pegawai.nama_pegawai;
+      const dui_or_nit = pegawai.dui_or_nit;
+      const document_type = pegawai.document_type;
+      const isss_affiliation_number = pegawai.isss_affiliation_number;
+      const pension_institution_code = pegawai.pension_institution_code;
+      const first_name = pegawai.first_name;
+      const middle_name = pegawai.middle_name;
+      const last_name = pegawai.last_name;
+      const second_last_name = pegawai.second_last_name;
+      const maiden_name = pegawai.maiden_name;
       const jenis_kelamin = pegawai.jenis_kelamin;
-      const jabatan_pegawai = pegawai.jabatan;
+      const hire_date = pegawai.hire_date;
+      const status = pegawai.status;
+      const last_position_change_date = pegawai.last_position_change_date;
+      const monthly_salary = pegawai.monthly_salary;
+      const has_active_loan = pegawai.has_active_loan;
+      const loan_original_amount = pegawai.loan_original_amount;
+      const loan_outstanding_balance = pegawai.loan_outstanding_balance || 0; // Default to 0 if null
+      const loan_monthly_installment = pegawai.loan_monthly_installment || 0; // Default to 0 if null
+      const loan_start_date = pegawai.loan_start_date || null; // Default to null if not provided
+      const username = pegawai.username || "";
+      const photo = pegawai.photo || "";
+      const url = pegawai.url || "";
+      const hak_akses = pegawai.hak_akses;
 
-      return { id, nik, nama_pegawai, jenis_kelamin, jabatan_pegawai };
+      return {
+        id,
+        nik,
+        dui_or_nit,
+        document_type,
+        isss_affiliation_number,
+        pension_institution_code,
+        first_name,
+        middle_name,
+        last_name,
+        second_last_name,
+        maiden_name,
+        jenis_kelamin,
+        hire_date,
+        status,
+        last_position_change_date,
+        monthly_salary,
+        has_active_loan,
+        loan_original_amount,
+        loan_outstanding_balance,
+        loan_monthly_installment,
+        loan_start_date,
+        username,
+        photo,
+        url,
+        hak_akses,
+      };
     });
   } catch (error) {
     console.error(error);
@@ -437,113 +569,128 @@ export const getDataPotongan = async () => {
 };
 
 // Logika matematika
-export const getDataGajiPegawai = async () => {
+export const getDataGajiPegawai = async (year, month) => {
   try {
-    // Gaji Pegawai :
-    const resultDataPegawai = await getDataPegawai();
-    const resultDataJabatan = await getDataJabatan();
+    // 1) recuperar y filtrar asistencia
 
-    const gaji_pegawai = resultDataPegawai
-      .filter((pegawai) =>
-        resultDataJabatan.some(
-          (jabatan) => jabatan.nama_jabatan === pegawai.jabatan_pegawai
-        )
-      )
-      .map((pegawai) => {
-        const jabatan = resultDataJabatan.find(
-          (jabatan) => jabatan.nama_jabatan === pegawai.jabatan_pegawai
-        );
-        return {
-          id: pegawai.id,
-          nik: pegawai.nik,
-          nama_pegawai: pegawai.nama_pegawai,
-          jabatan: pegawai.jabatan_pegawai,
-          gaji_pokok: jabatan.gaji_pokok,
-          tj_transport: jabatan.tj_transport,
-          uang_makan: jabatan.uang_makan,
-        };
-      });
+    const allKehadiran = await getDataKehadiran();
+    const attendance = allKehadiran.filter((a) => {
+      return (
+        a.tahun === parseInt(year) &&
+        a.bulan.toLowerCase() === month.toLowerCase()
+      );
+    });
 
-    // Potongan Pegawai :
-    const resultDataKehadiran = await getDataKehadiran();
+    // 2) traer sólo esos empleados
+    const allPegawai = await getDataPegawai();
+    const empleados = allPegawai.filter((p) =>
+      attendance.some((a) => {
+        return a.nik === String(p.id);
+      })
+    );
+
     const resultDataPotongan = await getDataPotongan();
 
+    // 3) Recuperar parámetros de deducciones
     // getting job total work days and hours
-    const workHoursInWeeks = await Parameter.findOne({ where: { type: PARAMS.HWEK } });
-    const totalPaymentsInMonth = await Parameter.findOne({ where: { type: PARAMS.PMON } });
-
+    const workHoursInWeeks = await Parameter.findOne({
+      where: { type: PARAMS.HWEK },
+    });
+    const totalPaymentsInMonth = await Parameter.findOne({
+      where: { type: PARAMS.PMON },
+    });
     const totalDaysWorkedOnMonth = workHoursInWeeks.value * 4;
 
+    // 4) Calcular salario mes a mes + deducciones
+    // const endOfMonth = new Date(parseInt(year), parseInt(month) - 1 + 1, 0);
+    const endOfMonth = new Date(parseInt(year), parseInt(month), 0);
+    const startOfMonth = new Date(parseInt(year), parseInt(month) - 1, 1);
 
+    const salariosConDeducciones = await Promise.all(
+      empleados.map(async (pegawai) => {
+        // 4a) Sacar el último puesto que tuvo el empleado en o antes de endOfMonth
+        const history = await PositionHistory.findOne({
+          where: {
+            employee_id: pegawai.id,
+            start_date: { [Op.lte]: endOfMonth },
+            [Op.or]: [
+              { end_date: { [Op.gte]: startOfMonth } }, // aún vigente en el mes
+              { end_date: null }, // sin fecha de fin
+            ],
+          },
+          order: [["start_date", "DESC"]],
+        });
 
-    const potongan_pegawai = resultDataKehadiran.map((kehadiran) => {
-      return {
-        tahun: kehadiran.tahun,
-        bulan: kehadiran.bulan,
-        nama_pegawai: kehadiran.nama_pegawai,
-        hadir: kehadiran.hadir,
-        sakit: kehadiran.sakit,
-        alpha: kehadiran.alpha,
-      };
-    });
+        const idPuesto = history ? history.position_id : 0;
 
-    // Total Gaji Pegawai :
-    const total_gaji_pegawai = gaji_pegawai.map((pegawai) => {
-      const id = pegawai.id;
-      const kehadiran = resultDataKehadiran.find(
-        (kehadiran) => kehadiran.nama_pegawai === pegawai.nama_pegawai
-      );
-      const potongan = potongan_pegawai.find(
-        (potongan) => potongan.nama_pegawai === pegawai.nama_pegawai
-      );
+        // 4b) Recuperar las cifras salariales de ese puesto
+        const datosPuesto = await DataJabatan.findOne({
+          where: { id: idPuesto },
+        });
 
-      //getting total employee salary with subsidy
-      const total_gaji_no_deductions =
-        parseFloat(pegawai.gaji_pokok +
-          pegawai.tj_transport +
-          pegawai.uang_makan) / parseFloat(totalPaymentsInMonth.value);
+        //  gaji_pokok: 10000,
+        // tj_transport: 200,
+        // uang_makan: 122,
 
-      const totalDeductions = [];
-      let totalValueDeducted = 0;
+        // 4c) Cálculo del salario bruto prorrateado
+        const salarioBruto =
+          (datosPuesto.gaji_pokok +
+            datosPuesto.tj_transport +
+            datosPuesto.uang_makan) /
+          parseFloat(totalPaymentsInMonth.value);
 
-      resultDataPotongan.forEach(deduction => {
+        // 4d) Deducciones fijas
+        const totalDeductions = [];
+        let totalValueDeducted = 0;
 
-        let valueDeducted = 0;
+        resultDataPotongan.forEach(deduction => {
 
-        if (deduction.type === "STA")
-          valueDeducted = pegawai.gaji_pokok * deduction.jml_potongan;
-        else if (deduction.type === "DIN" && pegawai.gaji_pokok > deduction.from && pegawai.gaji_pokok <= deduction.until)
-          valueDeducted = deduction.value_d + ((pegawai.gaji_pokok - deduction.from - 0.01) * deduction.jml_potongan);
+          let valueDeducted = 0;
 
-        totalDeductions.push({
-          ...deduction,
-          valueDeducted: valueDeducted
-        })
-        totalValueDeducted += valueDeducted
+          if (deduction.type === "STA")
+            valueDeducted = datosPuesto.gaji_pokok * deduction.jml_potongan;
+          else if (deduction.type === "DIN" && datosPuesto.gaji_pokok > deduction.from && datosPuesto.gaji_pokok <= deduction.until)
+            valueDeducted = deduction.value_d + ((datosPuesto.gaji_pokok - deduction.from) * deduction.jml_potongan);
+
+          totalDeductions.push({
+            ...deduction,
+            valueDeducted: valueDeducted
+          })
+          totalValueDeducted += valueDeducted
+        });
+
+        const kehadiran = attendance.find((a) => a.nik === String(pegawai.id));
+
+        const totalUnassitence =
+          parseFloat((datosPuesto.gaji_pokok * 8) / totalDaysWorkedOnMonth) *
+          (parseFloat(kehadiran.sakit) + parseFloat(kehadiran.alpha));
+
+        const total_gaji =
+          salarioBruto - (totalValueDeducted + totalUnassitence);
+
+        return {
+          ...pegawai,
+          ...datosPuesto?.dataValues,
+          idPuesto,
+          salarioBruto: salarioBruto.toFixed(2),
+          // potaciones: totalValueDeducted.toFixed(2),
+          // deduccionAusencias: deduccionAusencias.toFixed(2),
+          // total: neto.toFixed(2),
+          id: pegawai.id,
+          // gaji_pokok: pegawai.gaji_pokok.toLocaleString(),
+          // tj_transport: pegawai.tj_transport.toLocaleString(),
+          // uang_makan: pegawai.uang_makan.toLocaleString(),
+          hadir: kehadiran.hadir,
+          sakit: kehadiran.sakit,
+          alpha: kehadiran.alpha,
+          deducciones: totalValueDeducted.toLocaleString(),
+          castigo_ausencias: totalUnassitence.toLocaleString(),
+          total: (total_gaji < 0 ? 0 : total_gaji).toFixed(2).toLocaleString(),
+        };
       })
+    );
 
-      const totalUnassitence = parseFloat((pegawai.gaji_pokok * 8) / totalDaysWorkedOnMonth) * (parseFloat(kehadiran.sakit) + parseFloat(kehadiran.alpha));
-      const total_gaji = total_gaji_no_deductions -
-        (totalValueDeducted + totalUnassitence);
-
-      return {
-        tahun: potongan ? potongan.tahun : kehadiran ? kehadiran.tahun : 0,
-        bulan: potongan ? potongan.bulan : kehadiran ? kehadiran.bulan : 0,
-        id: id,
-        nik: pegawai.nik,
-        nama_pegawai: pegawai.nama_pegawai,
-        jabatan: pegawai.jabatan,
-        gaji_pokok: pegawai.gaji_pokok.toLocaleString(),
-        tj_transport: pegawai.tj_transport.toLocaleString(),
-        uang_makan: pegawai.uang_makan.toLocaleString(),
-        hadir: kehadiran.hadir,
-        sakit: kehadiran.sakit,
-        alpha: kehadiran.alpha,
-        potongan: totalValueDeducted.toLocaleString(),
-        total: (total_gaji < 0 ? 0 : total_gaji).toFixed(2).toLocaleString(),
-      };
-    });
-    return total_gaji_pegawai;
+    return salariosConDeducciones;
   } catch (error) {
     console.error(error);
   }
@@ -552,7 +699,10 @@ export const getDataGajiPegawai = async () => {
 // method untuk melihat data gaji pegawai
 export const viewDataGajiPegawai = async (req, res) => {
   try {
-    const dataGajiPegawai = await getDataGajiPegawai();
+    // Obtener año y fecha de los parametros de la solicitud
+    const { year, month } = req.query;
+
+    const dataGajiPegawai = await getDataGajiPegawai(year, month);
     res.status(200).json(dataGajiPegawai);
   } catch (error) {
     res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
@@ -597,7 +747,6 @@ export const viewDataGajiPegawaiByName = async (req, res) => {
   }
 };
 
-
 // method untuk melihat data gaji pegawai berdasarkan ID
 export const viewDataGajiById = async (req, res) => {
   try {
@@ -641,8 +790,6 @@ export const viewDataGajiByName = async (req, res) => {
   }
 };
 
-
-
 // method untuk mencari data gaji pegawai berdasarkan bulan
 export const viewDataGajiPegawaiByMonth = async (req, res) => {
   try {
@@ -677,9 +824,7 @@ export const viewDataGajiPegawaiByMonth = async (req, res) => {
       return res.json(dataGajiByMonth);
     }
 
-    res
-      .status(404)
-      .json({ msg: SALARY.NOT_FOUND_BY_MONTH.code });
+    res.status(404).json({ msg: SALARY.NOT_FOUND_BY_MONTH.code });
   } catch (error) {
     res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
   }
@@ -716,9 +861,7 @@ export const viewDataGajiPegawaiByYear = async (req, res) => {
       });
 
     if (dataGajiByYear.length === 0) {
-      return res
-        .status(404)
-        .json({ msg: SALARY.NOT_FOUND_BY_YEAR.code });
+      return res.status(404).json({ msg: SALARY.NOT_FOUND_BY_YEAR.code });
     }
     res.json(dataGajiByYear);
   } catch (error) {
@@ -754,12 +897,9 @@ export const dataLaporanGajiByYear = async (req, res) => {
       });
 
     if (dataGajiByYear.length === 0) {
-      return res
-        .status(404)
-        .json({ msg: SALARY.NOT_FOUND_BY_YEAR.code });
+      return res.status(404).json({ msg: SALARY.NOT_FOUND_BY_YEAR.code });
     } else {
-      const laporanByYear = dataGajiByYear.map((data) => data.tahun)
-      console.log(laporanByYear)
+      const laporanByYear = dataGajiByYear.map((data) => data.tahun);
     }
   } catch (error) {
     res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
