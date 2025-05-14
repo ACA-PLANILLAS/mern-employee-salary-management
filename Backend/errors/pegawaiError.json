@@ -1,0 +1,106 @@
+{
+  "EMPLOYEE": {
+    "USER_NOT_FOUND": {
+      "code": "AUTH-001",
+      "status": 404,
+      "message": "Data Pegawai Tidak Ditemukan"
+    },
+    "FETCH_SUCCESS": {
+      "code": "EMP-001",
+      "status": 200,
+      "message": "Data Pegawai berhasil diambil"
+    },
+    "NOT_FOUND_BY_ID": {
+      "code": "EMP-002",
+      "status": 404,
+      "message": "Data pegawai dengan ID tersebut tidak ditemukan"
+    },
+    "NOT_FOUND_BY_NIK": {
+      "code": "EMP-003",
+      "status": 404,
+      "message": "Data pegawai dengan NIK tersebut tidak ditemukan"
+    },
+    "NOT_FOUND_BY_NAME": {
+      "code": "EMP-004",
+      "status": 404,
+      "message": "Data pegawai dengan Nama tersebut tidak ditemukan"
+    },
+    "NOT_FOUND_BY_JABATAN": {
+      "code": "EMP-005",
+      "status": 404,
+      "message": "Data pegawai dengan Jabatan tersebut tidak ditemukan"
+    },
+    "PHOTO_REQUIRED": {
+      "code": "EMP-006",
+      "status": 400,
+      "message": "Upload Foto Gagal Silahkan Upload Foto Ulang"
+    },
+    "INVALID_PHOTO_FORMAT": {
+      "code": "EMP-007",
+      "status": 422,
+      "message": "File Foto Tidak Sesuai Dengan Format"
+    },
+    "PHOTO_TOO_LARGE": {
+      "code": "EMP-008",
+      "status": 422,
+      "message": "Ukuran Gambar Harus Kurang Dari 2 MB"
+    },
+    "UPLOAD_FAILED": {
+      "code": "EMP-009",
+      "status": 500,
+      "message": "Gagal mengunggah foto"
+    },
+    "CREATE_SUCCESS": {
+      "code": "EMP-010",
+      "status": 201,
+      "message": "Registrasi Berhasil"
+    },
+    "UPDATE_SUCCESS": {
+      "code": "EMP-011",
+      "status": 200,
+      "message": "Data Pegawai Berhasil di Perbarui"
+    },
+    "UPDATE_FAILED": {
+      "code": "EMP-012",
+      "status": 400,
+      "message": "Gagal memperbarui data pegawai"
+    },
+    "DELETE_SUCCESS": {
+      "code": "EMP-013",
+      "status": 200,
+      "message": "Data Pegawai Berhasil di Hapus"
+    },
+    "FORBIDDEN": {
+      "code": "EMP-014",
+      "status": 403,
+      "message": "Forbidden"
+    },
+    "INTERNAL_ERROR": {
+      "code": "EMP-015",
+      "status": 500,
+      "message": "Terjadi kesalahan pada server"
+    },
+    "SALARY_NOT_FOUND": {
+      "code": "EMP-016",
+      "status": 404,
+      "message": "Data Gaji Untuk Bulan, Tidak di Temukan Pada Pegawai "
+    },
+    "SALARY_BY_YEAR_NOT_FOUND": {
+      "code": "EMP-017",
+      "status": 404,
+      "message": "Data Tahun, Tidak di Temukan"
+    }
+  },
+  "DASHBOARD": {
+    "FETCH_SUCCESS": {
+      "code": "DASH-001",
+      "status": 200,
+      "message": "Data Dashboard berhasil diambil"
+    },
+    "FETCH_FAILED": {
+      "code": "DASH-002",
+      "status": 500,
+      "message": "Gagal mengambil data dashboard"
+    }
+  }
+}

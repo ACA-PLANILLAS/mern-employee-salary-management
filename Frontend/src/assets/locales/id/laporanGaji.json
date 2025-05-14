@@ -1,0 +1,26 @@
+{
+    "pageTitle": "Laporan Gaji Pegawai",
+    "sectionTitle": "Filter Laporan Gaji Pegawai",
+    "notFoundMessage": "Data tidak ditemukan",
+    "labelMonth": "Bulan",
+    "labelYear": "Tahun",
+    "placeholderYear": "Masukkan Tahun...",
+    "selectMonth": "Pilih Bulan",
+    "months": {
+      "january": "Januari",
+      "february": "Februari",
+      "march": "Maret",
+      "april": "April",
+      "may": "Mei",
+      "june": "Juni",
+      "july": "Juli",
+      "august": "Agustus",
+      "september": "September",
+      "october": "Oktober",
+      "november": "November",
+      "december": "Desember"
+    },
+    "printButton": "Cetak Laporan Gaji",
+    "swalTitle": "Data tidak ditemukan",
+    "swalText": "Maaf, data yang anda cari tidak ditemukan"
+  }

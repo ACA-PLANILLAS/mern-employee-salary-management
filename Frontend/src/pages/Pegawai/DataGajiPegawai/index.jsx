@@ -8,6 +8,8 @@ import { getMe, viewGajiSinglePegawaiByMonth, viewGajiSinglePegawaiByName, viewG
 import axios from "axios";
 import { TfiPrinter } from "react-icons/tfi";
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
+import { useTranslation } from 'react-i18next';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const ITEMS_PER_PAGE = 4;
 
@@ -19,6 +21,7 @@ const DataGajiPegawai = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
+  const { t } = useTranslation('dataGajiPegawai');
 
   const { nama_pegawai } = useSelector((state) => state.auth.user) || "";
 
@@ -52,8 +55,8 @@ const DataGajiPegawai = () => {
         console.log("Data not found!");
         Swal.fire({
           icon: "error",
-          title: "Data tidak ditemukan",
-          text: "Maaf, data yang anda cari tidak ditemukan",
+          title: t('dataNotFound'),
+          text: t('dataNotFoundDescription'),
           timer: 2000,
         });
       }
@@ -61,8 +64,8 @@ const DataGajiPegawai = () => {
       console.log(error.message);
       Swal.fire({
         icon: "error",
-        title: "Terjadi Kesalahan",
-        text: "Terjadi kesalahan saat memuat data.",
+        title: t('errorOccurred'),
+        text: t('errorLoadingData'),
         timer: 2000,
       });
     }
@@ -118,7 +121,7 @@ const DataGajiPegawai = () => {
   useEffect(() => {
     const getDataPegawai = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/data_gaji/name/${nama_pegawai}`);
+        const response = await axios.get(`${API_URL}/data_gaji/name/${nama_pegawai}`);
         const data = response.data;
 
         setDataGajiPegawai(data);
@@ -150,7 +153,7 @@ const DataGajiPegawai = () => {
 
   return (
     <Layout>
-      <Breadcrumb pageName="Data Gaji" />
+      <Breadcrumb pageName={t('salaryData')} />
 
       <div className="mt-6 rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto py-4">
@@ -158,28 +161,28 @@ const DataGajiPegawai = () => {
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  No
+                  {t('no')}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  Bulan/Tahun
+                  {t('monthYear')}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  Gaji Pokok
+                  {t('basicSalary')}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  Tunjangan Transportasi
+                  {t('transportAllowance')}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  Uang Makan
+                  {t('mealAllowance')}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  Potongan
+                  {t('deductions')}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  Total Gaji
+                  {t('totalSalary')}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  Cetak Slip
+                  {t('printPayslip')}
                 </th>
               </tr>
             </thead>
@@ -244,9 +247,9 @@ const DataGajiPegawai = () => {
         <div className="mt-4 flex flex-col items-center justify-between md:flex-row md:justify-between">
           <div className="flex items-center space-x-2">
             <span className="text-gray-5 dark:text-gray-4 py-4 text-sm">
-              Menampilkan {startIndex + 1}-
-              {Math.min(endIndex, dataGajiPegawai.length)} dari{" "}
-              {dataGajiPegawai.length} Data Gaji
+              {t('showing')} {startIndex + 1}-
+              {Math.min(endIndex, dataGajiPegawai.length)} {t('of')}{" "}
+              {dataGajiPegawai.length} {t('salaryData')}
             </span>
           </div>
           <div className="flex space-x-2 py-4">

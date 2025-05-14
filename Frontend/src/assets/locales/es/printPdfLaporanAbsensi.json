@@ -1,0 +1,15 @@
+{
+  "attendanceReport": "Informe de Asistencia del Empleado",
+  "back": "Volver",
+  "month": "Mes",
+  "year": "Año",
+  "nik": "NIK",
+  "employeeName": "Nombre del Empleado",
+  "position": "Cargo",
+  "present": "Presente",
+  "sick": "Enfermo",
+  "alpha": "Ausencia Injustificada",
+  "finance": "Finanzas",
+  "signature": "Firma",
+  "printedOn": "Impreso El"
+}

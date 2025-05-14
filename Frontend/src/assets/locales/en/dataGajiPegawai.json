@@ -1,0 +1,17 @@
+{
+    "dataNotFound": "Data Not Found",
+    "errorOccurred": "An Error Occurred",
+    "salaryData": "Salary Data",
+    "no": "No",
+    "monthYear": "Month/Year",
+    "basicSalary": "Basic Salary",
+    "transportAllowance": "Transport Allowance",
+    "deductions": "Deductions",
+    "totalSalary": "Total Salary",
+    "printPayslip": "Print Payslip",
+    "mealAllowance": "Meal Allowance",
+    "showing": "Showing",
+    "of": "of",
+    "dataNotFoundDescription": "Sorry, the data you are looking for was not found",
+    "errorLoadingData": "An error occurred while loading data."
+}

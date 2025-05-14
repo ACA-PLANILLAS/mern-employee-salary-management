@@ -1,0 +1,18 @@
+{
+    "breadcrumb_title": "Datos de Puestos",
+    "add_position": "Agregar Puesto",
+    "search_placeholder": "Buscar por nombre del puesto...",
+    "column_number": "N.º",
+    "column_position": "Puesto",
+    "column_base_salary": "Salario Base",
+    "column_transport_allowance": "Subsidio de Transporte",
+    "column_meal_allowance": "Subsidio de Alimentación",
+    "column_action": "Acción",
+    "pagination_text": "Mostrando de {{from}} a {{to}} de {{total}} datos",
+    "confirmation_title": "¿Estás seguro?",
+    "confirmation_text": "¡Esta acción no se puede deshacer!",
+    "yes": "Sí",
+    "no": "No",
+    "success_title": "¡Eliminado!",
+    "success_text": "Los datos se han eliminado correctamente."
+  }

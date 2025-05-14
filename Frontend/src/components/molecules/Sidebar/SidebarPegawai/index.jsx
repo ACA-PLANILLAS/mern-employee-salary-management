@@ -11,8 +11,11 @@ import { logoutUser } from '../../../../config/redux/action'
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import { reset } from '../../../../config/redux/reducer/authReducer'
+import { useTranslation } from 'react-i18next'
 
 const SidebarPegawai = ({ sidebarOpen, setSidebarOpen }) => {
+  const { t } = useTranslation('common');
+
   const location = useLocation()
   const { pathname } = location
   const navigate = useNavigate();
@@ -27,8 +30,8 @@ const SidebarPegawai = ({ sidebarOpen, setSidebarOpen }) => {
 
   const onLogout = () => {
     Swal.fire({
-      title: 'Konfirmasi',
-      text: 'Apakah Anda yakin ingin keluar?',
+      title: t('sidebar.logoutConfirmationTitle'),
+      text: t('sidebar.logoutConfirmationText'),
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Ya',
@@ -39,8 +42,8 @@ const SidebarPegawai = ({ sidebarOpen, setSidebarOpen }) => {
         dispatch(logoutUser());
         dispatch(reset())
         Swal.fire({
-          title: 'Logout Berhasil',
-          text: 'Anda telah berhasil keluar.',
+          title: t('sidebar.logoutSuccessTitle'),
+          text: t('sidebar.logoutSuccessText'),
           icon: 'success',
           timer: 1500,
           timerProgressBar: true,
@@ -129,7 +132,7 @@ const SidebarPegawai = ({ sidebarOpen, setSidebarOpen }) => {
                   }`}
               >
                 <RxDashboard />
-                Dashboard
+                {t('sidebar.dashboard')}
               </NavLink>
               {/* <!-- Dashboard Pegawai --> */}
 
@@ -142,7 +145,7 @@ const SidebarPegawai = ({ sidebarOpen, setSidebarOpen }) => {
                     }`}
                 >
                   <FaRegMoneyBillAlt />
-                  Data Gaji
+                  {t('sidebar.salaryData')}
                 </NavLink>
               </li>
               {/* <!-- Data Gaji Pegawai --> */}
@@ -170,7 +173,7 @@ const SidebarPegawai = ({ sidebarOpen, setSidebarOpen }) => {
                         }}
                       >
                         <FiSettings />
-                        Pengaturan
+                        {t('sidebar.settings')}
                         <MdKeyboardArrowDown className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${open && 'rotate-180'
                           }`} />
                       </NavLink>
@@ -182,13 +185,24 @@ const SidebarPegawai = ({ sidebarOpen, setSidebarOpen }) => {
                         <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
                           <li>
                             <NavLink
+                              to='/parameter'
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              {t('sidebar.parameter')}
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
                               to='/ubah-password-pegawai'
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
                               }
                             >
-                              Ubah Password
+                              {t('sidebar.changePassword')}
                             </NavLink>
                           </li>
                           <li>
@@ -199,7 +213,7 @@ const SidebarPegawai = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Log Out
+                              {t('sidebar.logout')}
                             </NavLink>
                           </li>
                         </ul>

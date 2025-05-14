@@ -5,7 +5,12 @@ import bannerImg from "../../../assets/images/bannerImg.png";
 import { ButtonThree } from "../../atoms";
 import "../../../shared/Shared.css";
 
+import { useTranslation } from 'react-i18next';
+
 const Banner = () => {
+
+  const { t } = useTranslation('home');
+
   return (
     <div className="parent flex min-h-[100vh] flex-col-reverse items-center justify-between pt-14 dark:bg-boxdark lg:flex-row ">
       <motion.div
@@ -14,19 +19,19 @@ const Banner = () => {
         transition={{ duration: 1 }}
       >
         <h1 className="mb-0 translate-y-[-30%] text-center text-3xl font-semibold text-primary sm:translate-y-[-0%] md:text-left">
-          Sistem Penggajian Karyawan Online
+          {t('banner.titleLine1')}
           <br />
-          PT. Humpuss Karbometil Selulosa
+          {t('banner.titleLine2')}
         </h1>
+
         <p className="mb-6 max-w-xl translate-y-[-60%] pt-8 text-center font-medium dark:text-white sm:translate-y-[-0%] md:text-left">
-          Sebuah platform perusahaan untuk mengelola proses penggajian karyawan
-          secara efisien dan terintegrasi melalui platform digital.
+          {t('banner.description')}
         </p>
 
         <div className="grid translate-y-[-170%] justify-center sm:flex sm:translate-y-[-0%] sm:justify-start">
           <Link to="/login" className="sm:py-0">
             <ButtonThree>
-              <span>Login</span>
+              <span>{t('banner.login')}</span>
             </ButtonThree>
           </Link>
         </div>

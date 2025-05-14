@@ -1,0 +1,60 @@
+{
+  "LOGIN": {
+    "INVALID_PASSWORD": {
+      "code": "AUTH-002",
+      "status": 400,
+      "message": "Password Salah"
+    },
+    "LOGIN_SUCCESS": {
+      "code": "AUTH-003",
+      "status": 200,
+      "message": "Login Berhasil"
+    }
+  },
+  "ME": {
+    "NOT_LOGGED_IN": {
+      "code": "AUTH-004",
+      "status": 401,
+      "message": "Mohon Login ke Akun Anda!"
+    },
+    "USER_NOT_FOUND": {
+      "code": "AUTH-005",
+      "status": 404,
+      "message": "User Tidak Ditemukan"
+    },
+    "FETCH_SUCCESS": {
+      "code": "AUTH-006",
+      "status": 200,
+      "message": "User Data Retrieved Successfully"
+    }
+  },
+  "LOGOUT": {
+    "LOGOUT_FAILED": {
+      "code": "AUTH-007",
+      "status": 400,
+      "message": "Tidak dapat logout"
+    },
+    "LOGOUT_SUCCESS": {
+      "code": "AUTH-008",
+      "status": 200,
+      "message": "Anda Telah Logout"
+    }
+  },
+  "PASSWORD": {
+    "PASSWORD_MISMATCH": {
+      "code": "AUTH-009",
+      "status": 400,
+      "message": "Password dan Konfirmasi Password Tidak Cocok"
+    },
+    "UPDATE_SUCCESS": {
+      "code": "AUTH-010",
+      "status": 200,
+      "message": "Password Berhasil di Perbarui"
+    },
+    "UPDATE_FAILED": {
+      "code": "AUTH-011",
+      "status": 400,
+      "message": "Gagal memperbarui password"
+    }
+  }
+}

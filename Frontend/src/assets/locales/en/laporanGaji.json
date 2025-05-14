@@ -1,0 +1,26 @@
+{
+  "pageTitle": "Employee Salary Report",
+  "sectionTitle": "Filter Employee Salary Report",
+  "notFoundMessage": "Data not found",
+  "labelMonth": "Month",
+  "labelYear": "Year",
+  "placeholderYear": "Enter Year...",
+  "selectMonth": "Select Month",
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
+  "printButton": "Print Salary Report",
+  "swalTitle": "Data not found",
+  "swalText": "Sorry, the data you're looking for was not found"
+}

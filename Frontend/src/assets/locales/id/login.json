@@ -1,0 +1,19 @@
+{
+  "logoAlt": "Logo SiPeKa",
+  "logoTitle": "Logo SiPeKa",
+  "titleLine1": "Sistem Penggajian Karyawan Online",
+  "titleLine2": "PT. Humpuss Karbometil Selulosa",
+  "loginImageAlt": "Ilustrasi Login",
+  "input": {
+    "usernameLabel": "Nama pengguna",
+    "usernamePlaceholder": "Masukkan username",
+    "passwordLabel": "Kata sandi",
+    "passwordPlaceholder": "Masukkan password",
+    "loginButton": "Masuk",
+    "loading": "Memuat..."
+  },
+  "swal": {
+    "errorTitle": "Login Gagal",
+    "successTitle": "Login Berhasil"
+  }
+}

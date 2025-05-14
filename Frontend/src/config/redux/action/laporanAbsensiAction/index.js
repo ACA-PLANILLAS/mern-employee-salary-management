@@ -3,6 +3,7 @@ import axios from "axios";
 export const FETCH_LAPORAN_ABSENSI_SUCCESS = "FETCH_LAPORAN_ABSENSI_SUCCESS";
 export const FETCH_LAPORAN_ABSENSI_FAILURE = "FETCH_LAPORAN_ABSENSI_FAILURE";
 export const CLEAR_LAPORAN_ABSENSI = "CLEAR_LAPORAN_ABSENSI";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const fetchLaporanAbsensiSuccess = (data) => ({
     type: FETCH_LAPORAN_ABSENSI_SUCCESS,
@@ -21,7 +22,7 @@ export const clearLaporanAbsensi = () => ({
 export const fetchLaporanAbsensiByYear = (selectedYear, onDataFound) => async (dispatch) => {
     try {
         const response = await axios.get(
-            `http://localhost:5000/laporan/absensi/year/${selectedYear}`
+            `${API_URL}/laporan/absensi/year/${selectedYear}`
         );
         const data = response.data;
         dispatch(fetchLaporanAbsensiSuccess(data));
@@ -36,7 +37,7 @@ export const fetchLaporanAbsensiByYear = (selectedYear, onDataFound) => async (d
 export const fetchLaporanAbsensiByMonth = (selectedMonth, onDataFound) => async (dispatch) => {
     try {
         const response = await axios.get(
-            `http://localhost:5000/laporan/absensi/month/${selectedMonth}`
+            `${API_URL}/laporan/absensi/month/${selectedMonth}`
         );
         const data = response.data;
         dispatch(fetchLaporanAbsensiSuccess(data));

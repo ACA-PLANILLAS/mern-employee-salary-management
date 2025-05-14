@@ -1,0 +1,15 @@
+{
+  "printSalaryReport": "Imprimir Informe de Salario",
+  "back": "Volver",
+  "employeeName": "Nombre del Empleado",
+  "nik": "NIK",
+  "position": "Cargo",
+  "salary": "Salario Base",
+  "transportAllowance": "Asignación de Transporte",
+  "mealAllowance": "Asignación de Comida",
+  "deduction": "Deducción",
+  "totalSalary": "Salario Total",
+  "finance": "Finanzas",
+  "signature": "Firma",
+  "printedOn": "Impreso El"
+}

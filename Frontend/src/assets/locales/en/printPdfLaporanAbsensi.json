@@ -1,0 +1,15 @@
+{
+  "attendanceReport": "Employee Attendance Report",
+  "back": "Back",
+  "month": "Month",
+  "year": "Year",
+  "nik": "NIK",
+  "employeeName": "Employee Name",
+  "position": "Position",
+  "present": "Present",
+  "sick": "Sick",
+  "alpha": "Unauthorized Absence",
+  "finance": "Finance",
+  "signature": "Signature",
+  "printedOn": "Printed On"
+}

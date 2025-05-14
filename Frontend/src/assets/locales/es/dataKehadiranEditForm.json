@@ -1,0 +1,20 @@
+{
+  "formEditAttendance": "Formulario de Edición de Datos de Asistencia del Empleado",
+  "employeeName": "Nombre del Empleado",
+  "nik": "NIK",
+  "jobTitle": "Cargo",
+  "present": "Presente",
+  "sick": "Enfermo",
+  "alpha": "Ausencia Injustificada",
+  "enterEmployeeName": "Ingrese el Nombre",
+  "enterNik": "Ingrese el NIK",
+  "enterJobTitle": "Ingrese el cargo",
+  "enterPresent": "Ingrese presente",
+  "enterSick": "Ingrese enfermo",
+  "enterAlpha": "Ingrese alpha",
+  "update": "Actualizar",
+  "back": "Volver",
+  "success": "Exitoso",
+  "error": "Fallido",
+  "errorOccurred": "Ocurrió un error"
+}

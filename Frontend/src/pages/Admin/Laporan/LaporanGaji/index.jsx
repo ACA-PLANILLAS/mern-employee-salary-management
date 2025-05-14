@@ -8,8 +8,10 @@ import { TfiPrinter } from 'react-icons/tfi'
 import Swal from 'sweetalert2';
 import { getMe, fetchLaporanGajiByMonth, fetchLaporanGajiByYear } from '../../../../config/redux/action';
 import { BiSearch } from 'react-icons/bi';
+import { useTranslation } from 'react-i18next';
 
 const LaporanGaji = () => {
+    const { t } = useTranslation('laporanGaji');
     const [searchMonth, setSearchMonth] = useState("");
     const [searchYear, setSearchYear] = useState("");
     const [showMessage, setShowMessage] = useState(false);
@@ -43,15 +45,13 @@ const LaporanGaji = () => {
 
         if (yearDataFound && monthDataFound) {
             setShowMessage(false);
-            navigate(
-                `/laporan/gaji/print-page?month=${selectedMonth}&year=${selectedYear}`
-            );
+            navigate(`/laporan/gaji/print-page?month=${selectedMonth}&year=${selectedYear}`);
         } else {
             setShowMessage(false);
             Swal.fire({
                 icon: 'error',
-                title: 'Data tidak ditemukan',
-                text: 'Maaf, data yang anda cari tidak ditemukan',
+                title: t('swalTitle'),
+                text: t('swalText'),
                 timer: 2000,
             });
         }
@@ -72,25 +72,25 @@ const LaporanGaji = () => {
 
     return (
         <Layout>
-            <Breadcrumb pageName='Laporan Gaji Pegawai' />
+            <Breadcrumb pageName={t('pageTitle')} />
 
             <div className='sm:grid-cols-2'>
                 <div className='flex flex-col gap-9'>
                     <div className='rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'>
                         <div className='border-b border-stroke py-4 px-6.5 dark:border-strokedark'>
                             <h3 className='font-medium text-black dark:text-white'>
-                                Filter Laporan Gaji Pegawai
+                                {t('sectionTitle')}
                             </h3>
                         </div>
                         <form onSubmit={handleSearch}>
                             {showMessage && (
-                                <p className="text-meta-1">Data tidak ditemukan</p>
+                                <p className="text-meta-1">{t('notFoundMessage')}</p>
                             )}
                             <div className='p-6.5'>
                                 <div className='mb-4.5 '>
                                     <div className='w-full mb-4'>
                                         <label className='mb-2.5 block text-black dark:text-white'>
-                                            Bulan <span className='text-meta-1'>*</span>
+                                            {t('labelMonth')} <span className='text-meta-1'>*</span>
                                         </label>
                                         <div className='relative z-20 bg-transparent dark:bg-form-input'>
                                             <select
@@ -99,19 +99,19 @@ const LaporanGaji = () => {
                                                 onChange={handleSearchMonth}
                                                 required
                                             >
-                                                <option value=''>Pilih Bulan</option>
-                                                <option value='Januari'>Januari</option>
-                                                <option value='Februari'>Februari</option>
-                                                <option value='Maret'>Maret</option>
-                                                <option value='April'>April</option>
-                                                <option value='Mei'>Mei</option>
-                                                <option value='Juni'>Juni</option>
-                                                <option value='Juli'>Juli</option>
-                                                <option value='Agustus'>Agustus</option>
-                                                <option value='September'>September</option>
-                                                <option value='Oktober'>Oktober</option>
-                                                <option value='November'>November</option>
-                                                <option value='Desember'>Desember</option>
+                                                <option value=''>{t('selectMonth')}</option>
+                                                <option value='Januari'>{t('months.january')}</option>
+                                                <option value='Februari'>{t('months.february')}</option>
+                                                <option value='Maret'>{t('months.march')}</option>
+                                                <option value='April'>{t('months.april')}</option>
+                                                <option value='Mei'>{t('months.may')}</option>
+                                                <option value='Juni'>{t('months.june')}</option>
+                                                <option value='Juli'>{t('months.july')}</option>
+                                                <option value='Agustus'>{t('months.august')}</option>
+                                                <option value='September'>{t('months.september')}</option>
+                                                <option value='Oktober'>{t('months.october')}</option>
+                                                <option value='November'>{t('months.november')}</option>
+                                                <option value='Desember'>{t('months.december')}</option>
                                             </select>
                                             <span className='absolute top-1/2 right-4 z-30 -translate-y-1/2 text-2xl'>
                                                 <MdOutlineKeyboardArrowDown />
@@ -121,12 +121,12 @@ const LaporanGaji = () => {
 
                                     <div className='w-full mb-4'>
                                         <label className='mb-2.5 block text-black dark:text-white'>
-                                            Tahun <span className='text-meta-1'>*</span>
+                                            {t('labelYear')} <span className='text-meta-1'>*</span>
                                         </label>
                                         <div className='relative z-20 bg-transparent dark:bg-form-input'>
                                             <input
                                                 type="number"
-                                                placeholder="Masukkan Tahun..."
+                                                placeholder={t('placeholderYear')}
                                                 value={searchYear}
                                                 onChange={handleSearchYear}
                                                 required
@@ -141,7 +141,7 @@ const LaporanGaji = () => {
 
                                 <div className='flex flex-col md:flex-row w-full gap-3 text-center'>
                                     <ButtonOne type='submit'>
-                                        <span>Cetak Laporan Gaji</span>
+                                        <span>{t('printButton')}</span>
                                         <span>
                                             <TfiPrinter />
                                         </span>

@@ -12,8 +12,11 @@ import { logoutUser } from '../../../../config/redux/action'
 import { useDispatch } from "react-redux";
 import Swal from 'sweetalert2';
 import { reset } from '../../../../config/redux/reducer/authReducer'
+import { useTranslation } from 'react-i18next'
 
 const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
+  const { t } = useTranslation('common');
+
   const location = useLocation()
   const { pathname } = location
   const dispatch = useDispatch();
@@ -28,8 +31,8 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
 
   const onLogout = () => {
     Swal.fire({
-      title: 'Konfirmasi',
-      text: 'Apakah Anda yakin ingin keluar?',
+      title: t('sidebar.logoutConfirmationTitle'),
+      text: t('sidebar.logoutConfirmationText'),
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Ya',
@@ -40,8 +43,8 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
         dispatch(logoutUser());
         dispatch(reset())
         Swal.fire({
-          title: 'Logout Berhasil',
-          text: 'Anda telah berhasil keluar.',
+          title: t('sidebar.logoutSuccessTitle'),
+          text: t('sidebar.logoutSuccessText'),
           icon: 'success',
           timer: 1500,
           timerProgressBar: true,
@@ -131,7 +134,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                   }`}
               >
                 <RxDashboard />
-                Dashboard
+                {t('sidebar.dashboard')}
               </NavLink>
               {/* <!-- Dashboard Admin --> */}
 
@@ -158,7 +161,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                         }}
                       >
                         <FiDatabase />
-                        Master Data
+                        {t('sidebar.masterData')}
                         <MdKeyboardArrowDown className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${open && 'rotate-180'
                           }`} />
                       </NavLink>
@@ -176,7 +179,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Data Pegawai
+                              {t('sidebar.employeeData')}
                             </NavLink>
                           </li>
                           <li>
@@ -187,7 +190,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Data Jabatan
+                              {t('sidebar.positionData')}
                             </NavLink>
                           </li>
                         </ul>
@@ -222,7 +225,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                         }}
                       >
                         <FaRegMoneyBillAlt />
-                        Transaksi
+                        {t('sidebar.transactions')}
                         <MdKeyboardArrowDown className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${open && 'rotate-180'
                           }`} />
                       </NavLink>
@@ -240,7 +243,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Data Kehadiran
+                              {t('sidebar.attendanceData')}
                             </NavLink>
                           </li>
                           <li>
@@ -251,7 +254,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Data Potongan
+                              {t('sidebar.deductionsData')}
                             </NavLink>
                           </li>
                           <li>
@@ -262,7 +265,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Data Gaji
+                              {t('sidebar.salaryData')}
                             </NavLink>
                           </li>
                         </ul>
@@ -297,7 +300,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                         }}
                       >
                         <TfiPrinter />
-                        Laporan
+                        {t('sidebar.reports')}
                         <MdKeyboardArrowDown className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${open && 'rotate-180'
                           }`} />
                       </NavLink>
@@ -315,7 +318,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Laporan Gaji
+                              {t('sidebar.salaryReport')}
                             </NavLink>
                           </li>
                           <li>
@@ -326,7 +329,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Laporan Absensi
+                              {t('sidebar.attendanceReport')}
                             </NavLink>
                           </li>
                           <li>
@@ -337,7 +340,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Slip Gaji
+                              {t('sidebar.paySlipReport')}
                             </NavLink>
                           </li>
                         </ul>
@@ -372,7 +375,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                         }}
                       >
                         <FiSettings />
-                        Pengaturan
+                        {t('sidebar.settings')}
                         <MdKeyboardArrowDown className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${open && 'rotate-180'
                           }`} />
                       </NavLink>
@@ -384,13 +387,24 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                         <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
                           <li>
                             <NavLink
+                              to='/parameters'
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              {t('sidebar.parameters')}
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
                               to='/ubah-password'
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
                               }
                             >
-                              Ubah Password
+                              {t('sidebar.changePassword')}
                             </NavLink>
                           </li>
                           <li>
@@ -401,7 +415,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                                 (isActive && '!text-white')
                               }
                             >
-                              Log Out
+                              {t('sidebar.logout')}
                             </NavLink>
                           </li>
                         </ul>

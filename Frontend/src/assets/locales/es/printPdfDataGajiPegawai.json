@@ -1,0 +1,17 @@
+{
+  "employeeSalaryList": "Lista de Salarios de los Empleados",
+  "back": "Volver",
+  "month": "Mes",
+  "year": "Año",
+  "nik": "NIK",
+  "employeeName": "Nombre del Empleado",
+  "position": "Cargo",
+  "basicSalary": "Salario Base",
+  "transportAllowance": "Asignación de Transporte",
+  "mealAllowance": "Asignación de Comida",
+  "deduction": "Deducción",
+  "totalSalary": "Salario Total",
+  "finance": "Finanzas",
+  "signature": "Firma",
+  "printedOn": "Impreso El"
+}

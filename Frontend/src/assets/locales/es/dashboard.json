@@ -1,0 +1,30 @@
+{
+  "cards": {
+    "attendance": "Datos de Asistencia",
+    "employees": "Datos de Empleados",
+    "positions": "Datos de Puestos",
+    "admin": "Datos de Administradores"
+  },
+
+  "chartsOne": {
+    "dataMale": "Datos Masculinos",
+    "dataFemale": "Datos Femeninos",
+    "dateRange": "14.04.2023 - 14.05.2023",
+    "viewOptions": {
+      "day": "Día",
+      "week": "Semana",
+      "month": "Mes"
+    }
+  },
+  "chartsTwo": {
+    "title": "Estado del Empleado",
+    "period": {
+      "monthly": "Mensual",
+      "yearly": "Anual"
+    },
+    "labels": {
+      "permanent": "Empleados Permanentes",
+      "temporary": "Empleados Temporales"
+    }
+  }
+}
