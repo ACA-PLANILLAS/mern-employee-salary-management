@@ -137,39 +137,26 @@ export const createDataKehadiran = async (req, res) => {
   } = req.body;
 
   try {
-    console.log("----------1", nik);
     const data_nik_pegawai = await DataPegawai.findOne({
       where: {
         id: nik,
       },
     });
-    console.log("----------2");
-
     // const data_nama_jabatan = await DataJabatan.findOne({
     //   where: {
     //     nama_jabatan: nama_jabatan,
     //   },
     // });
-    console.log("----------2");
 
-    const paymentsOnMonth =
-      (await Parameter.findOne({
-        where: {
-          type: PARAMS.PMON,
-        },
-      })) || 1;
+    const paymentsOnMonth = (await Parameter.findOne({
+      where: {
+        type: PARAMS.PMON,
+      },
+    })) || { value: 1 };
 
     //current month and year
-    const month = moment().locale("id").format("MMMM");
+    const month = moment().locale("id").format("M");
     const year = moment().locale("id").format("YYYY");
-
-    const nama_sudah_ada = await DataKehadiran.findAll({
-      where: {
-        nik,
-        bulan: month,
-        tahun: year,
-      },
-    });
 
     // if (!data_nama_pegawai) {
     //   return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NAME.code });
@@ -182,6 +169,14 @@ export const createDataKehadiran = async (req, res) => {
     if (!data_nik_pegawai) {
       return res.status(404).json({ msg: EMPLOYEE.NOT_FOUND_BY_NIK.code });
     }
+
+    const nama_sudah_ada = await DataKehadiran.findAll({
+      where: {
+        nik: data_nik_pegawai.id,
+        bulan: month,
+        tahun: year,
+      },
+    });
 
     if (
       nama_sudah_ada != null &&
@@ -246,13 +241,41 @@ export const deleteDataKehadiran = async (req, res) => {
 
 // method untuk create data potongan gaji
 export const createDataPotonganGaji = async (req, res) => {
-  const { id, potongan, jml_potongan } = req.body;
+  const {
+    id,
+    potongan, //npmbre
+    jml_potongan,
+    from,
+    until,
+    value_d,
+    type,
+    payment_frequency,
+    deduction_group,
+  } = req.body;
+
+  console.log("req.body", req.body);
+
   try {
-    const nama_potongan = await PotonganGaji.findOne({
-      where: {
-        potongan: potongan,
-      },
-    });
+    // Si tienen el mismo nombre y mismo alias
+    let nama_potongan;
+
+    if (deduction_group == undefined || deduction_group == null) {
+      console.log("1")
+      await PotonganGaji.findOne({
+        where: {
+          potongan: potongan,
+        },
+      });
+    } else {
+       console.log("2")
+      await PotonganGaji.findOne({
+        where: {
+          potongan: potongan,
+          deduction_group: deduction_group,
+        },
+      });
+    }
+
     if (nama_potongan) {
       res.status(400).json({ msg: DEDUCTION.ALREADY_EXISTS.code });
     } else {
@@ -260,6 +283,12 @@ export const createDataPotonganGaji = async (req, res) => {
         id: id,
         potongan: potongan,
         jml_potongan: jml_potongan.toLocaleString(),
+        from: from,
+        until: until,
+        value_d: value_d,
+        type: type,
+        payment_frequency: payment_frequency,
+        deduction_group: deduction_group,
       });
       res.json({ msg: DEDUCTION.CREATE_SUCCESS.code });
     }
@@ -272,7 +301,17 @@ export const createDataPotonganGaji = async (req, res) => {
 export const viewDataPotongan = async (req, res) => {
   try {
     const dataPotongan = await PotonganGaji.findAll({
-      attributes: ["id", "potongan", "jml_potongan"],
+      attributes: [
+        "id",
+        "potongan",
+        "jml_potongan",
+        "from",
+        "until",
+        "value_d",
+        "type",
+        "payment_frequency",
+        "deduction_group",
+      ],
     });
     res.json(dataPotongan);
   } catch (error) {
@@ -284,7 +323,17 @@ export const viewDataPotongan = async (req, res) => {
 export const viewDataPotonganByID = async (req, res) => {
   try {
     const dataPotongan = await PotonganGaji.findOne({
-      attributes: ["id", "potongan", "jml_potongan"],
+      attributes: [
+        "id",
+        "potongan",
+        "jml_potongan",
+        "from",
+        "until",
+        "value_d",
+        "type",
+        "payment_frequency",
+        "deduction_group",
+      ],
       where: {
         id: req.params.id,
       },

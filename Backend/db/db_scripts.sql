@@ -188,3 +188,8 @@ ALTER TABLE `data_pegawai`
 
 ALTER TABLE `data_pegawai`
   DROP COLUMN jabatan;
+
+
+ALTER TABLE potongan_gaji
+  ADD COLUMN payment_frequency TINYINT NULL DEFAULT 1,
+  ADD COLUMN deduction_group VARCHAR(120) NULL;
