@@ -270,7 +270,7 @@ export const createDataPotonganGaji = async (req, res) => {
         },
       });
     } else {
-       console.log("2")
+      console.log("2")
       await PotonganGaji.findOne({
         where: {
           potongan: potongan,
@@ -564,7 +564,7 @@ export const getDataPotongan = async () => {
   try {
     // get data potongan :
     const data_potongan = await PotonganGaji.findAll({
-      attributes: ["id", "potongan", "jml_potongan"],
+      attributes: ["id", "potongan", "jml_potongan", "from", "until", "value_d", "type"],
       distinct: true,
     });
     resultDataPotongan = data_potongan.map((potongan) => {
@@ -655,13 +655,20 @@ export const getDataGajiPegawai = async (year, month) => {
         const totalDeductions = [];
         let totalValueDeducted = 0;
 
-        resultDataPotongan.forEach((deduction) => {
-          const valueDeducted = salarioBruto * deduction.jml_potongan;
+        resultDataPotongan.forEach(deduction => {
+
+          let valueDeducted = 0;
+
+          if (deduction.type === "STA")
+            valueDeducted = datosPuesto.gaji_pokok * deduction.jml_potongan;
+          else if (deduction.type === "DIN" && datosPuesto.gaji_pokok > deduction.from && datosPuesto.gaji_pokok <= deduction.until)
+            valueDeducted = deduction.value_d + ((datosPuesto.gaji_pokok - deduction.from) * deduction.jml_potongan);
+
           totalDeductions.push({
             ...deduction,
-            valueDeducted: valueDeducted,
-          });
-          totalValueDeducted += valueDeducted;
+            valueDeducted: valueDeducted
+          })
+          totalValueDeducted += valueDeducted
         });
 
         const kehadiran = attendance.find((a) => a.nik === String(pegawai.id));
