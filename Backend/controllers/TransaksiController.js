@@ -649,7 +649,7 @@ export const getDataGajiPegawai = async (year, month) => {
 
           if (deduction.type === "STA")
             valueDeducted = datosPuesto.gaji_pokok * deduction.jml_potongan;
-          else if (deduction.type === "DIN" && datosPuesto.gaji_pokok > deduction.from && datosPuesto.gaji_pokok <= deduction.until)
+          else if (deduction.type === "DIN" && datosPuesto.gaji_pokok > deduction.from && (deduction.until < 0 || datosPuesto.gaji_pokok <= deduction.until))
             valueDeducted = deduction.value_d + ((datosPuesto.gaji_pokok - deduction.from) * deduction.jml_potongan);
 
           totalDeductions.push({
