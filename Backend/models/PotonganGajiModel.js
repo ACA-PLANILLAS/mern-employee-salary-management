@@ -17,6 +17,26 @@ const PotonganGaji = db.define('potongan_gaji', {
     jml_potongan: {
         type: DataTypes.DECIMAL(2),
         allowNull: false
+    },
+    from: {
+        type: DataTypes.DECIMAL(2),
+        defaultValue: 0,
+        allowNull: false
+    },
+    until: {
+        type: DataTypes.DECIMAL(2),
+        defaultValue: 0,
+        allowNull: false
+    },
+    value_d: {
+        type: DataTypes.DECIMAL(2),
+        defaultValue: 0,
+        allowNull: false
+    },
+    type: {
+        type: DataTypes.ENUM('STA', 'DIN'),
+        defaultValue: 'STA',
+        allowNull: false
     }
 }, {
     freezeTableName: true

@@ -420,7 +420,7 @@ export const getDataPotongan = async () => {
   try {
     // get data potongan :
     const data_potongan = await PotonganGaji.findAll({
-      attributes: ["id", "potongan", "jml_potongan"],
+      attributes: ["id", "potongan", "jml_potongan", "from", "until", "value_d", "type"],
       distinct: true,
     });
     resultDataPotongan = data_potongan.map((potongan) => {
@@ -507,7 +507,14 @@ export const getDataGajiPegawai = async () => {
       let totalValueDeducted = 0;
 
       resultDataPotongan.forEach(deduction => {
-        const valueDeducted = total_gaji_no_deductions * deduction.jml_potongan;
+
+        let valueDeducted = 0;
+
+        if (deduction.type === "STA")
+          valueDeducted = pegawai.gaji_pokok * deduction.jml_potongan;
+        else if (deduction.type === "DIN" && pegawai.gaji_pokok > deduction.from && pegawai.gaji_pokok <= deduction.until)
+          valueDeducted = deduction.value_d + ((pegawai.gaji_pokok - deduction.from - 0.01) * deduction.jml_potongan);
+
         totalDeductions.push({
           ...deduction,
           valueDeducted: valueDeducted
