@@ -42,6 +42,8 @@ export const viewDataKehadiran = async (req, res) => {
         "vacation_payments",
         "comment_01",
         "comment_02",
+        "day",
+        "month",
       ],
       distinct: true,
     });
@@ -73,6 +75,8 @@ export const viewDataKehadiran = async (req, res) => {
           vacation_payments: item.vacation_payments,
           comment_01: item.comment_01,
           comment_02: item.comment_02,
+          day: item.day,
+          month: item.month,
           complete_name,
         };
       })
@@ -106,6 +110,8 @@ export const viewDataKehadiranByID = async (req, res) => {
         "vacation_payments",
         "comment_01",
         "comment_02",
+        "day",
+        "month",
       ],
       where: {
         id: req.params.id,
@@ -524,6 +530,8 @@ export const getDataKehadiran = async () => {
         "vacation_days",
         "comment_01",
         "comment_02",
+         "day",
+        "month",
         "createdAt",
         "updatedAt",
       ],
@@ -549,6 +557,8 @@ export const getDataKehadiran = async () => {
       vacation_days: k.vacation_days,
       comment_01: k.comment_01,
       comment_02: k.comment_02,
+      day: k.day,
+      month: k.month,
       createdAt: k.createdAt,
       updatedAt: k.updatedAt,
     }));
@@ -639,15 +649,30 @@ export const getDataGajiPegawai = async (year, month) => {
     const startOfMonth = new Date(parseInt(year), parseInt(month) - 1, 1);
 
     const salariosConDeducciones = await Promise.all(
-      empleados.map(async (pegawai) => {
+      attendance.map(async (attendanceEmployee) => {
+        // 4a) datos del empleado
+        const pegawai = allPegawai.find(
+          (p) => String(p.id) === attendanceEmployee.nik
+        );
+        if (!pegawai) return null;
+
+        // fecha concreta de la asistencia
+        const attDate = new Date(
+          attendanceEmployee.tahun,
+          parseInt(attendanceEmployee.bulan, 10) - 1,
+          attendanceEmployee.day
+        );
+
+        console.log("date, ", attDate)
+        
         // 4a) Sacar el último puesto que tuvo el empleado en o antes de endOfMonth
-        const history = await PositionHistory.findOne({
+         const history = await PositionHistory.findOne({
           where: {
             employee_id: pegawai.id,
-            start_date: { [Op.lte]: endOfMonth },
+            start_date: { [Op.lte]: attDate },
             [Op.or]: [
-              { end_date: { [Op.gte]: startOfMonth } }, // aún vigente en el mes
-              { end_date: null }, // sin fecha de fin
+              { end_date: { [Op.gte]: attDate } },
+              { end_date: null },
             ],
           },
           order: [["start_date", "DESC"]],
@@ -703,11 +728,11 @@ export const getDataGajiPegawai = async (year, month) => {
           totalValueDeducted += valueDeducted;
         });
 
-        const kehadiran = attendance.find((a) => a.nik === String(pegawai.id));
+        // const kehadiran = attendance.find((a) => a.nik === String(pegawai.id));
 
         const totalUnassitence =
           parseFloat((datosPuesto.gaji_pokok * 8) / totalDaysWorkedOnMonth) *
-          (parseFloat(kehadiran.sakit) + parseFloat(kehadiran.alpha));
+          (parseFloat(attendanceEmployee.sakit) + parseFloat(attendanceEmployee.alpha));
 
         const total_gaji =
           salarioBruto - (totalValueDeducted + totalUnassitence);
@@ -725,17 +750,17 @@ export const getDataGajiPegawai = async (year, month) => {
           // gaji_pokok: pegawai.gaji_pokok.toLocaleString(),
           // tj_transport: pegawai.tj_transport.toLocaleString(),
           // uang_makan: pegawai.uang_makan.toLocaleString(),
-          hadir: kehadiran.hadir,
-          sakit: kehadiran.sakit,
-          alpha: kehadiran.alpha,
+          hadir: attendanceEmployee.hadir,
+          sakit: attendanceEmployee.sakit,
+          alpha: attendanceEmployee.alpha,
           deducciones: totalValueDeducted.toLocaleString(),
           castigo_ausencias: totalUnassitence.toLocaleString(),
           subtotalStandarDeductions: subtotalStandarDeductions.toLocaleString(),
           subtotalDynamicDeductions: subtotalDynamicDeductions.toLocaleString(),
           total: (total_gaji < 0 ? 0 : total_gaji).toFixed(2).toLocaleString(),
-          year: kehadiran.tahun,
-          month: kehadiran.month,
-          day: kehadiran.day,
+          year: attendanceEmployee.tahun,
+          month: attendanceEmployee.month,
+          day: attendanceEmployee.day,
         };
       })
     );
