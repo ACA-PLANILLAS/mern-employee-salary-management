@@ -93,23 +93,24 @@ const DataGaji = () => {
     const selectedMonth = filterBulan;
     const selectedYear = filterTahun;
 
-    let yearDataFound = false;
-    let monthDataFound = false;
+    // let yearDataFound = false;
+    // let monthDataFound = false;
 
-    await Promise.all([
-      dispatch(
-        fetchLaporanGajiByYear(selectedYear, () => (yearDataFound = true))
-      ),
-      dispatch(
-        fetchLaporanGajiByMonth(selectedMonth, () => (monthDataFound = true))
-      ),
-    ]);
+    // await Promise.all([
+    //   dispatch(
+    //     fetchLaporanGajiByYear(selectedYear, () => (yearDataFound = true))
+    //   ),
+    //   dispatch(
+    //     fetchLaporanGajiByMonth(selectedMonth, () => (monthDataFound = true))
+    //   ),
+    // ]);
+    let dataFound = Array.isArray(dataGaji);
     setShowMessage(true);
 
-    if (yearDataFound && monthDataFound) {
+    if (dataFound) {
       setShowMessage(false);
       navigate(
-        `/laporan/gaji/print-page?month=${selectedMonth}&year=${selectedYear}`
+        `/laporan/gaji/print-page?month=${filterBulan}&year=${filterTahun}`
       );
     } else {
       setShowMessage(false);

@@ -59,6 +59,12 @@ const DataKehadiran = db.define('data_kehadiran', {
     comment_02: {
         type: DataTypes.STRING(255)
     },
+     month: {
+        type: DataTypes.INTEGER(6)
+    },
+     day: {
+        type: DataTypes.INTEGER(6)
+    },
 }, { freezeTableName: true });
 
 export default DataKehadiran

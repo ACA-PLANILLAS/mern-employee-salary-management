@@ -184,6 +184,7 @@ export const createDataKehadiran = async (req, res) => {
     ) {
       // Guardar el mes en formato de numero, enero = 1, febrero = 2, etc.
       const monthNumber = moment().format("M");
+      const dayNumber = moment().format("D");
 
       await DataKehadiran.create({
         bulan: monthNumber,
@@ -201,6 +202,8 @@ export const createDataKehadiran = async (req, res) => {
         vacation_payments: vacation_payments,
         comment_01: comment_01,
         comment_02: comment_02,
+        month: monthNumber,
+        day: dayNumber,
       });
       res.json({ msg: ATTENDANCE.CREATE_SUCCESS.code });
     } else {
@@ -378,9 +381,6 @@ export const deleteDataPotongan = async (req, res) => {
 export const getDataPegawai = async () => {
   let resultDataPegawai = [];
 
-  console.log(" ''''''''''''''''''''''''' ");
-  console.log(" ////////////////////// ");
-
   try {
     // Get data pegawai:
     const data_pegawai = await DataPegawai.findAll({
@@ -506,7 +506,11 @@ export const getDataKehadiran = async () => {
     // Get data kehadiran
     const data_Kehadiran = await DataKehadiran.findAll({
       attributes: [
+        "id",
         "bulan",
+        "tahun",
+        "month",
+        "day",
         "nik",
         "nama_pegawai",
         "jenis_kelamin",
@@ -514,33 +518,41 @@ export const getDataKehadiran = async () => {
         "hadir",
         "sakit",
         "alpha",
+        "worked_hours",
+        "additional_payments",
+        "vacation_payments",
+        "vacation_days",
+        "comment_01",
+        "comment_02",
         "createdAt",
+        "updatedAt",
       ],
       distinct: true,
     });
 
-    const resultDataKehadiran = data_Kehadiran.map((kehadiran) => {
-      const createdAt = new Date(kehadiran.createdAt);
-      const tahun = createdAt.getFullYear();
-      const bulan = kehadiran.bulan;
-      const nik = kehadiran.nik;
-      const nama_pegawai = kehadiran.nama_pegawai;
-      const jabatan_pegawai = kehadiran.nama_jabatan;
-      const hadir = kehadiran.hadir;
-      const sakit = kehadiran.sakit;
-      const alpha = kehadiran.alpha;
+    const resultDataKehadiran = data_Kehadiran.map((k) => ({
+      id: k.id,
+      bulan: k.bulan,
+      tahun: k.tahun,
+      month: k.month,
+      day: k.day,
+      nik: k.nik,
+      nama_pegawai: k.nama_pegawai,
+      jenis_kelamin: k.jenis_kelamin,
+      jabatan_pegawai: k.nama_jabatan,
+      hadir: k.hadir,
+      sakit: k.sakit,
+      alpha: k.alpha,
+      worked_hours: k.worked_hours,
+      additional_payments: k.additional_payments,
+      vacation_payments: k.vacation_payments,
+      vacation_days: k.vacation_days,
+      comment_01: k.comment_01,
+      comment_02: k.comment_02,
+      createdAt: k.createdAt,
+      updatedAt: k.updatedAt,
+    }));
 
-      return {
-        bulan,
-        tahun,
-        nik,
-        nama_pegawai,
-        jabatan_pegawai,
-        hadir,
-        sakit,
-        alpha,
-      };
-    });
     return resultDataKehadiran;
   } catch (error) {
     console.error(error);
@@ -661,6 +673,7 @@ export const getDataGajiPegawai = async (year, month) => {
         const total_gaji =
           salarioBruto - (totalValueDeducted + totalUnassitence);
 
+
         return {
           ...pegawai,
           ...datosPuesto?.dataValues,
@@ -679,6 +692,9 @@ export const getDataGajiPegawai = async (year, month) => {
           deducciones: totalValueDeducted.toLocaleString(),
           castigo_ausencias: totalUnassitence.toLocaleString(),
           total: (total_gaji < 0 ? 0 : total_gaji).toFixed(2).toLocaleString(),
+          year: kehadiran.tahun,
+          month: kehadiran.month,
+          day: kehadiran.day
         };
       })
     );
