@@ -530,7 +530,7 @@ export const getDataKehadiran = async () => {
         "vacation_days",
         "comment_01",
         "comment_02",
-         "day",
+        "day",
         "month",
         "createdAt",
         "updatedAt",
@@ -621,7 +621,7 @@ export const getDataGajiPegawai = async (year, month) => {
         a.bulan.toLowerCase() === month.toLowerCase()
       );
     });
-    console.log("attendance", attendance.length )
+    console.log("attendance", attendance.length)
 
     // 2) traer sólo esos empleados
     const allPegawai = await getDataPegawai();
@@ -664,9 +664,9 @@ export const getDataGajiPegawai = async (year, month) => {
         );
 
         console.log("date, ", attDate)
-        
+
         // 4a) Sacar el último puesto que tuvo el empleado en o antes de endOfMonth
-         const history = await PositionHistory.findOne({
+        const history = await PositionHistory.findOne({
           where: {
             employee_id: pegawai.id,
             start_date: { [Op.lte]: attDate },
@@ -711,16 +711,15 @@ export const getDataGajiPegawai = async (year, month) => {
           } else if (
             deduction.type === "DIN" &&
             datosPuesto.gaji_pokok > deduction.from &&
-            datosPuesto.gaji_pokok <= deduction.until
+            (deduction.until < 0 || datosPuesto.gaji_pokok <= deduction.until)
           ) {
             valueDeducted =
               deduction.value_d +
               (datosPuesto.gaji_pokok - deduction.from) *
-                deduction.jml_potongan;
+              deduction.jml_potongan;
 
             subtotalDynamicDeductions += valueDeducted;
           }
-
           totalDeductions.push({
             ...deduction,
             valueDeducted: valueDeducted,
