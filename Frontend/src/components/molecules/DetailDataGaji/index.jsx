@@ -97,9 +97,6 @@ const DetailDataGaji = () => {
                 <strong>{t("fullName")}:</strong> {fullName}
               </p>
               <p>
-                <strong>{t("nik")}:</strong> {data.nik}
-              </p>
-              <p>
                 <strong>{t("documentType")}:</strong> {data.document_type} –{" "}
                 {data.dui_or_nit}
               </p>
@@ -124,161 +121,135 @@ const DetailDataGaji = () => {
           </div>
         </section>
 
-        {/* --- Desglose Salario y Deducciones --- */}
+        {/* --- DESGLOSE PASO A PASO DEL SALARIO --- */}
         <section>
-          <h2 className="mb-4 text-xl font-semibold">{t("salaryBreakdown")}</h2>
+          <h2 className="mb-4 text-xl font-semibold">
+            {t("salaryBreakdownStepByStep")}
+          </h2>
 
-          {/* Tabla de ingresos */}
-          <table className="mb-6 w-full table-auto">
-            <thead>
-              <tr className="bg-gray-2 dark:bg-meta-4">
-                <th className="px-4 py-2 text-left">{t("description")}</th>
-                <th className="px-4 py-2 text-right">{t("amount")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="px-4 py-2">{t("baseSalary")}</td>
-                <td className="px-4 py-2 text-right">
-                  Rp. {data.salarioEmpleo}
-                </td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2">{t("transportAllowance")}</td>
-                <td className="px-4 py-2 text-right">
-                  Rp. {data.tj_transport}
-                </td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2">{t("mealAllowance")}</td>
-                <td className="px-4 py-2 text-right">Rp. {data.uang_makan}</td>
-              </tr>
-              <tr>
-                <td className="px-4 py-2 font-medium">
-                  {t("grossProratedSalary")}
-                </td>
-                <td className="px-4 py-2 text-right font-medium">
-                  Rp. {data.salarioBruto}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <table className="mb-6 w-full table-auto">
-            <thead>
-              <tr className="bg-gray-2 dark:bg-meta-4">
-                <th className="px-4 py-2 text-left">{t("description")}</th>
-                <th className="px-4 py-2 text-left">{t("percentage")}</th>
-                <th className="px-4 py-2 text-right">{t("amount")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* Deducciones tipo STA */}
-              {seguros.map((d, i) => (
-                <tr key={`sta-${i}`}>
-                  <td className="border px-4 py-2">- {d.nama_potongan}</td>
-                  <td className="border px-4 py-2">% {d.jml_potongan * 100}</td>
-                  <td className="text-red-500 border px-4 py-2 text-right">
-                    Rp. {d.valueDeducted.toFixed(2)}
-                  </td>
-                </tr>
-              ))}
-              {seguros.length > 0 && (
-                <tr className="bg-red-50 font-medium">
-                  <td className="border px-4 py-2">{t("subtotalInsurance")}</td>
-                  <td className="border px-4 py-2"></td>
-                  <td className="border px-4 py-2 text-right">
-                    Rp. {totalSeguro}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-
-          <table className="mb-6 w-full table-auto">
-            <thead>
-              <tr className="bg-gray-2 dark:bg-meta-4">
-                <th className="px-4 py-2 text-left">{t("description")}</th>
-                <th className="px-4 py-2 text-left">{t("percentage")}</th>
-                <th className="px-4 py-2 text-right">{t("amount")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* Deducciones tipo DIN */}
-              {rentas.map((d, i) => (
-                <tr
-                  key={`din-${i}`}
-                  className={
-                    d.valueDeducted > 0 ? "bg-yellow-100 font-medium" : ""
-                  }
-                >
-                  <td className="border px-4 py-2">
-                    - Tramo {i + 1} ({d.from} – {d.until})
-                  </td>
-                  <td className="text-red-500 border px-4 py-2 text-right">
-                    Rp. {d.valueDeducted.toFixed(2)}
-                  </td>
-                </tr>
-              ))}
-              {rentas.length > 0 && (
-                <tr className="bg-red-50 font-medium">
-                  <td className="border px-4 py-2">{t("subtotalRenta")}</td>
-                  <td className="border px-4 py-2 text-right">
-                    Rp. {totalRenta}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-
-          {/* Lista de deducciones STA */}
+          {/* Paso 1: Ingresos */}
           <div className="mb-4">
-            <h3 className="mb-2 font-semibold">{t("insuranceDetails")}</h3>
-            {seguros.length > 0 ? (
-              <ul className="mb-2 list-inside list-disc">
-                {seguros.map((d, i) => (
-                  <li key={i}>
-                    {d.nama_potongan}: Rp. {d.valueDeducted.toFixed(2)}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>{t("none")}</p>
-            )}
-            <p className="font-medium">
-              {t("subtotalInsurance")}: Rp. {totalSeguro}
-            </p>
+            <h3 className="mb-2 text-lg font-semibold">{t("step1_income")}</h3>
+            <table className="mb-2 w-full table-auto">
+              <thead>
+                <tr className="bg-gray-2 dark:bg-meta-4">
+                  <th className="px-4 py-2 text-left">{t("description")}</th>
+                  <th className="px-4 py-2 text-right">{t("amount")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="px-4 py-2">{t("baseSalary")}</td>
+                  <td className="px-4 py-2 text-right">
+                    Rp. {data.gaji_pokok}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2">{t("transportAllowance")}</td>
+                  <td className="px-4 py-2 text-right">
+                    Rp. {data.tj_transport}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2">{t("mealAllowance")}</td>
+                  <td className="px-4 py-2 text-right">
+                    Rp. {data.uang_makan}
+                  </td>
+                </tr>
+                <tr className="bg-green-50 font-semibold">
+                  <td className="px-4 py-2">{t("grossSalary")}</td>
+                  <td className="px-4 py-2 text-right">
+                    Rp. {data.salarioBruto}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
-          {/* Lista de deducciones DIN (Renta) */}
+          {/* Paso 2: Penalización por Ausencias */}
           <div className="mb-4">
-            <h3 className="mb-2 font-semibold">{t("rentaDetails")}</h3>
-            {rentas.length > 0 ? (
-              <ul className="mb-2 list-inside list-disc">
-                {rentas.map((d, i) => (
-                  <li key={i}>
-                    <strong>
-                      Tramo {i + 1} ({d.from}–{d.until}):
-                    </strong>{" "}
-                    Rp. {d.valueDeducted.toFixed(2)}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>{t("none")}</p>
-            )}
-            <p className="font-medium">
-              {t("subtotalRenta")}: Rp. {totalRenta}
-            </p>
-          </div>
-
-          {/* Penalización por ausencias */}
-          <div className="mb-6">
-            <h3 className="mb-2 font-semibold">{t("absencePenalty")}</h3>
+            <h3 className="mb-2 text-lg font-semibold">
+              {t("step4_absencePenalty")}
+            </h3>
             <p>Rp. {data.castigo_ausencias}</p>
           </div>
 
-          {/* Total neto */}
+          {/* Paso3: Deducciones Estándar (ISS/AFF) */}
+          <div className="mb-4">
+            <h3 className="mb-2 text-lg font-semibold">
+              {t("step2_standardDeductions")}
+            </h3>
+            <table className="mb-2 w-full table-auto">
+              <thead>
+                <tr className="bg-gray-2 dark:bg-meta-4">
+                  <th className="px-4 py-2 text-left">{t("deduction")}</th>
+                  <th className="px-4 py-2 text-right">{t("amount")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {seguros.map((d, i) => (
+                  <tr key={`sta-${i}`}>
+                    <td className="px-4 py-2">- {d.nama_potongan}</td>
+                    <td className="text-red-500 px-4 py-2 text-right">
+                      Rp. {d.valueDeducted.toFixed(2)}
+                    </td>
+                  </tr>
+                ))}
+                <tr className="bg-red-50 font-semibold">
+                  <td className="px-4 py-2">{t("subtotalInsurance")}</td>
+                  <td className="px-4 py-2 text-right">Rp. {totalSeguro}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* Paso 4: Deducciones por Renta */}
+          <div className="mb-4">
+            <h3 className="mb-2 text-lg font-semibold">
+              {t("step3_dynamicDeductions")}
+            </h3>
+            <table className="mb-2 w-full table-auto">
+              <thead>
+                <tr className="bg-gray-2 dark:bg-meta-4">
+                  <th className="px-4 py-2 text-left">{t("range")}</th>
+                  <th className="px-4 py-2 text-right">{t("amount")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rentas.map((d, i) => (
+                  <tr key={`din-${i}`}>
+                    <td className="px-4 py-2">
+                      Tramo {i + 1} ({d.from} – {d.until})
+                    </td>
+                    <td className="text-red-500 px-4 py-2 text-right">
+                      Rp. {d.valueDeducted.toFixed(2)}
+                    </td>
+                  </tr>
+                ))}
+                <tr className="bg-red-50 font-semibold">
+                  <td className="px-4 py-2">{t("subtotalRenta")}</td>
+                  <td className="px-4 py-2 text-right">Rp. {totalRenta}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          
+
+          {/* Paso 5: Total Deducciones */}
+          <div className="mb-4">
+            <h3 className="mb-2 text-lg font-semibold">
+              {t("step5_totalDeductions")}
+            </h3>
+            <p>
+              Rp.{" "}
+              {parseFloat(data.subtotalStandarDeductions) +
+                parseFloat(data.subtotalDynamicDeductions) +
+                parseFloat(data.castigo_ausencias)}
+            </p>
+          </div>
+
+          {/* Resultado final: Salario Neto */}
           <div className="text-right">
             <p className="text-lg font-bold">
               {t("netSalary")}: Rp. {data.total}
