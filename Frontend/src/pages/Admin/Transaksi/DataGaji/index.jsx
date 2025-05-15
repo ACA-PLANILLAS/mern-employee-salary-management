@@ -595,7 +595,7 @@ const DataGaji = () => {
                       <div className="flex items-center space-x-3.5">
                         <Link
                           className="hover:text-black"
-                          to={`/data-gaji/detail-data-gaji/name/${data.nama_pegawai}`}
+                          to={`/data-gaji/detail-data-gaji/id/${data.attendanceId}`}
                         >
                           <FaRegEye className="text-xl text-primary hover:text-black dark:hover:text-white" />
                         </Link>

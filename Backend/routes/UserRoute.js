@@ -55,6 +55,7 @@ import {
 
 import {
     viewDataGajiPegawai,
+    viewDataGajiPegawaiById,
     viewDataGajiPegawaiByMonth,
     viewDataGajiPegawaiByYear
 } from "../controllers/TransaksiController.js";
@@ -144,7 +145,8 @@ router.patch('/data_potongan/update/:id', adminOnly, verifyUser, updateDataPoton
 router.delete('/data_potongan/:id', adminOnly, verifyUser, deleteDataPotongan);
 // Data Gaji
 router.get('/data_gaji_pegawai', viewDataGajiPegawai);
-router.get('/data_gaji/name/:name', verifyUser, viewDataGajiByName);
+router.get('/data_gaji_pegawai/:attendanceId', verifyUser, viewDataGajiPegawaiById);
+//router.get('/data_gaji/name/:name', verifyUser, viewDataGajiByName);
 // router.get('/data_gaji_pegawai/month/:month', viewDataGajiPegawaiByMonth);
 // router.get('/data_gaji_pegawai/year/:year', viewDataGajiPegawaiByYear);
 

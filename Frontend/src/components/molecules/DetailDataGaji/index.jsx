@@ -7,193 +7,198 @@ import Layout from '../../../layout';
 import { Breadcrumb, ButtonOne, ButtonTwo } from '../../../components';
 import { TfiPrinter } from 'react-icons/tfi';
 import { useTranslation } from 'react-i18next';
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const DetailDataGaji = () => {
-    const [data, setData] = useState({
-        tahun: '',
-        bulan: '',
-        nik: '',
-        nama_pegawai: '',
-        jabatan: '',
-        gaji_pokok: '',
-        tj_transport: '',
-        uang_makan: '',
-        potongan: '',
-        total: '',
-    });
-    const { name } = useParams();
-    const [index] = useState('');
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const { isError, user } = useSelector((state) => state.auth);
+  const [data, setData] = useState(null);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isError, user } = useSelector((state) => state.auth);
+  const { t } = useTranslation("dataGajiDetail");
 
-    const { t } = useTranslation("dataGajiDetail");
+  // Obtener datos de usuario logueado
+  useEffect(() => {
+    dispatch(getMe());
+  }, [dispatch]);
 
-    const onSubmitPrint = () => {
-        navigate(`/laporan/slip-gaji/print-page?month=${data.bulan}&year=${data.tahun}&name=${name}`);
+  // Redirecciones si no está logueado o no es admin
+  useEffect(() => {
+    if (isError) return navigate('/login');
+    if (user && user.hak_akses !== 'admin') return navigate('/dashboard');
+  }, [isError, user, navigate]);
+
+  // Fetch detalle de una asistencia
+  useEffect(() => {
+    const fetchDetalle = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/data_gaji_pegawai/${id}`);
+        setData(res.data);
+      } catch (err) {
+        console.error(err);
+      }
     };
+    fetchDetalle();
+  }, [id]);
 
-    useEffect(() => {
-        const getDataPegawai = async () => {
-            try {
-                const response = await axios.get(`${API_URL}/data_gaji/name/${name}`);
-                const data = response.data[0];
-
-                setData(data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        getDataPegawai();
-    }, [name]);
-
-    useEffect(() => {
-        dispatch(getMe());
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (isError) {
-            navigate('/login');
-        }
-        if (user && user.hak_akses !== 'admin') {
-            navigate('/dashboard');
-        }
-    }, [isError, user, navigate]);
-
+  if (!data) {
     return (
-        <Layout>
-            <Breadcrumb pageName={t('detailSalaryData')} />
-            <Link to='/data-gaji'>
-                <ButtonTwo>
-                    <span>{t('back')}</span>
-                </ButtonTwo>
-            </Link>
-            <div className='rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1 mt-6'>
-                <div className='flex justify-between items-center mt-4 flex-col md:flex-row md:justify-between'>
-                </div>
-
-                <div className='max-w-full overflow-x-auto'>
-                    <div className='md:w-2/3'>
-                        <div className='w-full md:text-lg'>
-                            <h2 className='font-medium mb-4 block text-black dark:text-white'>
-                                <span className='inline-block w-32 md:w-40'>{t('name')}</span>
-                                <span className='inline-block w-7'>:</span>
-                                {data.nama_pegawai}
-                            </h2>
-                            <h2 className='font-medium mb-4 block text-black dark:text-white'>
-                                <span className='inline-block w-32 md:w-40'>{t('nik')}</span>
-                                <span className='inline-block w-6'>:</span>{' '}
-                                <span className='pl-[-10] md:pl-0'></span>
-                                {data.nik}
-                            </h2>
-                            <h2 className='font-medium mb-4 block text-black dark:text-white'>
-                                <span className='inline-block w-32 md:w-40'>{t('jabatan')}</span>
-                                <span className='inline-block w-7'>:</span>
-                                {data.jabatan}
-                            </h2>
-                            <h2 className='font-medium mb-4 block text-black dark:text-white'>
-                                <span className='inline-block w-32 md:w-40'>{t('month')}</span>
-                                <span className='pl-[-8] md:pl-0'></span>
-                                <span className='inline-block w-7'>:</span>
-                                {data.bulan}
-                            </h2>
-                            <h2 className='font-medium mb-4 block text-black dark:text-white'>
-                                <span className='inline-block w-32 md:w-40'>{t('year')}</span>
-                                <span className='inline-block w-7'>:</span>
-                                {data.tahun}
-                                <span className='pl-[-8] md:pl-0'></span>
-                            </h2>
-                        </div>
-                    </div>
-                    <table className='w-full table-auto'>
-                        <thead>
-                            <tr className='bg-gray-2 text-left dark:bg-meta-4'>
-                                <th className='py-4 px-4 font-medium text-black dark:text-white'>
-                                    No
-                                </th>
-                                <th className='py-4 px-4 font-medium text-black dark:text-white'>
-                                    {t('description')}
-                                </th>
-                                <th className='py-4 px-4 font-medium text-black dark:text-white'>
-                                    {t('amount')}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr className='bg-gray-50 dark:border-strokedark'>
-                                <td className='border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                    {index + 1}
-                                </td>
-                                <td className='border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                    {t('salary')}
-                                </td>
-                                <td className='border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                    Rp. {data.gaji_pokok}
-                                </td>
-                            </tr>
-                            <tr className='bg-gray-50 dark:border-strokedark'>
-                                <td className='border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                    {index + 2}
-                                </td>
-                                <td className='border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                    {t('transportAllowance')}
-                                </td>
-                                <td className='border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                    Rp. {data.tj_transport}
-                                </td>
-                            </tr>
-                            <tr className='bg-gray-50 dark:border-strokedark'>
-                                <td className='border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                    {index + 3}
-                                </td>
-                                <td className='border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                    {t('mealAllowance')}
-                                </td>
-                                <td className='border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                    Rp. {data.uang_makan}
-                                </td>
-                            </tr>
-                            <tr className='bg-gray-50 dark:border-strokedark'>
-                                <td className='border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                    {index + 4}
-                                </td>
-                                <td className='border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                    {t('deduction')}
-                                </td>
-                                <td className='border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                    Rp. {data.potongan}
-                                </td>
-                            </tr>
-                            <tr className='bg-gray-50 dark:border-strokedark'>
-                                <td className='border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                </td>
-                                <td className='font-medium border-b  border-[#eee] dark:border-strokedark py-5 text-right text-black dark:text-white'>
-                                    {t('totalSalary')} :
-                                </td>
-                                <td className='font-medium border-b border-[#eee] dark:border-strokedark py-5 px-4 text-black dark:text-white'>
-                                    Rp. {data.total}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div className='w-full md:w-1/2 md:justify-end py-6'>
-                        <div className='w-full md:w-auto'>
-                            <ButtonOne
-                                onClick={onSubmitPrint}
-                            >
-                                <span>{t('printSalarySlip')}</span>
-                                <span>
-                                    <TfiPrinter />
-                                </span>
-                            </ButtonOne>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </Layout>
+      <Layout>
+        <p className="p-6">{t('loading')}</p>
+      </Layout>
     );
+  }
+
+  // Filtrar deducciones por tipo
+  const seguros = data.detallesDeducciones.filter(d => d.type === 'STA');
+  const rentas = data.detallesDeducciones.filter(d => d.type === 'DIN');
+
+  // Calcular totales al momento
+  const totalSeguro = seguros
+    .reduce((sum, d) => sum + d.valueDeducted, 0)
+    .toFixed(2);
+  const totalRenta = rentas
+    .reduce((sum, d) => sum + d.valueDeducted, 0)
+    .toFixed(2);
+
+  // Navegar a impresión
+  const onSubmitPrint = () => {
+    navigate(
+      `/laporan/slip-gaji/print-page?month=${data.month}&year=${data.year}&name=${id}`
+    );
+  };
+
+  // Construir nombre completo
+  const fullName = [
+    data.first_name,
+    data.middle_name,
+    data.last_name,
+    data.second_last_name,
+    data.maiden_name
+  ].filter(Boolean).join(' ');
+
+  return (
+    <Layout>
+      <Breadcrumb pageName={t('detailSalaryData')} />
+      <Link to="/data-gaji">
+        <ButtonTwo>{t('back')}</ButtonTwo>
+      </Link>
+
+      <div className="rounded-sm border bg-white p-6 shadow-default dark:border-strokedark dark:bg-boxdark mt-6">
+        {/* --- Datos del Empleado --- */}
+        <section className="mb-6">
+          <h2 className="text-xl font-semibold mb-4">{t('employeeInfo')}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p><strong>{t('fullName')}:</strong> {fullName}</p>
+              <p><strong>{t('nik')}:</strong> {data.nik}</p>
+              <p>
+                <strong>{t('documentType')}:</strong> {data.document_type} – {data.dui_or_nit}
+              </p>
+              <p><strong>{t('hireDate')}:</strong> {data.hire_date}</p>
+            </div>
+            <div>
+              <p><strong>{t('position')}:</strong> {data.nama_jabatan}</p>
+              <p><strong>{t('accessLevel')}:</strong> {data.hak_akses}</p>
+              <p><strong>{t('month')}:</strong> {data.month}</p>
+              <p><strong>{t('year')}:</strong> {data.year}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* --- Desglose Salario y Deducciones --- */}
+        <section>
+          <h2 className="text-xl font-semibold mb-4">{t('salaryBreakdown')}</h2>
+
+          {/* Tabla de ingresos */}
+          <table className="w-full table-auto mb-6">
+            <thead>
+              <tr className="bg-gray-2 dark:bg-meta-4">
+                <th className="py-2 px-4 text-left">{t('description')}</th>
+                <th className="py-2 px-4 text-right">{t('amount')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="py-2 px-4">{t('baseSalary')}</td>
+                <td className="py-2 px-4 text-right">Rp. {data.salarioEmpleo}</td>
+              </tr>
+              <tr>
+                <td className="py-2 px-4">{t('transportAllowance')}</td>
+                <td className="py-2 px-4 text-right">Rp. {data.tj_transport}</td>
+              </tr>
+              <tr>
+                <td className="py-2 px-4">{t('mealAllowance')}</td>
+                <td className="py-2 px-4 text-right">Rp. {data.uang_makan}</td>
+              </tr>
+              <tr>
+                <td className="py-2 px-4 font-medium">{t('grossProratedSalary')}</td>
+                <td className="py-2 px-4 text-right font-medium">Rp. {data.salarioBruto}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          {/* Lista de deducciones STA */}
+          <div className="mb-4">
+            <h3 className="font-semibold mb-2">{t('insuranceDetails')}</h3>
+            {seguros.length > 0 ? (
+              <ul className="list-disc list-inside mb-2">
+                {seguros.map((d, i) => (
+                  <li key={i}>
+                    {d.nama_potongan}: Rp. {d.valueDeducted.toFixed(2)}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>{t('none')}</p>
+            )}
+            <p className="font-medium">
+              {t('subtotalInsurance')}: Rp. {totalSeguro}
+            </p>
+          </div>
+
+          {/* Lista de deducciones DIN (Renta) */}
+          <div className="mb-4">
+            <h3 className="font-semibold mb-2">{t('rentaDetails')}</h3>
+            {rentas.length > 0 ? (
+              <ul className="list-disc list-inside mb-2">
+                {rentas.map((d, i) => (
+                  <li key={i}>
+                    <strong>Tramo {i + 1} ({d.from}–{d.until}):</strong> Rp. {d.valueDeducted.toFixed(2)}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>{t('none')}</p>
+            )}
+            <p className="font-medium">
+              {t('subtotalRenta')}: Rp. {totalRenta}
+            </p>
+          </div>
+
+          {/* Penalización por ausencias */}
+          <div className="mb-6">
+            <h3 className="font-semibold mb-2">{t('absencePenalty')}</h3>
+            <p>Rp. {data.castigo_ausencias}</p>
+          </div>
+
+          {/* Total neto */}
+          <div className="text-right">
+            <p className="text-lg font-bold">
+              {t('netSalary')}: Rp. {data.total}
+            </p>
+          </div>
+
+          <div className="mt-6 text-right">
+            <ButtonOne onClick={onSubmitPrint}>
+              {t('printSalarySlip')} <TfiPrinter className="inline-block ml-2" />
+            </ButtonOne>
+          </div>
+        </section>
+      </div>
+    </Layout>
+  );
 };
 
 export default DetailDataGaji;

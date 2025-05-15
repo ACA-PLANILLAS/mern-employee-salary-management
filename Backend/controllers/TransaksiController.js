@@ -746,6 +746,7 @@ export const getDataGajiPegawai = async (year, month) => {
           // deduccionAusencias: deduccionAusencias.toFixed(2),
           // total: neto.toFixed(2),
           id: pegawai.id,
+          attendanceId: attendanceEmployee.id,
           // gaji_pokok: pegawai.gaji_pokok.toLocaleString(),
           // tj_transport: pegawai.tj_transport.toLocaleString(),
           // uang_makan: pegawai.uang_makan.toLocaleString(),
@@ -770,6 +771,113 @@ export const getDataGajiPegawai = async (year, month) => {
   }
 };
 
+
+
+// En tu servicio (puede ser el mismo archivo o uno aparte):
+export const getDataGajiPegawaiById = async (attendanceId) => {
+  try {
+    // 1) recuperar la asistencia concreta
+    const allKehadiran = await getDataKehadiran();
+    const att = allKehadiran.find(a => a.id === attendanceId);
+    if (!att) return null;
+
+    // 2) traer todos los empleados y parámetros
+    const allPegawai = await getDataPegawai();
+    const resultDataPotongan = await getDataPotongan();
+    const workHoursInWeeks = await Parameter.findOne({ where: { type: PARAMS.HWEK } });
+    const totalPaymentsInMonth = await Parameter.findOne({ where: { type: PARAMS.PMON } });
+    const totalDaysWorkedOnMonth = workHoursInWeeks.value * 4;
+
+    // 3) datos del empleado
+    const pegawai = allPegawai.find(p => String(p.id) === att.nik);
+    if (!pegawai) return null;
+
+    // 4) determinar fecha de la asistencia
+    const attDate = new Date(
+      att.tahun,
+      parseInt(att.bulan, 10) - 1,
+      att.day
+    );
+
+    // 5) historial de puesto
+    const history = await PositionHistory.findOne({
+      where: {
+        employee_id: pegawai.id,
+        start_date: { [Op.lte]: attDate },
+        [Op.or]: [
+          { end_date: { [Op.gte]: attDate } },
+          { end_date: null },
+        ],
+      },
+      order: [['start_date', 'DESC']],
+    });
+    const idPuesto = history ? history.position_id : 0;
+
+    // 6) datos salariales del puesto
+    const datosPuesto = await DataJabatan.findOne({ where: { id: idPuesto } });
+
+    // 7) cálculo del salario bruto prorrateado
+    const salarioBruto = (
+      (datosPuesto.gaji_pokok + datosPuesto.tj_transport + datosPuesto.uang_makan) /
+      parseFloat(totalPaymentsInMonth.value)
+    );
+
+    // 8) cálculo de deducciones
+    const totalDeductions = [];
+    let totalValueDeducted = 0;
+    let subtotalStandarDeductions = 0;
+    let subtotalDynamicDeductions = 0;
+
+    resultDataPotongan.forEach(deduction => {
+      let valueDeducted = 0;
+      if (deduction.type === 'STA') {
+        valueDeducted = datosPuesto.gaji_pokok * deduction.jml_potongan;
+        subtotalStandarDeductions += valueDeducted;
+      } else if (
+        deduction.type === 'DIN' &&
+        datosPuesto.gaji_pokok > deduction.from &&
+        (deduction.until < 0 || datosPuesto.gaji_pokok <= deduction.until)
+      ) {
+        valueDeducted =
+          deduction.value_d +
+          (datosPuesto.gaji_pokok - deduction.from) * deduction.jml_potongan;
+        subtotalDynamicDeductions += valueDeducted;
+      }
+      totalDeductions.push({ ...deduction, valueDeducted });
+      totalValueDeducted += valueDeducted;
+    });
+
+    // 9) cálculo de castigo por ausencias
+    const totalUnassitence =
+      ((datosPuesto.gaji_pokok * 8) / totalDaysWorkedOnMonth) *
+      (parseFloat(att.sakit) + parseFloat(att.alpha));
+
+    // 10) salario neto final
+    const total_gaji = salarioBruto - (totalValueDeducted + totalUnassitence);
+
+    // 11) devolver sólo este objeto
+    return {
+      ...pegawai,
+      ...datosPuesto.dataValues,
+      idPuesto,
+      salarioEmpleo: datosPuesto.gaji_pokok,
+      salarioBruto: salarioBruto.toFixed(2),
+      deducciones: totalValueDeducted.toFixed(2),
+      castigo_ausencias: totalUnassitence.toFixed(2),
+      subtotalStandarDeductions: subtotalStandarDeductions.toFixed(2),
+      subtotalDynamicDeductions: subtotalDynamicDeductions.toFixed(2),
+      total: (total_gaji < 0 ? 0 : total_gaji).toFixed(2),
+      year: att.tahun,
+      month: att.bulan,
+      day: att.day,
+      detallesDeducciones: totalDeductions
+    };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 // method untuk melihat data gaji pegawai
 export const viewDataGajiPegawai = async (req, res) => {
   try {
@@ -780,6 +888,23 @@ export const viewDataGajiPegawai = async (req, res) => {
     res.status(200).json(dataGajiPegawai);
   } catch (error) {
     res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
+  }
+};
+
+// viewDataGajiById
+export const viewDataGajiPegawaiById = async (req, res) => {
+  try {
+    const attendanceId = parseInt(req.params.attendanceId, 10);
+    const resultado = await getDataGajiPegawaiById(attendanceId);
+
+    if (!resultado) {
+      // TODO revisar
+      return res.status(404).json({ error: 'Asistencia no encontrada' });
+    }
+    return res.status(200).json(resultado);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
   }
 };
 
