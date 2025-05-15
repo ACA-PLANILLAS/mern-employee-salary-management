@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { fetchRates } from "./fetchRates";
 
 const CurrencyContext = createContext();
 
@@ -10,6 +11,10 @@ export const CurrencyProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("preferredCurrency", currency);
   }, [currency]);
+
+  useEffect(() => {
+    fetchRates();
+  }, []);
 
   return (
     <CurrencyContext.Provider value={{ currency, setCurrency }}>
