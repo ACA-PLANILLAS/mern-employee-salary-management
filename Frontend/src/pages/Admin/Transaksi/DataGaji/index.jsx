@@ -21,7 +21,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useDisplayValue } from "../../../../hooks/useDisplayValue";
 
-const ITEMS_PER_PAGE = 4;
+const ITEMS_PER_PAGE = 12;
 
 // Obtener valores por defecto para mes y año
 const today = new Date();
@@ -583,7 +583,7 @@ const DataGaji = () => {
                       {data.alpha}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                      {data.deducciones}
+                      {data.totalDeductions}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.castigo_ausencias}
