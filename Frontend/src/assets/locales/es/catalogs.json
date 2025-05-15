@@ -18,5 +18,9 @@
   "november": "noviembre",
   "desember": "diciembre",
   "true": "Sí",
-  "false": "No"
+  "false": "No",
+  "boleta_mensual": "Salario Mensual",
+  "boleta_quincenal": "Salario Quincenal",
+  "boleta_semanal": "Salario Semanal",
+  "boleta_desconocido": "Desconocido"
 }

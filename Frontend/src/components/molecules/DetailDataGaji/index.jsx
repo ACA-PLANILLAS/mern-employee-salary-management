@@ -64,9 +64,7 @@ const DetailDataGaji = () => {
 
   // Navegar a impresión
   const onSubmitPrint = () => {
-    navigate(
-      `/laporan/slip-gaji/print-page?month=${data.month}&year=${data.year}&name=${id}`
-    );
+    navigate(`/print-employee-receipt/${data.attendanceId}`);
   };
 
   // Construir nombre completo
@@ -234,8 +232,6 @@ const DetailDataGaji = () => {
             </table>
           </div>
 
-          
-
           {/* Paso 5: Total Deducciones */}
           <div className="mb-4">
             <h3 className="mb-2 text-lg font-semibold">
@@ -257,10 +253,16 @@ const DetailDataGaji = () => {
           </div>
 
           <div className="mt-6 text-right">
-            <ButtonOne onClick={onSubmitPrint}>
-              {t("printSalarySlip")}{" "}
-              <TfiPrinter className="ml-2 inline-block" />
-            </ButtonOne>
+            <a
+              href={`/print-employee-receipt/${data.attendanceId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ButtonOne onClick={() => {}}>
+                {t("printSalarySlip")}{" "}
+                <TfiPrinter className="ml-2 inline-block" />
+              </ButtonOne>
+            </a>
           </div>
         </section>
       </div>
