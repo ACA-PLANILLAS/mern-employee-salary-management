@@ -104,7 +104,7 @@ const AppRoutes = () => {
         element={<DataGaji />}
       />
       <Route
-        path='/data-gaji/detail-data-gaji/name/:name'
+        path='/data-gaji/detail-data-gaji/id/:id'
         element={<DetailDataGaji />}
       />
       <Route

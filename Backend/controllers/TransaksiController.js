@@ -19,6 +19,11 @@ const { ATTENDANCE, DEDUCTION, SALARY } = transaksiError;
 const { EMPLOYEE } = pegawaiError;
 const { PARAMS } = params;
 
+function toFloatOrZero(value) {
+  const parsed = parseFloat(value);
+  return isNaN(parsed) ? 0 : parsed;
+}
+
 //TODO. modifier by month
 // method untuk menampilkan semua Data Kehadiran
 export const viewDataKehadiran = async (req, res) => {
@@ -613,7 +618,6 @@ export const getDataPotongan = async () => {
 export const getDataGajiPegawai = async (year, month) => {
   try {
     // 1) recuperar y filtrar asistencia
-
     const allKehadiran = await getDataKehadiran();
     const attendance = allKehadiran.filter((a) => {
       return (
@@ -621,7 +625,6 @@ export const getDataGajiPegawai = async (year, month) => {
         a.bulan.toLowerCase() === month.toLowerCase()
       );
     });
-    console.log("attendance", attendance.length)
 
     // 2) traer sólo esos empleados
     const allPegawai = await getDataPegawai();
@@ -638,15 +641,12 @@ export const getDataGajiPegawai = async (year, month) => {
     const workHoursInWeeks = await Parameter.findOne({
       where: { type: PARAMS.HWEK },
     });
+    const workDaysPerPeriod = await Parameter.findOne({
+      where: { type: PARAMS.DWEK },
+    });
     const totalPaymentsInMonth = await Parameter.findOne({
       where: { type: PARAMS.PMON },
     });
-    const totalDaysWorkedOnMonth = workHoursInWeeks.value * 4;
-
-    // 4) Calcular salario mes a mes + deducciones
-    // const endOfMonth = new Date(parseInt(year), parseInt(month) - 1 + 1, 0);
-    const endOfMonth = new Date(parseInt(year), parseInt(month), 0);
-    const startOfMonth = new Date(parseInt(year), parseInt(month) - 1, 1);
 
     const salariosConDeducciones = await Promise.all(
       attendance.map(async (attendanceEmployee) => {
@@ -663,106 +663,126 @@ export const getDataGajiPegawai = async (year, month) => {
           attendanceEmployee.day
         );
 
-        console.log("date, ", attDate)
-
-        // 4a) Sacar el último puesto que tuvo el empleado en o antes de endOfMonth
+        // Sacar el último puesto que tuvo el empleado en o antes de endOfMonth
         const history = await PositionHistory.findOne({
           where: {
             employee_id: pegawai.id,
             start_date: { [Op.lte]: attDate },
-            [Op.or]: [
-              { end_date: { [Op.gte]: attDate } },
-              { end_date: null },
-            ],
+            [Op.or]: [{ end_date: { [Op.gte]: attDate } }, { end_date: null }],
           },
-          order: [["start_date", "DESC"]],
+          order: [
+            ["start_date", "DESC"],
+            ["createdAt", "DESC"],
+          ],
         });
 
         const idPuesto = history ? history.position_id : 0;
 
-        // 4b) Recuperar las cifras salariales de ese puesto
+        // Recuperar las cifras salariales de ese puesto
         const datosPuesto = await DataJabatan.findOne({
           where: { id: idPuesto },
         });
 
-        //  gaji_pokok: 10000,
-        // tj_transport: 200,
-        // uang_makan: 122,
+        // SALARIO BASE
+        const grossSalary = toFloatOrZero(datosPuesto?.gaji_pokok);
 
-        // 4c) Cálculo del salario bruto prorrateado
-        const salarioBruto =
-          (datosPuesto.gaji_pokok +
-            datosPuesto.tj_transport +
-            datosPuesto.uang_makan) /
-          parseFloat(totalPaymentsInMonth.value);
+        // CASTIGOS POR INASISTENCIAS
+        const unjustifiedAbsence = parseFloat(attendanceEmployee.alpha) || 0;
+        const justifiedAbsence = parseFloat(attendanceEmployee.sakit) || 0; // Por el momento ignorar
+        const totalAbsences = unjustifiedAbsence; // + enfermedad;
+        const workDays = workDaysPerPeriod?.value || 30;
+        const dailyRate = grossSalary / workDays;
+        const absencePenalty = dailyRate * totalAbsences;
 
-        // 4d) Deducciones fijas
+        const baseSalary = grossSalary - absencePenalty;
+
         const totalDeductions = [];
         let totalValueDeducted = 0;
         let subtotalStandarDeductions = 0;
         let subtotalDynamicDeductions = 0;
 
-        //order by type first STA then DIN
-        const orderedResultDataPotongan = resultDataPotongan.sort((a, b) => {
-          if (a.type === "STA" && b.type === "DIN") return -1;
-          if (a.type === "DIN" && b.type === "STA") return 1;
-          return 0;
-        });
-        orderedResultDataPotongan.forEach((deduction) => {
-          let valueDeducted = 0;
+        // deducciones tipo "STA"
+        resultDataPotongan
+          .filter((deduction) => deduction.type === "STA")
+          .forEach((deduction) => {
+            const valueDeducted =
+              baseSalary * toFloatOrZero(deduction.jml_potongan);
 
-          if (deduction.type === "STA") {
-            valueDeducted = datosPuesto.gaji_pokok * deduction.jml_potongan;
             subtotalStandarDeductions += valueDeducted;
-          } else if (
-            deduction.type === "DIN" &&
-            datosPuesto.gaji_pokok - subtotalStandarDeductions > deduction.from &&
-            (deduction.until < 0 || datosPuesto.gaji_pokok - subtotalStandarDeductions <= deduction.until)
-          ) {
-            valueDeducted =
-              deduction.value_d +
-              (datosPuesto.gaji_pokok - deduction.from - subtotalStandarDeductions) *
-              deduction.jml_potongan;
+            totalValueDeducted += valueDeducted;
 
-            subtotalDynamicDeductions += valueDeducted;
-          }
-          totalDeductions.push({
-            ...deduction,
-            valueDeducted: valueDeducted,
+            totalDeductions.push({
+              ...deduction,
+              valueDeducted,
+            });
           });
-          totalValueDeducted += valueDeducted;
-        });
 
-        // const kehadiran = attendance.find((a) => a.nik === String(pegawai.id));
+        const salarioStandarRestante = baseSalary - subtotalStandarDeductions;
 
-        const totalUnassitence =
-          parseFloat((datosPuesto.gaji_pokok * 8) / totalDaysWorkedOnMonth) *
-          (parseFloat(attendanceEmployee.sakit) + parseFloat(attendanceEmployee.alpha));
+        resultDataPotongan
+          .filter((deduction) => deduction.type === "DIN")
+          .forEach((deduction) => {
+            let valueDeducted = 0;
 
-        const total_gaji =
-          salarioBruto - (totalValueDeducted + totalUnassitence);
+            const from = toFloatOrZero(deduction.from);
+            const until = toFloatOrZero(deduction.until);
+            const porcentaje = toFloatOrZero(deduction.jml_potongan);
+            const cuotaInicial = toFloatOrZero(deduction.value_d);
+
+            const totalPayments = totalPaymentsInMonth?.value || -1;
+            const payment_frequency = deduction?.payment_frequency || 0;
+
+            if (
+              salarioStandarRestante > from &&
+              (until < 0 || salarioStandarRestante <= until) &&
+              (payment_frequency === totalPayments || payment_frequency === -1)
+            ) {
+              const baseGravable = salarioStandarRestante - from;
+
+              valueDeducted = baseGravable * porcentaje + cuotaInicial;
+
+              subtotalDynamicDeductions += valueDeducted;
+              totalValueDeducted += valueDeducted;
+            }
+
+            totalDeductions.push({
+              ...deduction,
+              valueDeducted,
+            });
+          });
+
+        const valueDeducted =
+          salarioStandarRestante - subtotalDynamicDeductions;
 
         return {
           ...pegawai,
           ...datosPuesto?.dataValues,
           idPuesto,
-          salarioEmpleo: datosPuesto?.gaji_pokok, // El salario sin nada
-          salarioBruto: salarioBruto.toFixed(2),
-          // potaciones: totalValueDeducted.toFixed(2),
-          // deduccionAusencias: deduccionAusencias.toFixed(2),
-          // total: neto.toFixed(2),
+
           id: pegawai.id,
-          // gaji_pokok: pegawai.gaji_pokok.toLocaleString(),
-          // tj_transport: pegawai.tj_transport.toLocaleString(),
-          // uang_makan: pegawai.uang_makan.toLocaleString(),
+          attendanceId: attendanceEmployee.id,
           hadir: attendanceEmployee.hadir,
           sakit: attendanceEmployee.sakit,
           alpha: attendanceEmployee.alpha,
-          deducciones: totalValueDeducted.toLocaleString(),
-          castigo_ausencias: totalUnassitence.toLocaleString(),
+
+          // Datos salarios
+          salarioEmpleo: datosPuesto?.gaji_pokok, // El salario sin nada
+          salarioBruto: grossSalary.toFixed(2),
+          salarioInicial: baseSalary,
+          salarioDeduccionesStandar: salarioStandarRestante,
+          salarioDeduccionesDinamicas: valueDeducted,
+          salarioTotal: valueDeducted,
+          total: (valueDeducted < 0 ? 0 : valueDeducted)
+            .toFixed(2)
+            .toLocaleString(),
+
+          castigo_ausencias: absencePenalty.toLocaleString(),
+
           subtotalStandarDeductions: subtotalStandarDeductions.toLocaleString(),
           subtotalDynamicDeductions: subtotalDynamicDeductions.toLocaleString(),
-          total: (total_gaji < 0 ? 0 : total_gaji).toFixed(2).toLocaleString(),
+          totalDeductions: totalValueDeducted.toLocaleString(),
+
+          // Fechas
           year: attendanceEmployee.tahun,
           month: attendanceEmployee.month,
           day: attendanceEmployee.day,
@@ -776,6 +796,158 @@ export const getDataGajiPegawai = async (year, month) => {
   }
 };
 
+export const getDataGajiPegawaiById = async (attendanceId) => {
+  try {
+    // Obtener y filtrar asistencia específica
+    const allKehadiran = await getDataKehadiran();
+    const att = allKehadiran.find((a) => a.id === attendanceId);
+    if (!att) return null;
+
+    // Obtener datos del empleado correspondiente
+    const allPegawai = await getDataPegawai();
+    const pegawai = allPegawai.find((p) => String(p.id) === att.nik);
+    if (!pegawai) return null;
+
+    const resultDataPotongan = await getDataPotongan();
+
+    // Obtener parámetros necesarios
+    const workHoursInWeeks = await Parameter.findOne({
+      where: { type: PARAMS.HWEK },
+    });
+    const workDaysPerPeriod = await Parameter.findOne({
+      where: { type: PARAMS.DWEK },
+    });
+    const totalPaymentsInMonth = await Parameter.findOne({
+      where: { type: PARAMS.PMON },
+    });
+
+    // Procesar asistencia individual
+    const attDate = new Date(att.tahun, parseInt(att.bulan, 10) - 1, att.day);
+
+    const history = await PositionHistory.findOne({
+      where: {
+        employee_id: pegawai.id,
+        start_date: { [Op.lte]: attDate },
+        [Op.or]: [{ end_date: { [Op.gte]: attDate } }, { end_date: null }],
+      },
+      order: [
+        ["start_date", "DESC"],
+        ["createdAt", "DESC"],
+      ],
+    });
+
+    const idPuesto = history ? history.position_id : 0;
+
+    const datosPuesto = await DataJabatan.findOne({
+      where: { id: idPuesto },
+    });
+
+    const grossSalary = toFloatOrZero(datosPuesto?.gaji_pokok);
+
+    const unjustifiedAbsence = parseFloat(att.alpha) || 0;
+    const justifiedAbsence = parseFloat(att.sakit) || 0;
+    const totalAbsences = unjustifiedAbsence;
+    const workDays = workDaysPerPeriod?.value || 30;
+    const dailyRate = grossSalary / workDays;
+    const absencePenalty = dailyRate * totalAbsences;
+
+    const baseSalary = grossSalary - absencePenalty;
+
+    const totalDeductions = [];
+    let totalValueDeducted = 0;
+    let subtotalStandarDeductions = 0;
+    let subtotalDynamicDeductions = 0;
+
+    resultDataPotongan
+      .filter((deduction) => deduction.type === "STA")
+      .forEach((deduction) => {
+        const valueDeducted =
+          baseSalary * toFloatOrZero(deduction.jml_potongan);
+
+        subtotalStandarDeductions += valueDeducted;
+        totalValueDeducted += valueDeducted;
+
+        totalDeductions.push({
+          ...deduction,
+          valueDeducted,
+        });
+      });
+
+    const salarioStandarRestante = baseSalary - subtotalStandarDeductions;
+
+    resultDataPotongan
+      .filter((deduction) => deduction.type === "DIN")
+      .forEach((deduction) => {
+        let valueDeducted = 0;
+
+        const from = toFloatOrZero(deduction.from);
+        const until = toFloatOrZero(deduction.until);
+        const porcentaje = toFloatOrZero(deduction.jml_potongan);
+        const cuotaInicial = toFloatOrZero(deduction.value_d);
+
+        const totalPayments = totalPaymentsInMonth?.value || -1;
+        const payment_frequency = deduction?.payment_frequency || 0;
+
+        if (
+          salarioStandarRestante > from &&
+          (until < 0 || salarioStandarRestante <= until) &&
+          (payment_frequency === totalPayments || payment_frequency === -1)
+        ) {
+          const baseGravable = salarioStandarRestante - from;
+
+          valueDeducted = baseGravable * porcentaje + cuotaInicial;
+
+          subtotalDynamicDeductions += valueDeducted;
+          totalValueDeducted += valueDeducted;
+        }
+
+        totalDeductions.push({
+          ...deduction,
+          valueDeducted,
+        });
+      });
+
+    const valueDeducted = salarioStandarRestante - subtotalDynamicDeductions;
+
+    return {
+      ...pegawai,
+      ...datosPuesto?.dataValues,
+      idPuesto,
+
+      id: pegawai.id,
+      attendanceId: att.id,
+      hadir: att.hadir,
+      sakit: att.sakit,
+      alpha: att.alpha,
+
+      salarioEmpleo: datosPuesto?.gaji_pokok,
+      salarioBruto: grossSalary.toFixed(2),
+      salarioInicial: baseSalary,
+      salarioDeduccionesStandar: salarioStandarRestante,
+      salarioDeduccionesDinamicas: valueDeducted,
+      salarioTotal: valueDeducted,
+      total: (valueDeducted < 0 ? 0 : valueDeducted)
+        .toFixed(2)
+        .toLocaleString(),
+
+      castigo_ausencias: absencePenalty.toLocaleString(),
+
+      subtotalStandarDeductions: subtotalStandarDeductions.toLocaleString(),
+      subtotalDynamicDeductions: subtotalDynamicDeductions.toLocaleString(),
+      totalDeductions: totalValueDeducted.toLocaleString(),
+
+      year: att.tahun,
+      month: att.bulan,
+      day: att.day,
+
+      detallesDeducciones: totalDeductions,
+    };
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 // method untuk melihat data gaji pegawai
 export const viewDataGajiPegawai = async (req, res) => {
   try {
@@ -786,6 +958,23 @@ export const viewDataGajiPegawai = async (req, res) => {
     res.status(200).json(dataGajiPegawai);
   } catch (error) {
     res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
+  }
+};
+
+// viewDataGajiById
+export const viewDataGajiPegawaiById = async (req, res) => {
+  try {
+    const attendanceId = parseInt(req.params.attendanceId, 10);
+    const resultado = await getDataGajiPegawaiById(attendanceId);
+
+    if (!resultado) {
+      // TODO revisar
+      return res.status(404).json({ error: "Asistencia no encontrada" });
+    }
+    return res.status(200).json(resultado);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
   }
 };
 
