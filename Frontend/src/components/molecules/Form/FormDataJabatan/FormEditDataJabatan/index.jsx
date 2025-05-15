@@ -8,7 +8,7 @@ import { Breadcrumb, ButtonOne, ButtonTwo} from '../../../../../components';
 import { getMe } from '../../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
 import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
-import { useCurrencyByUser } from '../../../../../config/currency/useCurrencyByUser';
+import useCurrencyByUser from '../../../../../config/currency/useCurrencyByUser';
 import { getCurrentRate } from '../../../../../config/currency/currencyStore';
 const API_URL = import.meta.env.VITE_API_URL;
 

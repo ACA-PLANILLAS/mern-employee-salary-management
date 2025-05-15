@@ -1,7 +1,7 @@
 import { useCurrency } from "./CurrencyContext";
 import { getCurrentRate, getSymbol } from "./currencyStore";
 
-export const useCurrencyByUser = () => {
+const useCurrencyByUser = () => {
   const { currency } = useCurrency();
 
   const rate = getCurrentRate(currency);
@@ -12,3 +12,5 @@ export const useCurrencyByUser = () => {
 
   return { currency, symbol, rate, toLocal, toUSD };
 };
+
+export default useCurrencyByUser;

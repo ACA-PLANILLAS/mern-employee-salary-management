@@ -7,6 +7,7 @@ import Layout from "../../../layout";
 import { Breadcrumb, ButtonOne, ButtonTwo } from "../../../components";
 import { TfiPrinter } from "react-icons/tfi";
 import { useTranslation } from "react-i18next";
+import { useDisplayValue } from "../../../hooks/useDisplayValue";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -17,6 +18,41 @@ const DetailDataGaji = () => {
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
   const { t } = useTranslation("dataGajiDetail");
+
+  const getDisplayValue = useDisplayValue();
+
+  const [parametros, setParametros] = useState([]);
+  const [tipoBoleta, setTipoBoleta] = useState("");
+
+  useEffect(() => {
+    const fetchParametros = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/parameters`);
+        setParametros(res.data);
+
+        const pmon = res.data.find((p) => p.type === "PMON");
+        if (pmon) {
+          switch (pmon.value) {
+            case 1:
+              setTipoBoleta("boleta_mensual");
+              break;
+            case 2:
+              setTipoBoleta("boleta_quincenal");
+              break;
+            case 4:
+              setTipoBoleta("boleta_semanal");
+              break;
+            default:
+              setTipoBoleta("boleta_desconocido");
+          }
+        }
+      } catch (err) {
+        console.error("Error cargando parámetros:", err);
+      }
+    };
+
+    fetchParametros();
+  }, []);
 
   // Obtener datos de usuario logueado
   useEffect(() => {
@@ -118,6 +154,10 @@ const DetailDataGaji = () => {
             </div>
           </div>
         </section>
+
+        <h2 className="mb-4 mt-4 pb-4 text-center text-xl font-semibold">
+          {getDisplayValue(tipoBoleta)}
+        </h2>
 
         {/* --- DESGLOSE PASO A PASO DEL SALARIO --- */}
         <section>
