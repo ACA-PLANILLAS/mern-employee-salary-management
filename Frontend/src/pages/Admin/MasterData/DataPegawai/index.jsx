@@ -38,7 +38,7 @@ const DataPegawai = () => {
   const { t } = useTranslation("dataPegawai");
   const getDisplayValue = useDisplayValue();
   
-    const { toLocal, symbol, currency } = useCurrencyByUser();
+  const { toLocal, symbol, currency } = useCurrencyByUser();
     
   const totalPages = Math.ceil(dataPegawai.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;

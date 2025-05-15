@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useDisplayValue } from "../../../../hooks/useDisplayValue";
+import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -17,6 +18,8 @@ const PrintPdfBoleta = () => {
 
   const [parametros, setParametros] = useState([]);
   const [tipoBoleta, setTipoBoleta] = useState("");
+
+  const { toLocal, symbol, currency } = useCurrencyByUser();
 
   useEffect(() => {
     const fetchParametros = async () => {
@@ -125,32 +128,32 @@ const PrintPdfBoleta = () => {
               <td>
                 <strong>{t("earnedSalary")}</strong>
               </td>
-              <td>${data.gaji_pokok}</td>
+              <td>{symbol}{toLocal(data.gaji_pokok)}</td>
               <td>
                 <strong>{t("isss")}</strong>
               </td>
-              <td>${totalSeguro}</td>
+              <td>{symbol}{toLocal(totalSeguro)}</td>
             </tr>
             <tr>
               <td>{t("extraHours")}</td>
-              <td>$ -</td>
+              <td>{symbol} -</td>
               <td>{t("isr")}</td>
-              <td>${totalRenta}</td>
+              <td>{symbol}{toLocal(totalRenta)}</td>
             </tr>
             <tr>
               <td>( - ) {t("totalDeductions")}</td>
-              <td>${data.totalDeductions}</td>
+              <td>{symbol}{toLocal(data.totalDeductions)}</td>
               {/* <td>{t("otherDiscounts")}</td>
               <td>$ -</td> */}
               <td>{t("totalDeductions")}</td>
-              <td>${totalDeducciones}</td>
+              <td>{symbol}{toLocal(totalDeducciones)}</td>
             </tr>
             <tr>
               <td>
                 <strong>{t("netToReceive")}</strong>
               </td>
               <td>
-                <strong>${data.total}</strong>
+                <strong>{symbol}{toLocal(data.total)}</strong>
               </td>
               {/* <td>{t("totalDeductions")}</td>
               <td>${totalDeducciones}</td> */}
