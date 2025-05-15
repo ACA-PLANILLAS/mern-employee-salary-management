@@ -387,7 +387,7 @@ const DataPegawai = () => {
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                       {data.positionHistory && data.positionHistory.length > 0
-                        ? data.positionHistory[0]?.position?.gaji_pokok
+                        ? (symbol + toLocal(data.positionHistory[0]?.position?.gaji_pokok))
                         : "-"}
                     </td>
                     {/* <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
