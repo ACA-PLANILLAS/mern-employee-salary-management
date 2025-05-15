@@ -9,6 +9,7 @@ import { BsTrash3 } from 'react-icons/bs';
 import { BiSearch } from 'react-icons/bi';
 import { deleteDataPotongan, getDataPotongan, getMe } from '../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
+import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
 
 const DataPotongan = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -19,6 +20,8 @@ const DataPotongan = () => {
 
   const { isError, user } = useSelector((state) => state.auth);
   const { dataPotongan } = useSelector((state) => state.dataPotongan);
+
+  const { toLocal, symbol, currency } = useCurrencyByUser();
 
   useEffect(() => {
     dispatch(getMe());
@@ -165,9 +168,9 @@ const DataPotongan = () => {
                       <tr key={d.id}>
                         <td className="border-b py-5 px-4">{i + 1}</td>
                         <td className="border-b py-5 px-4">{d.potongan}</td>
-                        <td className="border-b py-5 px-4">{d.from} – {d.until}</td>
+                        <td className="border-b py-5 px-4">{symbol}{toLocal(d.from)} – {symbol}{toLocal(d.until)}</td>
                         <td className="border-b py-5 px-4">{(d.jml_potongan * 100).toFixed(2)}%</td>
-                        <td className="border-b py-5 px-4">{d.value_d}</td>
+                        <td className="border-b py-5 px-4">{symbol}{toLocal(d.value_d)}</td>
                         <td className="border-b py-5 px-4">
                           <div className="flex space-x-3.5">
                             <Link to={`/data-potongan/form-data-potongan/edit/${d.id}`}>
