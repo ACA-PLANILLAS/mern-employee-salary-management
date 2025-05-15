@@ -33,9 +33,9 @@ const SidebarPegawai = ({ sidebarOpen, setSidebarOpen }) => {
       title: t('sidebar.logoutConfirmationTitle'),
       text: t('sidebar.logoutConfirmationText'),
       icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Ya',
-      cancelButtonText: 'Tidak',
+      showCancelButton: false,
+      confirmButtonText: t('sidebar.yes'),
+      cancelButtonText: t('sidebar.no'),
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {

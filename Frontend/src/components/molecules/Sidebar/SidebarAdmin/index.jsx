@@ -35,8 +35,8 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
       text: t('sidebar.logoutConfirmationText'),
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'Ya',
-      cancelButtonText: 'Tidak',
+      confirmButtonText: t('sidebar.yes'),
+      cancelButtonText: t('sidebar.no'),
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {

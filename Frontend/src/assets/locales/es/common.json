@@ -36,6 +36,8 @@
     "logout": "Cerrar Sesión",
     "logoutConfirmationTitle": "Confirmación",
     "logoutConfirmationText": "¿Estás seguro de que quieres cerrar sesión?",
+    "yes": "Sí",
+    "no": "No",
     "logoutSuccessTitle": "Cierre de sesión exitoso",
     "logoutSuccessText": "Has cerrado sesión con éxito."
   },

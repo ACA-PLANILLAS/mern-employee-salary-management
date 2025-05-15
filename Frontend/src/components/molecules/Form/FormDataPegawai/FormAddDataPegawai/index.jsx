@@ -78,13 +78,11 @@ const FormAddDataPegawai = () => {
     hak_akses,
   } = formData;
 
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
   const { t } = useTranslation("dataGajiAddForm");
   const getErrorMessage = useErrorMessage();
-
 
   useEffect(() => {
     const fetchCatalogs = async () => {
@@ -132,11 +130,15 @@ const FormAddDataPegawai = () => {
   };
 
   const appendIfExists = (formData, key, value) => {
-    if (value !== '' && value !== null && value !== undefined && value !== 'Invalid date') {
+    if (
+      value !== "" &&
+      value !== null &&
+      value !== undefined &&
+      value !== "Invalid date"
+    ) {
       formData.append(key, value);
     }
   };
-
 
   const submitDataPegawai = (e) => {
     e.preventDefault();
@@ -291,7 +293,7 @@ const FormAddDataPegawai = () => {
                       onChange={handleChange}
                       className="w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input"
                     >
-                      <option value="">{t("pilihPensionInstitution")}</option>
+                      <option value="">{t('pilihPensionInstitution')}</option>,
                       {pensionOptions?.map((inst) => (
                         <option key={inst.code} value={inst.code}>
                           {inst.name}
@@ -315,7 +317,9 @@ const FormAddDataPegawai = () => {
                   </div>
                 </div>
 
-                <br /><hr className="border-stroke dark:border-strokedark" /><br />
+                <br />
+                <hr className="border-stroke dark:border-strokedark" />
+                <br />
 
                 {/* — Nombres — */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -395,8 +399,10 @@ const FormAddDataPegawai = () => {
                   {/* campo vacío */}
                   <div className="w-full xl:w-1/2"></div>
                 </div>
-                
-                <br /><hr className="border-stroke dark:border-strokedark" /><br />
+
+                <br />
+                <hr className="border-stroke dark:border-strokedark" />
+                <br />
 
                 {/* — Credenciales & Rol — */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -470,7 +476,9 @@ const FormAddDataPegawai = () => {
                   </div>
                 </div>
 
-                <br /><hr className="border-stroke dark:border-strokedark" /><br />
+                <br />
+                <hr className="border-stroke dark:border-strokedark" />
+                <br />
 
                 {/* — Empleo — */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -635,7 +643,9 @@ const FormAddDataPegawai = () => {
 
                  */}
 
-                <br /><hr className="border-stroke dark:border-strokedark" /><br />
+                <br />
+                <hr className="border-stroke dark:border-strokedark" />
+                <br />
 
                 {/* — Estado & Acceso — */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
