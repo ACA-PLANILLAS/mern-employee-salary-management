@@ -702,7 +702,13 @@ export const getDataGajiPegawai = async (year, month) => {
         let subtotalStandarDeductions = 0;
         let subtotalDynamicDeductions = 0;
 
-        resultDataPotongan.forEach((deduction) => {
+        //order by type first STA then DIN
+        const orderedResultDataPotongan = resultDataPotongan.sort((a, b) => {
+          if (a.type === "STA" && b.type === "DIN") return -1;
+          if (a.type === "DIN" && b.type === "STA") return 1;
+          return 0;
+        });
+        orderedResultDataPotongan.forEach((deduction) => {
           let valueDeducted = 0;
 
           if (deduction.type === "STA") {
@@ -710,12 +716,12 @@ export const getDataGajiPegawai = async (year, month) => {
             subtotalStandarDeductions += valueDeducted;
           } else if (
             deduction.type === "DIN" &&
-            datosPuesto.gaji_pokok > deduction.from &&
-            (deduction.until < 0 || datosPuesto.gaji_pokok <= deduction.until)
+            datosPuesto.gaji_pokok - subtotalStandarDeductions > deduction.from &&
+            (deduction.until < 0 || datosPuesto.gaji_pokok - subtotalStandarDeductions <= deduction.until)
           ) {
             valueDeducted =
               deduction.value_d +
-              (datosPuesto.gaji_pokok - deduction.from) *
+              (datosPuesto.gaji_pokok - deduction.from - subtotalStandarDeductions) *
               deduction.jml_potongan;
 
             subtotalDynamicDeductions += valueDeducted;
