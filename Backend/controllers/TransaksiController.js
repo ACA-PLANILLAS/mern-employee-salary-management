@@ -729,9 +729,13 @@ export const getDataGajiPegawai = async (year, month) => {
             const porcentaje = toFloatOrZero(deduction.jml_potongan);
             const cuotaInicial = toFloatOrZero(deduction.value_d);
 
+            const totalPayments = totalPaymentsInMonth?.value || -1;
+            const payment_frequency = deduction?.payment_frequency || 0;
+
             if (
               salarioStandarRestante > from &&
-              (until < 0 || salarioStandarRestante <= until)
+              (until < 0 || salarioStandarRestante <= until) &&
+              (payment_frequency === totalPayments || payment_frequency === -1)
             ) {
               const baseGravable = salarioStandarRestante - from;
 
@@ -818,11 +822,7 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
     });
 
     // Procesar asistencia individual
-    const attDate = new Date(
-      att.tahun,
-      parseInt(att.bulan, 10) - 1,
-      att.day
-    );
+    const attDate = new Date(att.tahun, parseInt(att.bulan, 10) - 1, att.day);
 
     const history = await PositionHistory.findOne({
       where: {
@@ -885,9 +885,13 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
         const porcentaje = toFloatOrZero(deduction.jml_potongan);
         const cuotaInicial = toFloatOrZero(deduction.value_d);
 
+        const totalPayments = totalPaymentsInMonth?.value || -1;
+        const payment_frequency = deduction?.payment_frequency || 0;
+
         if (
           salarioStandarRestante > from &&
-          (until < 0 || salarioStandarRestante <= until)
+          (until < 0 || salarioStandarRestante <= until) &&
+          (payment_frequency === totalPayments || payment_frequency === -1)
         ) {
           const baseGravable = salarioStandarRestante - from;
 
@@ -903,8 +907,7 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
         });
       });
 
-    const valueDeducted =
-      salarioStandarRestante - subtotalDynamicDeductions;
+    const valueDeducted = salarioStandarRestante - subtotalDynamicDeductions;
 
     return {
       ...pegawai,
@@ -944,7 +947,6 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
     return null;
   }
 };
-
 
 // method untuk melihat data gaji pegawai
 export const viewDataGajiPegawai = async (req, res) => {
