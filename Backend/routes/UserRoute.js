@@ -43,6 +43,8 @@ import {
     deleteDataKehadiran,
     viewDataKehadiranByID,
     viewDataGajiByName,
+    viewChartDataSalaryByGender,
+    viewChartDataEmployeeStatus,
 } from "../controllers/TransaksiController.js";
 
 import {
@@ -181,5 +183,7 @@ router.patch('/change_password', verifyUser, changePassword);
 /* ==== Logout ==== */
 router.delete('/logout', LogOut);
 
+router.get("/chart-data/salary-by-gender", viewChartDataSalaryByGender);
+router.get('/chart-data/employee-status', viewChartDataEmployeeStatus);
 
 export default router;
