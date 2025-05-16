@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { useDisplayValue } from "../../../../hooks/useDisplayValue";
 import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 4;
 
 // Obtener valores por defecto para mes y año
 const today = new Date();
@@ -464,10 +464,10 @@ const DataGaji = () => {
               {filteredDataGaji
                 .slice(startIndex, endIndex)
                 .map((data, index) => (
-                  <tr key={data.id}>
+                  <tr key={data.attendanceId}>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {startIndex + index + 1}
-                    </td>
+                    </td> 
                     {/* <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.id}
                     </td>

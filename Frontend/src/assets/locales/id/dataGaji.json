@@ -76,5 +76,6 @@
   "filter": "Filter",
   "view": "Lihat",
   "displayingSalaryDataMonth": "Menampilkan Data Gaji untuk Bulan",
-  "year": "Tahun"
+  "year": "Tahun",
+  "allDates": "Semua tanggal"
 }
