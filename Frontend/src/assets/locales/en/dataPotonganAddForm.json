@@ -28,5 +28,9 @@
   "biweekly": "Biweekly",
   "weekly": "Weekly",
   "deductionGroup": "Deduction group",
-  "enterDeductionGroup": "Enter deduction group alias"
+  "enterDeductionGroup": "Enter deduction group alias",
+  "percentageRequired": "The entered percentage is not valid.",
+  "percentageOutOfRange": "The percentage must be between 0.00 and 100.00.",
+  "monetaryFieldsInvalid": "Monetary values must be numeric, non-negative, and with up to two decimal places.",
+  "deductionRequired": "The deduction name is required."
 }

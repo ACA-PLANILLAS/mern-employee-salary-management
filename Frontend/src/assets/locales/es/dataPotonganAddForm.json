@@ -28,5 +28,9 @@
   "biweekly": "Quincenal",
   "weekly": "Semanal",
   "deductionGroup": "Grupo de deducción",
-  "enterDeductionGroup": "Ingrese alias de grupo de deducción"
+  "enterDeductionGroup": "Ingrese alias de grupo de deducción",
+  "percentageRequired": "El porcentaje ingresado no es válido.",
+  "percentageOutOfRange": "El porcentaje debe estar entre 0.00 y 100.00.",
+  "monetaryFieldsInvalid": "Los valores monetarios deben ser numéricos, no negativos y con hasta dos decimales.",
+  "deductionRequired": "El nombre de la deducción es obligatorio."
 }
