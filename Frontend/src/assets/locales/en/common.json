@@ -36,6 +36,8 @@
     "logout": "Log Out",
     "logoutConfirmationTitle": "Confirmation",
     "logoutConfirmationText": "Are you sure you want to log out?",
+    "yes": "Yes",
+    "no": "No",
     "logoutSuccessTitle": "Logout Successful",
     "logoutSuccessText": "You have successfully logged out."
   },

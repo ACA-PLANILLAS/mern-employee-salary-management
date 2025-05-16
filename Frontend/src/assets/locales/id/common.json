@@ -16,7 +16,7 @@
       "contact": "Kontak"
     },
     "login": "Login"
-  },
+  },  
   "sidebar": {
     "dashboard": "Dashboard",
     "masterData": "Master Data",
@@ -36,6 +36,8 @@
     "logout": "Log Out",
     "logoutConfirmationTitle": "Konfirmasi",
     "logoutConfirmationText": "Apakah Anda yakin ingin keluar?",
+    "yes": "Ya",
+    "no": "Tidak",
     "logoutSuccessTitle": "Logout Berhasil",
     "logoutSuccessText": "Anda telah berhasil keluar."
   },
