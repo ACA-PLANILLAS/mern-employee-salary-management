@@ -18,5 +18,8 @@
   "november": "november",
   "desember": "december",
   "true": "Yes",
-  "false": "No"
+  "boleta_mensual": "Monthly Salary",
+  "boleta_quincenal": "Biweekly Salary",
+  "boleta_semanal": "Weekly Salary",
+  "boleta_desconocido": "Unknown"
 }

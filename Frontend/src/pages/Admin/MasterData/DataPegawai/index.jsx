@@ -23,6 +23,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 import { FaUser } from 'react-icons/fa';
 
 import defaultAvatar from '../../../../assets/images/defaultAvatar.png'
+import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
 
 const ITEMS_PER_PAGE = 4;
 
@@ -36,7 +37,9 @@ const DataPegawai = () => {
   const { dataPegawai } = useSelector((state) => state.dataPegawai);
   const { t } = useTranslation("dataPegawai");
   const getDisplayValue = useDisplayValue();
-
+  
+  const { toLocal, symbol, currency } = useCurrencyByUser();
+    
   const totalPages = Math.ceil(dataPegawai.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -384,7 +387,7 @@ const DataPegawai = () => {
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                       {data.positionHistory && data.positionHistory.length > 0
-                        ? data.positionHistory[0]?.position?.gaji_pokok
+                        ? (symbol + toLocal(data.positionHistory[0]?.position?.gaji_pokok))
                         : "-"}
                     </td>
                     {/* <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
