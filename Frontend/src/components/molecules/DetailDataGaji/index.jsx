@@ -8,6 +8,7 @@ import { Breadcrumb, ButtonOne, ButtonTwo } from "../../../components";
 import { TfiPrinter } from "react-icons/tfi";
 import { useTranslation } from "react-i18next";
 import { useDisplayValue } from "../../../hooks/useDisplayValue";
+import useCurrencyByUser from "../../../config/currency/useCurrencyByUser";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -18,6 +19,8 @@ const DetailDataGaji = () => {
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
   const { t } = useTranslation("dataGajiDetail");
+
+  const { toLocal, symbol, currency } = useCurrencyByUser();
 
   const getDisplayValue = useDisplayValue();
 
@@ -179,25 +182,29 @@ const DetailDataGaji = () => {
                 <tr>
                   <td className="px-4 py-2">{t("baseSalary")}</td>
                   <td className="px-4 py-2 text-right">
-                    Rp. {data.gaji_pokok}
+                    {symbol}
+                    {toLocal(data.gaji_pokok)}
                   </td>
                 </tr>
                 <tr>
                   <td className="px-4 py-2">{t("transportAllowance")}</td>
                   <td className="px-4 py-2 text-right">
-                    Rp. {data.tj_transport}
+                    {symbol}
+                    {toLocal(data.tj_transport)}
                   </td>
                 </tr>
                 <tr>
                   <td className="px-4 py-2">{t("mealAllowance")}</td>
                   <td className="px-4 py-2 text-right">
-                    Rp. {data.uang_makan}
+                    {symbol}
+                    {toLocal(data.uang_makan)}
                   </td>
                 </tr>
                 <tr className="bg-green-50 font-semibold">
                   <td className="px-4 py-2">{t("grossSalary")}</td>
                   <td className="px-4 py-2 text-right">
-                    Rp. {data.salarioBruto}
+                    {symbol}
+                    {toLocal(data.salarioBruto)}
                   </td>
                 </tr>
               </tbody>
@@ -209,7 +216,10 @@ const DetailDataGaji = () => {
             <h3 className="mb-2 text-lg font-semibold">
               {t("step4_absencePenalty")}
             </h3>
-            <p>Rp. {data.castigo_ausencias}</p>
+            <p>
+              {symbol}
+              {toLocal(data.castigo_ausencias)}
+            </p>
           </div>
 
           {/* Paso3: Deducciones Estándar (ISS/AFF) */}
@@ -229,13 +239,17 @@ const DetailDataGaji = () => {
                   <tr key={`sta-${i}`}>
                     <td className="px-4 py-2">- {d.nama_potongan}</td>
                     <td className="text-red-500 px-4 py-2 text-right">
-                      Rp. {d.valueDeducted.toFixed(2)}
+                      {symbol}
+                      {toLocal(d.valueDeducted.toFixed(2))}
                     </td>
                   </tr>
                 ))}
                 <tr className="bg-red-50 font-semibold">
                   <td className="px-4 py-2">{t("subtotalInsurance")}</td>
-                  <td className="px-4 py-2 text-right">Rp. {totalSeguro}</td>
+                  <td className="px-4 py-2 text-right">
+                    {symbol}
+                    {toLocal(totalSeguro)}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -260,13 +274,17 @@ const DetailDataGaji = () => {
                       Tramo {i + 1} ({d.from} – {d.until})
                     </td>
                     <td className="text-red-500 px-4 py-2 text-right">
-                      Rp. {d.valueDeducted.toFixed(2)}
+                      {symbol}
+                      {toLocal(d.valueDeducted.toFixed(2))}
                     </td>
                   </tr>
                 ))}
                 <tr className="bg-red-50 font-semibold">
                   <td className="px-4 py-2">{t("subtotalRenta")}</td>
-                  <td className="px-4 py-2 text-right">Rp. {totalRenta}</td>
+                  <td className="px-4 py-2 text-right">
+                    {symbol}
+                    {toLocal(totalRenta)}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -278,17 +296,20 @@ const DetailDataGaji = () => {
               {t("step5_totalDeductions")}
             </h3>
             <p>
-              Rp.{" "}
-              {parseFloat(data.subtotalStandarDeductions) +
-                parseFloat(data.subtotalDynamicDeductions) +
-                parseFloat(data.castigo_ausencias)}
+              {symbol}
+              {toLocal(
+                parseFloat(data.subtotalStandarDeductions) +
+                  parseFloat(data.subtotalDynamicDeductions) +
+                  parseFloat(data.castigo_ausencias)
+              )}
             </p>
           </div>
 
           {/* Resultado final: Salario Neto */}
           <div className="text-right">
             <p className="text-lg font-bold">
-              {t("netSalary")}: Rp. {data.total}
+              {t("netSalary")}: {symbol}
+              {toLocal(data.total)}
             </p>
           </div>
 
