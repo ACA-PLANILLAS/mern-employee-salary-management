@@ -186,9 +186,33 @@ const FormEditDataPegawai = () => {
     if (val !== "" && val != null && val !== "Invalid date")
       fd.append(key, val);
   };
+  
+
+  const validateForm = () => {
+    const requiredFields = [
+      "first_name",
+      "last_name",
+      "username",
+      "jenis_kelamin",
+      "jabatan",
+      "status",
+      "hak_akses",
+    ];
+
+    for (const field of requiredFields) {
+      if (!formData[field] || formData[field].trim() === "") {
+        Swal.fire({ icon: "error", title: t("gagal"), text: t("fieldRequired", { field: t(field) }) });
+        return false;
+      }
+    }
+
+    return true;
+  };
 
   const submitDataPegawai = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     const newFormData = new FormData();
     if (file) newFormData.append("photo", file);
     newFormData.append("title", title);

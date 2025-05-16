@@ -142,11 +142,46 @@ const FormAddDataPegawai = () => {
 
   const submitDataPegawai = (e) => {
     e.preventDefault();
+
+    const requiredFields = [
+      'dui_or_nit', 'document_type', 'isss_affiliation_number',
+      'pension_institution_code', 'first_name', 'last_name',
+      'jenis_kelamin', 'hire_date', 'status', 'jabatan',
+      'username', 'password', 'confPassword', 'hak_akses'
+    ];
+
+    for (const field of requiredFields) {
+      if (!formData[field] || formData[field].trim() === '') {
+        Swal.fire({
+          icon: 'error',
+          title: t('gagal'),
+          text: t(`fieldRequired`, { field: t(field) })
+        });
+        return;
+      }
+    }
+
+    if (!file) {
+      Swal.fire({
+        icon: 'error',
+        title: t('gagal'),
+        text: t('fotoRequired')
+      });
+      return;
+    }
+
+    if (password !== confPassword) {
+      Swal.fire({
+        icon: 'error',
+        title: t('gagal'),
+        text: t('passwordMismatch')
+      });
+      return;
+    }
+
     const newFormData = new FormData();
     newFormData.append("photo", file);
     newFormData.append("title", title);
-    // newFormData.append('nik', nik);
-    // newFormData.append("monthly_salary", monthly_salary);
     newFormData.append("dui_or_nit", dui_or_nit);
     newFormData.append("document_type", document_type);
     newFormData.append("isss_affiliation_number", isss_affiliation_number);
@@ -160,14 +195,6 @@ const FormAddDataPegawai = () => {
     newFormData.append("hire_date", hire_date);
     newFormData.append("status", status);
     newFormData.append("position_id", jabatan);
-
-    // appendIfExists(newFormData, 'last_position_change_date', last_position_change_date);
-    // newFormData.append("has_active_loan", has_active_loan);
-    // appendIfExists(newFormData, 'loan_original_amount', loan_original_amount);
-    // appendIfExists(newFormData, 'loan_outstanding_balance', loan_outstanding_balance);
-    // appendIfExists(newFormData, 'loan_monthly_installment', loan_monthly_installment);
-    // appendIfExists(newFormData, 'loan_start_date', loan_start_date);
-
     newFormData.append("username", username);
     newFormData.append("password", password);
     newFormData.append("confPassword", confPassword);
@@ -184,8 +211,7 @@ const FormAddDataPegawai = () => {
         });
       })
       .catch((error) => {
-        const msg =
-          error.response?.data?.msg || error.message || "terjadiKesalahan";
+        const msg = error.response?.data?.msg || error.message || "terjadiKesalahan";
         Swal.fire({
           icon: "error",
           title: t("gagal"),
@@ -200,12 +226,12 @@ const FormAddDataPegawai = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isError) {
-      navigate("/login");
-    }
-    if (user && user.hak_akses !== "admin") {
-      navigate("/dashboard");
-    }
+    // if (isError) {
+    //   navigate("/login");
+    // }
+    // if (user && user.hak_akses !== "admin") {
+    //   navigate("/dashboard");
+    // }
   }, [isError, user, navigate]);
 
   return (

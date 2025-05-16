@@ -63,5 +63,8 @@
   "kembali": "Back",
   "berhasil": "Successful",
   "gagal": "Failed",
-  "terjadiKesalahan": "An error occurred"
+  "terjadiKesalahan": "An error occurred",
+  "fieldRequired": "The {{field}} field is required",
+  "fotoRequired": "You must upload a photo",
+  "passwordMismatch": "Passwords do not match"
 }

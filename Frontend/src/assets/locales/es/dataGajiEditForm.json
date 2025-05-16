@@ -48,5 +48,8 @@
   "kembali": "Volver",
   "berhasil": "Exitoso",
   "gagal": "Fallido",
-  "dataTidakDitemukan": "Datos no encontrados"
+  "dataTidakDitemukan": "Datos no encontrados",
+  "fieldRequired": "El campo {{field}} es obligatorio",
+  "fotoRequired": "Debe subir una foto",
+  "passwordMismatch": "Las contraseñas no coinciden"
 }
