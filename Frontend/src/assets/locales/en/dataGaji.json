@@ -76,5 +76,6 @@
   "filter": "Filter",
   "view": "View",
   "displayingSalaryDataMonth": "Displaying Salary Data for the Month",
-  "year": "Year"
+  "year": "Year",
+  "allDates": "All Dates"
 }
