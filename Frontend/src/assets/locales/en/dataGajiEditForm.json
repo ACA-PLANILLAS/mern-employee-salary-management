@@ -48,5 +48,8 @@
   "kembali": "Back",
   "berhasil": "Successful",
   "gagal": "Failed",
-  "dataTidakDitemukan": "Data not found"
+  "dataTidakDitemukan": "Data not found",
+  "fieldRequired": "The {{field}} field is required",
+  "fotoRequired": "You must upload a photo",
+  "passwordMismatch": "Passwords do not match"
 }

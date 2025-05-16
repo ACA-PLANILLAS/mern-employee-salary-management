@@ -63,5 +63,8 @@
   "kembali": "Kembali",
   "berhasil": "Berhasil",
   "gagal": "Gagal",
-  "terjadiKesalahan": "Terjadi kesalahan"
+  "terjadiKesalahan": "Terjadi kesalahan",
+  "fieldRequired": "Kolom {{field}} wajib diisi",
+  "fotoRequired": "Anda harus mengunggah foto",
+  "passwordMismatch": "Kata sandi tidak cocok"
 }
