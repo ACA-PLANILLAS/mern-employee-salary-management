@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
 import { useDisplayValue } from '../../../../../hooks/useDisplayValue';
 import { OBSERVATION_CODES } from '../../../../../shared/Const';
+import useCurrencyByUser from '../../../../../config/currency/useCurrencyByUser';
 
 const ITEMS_PER_PAGE = 4;
 const API_URL = import.meta.env.VITE_API_URL;
@@ -26,7 +27,29 @@ const FormAddDataKehadiran = () => {
   const getErrorMessage = useErrorMessage();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const getDisplayValue = useDisplayValue();
+  const getDisplayValue = useDisplayValue(); const { currency, symbol, toUSD } = useCurrencyByUser();
+
+  const validateMoneyInput = value => /^\d+(\.\d{0,2})?$/.test(value);
+
+  const renderMoneyInput = (name, value, onChange) => (
+    <div className="relative flex items-center">
+      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 flex justify-center items-center text-black dark:text-white">
+        {symbol}
+      </span>
+      <input
+        type="text"
+        value={value}
+        onChange={onChange}
+        onFocus={e => e.target.select()}
+        className="pl-10 h-8 w-[7rem] text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
+      />
+      {currency !== 'USD' && (
+        <span className="ml-2 text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap px-2 py-1 border border-stroke dark:border-strokedark rounded bg-gray-50 dark:bg-boxdark">
+          ≈ ${toUSD(Number(value)).toFixed(2)} USD
+        </span>
+      )}
+    </div>
+  );
 
   // Campos de asistencia
   const [hadir, setHadir] = useState([]);
@@ -99,9 +122,16 @@ const FormAddDataKehadiran = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isError) navigate('/login');
-    if (user && user.hak_akses !== 'admin') navigate('/dashboard');
+    // TODO ACTIVAR LUEGO
+    // if (isError) navigate('/login');
+    // if (user && user.hak_akses !== 'admin') navigate('/dashboard');
   }, [isError, user, navigate]);
+
+  const handleFocus = (e) => e.target.select();
+
+  const isValidNumber = (value) => {
+    return /^\d+(\.\d{1,2})?$/.test(value) && parseFloat(value) >= 0;
+  };
 
   // Guardar
   const saveDataKehadiran = async (e) => {
@@ -111,6 +141,43 @@ const FormAddDataKehadiran = () => {
         const emp = dataPegawai[i];
         const exists = dataKehadiran.some(d => d.nama_pegawai === emp.nama_pegawai);
         if (exists) continue;
+
+        // Validar campos numéricos
+        const numericFields = [
+          { value: hadir[i], label: t("present") },
+          { value: sakit[i], label: t("sick") },
+          { value: alpha[i], label: t("alpha") },
+          { value: workedHours[i], label: t("workedHours") },
+          { value: vacationDays[i], label: t("vacationDays") },
+        ];
+
+        for (const field of numericFields) {
+          if (!isValidNumber(field.value)) {
+            Swal.fire({
+              icon: "error",
+              title: t("error"),
+              text: `${field.label}: ${t("invalidNumber")}`,
+            });
+            return;
+          }
+        }
+
+        // Validar campos monetarios
+        const monetaryFields = [
+          { value: additionalPayments[i], label: t("additionalPayments") },
+          { value: vacationPayments[i], label: t("vacationPayments") },
+        ];
+
+        for (const field of monetaryFields) {
+          if (!isValidNumber(field.value)) {
+            Swal.fire({
+              icon: "error",
+              title: t("error"),
+              text: `${field.label}: ${t("invalidAmount")}`,
+            });
+            return;
+          }
+        }
 
         await axios.post(`${API_URL}/data_kehadiran`, {
           nik: emp.id,
@@ -142,7 +209,7 @@ const FormAddDataKehadiran = () => {
   // Paginación dinámica
   const paginationItems = () => {
     const items = []; const maxVisible = 5;
-    let start = Math.max(1, currentPage - Math.floor(maxVisible/2));
+    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
     let end = Math.min(totalPages, start + maxVisible - 1);
     if (start > 1) items.push(<p key="start-ellipsis" className="px-3">…</p>);
     for (let p = start; p <= end; p++) {
@@ -150,7 +217,7 @@ const FormAddDataKehadiran = () => {
         <button
           key={p}
           onClick={() => setCurrentPage(p)}
-          className={`px-3 py-1 border ${p===currentPage ? 'bg-primary text-white' : ''}`}
+          className={`px-3 py-1 border ${p === currentPage ? 'bg-primary text-white' : ''}`}
         >{p}</button>
       );
     }
@@ -172,14 +239,14 @@ const FormAddDataKehadiran = () => {
                 onChange={handleSearch}
                 className="rounded-lg border-[1.5px] border-stroke bg-transparent py-2 pl-10 font-medium outline-none focus:border-primary"
               />
-              <span className="absolute left-2 py-3 text-xl"><BiSearch/></span>
+              <span className="absolute left-2 py-3 text-xl"><BiSearch /></span>
             </div>
           </div>
           <div className="overflow-x-auto py-4">
             <table className="w-full table-auto">
               <thead>
                 <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                  <th className="py-4 px-4">No</th>
+                  <th className="py-4 px-4">{t('no')}</th>
                   <th className="py-4 px-4">{t('nik')}</th>
                   <th className="py-4 px-4">{t('employeeName')}</th>
                   <th className="py-4 px-4">{t('jobTitle')}</th>
@@ -187,12 +254,12 @@ const FormAddDataKehadiran = () => {
                   <th className="py-4 px-4">{t('present')}</th>
                   <th className="py-4 px-4">{t('sick')}</th>
                   <th className="py-4 px-4">{t('alpha')}</th>
-                  <th className="py-4 px-4">Horas Trabajadas</th>
-                  <th className="py-4 px-4">Pago Adicional</th>
-                  <th className="py-4 px-4">Monto Vacaciones</th>
-                  <th className="py-4 px-4">Días Vacaciones</th>
-                  <th className="py-4 px-4">Obs. 1</th>
-                  <th className="py-4 px-4">Obs. 2</th>
+                  <th className="py-4 px-4">{t('workedHours')}</th>
+                  <th className="py-4 px-4">{t('additionalPayments')}</th>
+                  <th className="py-4 px-4">{t('vacationPayments')}</th>
+                  <th className="py-4 px-4">{t('vacationDays')}</th>
+                  <th className="py-4 px-4">{t('comment01')}</th>
+                  <th className="py-4 px-4">{t('comment02')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -202,14 +269,14 @@ const FormAddDataKehadiran = () => {
                   if (exists) {
                     return (
                       <tr key={emp.id} className="border-b">
-                        <td className="py-5 px-4 text-center">{globalIndex+1}</td>
+                        <td className="py-5 px-4 text-center">{globalIndex + 1}</td>
                         <td colSpan="13" className="py-5 px-4 text-center">{t('attendanceDataAlreadySaved')}</td>
                       </tr>
                     );
                   }
                   return (
                     <tr key={emp.id} className="border-b">
-                      <td className="py-5 px-4 text-center">{globalIndex+1}</td>
+                      <td className="py-5 px-4 text-center">{globalIndex + 1}</td>
                       <td className="py-5 px-4">{emp.nik}</td>
                       <td className="py-5 px-4">{emp.nama_pegawai}</td>
                       <td className="py-5 px-4">{emp.jabatan}</td>
@@ -218,7 +285,8 @@ const FormAddDataKehadiran = () => {
                         <input
                           type="number" min="0" required
                           value={hadir[idx] ?? 0}
-                          onChange={e=>handleHadir(idx, e.target.value)}
+                          onChange={e => handleHadir(idx, e.target.value)}
+                          onFocus={handleFocus}
                           className="form-input h-8 w-10 text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
                         />
                       </td>
@@ -226,7 +294,8 @@ const FormAddDataKehadiran = () => {
                         <input
                           type="number" min="0" required
                           value={sakit[idx] ?? 0}
-                          onChange={e=>handleSakit(idx, e.target.value)}
+                          onChange={e => handleSakit(idx, e.target.value)}
+                          onFocus={handleFocus}
                           className="form-input h-8 w-10 text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
                         />
                       </td>
@@ -234,7 +303,8 @@ const FormAddDataKehadiran = () => {
                         <input
                           type="number" min="0" required
                           value={alpha[idx] ?? 0}
-                          onChange={e=>handleAlpha(idx, e.target.value)}
+                          onChange={e => handleAlpha(idx, e.target.value)}
+                          onFocus={handleFocus}
                           className="form-input h-8 w-10 text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
                         />
                       </td>
@@ -242,42 +312,42 @@ const FormAddDataKehadiran = () => {
                         <input
                           type="number" min="0" required
                           value={workedHours[idx] ?? 0}
-                          onChange={e=>handleWorkedHours(idx, e.target.value)}
+                          onChange={e => handleWorkedHours(idx, e.target.value)}
+                          onFocus={handleFocus}
                           className="form-input h-8 w-10 text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
                         />
                       </td>
                       <td className="py-5 px-4">
-                        <input
-                          type="number" step="0.01" min="0"
-                          value={additionalPayments[idx] ?? 0}
-                          onChange={e=>handleAdditionalPayments(idx, e.target.value)}
-                          className="form-input h-8 w-[7rem] text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
-                        />
+                        {renderMoneyInput(
+                          'additional_payments',
+                          additionalPayments[idx] ?? 0,
+                          e => handleAdditionalPayments(idx, e.target.value)
+                        )}
                       </td>
                       <td className="py-5 px-4">
-                        <input
-                          type="number" step="0.01" min="0"
-                          value={vacationPayments[idx] ?? 0}
-                          onChange={e=>handleVacationPayments(idx, e.target.value)}
-                          className="form-input h-8 w-[7rem] text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
-                        />
+                        {renderMoneyInput(
+                          'vacation_payments',
+                          vacationPayments[idx] ?? 0,
+                          e => handleVacationPayments(idx, e.target.value)
+                        )}
                       </td>
                       <td className="py-5 px-4">
                         <input
                           type="number" min="0"
                           value={vacationDays[idx] ?? 0}
-                          onChange={e=>handleVacationDays(idx, e.target.value)}
+                          onChange={e => handleVacationDays(idx, e.target.value)}
+                          onFocus={handleFocus}
                           className="form-input h-8 w-10 text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
                         />
                       </td>
                       <td className="py-5 px-4">
                         <select
                           value={comment01[idx] || '00'}
-                          onChange={e=>handleComment01(idx, e.target.value)}
+                          onChange={e => handleComment01(idx, e.target.value)}
                           className="form-input h-8 w-[11rem] text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
                           required
                         >
-                          {OBSERVATION_CODES.map(c=> (
+                          {OBSERVATION_CODES.map(c => (
                             <option key={c.code} value={c.code}>{c.code} – {getDisplayValue(c.label)}</option>
                           ))}
                         </select>
@@ -285,10 +355,10 @@ const FormAddDataKehadiran = () => {
                       <td className="py-5 px-4">
                         <select
                           value={comment02[idx] || '00'}
-                          onChange={e=>handleComment02(idx, e.target.value)}
+                          onChange={e => handleComment02(idx, e.target.value)}
                           className="form-input h-8 w-[11rem] text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
                         >
-                          {OBSERVATION_CODES.map(c=> (
+                          {OBSERVATION_CODES.map(c => (
                             <option key={c.code} value={c.code}>{c.code} – {getDisplayValue(c.label)}</option>
                           ))}
                         </select>
@@ -302,23 +372,23 @@ const FormAddDataKehadiran = () => {
 
           <div className="flex justify-between items-center mt-4 flex-col md:flex-row">
             <span className="text-sm">
-              {t('showingData')} {startIndex+1}-{Math.min(endIndex, filteredDataPegawai.length)} {t('from')} {filteredDataPegawai.length}
+              {t('showingData')} {startIndex + 1}-{Math.min(endIndex, filteredDataPegawai.length)} {t('from')} {filteredDataPegawai.length}
             </span>
             <div className="flex items-center space-x-2 py-4">
               <button
-                disabled={currentPage===1}
+                disabled={currentPage === 1}
                 onClick={goToPrevPage}
                 className="py-2 px-6 rounded-lg border border-primary text-primary disabled:opacity-50"
               >
-                <MdKeyboardDoubleArrowLeft/>
+                <MdKeyboardDoubleArrowLeft />
               </button>
               {paginationItems()}
               <button
-                disabled={currentPage===totalPages}
+                disabled={currentPage === totalPages}
                 onClick={goToNextPage}
                 className="py-2 px-6 rounded-lg border border-primary text-primary disabled:opacity-50"
               >
-                <MdKeyboardDoubleArrowRight/>
+                <MdKeyboardDoubleArrowRight />
               </button>
             </div>
           </div>

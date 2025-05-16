@@ -87,36 +87,67 @@ const FormEditDataKehadiran = () => {
     }
   };
 
+  const renderMoneyInput = (name, value, onChange) => (
+    <div className="relative flex items-center">
+      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 flex justify-center items-center text-black dark:text-white">
+        {symbol}
+      </span>
+      <input
+        type="text"
+        name={name}
+        value={value}
+        onChange={onChange}
+        onFocus={(e) => e.target.select()}
+        className="pl-10 h-8 w-[7rem] text-center border rounded-md bg-gray-100 dark:bg-boxdark border-stroke dark:border-form-strokedark"
+      />
+      {currency !== 'USD' && (
+        <span className="ml-2 text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap px-2 py-1 border border-stroke dark:border-strokedark rounded bg-gray-50 dark:bg-boxdark">
+          ≈ ${toUSD(Number(value)).toFixed(2)} USD
+        </span>
+      )}
+    </div>
+  );
+
   return (
     <Layout>
       <Breadcrumb pageName={t("formEditAttendance")} />
       <form onSubmit={updateDataKehadiran}>
         <div className="grid grid-cols-1 gap-6 rounded border bg-white p-6 dark:border-strokedark dark:bg-boxdark sm:grid-cols-2">
-          {[
-            { label: t("employeeName"), name: "nama_pegawai", disabled: true },
-            { label: t("nik"), name: "nik", disabled: true },
-            { label: t("present"), name: "hadir" },
-            { label: t("sick"), name: "sakit" },
-            { label: t("alpha"), name: "alpha" },
-            { label: t("workedHours"), name: "worked_hours" },
-            { label: t("additionalPayments"), name: "additional_payments" },
-            { label: t("vacationPayments"), name: "vacation_payments" },
-            { label: t("vacationDays"), name: "vacation_days" },
-          ].map(({ label, name, disabled = false }) => (
+          {[{ label: t("employeeName"), name: "nama_pegawai" }, { label: t("nik"), name: "nik" }].map(({ label, name }) => (
             <div key={name}>
-              <label className="mb-2 block text-black dark:text-white">
-                {label}
-              </label>
+              <label className="mb-2 block text-black dark:text-white">{label}</label>
               <input
                 type="text"
                 name={name}
                 value={form[name] ?? ""}
-                onChange={handleChange}
-                disabled={disabled}
-                className="w-full rounded border border-stroke px-4 py-2 dark:border-form-strokedark dark:bg-form-input"
+                disabled
+                className="w-full rounded border border-stroke px-4 py-2 bg-gray-100 text-gray-500 dark:border-form-strokedark dark:bg-boxdark"
               />
             </div>
           ))}
+
+          {["hadir", "sakit", "alpha", "worked_hours", "vacation_days"].map((name) => (
+            <div key={name}>
+              <label className="mb-2 block text-black dark:text-white">{t(name)}</label>
+              <input
+                type="number"
+                min="0"
+                name={name}
+                value={form[name] ?? 0}
+                onChange={handleChange}
+                onFocus={(e) => e.target.select()}
+                className="w-full rounded border border-stroke px-4 py-2 text-center dark:border-form-strokedark dark:bg-form-input"
+              />
+            </div>
+          ))}
+
+          {["additional_payments", "vacation_payments"].map((name) => (
+            <div key={name}>
+              <label className="mb-2 block text-black dark:text-white">{t(name)}</label>
+              {renderMoneyInput(name, form[name], handleChange)}
+            </div>
+          ))}
+
 
           {[1, 2].map((n) => (
             <div key={n}>
