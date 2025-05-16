@@ -20,6 +20,7 @@ import {
 } from "../../../../config/redux/action";
 import { useTranslation } from "react-i18next";
 import { useDisplayValue } from "../../../../hooks/useDisplayValue";
+import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -43,6 +44,8 @@ const DataGaji = () => {
   const navigate = useNavigate();
   const { t } = useTranslation("dataGaji");
   const getDisplayValue = useDisplayValue();
+
+  const { toLocal, symbol, currency } = useCurrencyByUser();
 
   const totalPages = Math.ceil(dataGaji.length / ITEMS_PER_PAGE);
 
@@ -81,9 +84,6 @@ const DataGaji = () => {
       }
       return true;
     });
-
-
-
 
   const goToPrevPage = () => {
     if (currentPage > 1) {
@@ -571,7 +571,7 @@ const DataGaji = () => {
                       {data.dataPegawaiId}
                     </td> */}
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                      {data.salarioBruto}
+                      {symbol}{toLocal(data.salarioBruto)}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.hadir}
@@ -583,13 +583,13 @@ const DataGaji = () => {
                       {data.alpha}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                      {data.totalDeductions}
+                      {symbol}{toLocal(data.totalDeductions)}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.castigo_ausencias}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                      {data.total}
+                      {symbol}{toLocal(data.total)}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       <div className="flex items-center space-x-3.5">

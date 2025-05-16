@@ -11,6 +11,7 @@ import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdOutlineKeyboar
 import { deleteDataKehadiran, getDataKehadiran, getMe } from '../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
 import { useDisplayValue } from '../../../../hooks/useDisplayValue';
+import useCurrencyByUser from '../../../../config/currency/useCurrencyByUser';
 
 const OBSERVATION_CODES = [
   { code: '00', label: 'Sin observación' },
@@ -48,6 +49,8 @@ const DataKehadiran = () => {
   const [filterNama, setFilterNama] = useState('');
   const { t } = useTranslation('dataKehadiran');
   const getDisplayValue = useDisplayValue();
+  
+  const { toLocal, symbol, currency } = useCurrencyByUser();
 
   const { dataKehadiran } = useSelector((state) => state.dataKehadiran);
   const { isError, user } = useSelector((state) => state.auth);
@@ -188,7 +191,7 @@ const DataKehadiran = () => {
                   <td className="py-5 px-4 text-center">{data.worked_hours}</td>
                   <td className="py-5 px-4 text-center">{data.additional_payments}</td>
                   <td className="py-5 px-4 text-center">{data.vacation_days}</td>
-                  <td className="py-5 px-4 text-center">{data.vacation_payments}</td>
+                  <td className="py-5 px-4 text-center">{symbol}{toLocal(data.vacation_payments)}</td>
                   <td className="py-5 px-4 text-center">
                     {OBSERVATION_CODES.find(c => c.code === data.comment_01)?.label || data.comment_01}
                   </td>
