@@ -25,5 +25,13 @@
   "back": "Volver",
   "success": "Exitoso",
   "error": "Fallido",
-  "errorOccurred": "Ocurrió un error"
+  "errorOccurred": "Ocurrió un error",
+  "invalidNumber": "El valor ingresado no es un número válido. Debe ser mayor o igual a 0 y no contener letras.",
+  "invalidAmount": "El monto ingresado no es válido. Debe ser un número positivo con hasta 2 decimales.",
+  "no": "No",
+  "searchEmployee": "Buscar Nombre del Empleado...",
+  "showingData": "Mostrando",
+  "from": "de",
+  "of": "de",
+  "attendanceDataAlreadySaved": "Los datos de asistencia del empleado ya han sido guardados. ¡Vuelva a ingresarlos cuando cambie el período!"
 }
