@@ -16,9 +16,6 @@ const Home = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        if (isError) {
-            navigate('/login');
-        }
         if (user) {
             navigate('/dashboard');
         }
