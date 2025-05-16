@@ -10,36 +10,11 @@ import { getMe } from '../../../../../config/redux/action';
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
 import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
+import { useDisplayValue } from '../../../../../hooks/useDisplayValue';
+import { OBSERVATION_CODES } from '../../../../../shared/Const';
 
 const ITEMS_PER_PAGE = 4;
 const API_URL = import.meta.env.VITE_API_URL;
-
-const OBSERVATION_CODES = [
-  { code: '00', label: 'Sin observación' },
-  { code: '01', label: 'Sin cambios con respecto al mes anterior' },
-  { code: '02', label: 'Pagos adicionales' },
-  { code: '03', label: 'Aprendices' },
-  { code: '04', label: 'Pensionado' },
-  { code: '05', label: 'Licencia' },
-  { code: '06', label: 'Incapacidad' },
-  { code: '07', label: 'Retiro del Trabajador de la empresa' },
-  { code: '08', label: 'Ingreso o Reingreso del Trabajador' },
-  { code: '09', label: 'Vacaciones' },
-  { code: '10', label: 'Vacaciones más pagos adicionales' },
-  { code: '11', label: 'Planillas catorcenales y semanales fraccionadas' },
-  { code: '12', label: 'Cotizaciones patronales por subsidios del ISSS' },
-  { code: '13', label: 'Cotizante al IPSFA' },
-  { code: '14', label: 'Cotizante Bienestar Magisterial' },
-  { code: '15', label: 'Régimen especial del Sector Doméstico' },
-  { code: '16', label: 'Régimen especial de Marino mercante' },
-  { code: '17', label: 'Régimen especial de regidores' },
-  { code: '18', label: 'Complemento de salario' },
-  { code: '19', label: 'Retiro por fallecimiento del trabajador' },
-  { code: '20', label: 'Vacaciones Salario Mixto' },
-  { code: '21', label: 'Pagos Adicionales y Vacaciones Salario Mixto' },
-  { code: '22', label: 'Pago de complemento por subsidio' },
-  { code: '23', label: 'Trabajador independiente régimen general' },
-];
 
 const FormAddDataKehadiran = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,6 +26,7 @@ const FormAddDataKehadiran = () => {
   const getErrorMessage = useErrorMessage();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const getDisplayValue = useDisplayValue();
 
   // Campos de asistencia
   const [hadir, setHadir] = useState([]);
@@ -302,7 +278,7 @@ const FormAddDataKehadiran = () => {
                           required
                         >
                           {OBSERVATION_CODES.map(c=> (
-                            <option key={c.code} value={c.code}>{c.code} – {c.label}</option>
+                            <option key={c.code} value={c.code}>{c.code} – {getDisplayValue(c.label)}</option>
                           ))}
                         </select>
                       </td>
@@ -313,7 +289,7 @@ const FormAddDataKehadiran = () => {
                           className="form-input h-8 w-[11rem] text-center border rounded-md disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
                         >
                           {OBSERVATION_CODES.map(c=> (
-                            <option key={c.code} value={c.code}>{c.code} – {c.label}</option>
+                            <option key={c.code} value={c.code}>{c.code} – {getDisplayValue(c.label)}</option>
                           ))}
                         </select>
                       </td>
