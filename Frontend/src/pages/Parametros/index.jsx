@@ -1,17 +1,12 @@
-// src/pages/Parametros.jsx
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Layout from "../../layout";
-import { Breadcrumb } from "../../components";
+import { Breadcrumb, ButtonOne, ButtonTwo } from "../../components";
 import Swal from "sweetalert2";
-import { Button } from "@mui/material";
-import {
-  ModalEditParametro,
-  ModalViewParametro,
-} from "../../components/molecules/Modals/Parametros";
 import { getMe } from "../../config/redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import ModalEditParametro from "../../components/molecules/Modals/Parametros/ModalEditParametro";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -24,6 +19,26 @@ const Parametros = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
+
+  const fetchParameters = async () => {
+    try {
+      const { data } = await axios.get(`${API_URL}/parameters`);
+      setParameters(data);
+    } catch (error) {
+      console.error(error);
+      Swal.fire("Error", "No se pudieron cargar los parámetros", "error");
+    }
+  };
+
+  useEffect(() => {
+    fetchParameters();
+    dispatch(getMe());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isError) navigate("/login");
+    if (user && user.hak_akses !== "admin") navigate("/dashboard");
+  }, [isError, user, navigate]);
 
   const handleOpenViewModal = (param) => {
     setSelectedParam(param);
@@ -41,38 +56,13 @@ const Parametros = () => {
     setSelectedParam(null);
   };
 
-  const fetchParameters = async () => {
-    try {
-      const { data } = await axios.get(`${API_URL}/parameters`);
-      setParameters(data);
-    } catch (error) {
-      console.error(error);
-      Swal.fire("Error", "No se pudieron cargar los parámetros", "error");
-    }
-  };
-
-  useEffect(() => {
-    fetchParameters();
-  }, []);
-
-  useEffect(() => {
-    dispatch(getMe());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (isError) navigate("/login");
-    if (user && user.hak_akses !== "admin") navigate("/dashboard");
-  }, [isError, user, navigate]);
-
   const handleUpdateParam = async (updated) => {
     try {
-      // Asumo ruta PUT /parameters/
       await axios.put(`${API_URL}/parameters/`, {
         id: updated.id,
         name: updated.name,
         value: updated.value,
       });
-      // Refrescar estado local
       setParameters((params) =>
         params.map((p) => (p.id === updated.id ? { ...p, ...updated } : p))
       );
@@ -94,58 +84,28 @@ const Parametros = () => {
           <table className="w-full table-auto">
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  N.º
-                </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  Nombre
-                </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  Valor
-                </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  Acción
-                </th>
+                <th className="px-4 py-4 font-medium text-black dark:text-white">N.º</th>
+                <th className="px-4 py-4 font-medium text-black dark:text-white">Nombre</th>
+                <th className="px-4 py-4 font-medium text-black dark:text-white">Valor</th>
+                <th className="px-4 py-4 font-medium text-black dark:text-white">Acción</th>
               </tr>
             </thead>
             <tbody>
               {parameters.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan="4"
-                    className="text-gray-400 dark:text-gray-500 py-4 text-center"
-                  >
+                  <td colSpan="4" className="text-gray-400 dark:text-gray-500 py-4 text-center">
                     No hay parámetros registrados
                   </td>
                 </tr>
               ) : (
                 parameters.map((param, idx) => (
                   <tr key={param.id}>
-                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                      {idx + 1}
-                    </td>
-                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                      {param.name}
-                    </td>
-                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                      {param.value}
-                    </td>
+                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">{idx + 1}</td>
+                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">{param.name}</td>
+                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">{param.value}</td>
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                       <div className="flex gap-2">
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          onClick={() => handleOpenViewModal(param)}
-                        >
-                          Ver
-                        </Button>
-                        <Button
-                          variant="contained"
-                          size="small"
-                          onClick={() => handleOpenEditModal(param)}
-                        >
-                          Editar
-                        </Button>
+                        <ButtonOne onClick={() => handleOpenEditModal(param)}>Editar</ButtonOne>
                       </div>
                     </td>
                   </tr>
@@ -156,21 +116,8 @@ const Parametros = () => {
         </div>
       </div>
 
-      {openViewModal && selectedParam && (
-        <ModalViewParametro
-          open={openViewModal}
-          onClose={handleCloseModals}
-          data={selectedParam}
-        />
-      )}
-
       {openEditModal && selectedParam && (
-        <ModalEditParametro
-          open={openEditModal}
-          onClose={handleCloseModals}
-          data={selectedParam}
-          onSave={handleUpdateParam}
-        />
+        <ModalEditParametro open={openEditModal} onClose={handleCloseModals} data={selectedParam} onSave={handleUpdateParam} />
       )}
     </Layout>
   );

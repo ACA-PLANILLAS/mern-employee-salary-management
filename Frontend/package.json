@@ -10,10 +10,6 @@
   },
   "dependencies": {
     "@emailjs/browser": "^3.11.0",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^7.1.0",
-    "@mui/material": "^7.1.0",
     "@reduxjs/toolkit": "^1.9.5",
     "apexcharts": "^3.37.0",
     "axios": "^1.4.0",
