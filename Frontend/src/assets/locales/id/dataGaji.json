@@ -77,5 +77,8 @@
   "view": "Lihat",
   "displayingSalaryDataMonth": "Menampilkan Data Gaji untuk Bulan",
   "year": "Tahun",
-  "allDates": "Semua tanggal"
+  "allDates": "Semua tanggal",
+  "printedOn": "Dicetak pada",
+  "signature": "Tanda tangan",
+  "date": "Tanggal"
 }
