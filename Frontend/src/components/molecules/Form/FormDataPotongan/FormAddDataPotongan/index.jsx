@@ -164,9 +164,8 @@ const FormAddDataPotongan = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    // TODO ACTIVAR LUEGO
-    // if (isError) navigate('/login');
-    // if (user && user.hak_akses !== 'admin') navigate('/dashboard');
+    if (isError) navigate('/login');
+    if (user && user.hak_akses !== 'admin') navigate('/dashboard');
   }, [isError, user, navigate]);
 
   return (
@@ -286,7 +285,7 @@ const FormAddDataPotongan = () => {
 
                     <div className="w-full mb-4">
                       <label className="mb-4 block text-black dark:text-white">
-                        {t('deductionGroup')} <span className="text-meta-1">*</span>
+                        {t('deductionGroup')}
                       </label>
                       <input
                         type="text"

@@ -163,7 +163,7 @@ const DataKehadiran = () => {
                   <td className="py-5 px-4 text-center">{data.sakit}</td>
                   <td className="py-5 px-4 text-center">{data.alpha}</td>
                   <td className="py-5 px-4 text-center">{data.worked_hours}</td>
-                  <td className="py-5 px-4 text-center">{data.additional_payments}</td>
+                  <td className="py-5 px-4 text-center">{symbol}{toLocal(data.additional_payments)}</td>
                   <td className="py-5 px-4 text-center">{data.vacation_days}</td>
                   <td className="py-5 px-4 text-center">{symbol}{toLocal(data.vacation_payments)}</td>
                   <td className="py-5 px-4 text-center">

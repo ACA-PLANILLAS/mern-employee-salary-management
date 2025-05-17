@@ -122,14 +122,14 @@ const FormAddDataKehadiran = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    // TODO ACTIVAR LUEGO
-    // if (isError) navigate('/login');
-    // if (user && user.hak_akses !== 'admin') navigate('/dashboard');
+    if (isError) navigate('/login');
+    if (user && user.hak_akses !== 'admin') navigate('/dashboard');
   }, [isError, user, navigate]);
 
   const handleFocus = (e) => e.target.select();
 
   const isValidNumber = (value) => {
+    console.log("value", value)
     return /^\d+(\.\d{1,2})?$/.test(value) && parseFloat(value) >= 0;
   };
 
@@ -144,11 +144,11 @@ const FormAddDataKehadiran = () => {
 
         // Validar campos numéricos
         const numericFields = [
-          { value: hadir[i], label: t("present") },
-          { value: sakit[i], label: t("sick") },
-          { value: alpha[i], label: t("alpha") },
-          { value: workedHours[i], label: t("workedHours") },
-          { value: vacationDays[i], label: t("vacationDays") },
+          { value: hadir[i] ?? 0, label: t("present") },
+          { value: sakit[i] ?? 0, label: t("sick") },
+          { value: alpha[i] ?? 0, label: t("alpha") },
+          { value: workedHours[i] ?? 0, label: t("workedHours") },
+          { value: vacationDays[i] ?? 0, label: t("vacationDays") },
         ];
 
         for (const field of numericFields) {
@@ -164,8 +164,8 @@ const FormAddDataKehadiran = () => {
 
         // Validar campos monetarios
         const monetaryFields = [
-          { value: additionalPayments[i], label: t("additionalPayments") },
-          { value: vacationPayments[i], label: t("vacationPayments") },
+          { value: additionalPayments[i] ?? 0, label: t("additionalPayments") },
+          { value: vacationPayments[i] ?? 0, label: t("vacationPayments") },
         ];
 
         for (const field of monetaryFields) {
@@ -188,8 +188,8 @@ const FormAddDataKehadiran = () => {
           sakit: parseInt(sakit[i] ?? 0, 10),
           alpha: parseInt(alpha[i] ?? 0, 10),
           worked_hours: parseInt(workedHours[i] ?? 0, 10),
-          additional_payments: parseFloat(additionalPayments[i] ?? 0),
-          vacation_payments: parseFloat(vacationPayments[i] ?? 0),
+          additional_payments: toUSD(parseFloat(additionalPayments[i] ?? 0)),
+          vacation_payments: toUSD(parseFloat(vacationPayments[i] ?? 0)),
           vacation_days: parseInt(vacationDays[i] ?? 0, 10),
           comment_01: comment01[i] || '00',
           comment_02: comment02[i] || '00',
