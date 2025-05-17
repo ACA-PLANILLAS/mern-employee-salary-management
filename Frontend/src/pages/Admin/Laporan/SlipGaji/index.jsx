@@ -9,16 +9,12 @@ import Swal from "sweetalert2";
 import { BiSearch } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
 import {
-  fetchSlipGajiByMonth,
-  fetchSlipGajiByName,
-  fetchSlipGajiByYear,
   getDataPegawai,
+  fetchSlipGajiByName,
   getMe,
 } from "../../../../config/redux/action";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import React from "react";
-import { getDataPegawai, getMe } from "../../../../config/redux/action";
 
 const API_URL = import.meta.env.VITE_API_URL;
 

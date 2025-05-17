@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useErrorMessage } from "../../../../../hooks/useErrorMessage";
 import { OBSERVATION_CODES } from "../../../../../shared/Const";
 import { useDisplayValue } from "../../../../../hooks/useDisplayValue";
+import useCurrencyByUser from "../../../../../config/currency/useCurrencyByUser";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -19,6 +20,8 @@ const FormEditDataKehadiran = () => {
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
   const { t } = useTranslation("dataKehadiranEditForm");
+  const { currency, symbol, toUSD, rate } = useCurrencyByUser();
+
   const getErrorMessage = useErrorMessage();
   const getDisplayValue = useDisplayValue();
 
@@ -42,8 +45,14 @@ const FormEditDataKehadiran = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${API_URL}/data_kehadiran/${id}`);
-        setForm(res.data);
+        const data = res.data;
+        setForm({
+          ...data,
+          additional_payments: (data.additional_payments * rate).toFixed(2),
+          vacation_payments: (data.vacation_payments * rate).toFixed(2),
+        });
       } catch (error) {
+        console.log("error", error);
         Swal.fire({
           icon: "error",
           title: t("error"),
@@ -71,7 +80,12 @@ const FormEditDataKehadiran = () => {
   const updateDataKehadiran = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`${API_URL}/data_kehadiran/update/${id}`, form);
+      const payload = {
+        ...form,
+        additional_payments: toUSD(parseFloat(form.additional_payments || 0)),
+        vacation_payments: toUSD(parseFloat(form.vacation_payments || 0)),
+      };
+      await axios.patch(`${API_URL}/data_kehadiran/update/${id}`, payload);
       Swal.fire({
         icon: "success",
         title: t("success"),
@@ -89,7 +103,7 @@ const FormEditDataKehadiran = () => {
 
   const renderMoneyInput = (name, value, onChange) => (
     <div className="relative flex items-center">
-      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 flex justify-center items-center text-black dark:text-white">
+      <span className="absolute left-3 top-1/2 flex w-4 -translate-y-1/2 transform items-center justify-center text-black dark:text-white">
         {symbol}
       </span>
       <input
@@ -98,10 +112,10 @@ const FormEditDataKehadiran = () => {
         value={value}
         onChange={onChange}
         onFocus={(e) => e.target.select()}
-        className="pl-10 h-8 w-[7rem] text-center border rounded-md bg-gray-100 dark:bg-boxdark border-stroke dark:border-form-strokedark"
+        className="bg-gray-100 h-8 w-[7rem] rounded-md border border-stroke pl-10  dark:border-form-strokedark dark:bg-boxdark"
       />
-      {currency !== 'USD' && (
-        <span className="ml-2 text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap px-2 py-1 border border-stroke dark:border-strokedark rounded bg-gray-50 dark:bg-boxdark">
+      {currency !== "USD" && (
+        <span className="text-gray-700 dark:text-gray-300 bg-gray-50 ml-2 whitespace-nowrap rounded border border-stroke px-2 py-1 text-sm dark:border-strokedark dark:bg-boxdark">
           ≈ ${toUSD(Number(value)).toFixed(2)} USD
         </span>
       )}
@@ -113,41 +127,51 @@ const FormEditDataKehadiran = () => {
       <Breadcrumb pageName={t("formEditAttendance")} />
       <form onSubmit={updateDataKehadiran}>
         <div className="grid grid-cols-1 gap-6 rounded border bg-white p-6 dark:border-strokedark dark:bg-boxdark sm:grid-cols-2">
-          {[{ label: t("employeeName"), name: "nama_pegawai" }, { label: t("nik"), name: "nik" }].map(({ label, name }) => (
+          {[
+            { label: t("employeeName"), name: "nama_pegawai" },
+            { label: t("nik"), name: "nik" },
+          ].map(({ label, name }) => (
             <div key={name}>
-              <label className="mb-2 block text-black dark:text-white">{label}</label>
+              <label className="mb-2 block text-black dark:text-white">
+                {label}
+              </label>
               <input
                 type="text"
                 name={name}
                 value={form[name] ?? ""}
                 disabled
-                className="w-full rounded border border-stroke px-4 py-2 bg-gray-100 text-gray-500 dark:border-form-strokedark dark:bg-boxdark"
+                className="bg-gray-100 text-gray-500 w-full rounded border border-stroke px-4 py-2 dark:border-form-strokedark dark:bg-boxdark"
               />
             </div>
           ))}
 
-          {["hadir", "sakit", "alpha", "worked_hours", "vacation_days"].map((name) => (
-            <div key={name}>
-              <label className="mb-2 block text-black dark:text-white">{t(name)}</label>
-              <input
-                type="number"
-                min="0"
-                name={name}
-                value={form[name] ?? 0}
-                onChange={handleChange}
-                onFocus={(e) => e.target.select()}
-                className="w-full rounded border border-stroke px-4 py-2 text-center dark:border-form-strokedark dark:bg-form-input"
-              />
-            </div>
-          ))}
+          {["hadir", "sakit", "alpha", "worked_hours", "vacation_days"].map(
+            (name) => (
+              <div key={name}>
+                <label className="mb-2 block text-black dark:text-white">
+                  {t(name)}
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  name={name}
+                  value={form[name] ?? 0}
+                  onChange={handleChange}
+                  onFocus={(e) => e.target.select()}
+                  className="w-full rounded border border-stroke px-4 py-2  dark:border-form-strokedark dark:bg-form-input"
+                />
+              </div>
+            )
+          )}
 
           {["additional_payments", "vacation_payments"].map((name) => (
             <div key={name}>
-              <label className="mb-2 block text-black dark:text-white">{t(name)}</label>
+              <label className="mb-2 block text-black dark:text-white">
+                {t(name)}
+              </label>
               {renderMoneyInput(name, form[name], handleChange)}
             </div>
           ))}
-
 
           {[1, 2].map((n) => (
             <div key={n}>
@@ -170,7 +194,7 @@ const FormEditDataKehadiran = () => {
           ))}
         </div>
 
-        <div className="mt-6 flex flex-col justify-center gap-3 text-center md:flex-row">
+        <div className="mt-6 flex flex-col justify-center gap-3  md:flex-row">
           <ButtonOne type="submit">
             <span>{t("update")}</span>
           </ButtonOne>
