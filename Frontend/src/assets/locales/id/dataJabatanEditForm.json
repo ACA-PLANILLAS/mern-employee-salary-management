@@ -12,5 +12,9 @@
   "back": "Kembali",
   "success": "Berhasil",
   "error": "Gagal",
-  "errorOccurred": "Terjadi kesalahan"
+  "errorOccurred": "Terjadi kesalahan",
+  "allFieldsRequired": "Semua kolom wajib diisi",
+  "requiredAndGreaterThanZero": "Kolom ini wajib diisi dan harus lebih besar dari nol",
+  "invalidFormat": "Format tidak valid. Gunakan hanya angka dengan maksimal 2 angka desimal",
+  "invalidMoneyFields": "Periksa kolom keuangan. Hanya nilai numerik positif yang diizinkan"
 }

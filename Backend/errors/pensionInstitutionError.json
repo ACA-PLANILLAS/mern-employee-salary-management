@@ -1,0 +1,44 @@
+{
+  "PENSION_INSTITUTION": {
+    "SUCCESS": {
+      "code": "PENS-000",
+      "status": 200,
+      "message": "Pension institution processed successfully"
+    },
+    "INVALID_DATA": {
+      "code": "PENS-001",
+      "status": 400,
+      "message": "Invalid pension institution data"
+    },
+    "MISSING_DATA": {
+      "code": "PENS-002",
+      "status": 400,
+      "message": "Required pension institution data is missing"
+    },
+    "NOT_FOUND": {
+      "code": "PENS-003",
+      "status": 404,
+      "message": "Pension institution not found"
+    },
+    "CREATE_FAILED": {
+      "code": "PENS-004",
+      "status": 400,
+      "message": "Failed to create pension institution"
+    },
+    "UPDATE_FAILED": {
+      "code": "PENS-005",
+      "status": 400,
+      "message": "Failed to update pension institution"
+    },
+    "DELETE_FAILED": {
+      "code": "PENS-006",
+      "status": 400,
+      "message": "Failed to delete pension institution"
+    },
+    "SERVER_ERROR": {
+      "code": "PENS-007",
+      "status": 500,
+      "message": "Server error processing pension institution"
+    }
+  }
+}

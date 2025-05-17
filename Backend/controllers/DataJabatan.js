@@ -18,7 +18,7 @@ export const getDataJabatan = async (req, res) => {
                 attributes: ['id', 'nama_jabatan', 'gaji_pokok', 'tj_transport', 'uang_makan'],
                 include: [{
                     model: DataPegawai,
-                    attributes: ['nama_pegawai', 'username', 'hak_akses'],
+                    attributes: ['first_name', 'username', 'hak_akses'],
                 }]
             });
         } else {
@@ -101,6 +101,8 @@ export const updateDataJabatan = async (req, res) => {
         });
         if (!jabatan) return res.status(404).json({ msg: JOB_POSITION.DATA_NOT_FOUND.code });
         const { nama_jabatan, gaji_pokok, tj_transport, uang_makan } = req.body;
+
+        console.log("tj_transport",tj_transport , "uang_makan",uang_makan)
         if (req.hak_akses === "admin") {
             await DataJabatan.update({
                 nama_jabatan, gaji_pokok, tj_transport, uang_makan

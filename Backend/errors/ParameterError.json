@@ -1,0 +1,29 @@
+{
+  "PARAMETER": {
+    "SUCCESS": {
+      "code": "PARAM-000",
+      "status": 200,
+      "message": "Parameter berhasil diproses"
+    },
+    "INVALID_PARAMETER": {
+      "code": "PARAM-001",
+      "status": 400,
+      "message": "Parameter tidak valid"
+    },
+    "MISSING_PARAMETER": {
+      "code": "PARAM-002",
+      "status": 400,
+      "message": "Parameter tidak boleh kosong"
+    },
+    "PARAMETER_NOT_FOUND": {
+      "code": "PARAM-003",
+      "status": 404,
+      "message": "Parameter tidak ditemukan"
+    },
+    "SERVER_ERROR": {
+      "code": "PARAM-003",
+      "status": 500,
+      "message": "Terjadi kesalahan pada server"
+    }
+  }
+}

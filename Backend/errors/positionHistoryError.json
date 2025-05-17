@@ -1,0 +1,44 @@
+{
+  "POSITION_HISTORY": {
+    "SUCCESS": {
+      "code": "HIST-000",
+      "status": 200,
+      "message": "Position history processed successfully"
+    },
+    "INVALID_DATA": {
+      "code": "HIST-001",
+      "status": 400,
+      "message": "Invalid position history data"
+    },
+    "MISSING_DATA": {
+      "code": "HIST-002",
+      "status": 400,
+      "message": "Required position history data is missing"
+    },
+    "NOT_FOUND": {
+      "code": "HIST-003",
+      "status": 404,
+      "message": "Position history record not found"
+    },
+    "CREATE_FAILED": {
+      "code": "HIST-004",
+      "status": 400,
+      "message": "Failed to create position history record"
+    },
+    "UPDATE_FAILED": {
+      "code": "HIST-005",
+      "status": 400,
+      "message": "Failed to update position history record"
+    },
+    "DELETE_FAILED": {
+      "code": "HIST-006",
+      "status": 400,
+      "message": "Failed to delete position history record"
+    },
+    "SERVER_ERROR": {
+      "code": "HIST-007",
+      "status": 500,
+      "message": "Server error processing position history"
+    }
+  }
+}

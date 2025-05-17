@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
-import ReactApexChart from 'react-apexcharts'
+import ReactApexChart from 'react-apexcharts';
 import { withTranslation } from 'react-i18next';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 class ChartOne extends Component {
   constructor(props) {
-    super(props)
-    const { t } = props;
+    super(props);
+
+    const currentYear = new Date().getFullYear();
 
     this.state = {
-      series: [
-        {
-          name: t('chartsOne.dataMale'),
-          data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
-        },
-
-        {
-          name: t('chartsOne.dataFemale'),
-          data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
-        },
-      ],
+      currentYear,
+      series: [],
       options: {
         legend: {
           show: false,
@@ -38,7 +32,6 @@ class ChartOne extends Component {
             left: 0,
             opacity: 0.1,
           },
-
           toolbar: {
             show: false,
           },
@@ -100,20 +93,7 @@ class ChartOne extends Component {
         },
         xaxis: {
           type: 'category',
-          categories: [
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec',
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-          ],
+          categories: [],
           axisBorder: {
             show: false,
           },
@@ -128,14 +108,49 @@ class ChartOne extends Component {
             },
           },
           min: 0,
-          max: 100,
         },
       },
+    };
+  }
+
+  async componentDidMount() {
+    const { t } = this.props;
+    const { currentYear } = this.state;
+
+    try {
+      const response = await fetch(`${API_URL}/chart-data/salary-by-gender?year=${currentYear}`);
+      const data = await response.json();
+
+      const translatedSeries = data.series.map((serie) => ({
+        name:
+          serie.name.toLowerCase().includes('laki')
+            ? `${t('chartsOne.dataMale')} (${currentYear})`
+            : `${t('chartsOne.dataFemale')} (${currentYear})`,
+        data: serie.data,
+      }));
+
+      this.setState((prevState) => ({
+        series: translatedSeries,
+        options: {
+          ...prevState.options,
+          xaxis: {
+            ...prevState.options.xaxis,
+            categories: data.labels,
+          },
+          yaxis: {
+            ...prevState.options.yaxis,
+            max: Math.max(...data.series.flatMap((s) => s.data)) * 1.2,
+          },
+        },
+      }));
+    } catch (error) {
+      console.error('Error al cargar los datos del gráfico:', error);
     }
   }
 
   render() {
     const { t } = this.props;
+    const { series, options } = this.state;
 
     return (
       <div className='col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8'>
@@ -147,7 +162,7 @@ class ChartOne extends Component {
               </span>
               <div className='w-full'>
                 <p className='font-semibold text-primary'>{t('chartsOne.dataMale')}</p>
-                <p className='text-sm font-medium'>14.04.2023 - 14.05.2023</p>
+                <p className='text-sm font-medium'>{this.state.currentYear}</p>
               </div>
             </div>
             <div className='flex min-w-47.5'>
@@ -156,21 +171,8 @@ class ChartOne extends Component {
               </span>
               <div className='w-full'>
                 <p className='font-semibold text-secondary'>{t('chartsOne.dataFemale')}</p>
-                <p className='text-sm font-medium'>14.04.2023 - 14.05.2023</p>
+                <p className='text-sm font-medium'>{this.state.currentYear}</p>
               </div>
-            </div>
-          </div>
-          <div className='flex w-full max-w-45 justify-end'>
-            <div className='inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4'>
-              <button className='rounded bg-white py-1 px-3 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark'>
-                {t('chartsOne.viewOptions.day')}
-              </button>
-              <button className='rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark'>
-                {t('chartsOne.viewOptions.week')}
-              </button>
-              <button className='rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark'>
-                {t('chartsOne.viewOptions.month')}
-              </button>
             </div>
           </div>
         </div>
@@ -178,15 +180,15 @@ class ChartOne extends Component {
         <div>
           <div id='chartOne' className='-ml-5'>
             <ReactApexChart
-              options={this.state.options}
-              series={this.state.series}
+              options={options}
+              series={series}
               type='area'
               height={350}
             />
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

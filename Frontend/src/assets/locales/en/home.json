@@ -1,7 +1,7 @@
 {
   "banner": {
     "titleLine1": "Online Employee Payroll System",
-    "titleLine2": "PT. Humpuss Carboxymethyl Cellulose",
+    "titleLine2": "PT. Humpuss Karbometil Selulosa",
     "description": "A corporate platform to manage the employee payroll process efficiently and in an integrated way through a digital platform.",
     "login": "Login"
   },
@@ -25,7 +25,7 @@
       "sendButton": "Send"
     },
     "info": {
-      "company": "PT. Humpuss Carboxymethyl Cellulose",
+      "company": "PT. Humpuss Karbometil Selulosa",
       "phone": "021-044",
       "email": "info@hks.com",
       "address": "Karawang, West Java, Indonesia"

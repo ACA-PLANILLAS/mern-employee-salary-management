@@ -9,6 +9,7 @@ import FileUpload from 'express-fileupload';
 
 import UserRoute from './routes/UserRoute.js';
 import AuthRoute from './routes/AuthRoute.js';
+import ParamRoute from './routes/ParamRoute.js';
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use(express.static("public"));
 
 app.use(UserRoute);
 app.use(AuthRoute);
+app.use(ParamRoute);
 
 // store.sync();
 
