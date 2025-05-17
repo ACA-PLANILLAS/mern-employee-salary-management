@@ -26,7 +26,7 @@
     "inputAttendance": "Ingresar Asistencia",
     "showingDataFor": "Mostrando Datos de Asistencia del Mes: ",
     "yearLabel": "Año",
-    "no": "N.º",
+    "no": "No",
     "nik": "NIK",
     "paginationLabel": "Mostrando {{from}}–{{to}} de {{total}} Registros de Asistencia de Empleados",
     "position": "Puesto",

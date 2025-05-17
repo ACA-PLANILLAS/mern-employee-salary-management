@@ -3,7 +3,8 @@ import axios from "axios";
 export const FETCH_LAPORAN_GAJI_SUCCESS = "FETCH_LAPORAN_GAJI_SUCCESS";
 export const FETCH_LAPORAN_GAJI_FAILURE = "FETCH_LAPORAN_GAJI_FAILURE";
 export const CLEAR_LAPORAN_GAJI = "CLEAR_LAPORAN_GAJI";
-const API_URL = import.meta.env.VITE_API_URL;
+//const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
 
 export const fetchLaporanGajiSuccess = (data) => ({
     type: FETCH_LAPORAN_GAJI_SUCCESS,

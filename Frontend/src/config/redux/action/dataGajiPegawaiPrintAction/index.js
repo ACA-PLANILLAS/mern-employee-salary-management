@@ -3,7 +3,8 @@ import {
     GET_DATA_GAJI_SINGLE_PEGAWAI_SUCCESS,
     GET_DATA_GAJI_SINGLE_PEGAWAI_FAILURE,
 } from "./dataGajiPegawaiPrintActionTypes";
-const API_URL = import.meta.env.VITE_API_URL;
+//const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
 
 export const viewDataGajiSinglePegawaiSuccess = (data) => ({
     type: GET_DATA_GAJI_SINGLE_PEGAWAI_SUCCESS,

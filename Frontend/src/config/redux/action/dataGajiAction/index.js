@@ -6,7 +6,8 @@ import {
     DELETE_DATA_GAJI_FAILURE
 } from './dataGajiActionTypes';
 
-const API_URL = import.meta.env.VITE_API_URL;
+//const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
 
 export const getDataGaji = () => {
     return async (dispatch) => {

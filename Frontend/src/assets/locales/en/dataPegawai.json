@@ -8,7 +8,7 @@
     "search.placeholder.employeeName": "Search Employee Name...",
     "table.header.no": "No",
     "table.header.photo": "Photo",
-    "table.header.nik": "NIK",
+    "table.header.nik": "ID Number",
     "table.header.employeeName": "Employee Name",
     "table.header.gender": "Gender",
     "table.header.joinDate": "Join Date",
@@ -23,5 +23,6 @@
     "toast.deleteSuccess.message": "Employee data successfully deleted.",
     "pagination.displaying": "Showing",
     "pagination.of": "of",
-    "pagination.totalEmployeeData": "Employee Data"
-  }
+    "pagination.totalEmployeeData": "Employee Data",
+    "status": "Status"
+}

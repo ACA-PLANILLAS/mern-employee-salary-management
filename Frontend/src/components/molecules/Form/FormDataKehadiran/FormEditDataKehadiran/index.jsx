@@ -8,7 +8,8 @@ import { Breadcrumb, ButtonOne, ButtonTwo, ButtonThree } from '../../../../../co
 import { getMe } from '../../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
 import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
-const API_URL = import.meta.env.VITE_API_URL;
+//const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
 
 const FormEditDataKehadiran = () => {
     const [nik, setNik] = useState('');

@@ -7,7 +7,8 @@ import Layout from '../../../layout';
 import { Breadcrumb, ButtonOne, ButtonTwo } from '../../../components';
 import { TfiPrinter } from 'react-icons/tfi';
 import { useTranslation } from 'react-i18next';
-const API_URL = import.meta.env.VITE_API_URL;
+// const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
 
 const DetailDataGaji = () => {
     const [data, setData] = useState({

@@ -8,7 +8,7 @@
     "search.placeholder.employeeName": "Buscar Nombre del Empleado...",
     "table.header.no": "No",
     "table.header.photo": "Foto",
-    "table.header.nik": "NIK",
+    "table.header.nik": "DUI",
     "table.header.employeeName": "Nombre del Empleado",
     "table.header.gender": "Género",
     "table.header.joinDate": "Fecha de Ingreso",
@@ -23,5 +23,6 @@
     "toast.deleteSuccess.message": "Los datos del empleado se eliminaron correctamente.",
     "pagination.displaying": "Mostrando",
     "pagination.of": "de",
-    "pagination.totalEmployeeData": "Datos del Empleado"
+    "pagination.totalEmployeeData": "Datos del Empleado",
+    "status": "Estado"
   }

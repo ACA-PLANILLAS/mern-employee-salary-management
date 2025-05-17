@@ -8,7 +8,8 @@ import { Breadcrumb, ButtonOne, ButtonTwo } from '../../../../../components';
 import { getMe } from '../../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
 import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
-const API_URL = import.meta.env.VITE_API_URL;
+//const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
 
 const FormEditDataPotongan = () => {
     const [potongan, setPotongan] = useState('');

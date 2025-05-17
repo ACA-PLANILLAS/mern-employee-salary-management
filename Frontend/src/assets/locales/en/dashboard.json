@@ -25,5 +25,8 @@
       "permanent": "Permanent Employees",
       "temporary": "Temporary Employees"
     }
+  },
+  "navigation": {
+    "dashboard": "Dashboard /"
   }
 }

@@ -23,5 +23,6 @@
     "toast.deleteSuccess.message": "Data pegawai berhasil dihapus.",
     "pagination.displaying": "Menampilkan",
     "pagination.of": "dari",
-    "pagination.totalEmployeeData": "Data Pegawai"
+    "pagination.totalEmployeeData": "Data Pegawai",
+    "status": "Status"
   }

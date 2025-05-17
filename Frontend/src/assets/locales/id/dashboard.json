@@ -25,5 +25,8 @@
       "permanent": "Karyawan Tetap",
       "temporary": "Karyawan Tidak Tetap"
     }
-  }
+  },
+  "navigation": {
+      "dashboard": "Dasbor /"
+    }
 }

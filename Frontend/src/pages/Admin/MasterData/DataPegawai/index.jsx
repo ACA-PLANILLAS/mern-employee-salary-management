@@ -172,7 +172,7 @@ const DataPegawai = () => {
                                 onChange={handleFilterStatus}
                                 className="relative appearance-none rounded border border-stroke bg-transparent py-3 px-8 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
                             >
-                                <option value="">Status</option>
+                                <option value="">{t('status')}</option>
                                 <option value="Karyawan Tetap">{t('filter.permanentEmployee')}</option>
                                 <option value="Karyawan Tidak Tetap">{t('filter.nonPermanentEmployee')}</option>
                             </select>

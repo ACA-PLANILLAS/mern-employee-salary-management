@@ -26,5 +26,8 @@
       "permanent": "Empleados Permanentes",
       "temporary": "Empleados Temporales"
     }
-  }
+  },
+  "navigation": {
+      "dashboard": "Panel de control /"
+    }
 }
