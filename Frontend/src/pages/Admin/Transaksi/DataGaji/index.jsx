@@ -586,7 +586,7 @@ const DataGaji = () => {
                       {symbol}{toLocal(data.totalDeductions)}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                      {data.castigo_ausencias}
+                      {symbol}{toLocal(data.castigo_ausencias)}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {symbol}{toLocal(data.total)}
