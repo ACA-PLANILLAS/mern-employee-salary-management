@@ -26,5 +26,9 @@
   "resultadosEncontrados": "Results found",
   "verReciboDe": "View receipt of",
   "attendanceId": "Attendance ID",
-  "imprimir": "Print"
+  "imprimir": "Print",
+  "cetakSlipGaji": "Print Payslip",
+  "printButtonExcel": "Export to Excel",
+  "swalTitle": "Data not found",
+  "swalText": "Sorry, the data you are looking for was not found"
 }

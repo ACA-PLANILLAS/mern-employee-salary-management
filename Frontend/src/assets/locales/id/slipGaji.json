@@ -26,5 +26,9 @@
   "resultadosEncontrados": "Hasil ditemukan",
   "verReciboDe": "Lihat slip dari",
   "attendanceId": "ID Kehadiran",
-  "imprimir": "Cetak"
+  "imprimir": "Cetak",
+  "cetakSlipGaji": "Cetak Slip Gaji",
+  "printButtonExcel": "Ekspor ke Excel",
+  "swalTitle": "Data tidak ditemukan",
+  "swalText": "Maaf, data yang anda cari tidak ditemukan"
 }

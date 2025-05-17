@@ -26,5 +26,9 @@
   "resultadosEncontrados": "Resultados encontrados",
   "verReciboDe": "Ver recibo de",
   "attendanceId": "ID de Asistencia",
-  "imprimir": "Imprimir"
+  "imprimir": "Imprimir",
+   "cetakSlipGaji": "Imprimir recibo de sueldo",
+   "printButtonExcel": "Exportar a Excel",
+   "swalTitle": "Datos no encontrados",
+   "swalText": "Lo sentimos, no se encontraron los datos que estaba buscando"
 }

@@ -8,6 +8,16 @@ import { TfiPrinter } from "react-icons/tfi";
 import Swal from "sweetalert2";
 import { BiSearch } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
+import {
+  fetchSlipGajiByMonth,
+  fetchSlipGajiByName,
+  fetchSlipGajiByYear,
+  getDataPegawai,
+  getMe,
+} from "../../../../config/redux/action";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import React from "react";
 import { getDataPegawai, getMe } from "../../../../config/redux/action";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -40,6 +50,7 @@ const SlipGaji = () => {
 
   const { isError, user } = useSelector((state) => state.auth);
   const { dataPegawai } = useSelector((state) => state.dataPegawai);
+   const { dataSlipGaji } = useSelector((state) => state.slipGaji);
 
   const handleSearchMonth = (e) => setSearchMonth(e.target.value);
   const handleSearchYear = (e) => setSearchYear(e.target.value);
@@ -99,6 +110,49 @@ const SlipGaji = () => {
       navigate("/dashboard");
     }
   }, [isError, user, navigate]);
+
+     const handleExportExcel = async (event) => {
+          event.preventDefault();
+          try {
+              if(searchName !== ''){
+              await    dispatch(fetchSlipGajiByName(searchName));
+              console.log('Datos del laporan gaji:', dataSlipGaji);
+  
+              const worksheet = XLSX.utils.json_to_sheet(dataSlipGaji);
+              const workbook = XLSX.utils.book_new();
+              XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
+          
+              const excelBuffer = XLSX.write(workbook, {
+                bookType: "xlsx",
+                type: "array",
+              });
+          
+              const blob = new Blob([excelBuffer], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              });
+          
+              saveAs(blob, "datos.xlsx");
+          }else{
+         
+              Swal.fire({
+                  icon: 'error',
+                  title: t('swalTitle'),
+                  text: t('swalText'),
+                  timer: 2000,
+              });
+          }
+  
+          } catch (error) {
+              console.log(error);
+  
+              Swal.fire({
+                  icon: 'error',
+                  title: t('swalTitle'),
+                  text: t('swalText'),
+                  timer: 2000,
+              });
+          }
+      };
 
   return (
     <Layout>
