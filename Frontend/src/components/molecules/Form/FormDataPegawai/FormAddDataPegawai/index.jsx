@@ -151,7 +151,7 @@ const FormAddDataPegawai = () => {
     ];
 
     for (const field of requiredFields) {
-      if (!formData[field] || formData[field].trim() === '') {
+      if (!formData[field] || String(formData[field])?.trim() === '') {
         Swal.fire({
           icon: 'error',
           title: t('gagal'),
@@ -250,26 +250,9 @@ const FormAddDataPegawai = () => {
               <div className="p-6.5">
                 {/* — Identificación — */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                  {/*
-                  <div className='w-full xl:w-1/2'>
-                    <label className='mb-2.5 block text-black dark:text-white'>
-                      {t('nik')} <span className='text-meta-1'>*</span>
-                    </label>
-                    <input
-                      type='text'
-                      name='nik'
-                      value={nik}
-                      onChange={handleChange}
-                      required
-                      placeholder={t('masukkanNik')}
-                      className='w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                    />
-                  </div>
-                  */}
-
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("documentType")}
+                      {t("documentType")} <span className="text-meta-1">*</span>
                     </label>
                     <select
                       name="document_type"
@@ -295,7 +278,7 @@ const FormAddDataPegawai = () => {
 
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("duiOrNit")}
+                      {t("duiOrNit")} <span className="text-meta-1">*</span>
                     </label>
                     <input
                       type="text"
@@ -311,7 +294,7 @@ const FormAddDataPegawai = () => {
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("pensionInstitutionCode")}
+                      {t("pensionInstitutionCode")} <span className="text-meta-1">*</span>
                     </label>
                     <select
                       name="pension_institution_code"
@@ -330,7 +313,7 @@ const FormAddDataPegawai = () => {
 
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("isssAffiliationNumber")}
+                      {t("isssAffiliationNumber")} <span className="text-meta-1">*</span>
                     </label>
                     <input
                       type="text"
