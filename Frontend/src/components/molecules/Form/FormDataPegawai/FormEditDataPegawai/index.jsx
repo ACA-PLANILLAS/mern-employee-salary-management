@@ -190,17 +190,14 @@ const FormEditDataPegawai = () => {
 
   const validateForm = () => {
     const requiredFields = [
-      "first_name",
-      "last_name",
-      "username",
-      "jenis_kelamin",
-      "jabatan",
-      "status",
-      "hak_akses",
+      'dui_or_nit', 'document_type', 'isss_affiliation_number',
+      'pension_institution_code', 'first_name', 'last_name',
+      'jenis_kelamin', 'hire_date', 'status', 'jabatan',
+      'username', 'password', 'confPassword', 'hak_akses'
     ];
 
     for (const field of requiredFields) {
-      if (!formData[field] || formData[field].trim() === "") {
+      if (!formData[field] || String(formData[field])?.trim() === "") {
         Swal.fire({ icon: "error", title: t("gagal"), text: t("fieldRequired", { field: t(field) }) });
         return false;
       }
@@ -298,7 +295,7 @@ const FormEditDataPegawai = () => {
                   {/* <div className='w-full xl:w-1/2'>…nik{/*/}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("documentType")}
+                      {t("documentType")} <span className="text-meta-1">*</span>
                     </label>
                     <select
                       name="document_type"
@@ -315,7 +312,7 @@ const FormEditDataPegawai = () => {
                   </div>
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("duiOrNit")}
+                      {t("duiOrNit")} <span className="text-meta-1">*</span>
                     </label>
                     <input
                       type="text"
@@ -331,7 +328,7 @@ const FormEditDataPegawai = () => {
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("pensionInstitutionCode")}
+                      {t("pensionInstitutionCode")} <span className="text-meta-1">*</span>
                     </label>
                     <select
                       name="pension_institution_code"
@@ -349,7 +346,7 @@ const FormEditDataPegawai = () => {
                   </div>
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("isssAffiliationNumber")}
+                      {t("isssAffiliationNumber")} <span className="text-meta-1">*</span>
                     </label>
                     <input
                       type="text"
