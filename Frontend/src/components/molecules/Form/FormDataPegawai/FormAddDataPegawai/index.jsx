@@ -237,12 +237,12 @@ const FormAddDataPegawai = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    // if (isError) {
-    //   navigate("/login");
-    // }
-    // if (user && user.hak_akses !== "admin") {
-    //   navigate("/dashboard");
-    // }
+    if (isError) {
+      navigate("/login");
+    }
+    if (user && user.hak_akses !== "admin") {
+      navigate("/dashboard");
+    }
   }, [isError, user, navigate]);
 
   return (
@@ -273,16 +273,16 @@ const FormAddDataPegawai = () => {
                     >
                       <option value="">{t("documentType")}</option>
                       <option key={1} value={"DUI"}>
-                        DUI
+                        {t("dui")}
                       </option>
                       <option key={2} value={"Pasaporte"}>
-                        Pasaporte
+                         {t("passport")}
                       </option>
                       <option key={3} value={"Minoridad"}>
-                        Carné de Minoridad
+                        {t("minorIdCard")}
                       </option>
                       <option key={3} value={"Residente"}>
-                        Carné de Residente
+                        {t("residentCard")}
                       </option>
                     </select>
                   </div>

@@ -8,8 +8,8 @@
   "masukkanDocumentType": "Masukkan tipe dokumen",
   "isssAffiliationNumber": "Nomor Afiliasi ISSS",
   "masukkanIsssAffiliationNumber": "Masukkan nomor afiliasi ISSS",
-  "pensionInstitutionCode": "Kode Institusi Pensiun",
-  "masukkanPensionInstitutionCode": "Masukkan kode institusi pensiun",
+  "pensionInstitutionCode": "Institusi Pensiun",
+  "masukkanPensionInstitutionCode": "Masukkan institusi pensiun",
   "firstName": "Nama Depan",
   "masukkanFirstName": "Masukkan nama depan",
   "middleName": "Nama Tengah",
@@ -66,5 +66,11 @@
   "terjadiKesalahan": "Terjadi kesalahan",
   "fieldRequired": "Kolom {{field}} wajib diisi",
   "fotoRequired": "Anda harus mengunggah foto",
-  "passwordMismatch": "Kata sandi tidak cocok"
+  "passwordMismatch": "Kata sandi tidak cocok",
+  "dui": "DUI",
+  "passport": "Paspor",
+  "minorIdCard": "Kartu Identitas Anak",
+  "residentCard": "Kartu Residen",
+  "pilihJabatan": "Pilih jabatan",
+  "pilihPensionInstitution": "Pilih institusi pensiun"
 }
