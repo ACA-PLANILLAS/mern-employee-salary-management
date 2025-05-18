@@ -80,5 +80,12 @@
   "allDates": "All Dates",
   "printedOn": "Printed on",
   "signature": "Signature",
-  "date": "Date"
+  "date": "Date",
+  "incompleteDataTitle": "Incomplete Data",
+  "incompleteDataText": "Please select month and year.",
+  "fetchErrorTitle": "Error fetching data",
+  "mySalarySlips": "My Salary Slips",
+  "yearPlaceholder": "YYYY",
+  "noRecords": "No records found for {{filterMonth}}/{{filterYear}}.",
+  "monthYear": "Month/Year"
 }

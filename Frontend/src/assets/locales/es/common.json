@@ -41,5 +41,23 @@
     "logoutSuccessTitle": "Cierre de sesión exitoso",
     "logoutSuccessText": "Has cerrado sesión con éxito."
   },
+  "dashboard": {
+    "breadcrumb": { "dashboard": "Dashboard" },
+    "welcome": "Eestás logueado como {{pegawai}}.",
+    "pegawai": "Empleado",
+    "admin": "Admin",
+    "title": { "employeeData": "Datos del Empleado" },
+    "label": {
+      "document": "Documento",
+      "document_type": "Tipo Documento",
+      "isss": "ISSS",
+      "pension": "Pensión",
+      "full_name": "Nombre Completo",
+      "username": "Usuario"
+    },
+    "alt": { "employeePhoto": "Foto de empleado" },
+    "error": { "loadingEmployeeData": "Error al cargar datos de empleado" }
+  },
+
   "copyright": "© Copyright 2023, PT. Humpuss Carboximetil Celulosa. Todos los Derechos Reservados"
 }

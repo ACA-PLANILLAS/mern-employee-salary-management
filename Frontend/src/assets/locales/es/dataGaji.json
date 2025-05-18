@@ -80,5 +80,12 @@
   "allDates": "Todas las fechas",
   "printedOn": "Fecha de impresión",
   "signature": "Firma",
-  "date": "Fecha"
+  "date": "Fecha",
+  "incompleteDataTitle": "Datos incompletos",
+  "incompleteDataText": "Por favor selecciona mes y año.",
+  "fetchErrorTitle": "Error al obtener datos",
+  "mySalarySlips": "Mis planillas de salario",
+  "yearPlaceholder": "YYYY",
+  "noRecords": "No se encontraron registros para {{filterMonth}}/{{filterYear}}.",
+  "monthYear": "Mes/Año"
 }

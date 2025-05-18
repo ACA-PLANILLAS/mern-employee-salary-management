@@ -754,8 +754,6 @@ export const getDataGajiPegawai = async (year, month) => {
         const valueDeducted =
           salarioStandarRestante - subtotalDynamicDeductions;
 
-          console.log("> ",attendanceEmployee)
-
         return {
           ...pegawai,
           ...datosPuesto?.dataValues,

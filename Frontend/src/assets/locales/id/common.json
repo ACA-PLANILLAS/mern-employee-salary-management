@@ -16,7 +16,7 @@
       "contact": "Kontak"
     },
     "login": "Login"
-  },  
+  },
   "sidebar": {
     "dashboard": "Dashboard",
     "masterData": "Master Data",
@@ -40,6 +40,23 @@
     "no": "Tidak",
     "logoutSuccessTitle": "Logout Berhasil",
     "logoutSuccessText": "Anda telah berhasil keluar."
+  },
+  "dashboard": {
+    "breadcrumb": { "dashboard": "Dasbor" },
+    "welcome": "Selamat datang di {{appName}}, Anda masuk sebagai {{role}}.",
+    "pegawai": "Pegawai",
+    "admin": "Admin",
+    "title": { "employeeData": "Data Karyawan" },
+    "label": {
+      "document": "Dokumen",
+      "document_type": "Jenis Dokumen",
+      "isss": "ISSS",
+      "pension": "Pensiun",
+      "full_name": "Nama Lengkap",
+      "username": "Nama Pengguna"
+    },
+    "alt": { "employeePhoto": "Foto Karyawan" },
+    "error": { "loadingEmployeeData": "Gagal memuat data karyawan" }
   },
   "copyright": "© Hak Cipta 2023, PT. Humpuss Karbometil Selulosa. Hak Cipta Dilindungi"
 }

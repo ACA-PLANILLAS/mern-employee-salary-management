@@ -41,5 +41,22 @@
     "logoutSuccessTitle": "Logout Successful",
     "logoutSuccessText": "You have successfully logged out."
   },
+  "dashboard": {
+    "breadcrumb": { "dashboard": "Dashboard" },
+    "welcome": "Welcome to {{appName}}, you are logged in as {{role}}.",
+    "pegawai": "Employee",
+    "admin": "Admin",
+    "title": { "employeeData": "Employee Data" },
+    "label": {
+      "document": "Document",
+      "document_type": "Document Type",
+      "isss": "ISSS",
+      "pension": "Pension",
+      "full_name": "Full Name",
+      "username": "Username"
+    },
+    "alt": { "employeePhoto": "Employee Photo" },
+    "error": { "loadingEmployeeData": "Error loading employee data" }
+  },
   "copyright": "© Copyright 2023, PT. Humpuss Carboxymethyl Cellulose. All Rights Reserved"
 }

@@ -62,7 +62,7 @@ export const Me = async (req, res) => {
     attributes: [
       'id_pegawai','nik','dui_or_nit','document_type','isss_affiliation_number','pension_institution_code',
       'first_name','middle_name','last_name','second_last_name','maiden_name',
-      'username','hak_akses'
+      'username','hak_akses','id','photo','url'
     ],
     where: {
       id_pegawai: req.session.userId
