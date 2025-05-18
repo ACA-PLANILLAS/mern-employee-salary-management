@@ -4,12 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Breadcrumb } from "../../../components";
 import Swal from "sweetalert2";
-import { getMe, viewGajiSinglePegawaiByMonth, viewGajiSinglePegawaiByName, viewGajiSinglePegawaiByYear } from "../../../config/redux/action";
+import {
+  getMe,
+  viewGajiSinglePegawaiByMonth,
+  viewGajiSinglePegawaiByName,
+  viewGajiSinglePegawaiByYear,
+} from "../../../config/redux/action";
 import axios from "axios";
 import { TfiPrinter } from "react-icons/tfi";
-import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
-import { useTranslation } from 'react-i18next';
-const API_URL = import.meta.env.VITE_API_URL;
+import {
+  MdKeyboardDoubleArrowLeft,
+  MdKeyboardDoubleArrowRight,
+} from "react-icons/md";
+import { useTranslation } from "react-i18next";
+import { API_URL } from "@/config/env";
 
 const ITEMS_PER_PAGE = 4;
 
@@ -21,7 +29,7 @@ const DataGajiPegawai = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
-  const { t } = useTranslation('dataGajiPegawai');
+  const { t } = useTranslation("dataGajiPegawai");
 
   const { nama_pegawai } = useSelector((state) => state.auth.user) || "";
 
@@ -43,20 +51,21 @@ const DataGajiPegawai = () => {
   };
 
   const onSubmitPrint = async () => {
-
     try {
       const yearData = viewGajiSinglePegawaiByYear(dataYear);
       const monthData = viewGajiSinglePegawaiByMonth(dataMonth);
       const nameData = viewGajiSinglePegawaiByName(nama_pegawai);
 
       if (yearData.length > 0 && monthData.length > 0 && nameData.length > 0) {
-        navigate(`/data-gaji-pegawai/print-page?month=${dataMonth}&year=${dataYear}&name=${nama_pegawai}`);
+        navigate(
+          `/data-gaji-pegawai/print-page?month=${dataMonth}&year=${dataYear}&name=${nama_pegawai}`
+        );
       } else {
         console.log("Data not found!");
         Swal.fire({
           icon: "error",
-          title: t('dataNotFound'),
-          text: t('dataNotFoundDescription'),
+          title: t("dataNotFound"),
+          text: t("dataNotFoundDescription"),
           timer: 2000,
         });
       }
@@ -64,8 +73,8 @@ const DataGajiPegawai = () => {
       console.log(error.message);
       Swal.fire({
         icon: "error",
-        title: t('errorOccurred'),
-        text: t('errorLoadingData'),
+        title: t("errorOccurred"),
+        text: t("errorLoadingData"),
         timer: 2000,
       });
     }
@@ -75,7 +84,10 @@ const DataGajiPegawai = () => {
     const items = [];
     const maxVisiblePages = 5;
 
-    const startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    const startPage = Math.max(
+      1,
+      currentPage - Math.floor(maxVisiblePages / 2)
+    );
     const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
     for (let page = startPage; page <= endPage; page++) {
@@ -83,10 +95,11 @@ const DataGajiPegawai = () => {
         <button
           key={page}
           onClick={() => setCurrentPage(page)}
-          className={`border border-gray-2 px-4 py-2 font-semibold text-black dark:border-strokedark dark:text-white ${currentPage === page
-            ? "bg-primary text-white hover:bg-primary dark:bg-primary dark:hover:bg-primary"
-            : "hover:bg-gray-2 dark:hover:bg-stroke"
-            } rounded-lg`}
+          className={`border border-gray-2 px-4 py-2 font-semibold text-black dark:border-strokedark dark:text-white ${
+            currentPage === page
+              ? "bg-primary text-white hover:bg-primary dark:bg-primary dark:hover:bg-primary"
+              : "hover:bg-gray-2 dark:hover:bg-stroke"
+          } rounded-lg`}
         >
           {page}
         </button>
@@ -121,7 +134,9 @@ const DataGajiPegawai = () => {
   useEffect(() => {
     const getDataPegawai = async () => {
       try {
-        const response = await axios.get(`${API_URL}/data_gaji/name/${nama_pegawai}`);
+        const response = await axios.get(
+          `${API_URL}/data_gaji/name/${nama_pegawai}`
+        );
         const data = response.data;
 
         setDataGajiPegawai(data);
@@ -150,10 +165,9 @@ const DataGajiPegawai = () => {
     }
   }, [isError, user, navigate]);
 
-
   return (
     <Layout>
-      <Breadcrumb pageName={t('salaryData')} />
+      <Breadcrumb pageName={t("salaryData")} />
 
       <div className="mt-6 rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto py-4">
@@ -161,28 +175,28 @@ const DataGajiPegawai = () => {
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t('no')}
+                  {t("no")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t('monthYear')}
+                  {t("monthYear")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t('basicSalary')}
+                  {t("basicSalary")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t('transportAllowance')}
+                  {t("transportAllowance")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t('mealAllowance')}
+                  {t("mealAllowance")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t('deductions')}
+                  {t("deductions")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t('totalSalary')}
+                  {t("totalSalary")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t('printPayslip')}
+                  {t("printPayslip")}
                 </th>
               </tr>
             </thead>
@@ -247,9 +261,9 @@ const DataGajiPegawai = () => {
         <div className="mt-4 flex flex-col items-center justify-between md:flex-row md:justify-between">
           <div className="flex items-center space-x-2">
             <span className="text-gray-5 dark:text-gray-4 py-4 text-sm">
-              {t('showing')} {startIndex + 1}-
-              {Math.min(endIndex, dataGajiPegawai.length)} {t('of')}{" "}
-              {dataGajiPegawai.length} {t('salaryData')}
+              {t("showing")} {startIndex + 1}-
+              {Math.min(endIndex, dataGajiPegawai.length)} {t("of")}{" "}
+              {dataGajiPegawai.length} {t("salaryData")}
             </span>
           </div>
           <div className="flex space-x-2 py-4">

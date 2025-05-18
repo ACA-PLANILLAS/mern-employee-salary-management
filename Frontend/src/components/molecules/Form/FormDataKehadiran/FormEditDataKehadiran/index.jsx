@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +12,7 @@ import { OBSERVATION_CODES } from "../../../../../shared/Const";
 import { useDisplayValue } from "../../../../../hooks/useDisplayValue";
 import useCurrencyByUser from "../../../../../config/currency/useCurrencyByUser";
 
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from "@/config/env";
 
 const FormEditDataKehadiran = () => {
   const { id } = useParams();

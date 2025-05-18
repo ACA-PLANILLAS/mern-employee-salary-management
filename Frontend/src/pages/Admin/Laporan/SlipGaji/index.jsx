@@ -16,7 +16,7 @@ import {
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from "@/config/env";
 
 const MONTH_MAP = {
   Januari: 1,
@@ -46,7 +46,7 @@ const SlipGaji = () => {
 
   const { isError, user } = useSelector((state) => state.auth);
   const { dataPegawai } = useSelector((state) => state.dataPegawai);
-   const { dataSlipGaji } = useSelector((state) => state.slipGaji);
+  const { dataSlipGaji } = useSelector((state) => state.slipGaji);
 
   const handleSearchMonth = (e) => setSearchMonth(e.target.value);
   const handleSearchYear = (e) => setSearchYear(e.target.value);
@@ -107,48 +107,46 @@ const SlipGaji = () => {
     }
   }, [isError, user, navigate]);
 
-     const handleExportExcel = async (event) => {
-          event.preventDefault();
-          try {
-              if(searchName !== ''){
-              await    dispatch(fetchSlipGajiByName(searchName));
-              console.log('Datos del laporan gaji:', dataSlipGaji);
-  
-              const worksheet = XLSX.utils.json_to_sheet(dataSlipGaji);
-              const workbook = XLSX.utils.book_new();
-              XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
-          
-              const excelBuffer = XLSX.write(workbook, {
-                bookType: "xlsx",
-                type: "array",
-              });
-          
-              const blob = new Blob([excelBuffer], {
-                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-              });
-          
-              saveAs(blob, "datos.xlsx");
-          }else{
-         
-              Swal.fire({
-                  icon: 'error',
-                  title: t('swalTitle'),
-                  text: t('swalText'),
-                  timer: 2000,
-              });
-          }
-  
-          } catch (error) {
-              console.log(error);
-  
-              Swal.fire({
-                  icon: 'error',
-                  title: t('swalTitle'),
-                  text: t('swalText'),
-                  timer: 2000,
-              });
-          }
-      };
+  const handleExportExcel = async (event) => {
+    event.preventDefault();
+    try {
+      if (searchName !== "") {
+        await dispatch(fetchSlipGajiByName(searchName));
+        console.log("Datos del laporan gaji:", dataSlipGaji);
+
+        const worksheet = XLSX.utils.json_to_sheet(dataSlipGaji);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
+
+        const excelBuffer = XLSX.write(workbook, {
+          bookType: "xlsx",
+          type: "array",
+        });
+
+        const blob = new Blob([excelBuffer], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+
+        saveAs(blob, "datos.xlsx");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: t("swalTitle"),
+          text: t("swalText"),
+          timer: 2000,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+
+      Swal.fire({
+        icon: "error",
+        title: t("swalTitle"),
+        text: t("swalText"),
+        timer: 2000,
+      });
+    }
+  };
 
   return (
     <Layout>

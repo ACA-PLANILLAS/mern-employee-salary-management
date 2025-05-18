@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { useErrorMessage } from "../../../../../hooks/useErrorMessage";
 import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from "@/config/env";
 
 const FormAddDataPegawai = () => {
   const [jabatanOptions, setJabatanOptions] = useState([]);
@@ -144,18 +144,28 @@ const FormAddDataPegawai = () => {
     e.preventDefault();
 
     const requiredFields = [
-      'dui_or_nit', 'document_type', 'isss_affiliation_number',
-      'pension_institution_code', 'first_name', 'last_name',
-      'jenis_kelamin', 'hire_date', 'status', 'jabatan',
-      'username', 'password', 'confPassword', 'hak_akses'
+      "dui_or_nit",
+      "document_type",
+      "isss_affiliation_number",
+      "pension_institution_code",
+      "first_name",
+      "last_name",
+      "jenis_kelamin",
+      "hire_date",
+      "status",
+      "jabatan",
+      "username",
+      "password",
+      "confPassword",
+      "hak_akses",
     ];
 
     for (const field of requiredFields) {
-      if (!formData[field] || String(formData[field])?.trim() === '') {
+      if (!formData[field] || String(formData[field])?.trim() === "") {
         Swal.fire({
-          icon: 'error',
-          title: t('gagal'),
-          text: t(`fieldRequired`, { field: t(field) })
+          icon: "error",
+          title: t("gagal"),
+          text: t(`fieldRequired`, { field: t(field) }),
         });
         return;
       }
@@ -163,18 +173,18 @@ const FormAddDataPegawai = () => {
 
     if (!file) {
       Swal.fire({
-        icon: 'error',
-        title: t('gagal'),
-        text: t('fotoRequired')
+        icon: "error",
+        title: t("gagal"),
+        text: t("fotoRequired"),
       });
       return;
     }
 
     if (password !== confPassword) {
       Swal.fire({
-        icon: 'error',
-        title: t('gagal'),
-        text: t('passwordMismatch')
+        icon: "error",
+        title: t("gagal"),
+        text: t("passwordMismatch"),
       });
       return;
     }
@@ -211,7 +221,8 @@ const FormAddDataPegawai = () => {
         });
       })
       .catch((error) => {
-        const msg = error.response?.data?.msg || error.message || "terjadiKesalahan";
+        const msg =
+          error.response?.data?.msg || error.message || "terjadiKesalahan";
         Swal.fire({
           icon: "error",
           title: t("gagal"),
@@ -294,7 +305,8 @@ const FormAddDataPegawai = () => {
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("pensionInstitutionCode")} <span className="text-meta-1">*</span>
+                      {t("pensionInstitutionCode")}{" "}
+                      <span className="text-meta-1">*</span>
                     </label>
                     <select
                       name="pension_institution_code"
@@ -302,7 +314,7 @@ const FormAddDataPegawai = () => {
                       onChange={handleChange}
                       className="w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input"
                     >
-                      <option value="">{t('pilihPensionInstitution')}</option>,
+                      <option value="">{t("pilihPensionInstitution")}</option>,
                       {pensionOptions?.map((inst) => (
                         <option key={inst.code} value={inst.code}>
                           {inst.name}
@@ -313,7 +325,8 @@ const FormAddDataPegawai = () => {
 
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("isssAffiliationNumber")} <span className="text-meta-1">*</span>
+                      {t("isssAffiliationNumber")}{" "}
+                      <span className="text-meta-1">*</span>
                     </label>
                     <input
                       type="text"

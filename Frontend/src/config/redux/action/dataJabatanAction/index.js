@@ -10,8 +10,8 @@ import {
   DELETE_DATA_JABATAN_FAILURE,
 } from "./dataJabatanActionTypes";
 
-//const API_URL = import.meta.env.VITE_API_URL;
-import { API_URL } from '@/config/env';
+//import { API_URL } from '@/config/env';
+import { API_URL } from "@/config/env";
 
 export const getDataJabatan = () => {
   return async (dispatch) => {

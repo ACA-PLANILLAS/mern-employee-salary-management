@@ -19,10 +19,10 @@ import {
 } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { useDisplayValue } from "../../../../hooks/useDisplayValue";
-const API_URL = import.meta.env.VITE_API_URL;
-import { FaUser } from 'react-icons/fa';
+import { API_URL } from "@/config/env";
+import { FaUser } from "react-icons/fa";
 
-import defaultAvatar from '../../../../assets/images/defaultAvatar.png'
+import defaultAvatar from "../../../../assets/images/defaultAvatar.png";
 import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
 
 const ITEMS_PER_PAGE = 4;
@@ -37,9 +37,9 @@ const DataPegawai = () => {
   const { dataPegawai } = useSelector((state) => state.dataPegawai);
   const { t } = useTranslation("dataPegawai");
   const getDisplayValue = useDisplayValue();
-  
+
   const { toLocal, symbol, currency } = useCurrencyByUser();
-    
+
   const totalPages = Math.ceil(dataPegawai.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -49,7 +49,7 @@ const DataPegawai = () => {
     const statusKeyword = filterStatus.toLowerCase();
     return (
       // si prefieres buscar también por username o nombres, agrégalos aquí
-      (filterStatus === "" || pegawai.status.toLowerCase() === statusKeyword)
+      filterStatus === "" || pegawai.status.toLowerCase() === statusKeyword
     );
   });
 
@@ -222,10 +222,10 @@ const DataPegawai = () => {
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.documentType")}
                 </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white min-w-[180px]">
+                <th className="min-w-[180px] px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.isssAffiliationNumber")}
                 </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white min-w-[180px]">
+                <th className="min-w-[180px] px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.pensionInstitutionCode")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
@@ -240,13 +240,13 @@ const DataPegawai = () => {
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.secondLastName")}
                 </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white min-w-[180px]">
+                <th className="min-w-[180px] px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.maidenName")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.gender")}
                 </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white min-w-[180px]">
+                <th className="min-w-[180px] px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.joinDate")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
@@ -256,7 +256,7 @@ const DataPegawai = () => {
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.position")}
                 </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white min-w-[180px]">
+                <th className="min-w-[180px] px-4 py-4 font-medium text-black dark:text-white">
                   {t("table.header.lastPositionChangeDate")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
@@ -301,18 +301,18 @@ const DataPegawai = () => {
                         <div className="overflow-hidden rounded-full">
                           <img
                             src={
-                                data.url
-                                  ? data.url
-                                  : data.photo
-                                    ? `${API_URL}/images/${data.photo}`
-                                    : defaultAvatar
-                              }
+                              data.url
+                                ? data.url
+                                : data.photo
+                                ? `${API_URL}/images/${data.photo}`
+                                : defaultAvatar
+                            }
                             alt="Photo Profil"
-                            onError={e => {
-                                // primera vez: cambiamos al avatar por defecto
-                                e.currentTarget.onerror = null;
-                                e.currentTarget.src = defaultAvatar;
-                              }}
+                            onError={(e) => {
+                              // primera vez: cambiamos al avatar por defecto
+                              e.currentTarget.onerror = null;
+                              e.currentTarget.src = defaultAvatar;
+                            }}
                           />
                         </div>
                       </div>
@@ -386,7 +386,8 @@ const DataPegawai = () => {
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                       {data.positionHistory && data.positionHistory.length > 0
-                        ? (symbol + toLocal(data.positionHistory[0]?.position?.gaji_pokok))
+                        ? symbol +
+                          toLocal(data.positionHistory[0]?.position?.gaji_pokok)
                         : "-"}
                     </td>
                     {/* <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">

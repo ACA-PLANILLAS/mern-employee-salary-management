@@ -10,13 +10,9 @@ import { useTranslation } from 'react-i18next';
 import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
 import useCurrencyByUser from '../../../../../config/currency/useCurrencyByUser';
 import { getCurrentRate } from '../../../../../config/currency/currencyStore';
-<<<<<<< HEAD
-// const API_URL = import.meta.env.VITE_API_URL;
-import { API_URL } from '@/config/env';
-=======
 
-const API_URL = import.meta.env.VITE_API_URL;
->>>>>>> develop
+// import { API_URL } from '@/config/env';
+import { API_URL } from '@/config/env';
 
 const FormEditDataJabatan = () => {
   const [namaJabatan, setNamaJabatan] = useState('');

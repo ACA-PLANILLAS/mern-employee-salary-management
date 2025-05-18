@@ -9,8 +9,8 @@ import {
   DELETE_DATA_POTONGAN_SUCCESS,
   DELETE_DATA_POTONGAN_FAILURE,
 } from "./dataPotonganActionTypes";
-//const API_URL = import.meta.env.VITE_API_URL;
-import { API_URL } from '@/config/env';
+//import { API_URL } from '@/config/env';
+import { API_URL } from "@/config/env";
 
 export const getDataPotongan = () => {
   return async (dispatch) => {
