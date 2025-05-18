@@ -32,5 +32,8 @@
   "percentageRequired": "El porcentaje ingresado no es válido.",
   "percentageOutOfRange": "El porcentaje debe estar entre 0.00 y 100.00.",
   "monetaryFieldsInvalid": "Los valores monetarios deben ser numéricos, no negativos y con hasta dos decimales.",
-  "deductionRequired": "El nombre de la deducción es obligatorio."
+  "deductionRequired": "El nombre de la deducción es obligatorio.",
+   "noUpperLimit": "Sin límite superior",
+  "fromMustBeLessThanOrEqualUntil": "\"Desde\" debe ser menor o igual que \"Hasta\"",
+"fromNowOn": "En adelante"
 }
