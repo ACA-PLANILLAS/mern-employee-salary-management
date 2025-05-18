@@ -15,7 +15,10 @@ import { OBSERVATION_CODES } from '../../../../../shared/Const';
 import useCurrencyByUser from '../../../../../config/currency/useCurrencyByUser';
 
 const ITEMS_PER_PAGE = 4;
-const API_URL = import.meta.env.VITE_API_URL;
+
+//const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
+
 
 const FormAddDataKehadiran = () => {
   const [currentPage, setCurrentPage] = useState(1);

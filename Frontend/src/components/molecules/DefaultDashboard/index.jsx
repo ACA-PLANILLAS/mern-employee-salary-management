@@ -11,7 +11,8 @@ import {
   Breadcrumb,
 } from "../../../components";
 import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
+//const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
 
 const DefaultDashboard = () => {
   const { user } = useSelector((state) => state.auth);

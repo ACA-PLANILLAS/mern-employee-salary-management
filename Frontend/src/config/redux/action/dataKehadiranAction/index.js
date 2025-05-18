@@ -10,7 +10,8 @@ import {
     DELETE_DATA_KEHADIRAN_FAILURE
 } from './dataKehadiranActionTypes';
 
-const API_URL = import.meta.env.VITE_API_URL;
+//const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
 
 export const getDataKehadiran = () => {
     return async (dispatch) => {

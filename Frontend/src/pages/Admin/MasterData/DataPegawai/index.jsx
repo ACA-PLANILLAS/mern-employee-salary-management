@@ -49,7 +49,6 @@ const DataPegawai = () => {
     const statusKeyword = filterStatus.toLowerCase();
     return (
       // si prefieres buscar también por username o nombres, agrégalos aquí
-      // pegawai.nik.toLowerCase().includes(keyword) &&
       (filterStatus === "" || pegawai.status.toLowerCase() === statusKeyword)
     );
   });

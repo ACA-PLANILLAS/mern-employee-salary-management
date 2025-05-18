@@ -3,7 +3,8 @@ import axios from "axios";
 export const FETCH_LAPORAN_ABSENSI_SUCCESS = "FETCH_LAPORAN_ABSENSI_SUCCESS";
 export const FETCH_LAPORAN_ABSENSI_FAILURE = "FETCH_LAPORAN_ABSENSI_FAILURE";
 export const CLEAR_LAPORAN_ABSENSI = "CLEAR_LAPORAN_ABSENSI";
-const API_URL = import.meta.env.VITE_API_URL;
+//const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
 
 export const fetchLaporanAbsensiSuccess = (data) => ({
     type: FETCH_LAPORAN_ABSENSI_SUCCESS,

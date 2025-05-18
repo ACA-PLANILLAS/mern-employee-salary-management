@@ -10,7 +10,8 @@ import { logoutUser } from '../../../../config/redux/action';
 import { reset } from '../../../../config/redux/reducer/authReducer';
 import axios from "axios";
 import { useTranslation } from 'react-i18next';
-const API_URL = import.meta.env.VITE_API_URL;
+//const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
 
 const DropdownProfil = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
