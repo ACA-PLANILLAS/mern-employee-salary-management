@@ -35,8 +35,8 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
       text: t('sidebar.logoutConfirmationText'),
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'Ya',
-      cancelButtonText: 'Tidak',
+      confirmButtonText: t('sidebar.yes'),
+      cancelButtonText: t('sidebar.no'),
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
@@ -278,7 +278,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
               {/* <!-- Transaksi Admin --> */}
 
               {/* <!-- Laporan Admin --> */}
-              <SidebarLinkGroup
+              {/* <SidebarLinkGroup
                 activeCondition={
                   pathname === '/laporan' || pathname.includes('laporan')
                 }
@@ -304,7 +304,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                         <MdKeyboardArrowDown className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current text-2xl ${open && 'rotate-180'
                           }`} />
                       </NavLink>
-                      {/* <!-- Dropdown Menu Start --> */}
+                      {/* <!-- Dropdown Menu Start --> /}
                       <div
                         className={`translate transform overflow-hidden ${!open && 'hidden'
                           }`}
@@ -345,11 +345,11 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                           </li>
                         </ul>
                       </div>
-                      {/* <!-- Dropdown Menu End --> */}
+                      {/* <!-- Dropdown Menu End --> /}
                     </React.Fragment>
                   )
                 }}
-              </SidebarLinkGroup>
+              </SidebarLinkGroup> /}
               {/* <!-- Laporan Admin --> */}
 
               {/* <!-- Pengaturan Admin --> */}
@@ -385,6 +385,17 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                           }`}
                       >
                         <ul className='mt-4 mb-5.5 flex flex-col gap-2.5 pl-6'>
+                          <li>
+                            <NavLink
+                              to='/parameters'
+                              className={({ isActive }) =>
+                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                (isActive && '!text-white')
+                              }
+                            >
+                              {t('sidebar.parameters')}
+                            </NavLink>
+                          </li>
                           <li>
                             <NavLink
                               to='/ubah-password'

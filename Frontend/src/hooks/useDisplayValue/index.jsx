@@ -4,9 +4,9 @@ export const useDisplayValue = () => {
   const { t } = useTranslation("catalogs");
 
   return (originalValue) => {
-    if (!originalValue) return "";
+    if (originalValue === null || originalValue === undefined) return "";
 
-    const normalized = originalValue.toLowerCase().trim();
+    const normalized = String(originalValue)?.toLowerCase()?.trim();
 
     return t(normalized);
   };

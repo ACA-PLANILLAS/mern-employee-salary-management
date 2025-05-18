@@ -10,7 +10,7 @@ import { BiSearch } from 'react-icons/bi';
 import { deleteDataJabatan, getDataJabatan, getMe } from '../../../../config/redux/action';
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
-import { useCurrencyByUser } from "../../../../config/currency/useCurrencyByUser";
+import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
 import { CurrencySwitcher } from '../../../../components/atoms';
 
 const ITEMS_PER_PAGE = 4;

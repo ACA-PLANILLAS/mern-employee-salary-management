@@ -58,7 +58,7 @@ export const pegawaiImage = () => {
 export const getDataPegawaiById = (id) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`${API_URL}/data_pegawai/id/${id}`);
+      const response = await axios.get(`${API_URL}/data_pegawai/${id}`);
       dispatch({
         type: GET_DATA_PEGAWAI_BY_ID_SUCCESS,
         payload: response.data,

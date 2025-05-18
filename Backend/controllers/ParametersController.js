@@ -11,6 +11,8 @@ export const getAllParameter = async (req, res) => {
         const response = await Parameter.findAll();
         res.status(200).json(response);
     } catch (error) {
+        console.log("\n>>> ", error.message);
+
         res.status(500).json({ msg: PARAMETER.SERVER_ERROR.code });
     }
 }
@@ -28,6 +30,8 @@ export const getParameterById = async (req, res) => {
             res.status(404).json({ msg: PARAMETER.NOT_FOUND_BY_ID.code });
         }
     } catch (error) {
+        console.log("\n>>> ", error.message);
+
         res.status(500).json({ msg: PARAMETER.SERVER_ERROR.code });
     }
 }
@@ -45,6 +49,8 @@ export const getParameterByType = async (req, res) => {
             res.status(404).json({ msg: PARAMETER.PARAMETER_NOT_FOUND.code });
         }
     } catch (error) {
+        console.log("\n>>> ", error.message);
+
         res.status(500).json({ msg: PARAMETER.SERVER_ERROR.code });
     }
 }
@@ -67,6 +73,8 @@ export const updateParameter = async (req, res) => {
         }
     }
     catch (error) {
+        console.log("\n>>> ", error.message);
+
         res.status(500).json({ msg: PARAMETER.SERVER_ERROR.code });
     }
 }

@@ -9,10 +9,10 @@ import {
 //const API_URL = import.meta.env.VITE_API_URL;
 import { API_URL } from '@/config/env';
 
-export const getDataGaji = () => {
+export const getDataGaji = (year, month) => {
     return async (dispatch) => {
         try {
-            const response = await axios.get(`${API_URL}/data_gaji_pegawai`);
+           const response = await axios.get(`${API_URL}/data_gaji_pegawai`);
             dispatch({
                 type: GET_DATA_GAJI_SUCCESS,
                 payload: response.data
