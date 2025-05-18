@@ -53,13 +53,13 @@ VALUES
 
 INSERT INTO parameters (id, name, value, type)
 VALUES
-  (4, 'DUI/NIT del Empleador',      06142005961025, 'DUIN');
+  (4, 'DUI/NIT del Empleador', 0614200595, 'DUIN');
 INSERT INTO parameters (id, name, value, type)
 VALUES
-  (5, 'Número patronal ISSS',       12345678,       'NPIS');
+  (5, 'Número patronal ISSS', 12345678, 'NPIS');
 INSERT INTO parameters (id, name, value, type)
 VALUES
-  (6, 'Correlativo Centro de Trabajo ISSS',  876543,  'CCTS');
+  (6, 'Correlativo Centro de Trabajo ISSS', 876543, 'CCTS');
 INSERT INTO parameters (id, name, value, type)
 VALUES
-  (7, 'Nombre de la empresa',       1,              'COMP');
+  (7, 'Nombre de la empresa', 1, 'COMP');
