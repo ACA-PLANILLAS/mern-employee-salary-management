@@ -10,7 +10,8 @@ import { useTranslation } from "react-i18next";
 import { useDisplayValue } from "../../../hooks/useDisplayValue";
 import useCurrencyByUser from "../../../config/currency/useCurrencyByUser";
 
-const API_URL = import.meta.env.VITE_API_URL;
+// import { API_URL } from '@/config/env';
+import { API_URL } from "@/config/env";
 
 const DetailDataGaji = () => {
   const [data, setData] = useState(null);

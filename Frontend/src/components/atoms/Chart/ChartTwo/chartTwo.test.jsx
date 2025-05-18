@@ -1,15 +1,27 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import ChartTwo from './index.jsx';
 
-// Simulamos el componente de ApexCharts (para evitar errores al renderizar en tests)
+// Mock de ApexCharts
 jest.mock('react-apexcharts', () => () => <div data-testid="mock-chart">Gráfico</div>);
 
-// Simulamos las traducciones de i18next
+// Mock de fetch (simula la respuesta de la API)
+beforeAll(() => {
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () =>
+        Promise.resolve({
+          series: [6, 4], // valores simulados
+        }),
+    })
+  );
+});
+
+// Mock de i18next con `withTranslation` y `i18n` (para el listener de cambio de idioma)
 jest.mock('react-i18next', () => ({
   withTranslation: () => (Component) => {
     Component.defaultProps = {
-      ...Component.defaultProps,
+      ...(Component.defaultProps || {}),
       t: (key) => {
         const traducciones = {
           'chartsTwo.title': 'Estado de Empleados',
@@ -20,31 +32,28 @@ jest.mock('react-i18next', () => ({
         };
         return traducciones[key] || key;
       },
+      i18n: {
+        on: jest.fn(),
+        off: jest.fn(),
+      },
     };
     return Component;
   },
 }));
 
 describe('Componente ChartTwo', () => {
-  test('debe renderizar el título y el gráfico correctamente', () => {
+  test('debe renderizar correctamente el gráfico y los datos', async () => {
     render(<ChartTwo />);
 
-    // Verificamos que se muestra el título traducido
     expect(screen.getByText('Estado de Empleados')).toBeInTheDocument();
-
-    // Verificamos que se renderiza el gráfico simulado
     expect(screen.getByTestId('mock-chart')).toBeInTheDocument();
 
-    // Verificamos que se muestran las etiquetas de los datos
-    expect(screen.getAllByText('Permanente')[0]).toBeInTheDocument();
-    expect(screen.getAllByText('Temporal')[0]).toBeInTheDocument();
-
-    // Verificamos que se renderizan las opciones del select
-    expect(screen.getByText('Mensual')).toBeInTheDocument();
-    expect(screen.getByText('Anual')).toBeInTheDocument();
-
-    // Verificamos que los valores de los datos estén visibles
-    expect(screen.getByText('6')).toBeInTheDocument();
-    expect(screen.getByText('4')).toBeInTheDocument();
+    // Esperamos a que los valores de la API estén visibles
+    await waitFor(() => {
+      expect(screen.getByText('Permanente')).toBeInTheDocument();
+      expect(screen.getByText('Temporal')).toBeInTheDocument();
+      expect(screen.getByText('6')).toBeInTheDocument();
+      expect(screen.getByText('4')).toBeInTheDocument();
+    });
   });
 });

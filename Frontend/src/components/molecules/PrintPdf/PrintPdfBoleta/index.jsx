@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useDisplayValue } from "../../../../hooks/useDisplayValue";
 import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
 
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from "@/config/env";
 
 const PrintPdfBoleta = () => {
   const componentRef = useRef();
@@ -128,32 +128,50 @@ const PrintPdfBoleta = () => {
               <td>
                 <strong>{t("earnedSalary")}</strong>
               </td>
-              <td>{symbol}{toLocal(data.gaji_pokok)}</td>
+              <td>
+                {symbol}
+                {toLocal(data.gaji_pokok)}
+              </td>
               <td>
                 <strong>{t("isss")}</strong>
               </td>
-              <td>{symbol}{toLocal(totalSeguro)}</td>
+              <td>
+                {symbol}
+                {toLocal(totalSeguro)}
+              </td>
             </tr>
             <tr>
               <td>{t("extraHours")}</td>
               <td>{symbol} -</td>
               <td>{t("isr")}</td>
-              <td>{symbol}{toLocal(totalRenta)}</td>
+              <td>
+                {symbol}
+                {toLocal(totalRenta)}
+              </td>
             </tr>
             <tr>
               <td>( - ) {t("totalDeductions")}</td>
-              <td>{symbol}{toLocal(data.totalDeductions)}</td>
+              <td>
+                {symbol}
+                {toLocal(data.totalDeductions)}
+              </td>
               {/* <td>{t("otherDiscounts")}</td>
               <td>$ -</td> */}
               <td>{t("totalDeductions")}</td>
-              <td>{symbol}{toLocal(totalDeducciones)}</td>
+              <td>
+                {symbol}
+                {toLocal(totalDeducciones)}
+              </td>
             </tr>
             <tr>
               <td>
                 <strong>{t("netToReceive")}</strong>
               </td>
               <td>
-                <strong>{symbol}{toLocal(data.total)}</strong>
+                <strong>
+                  {symbol}
+                  {toLocal(data.total)}
+                </strong>
               </td>
               {/* <td>{t("totalDeductions")}</td>
               <td>${totalDeducciones}</td> */}

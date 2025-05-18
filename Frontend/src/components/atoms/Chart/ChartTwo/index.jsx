@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import ReactApexChart from 'react-apexcharts';
-import { withTranslation } from 'react-i18next';
+import React, { Component } from "react";
+import ReactApexChart from "react-apexcharts";
+import { withTranslation } from "react-i18next";
 
-const API_URL = import.meta.env.VITE_API_URL;
+// import { API_URL } from '@/config/env';
+import { API_URL } from "@/config/env";
 
 class ChartTwo extends Component {
   constructor(props) {
@@ -14,20 +15,20 @@ class ChartTwo extends Component {
       temporary: 0,
       options: {
         chart: {
-          fontFamily: 'Satoshi, sans-serif',
-          type: 'donut',
+          fontFamily: "Satoshi, sans-serif",
+          type: "donut",
         },
-        colors: ['#3C50E0', '#0FADCF'],
+        colors: ["#3C50E0", "#0FADCF"],
         labels: [], // ← dinámico según idioma
         legend: {
           show: false,
-          position: 'bottom',
+          position: "bottom",
         },
         plotOptions: {
           pie: {
             donut: {
-              size: '65%',
-              background: 'transparent',
+              size: "65%",
+              background: "transparent",
             },
           },
         },
@@ -63,13 +64,16 @@ class ChartTwo extends Component {
 
       const [permanent, temporary] = data.series;
 
-      this.setState({
-        series: data.series,
-        permanent,
-        temporary,
-      }, this.updateLabels);
+      this.setState(
+        {
+          series: data.series,
+          permanent,
+          temporary,
+        },
+        this.updateLabels
+      );
     } catch (error) {
-      console.error('Error al cargar gráfico de empleados:', error);
+      console.error("Error al cargar gráfico de empleados:", error);
     }
   };
 
@@ -79,8 +83,8 @@ class ChartTwo extends Component {
       options: {
         ...prevState.options,
         labels: [
-          t('chartsTwo.labels.permanent'),
-          t('chartsTwo.labels.temporary'),
+          t("chartsTwo.labels.permanent"),
+          t("chartsTwo.labels.temporary"),
         ],
       },
     }));
@@ -90,12 +94,12 @@ class ChartTwo extends Component {
     this.fetchData();
 
     // Suscribirse al cambio de idioma
-    this.props.i18n.on('languageChanged', this.updateLabels);
+    this.props.i18n.on("languageChanged", this.updateLabels);
   }
 
   componentWillUnmount() {
     // Limpiar listener al desmontar
-    this.props.i18n.off('languageChanged', this.updateLabels);
+    this.props.i18n.off("languageChanged", this.updateLabels);
   }
 
   render() {
@@ -103,36 +107,36 @@ class ChartTwo extends Component {
     const { options, series, permanent, temporary } = this.state;
 
     return (
-      <div className='col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-5'>
-        <div className='mb-3 justify-between gap-4 sm:flex'>
+      <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-5">
+        <div className="mb-3 justify-between gap-4 sm:flex">
           <div>
-            <h5 className='text-xl font-semibold text-black dark:text-white'>
-              {t('chartsTwo.title')}
+            <h5 className="text-xl font-semibold text-black dark:text-white">
+              {t("chartsTwo.title")}
             </h5>
           </div>
         </div>
 
-        <div className='mb-2'>
-          <div id='chartTwo' className='mx-auto flex justify-center'>
-            <ReactApexChart options={options} series={series} type='donut' />
+        <div className="mb-2">
+          <div id="chartTwo" className="mx-auto flex justify-center">
+            <ReactApexChart options={options} series={series} type="donut" />
           </div>
         </div>
 
-        <div className='-mx-8 flex flex-wrap items-center justify-center gap-y-3'>
-          <div className='w-full px-8 sm:w-1/2'>
-            <div className='flex w-full items-center'>
-              <span className='mr-2 block h-3 w-full max-w-3 rounded-full bg-primary'></span>
-              <p className='flex w-full justify-between text-sm font-medium text-black dark:text-white'>
-                <span>{t('chartsTwo.labels.permanent')}</span>
+        <div className="-mx-8 flex flex-wrap items-center justify-center gap-y-3">
+          <div className="w-full px-8 sm:w-1/2">
+            <div className="flex w-full items-center">
+              <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-primary"></span>
+              <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
+                <span>{t("chartsTwo.labels.permanent")}</span>
                 <span>{permanent}</span>
               </p>
             </div>
           </div>
-          <div className='w-full px-8 sm:w-1/2'>
-            <div className='flex w-full items-center'>
-              <span className='mr-2 block h-3 w-full max-w-3 rounded-full bg-[#8FD0EF]'></span>
-              <p className='flex w-full justify-between text-sm font-medium text-black dark:text-white'>
-                <span>{t('chartsTwo.labels.temporary')}</span>
+          <div className="w-full px-8 sm:w-1/2">
+            <div className="flex w-full items-center">
+              <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#8FD0EF]"></span>
+              <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
+                <span>{t("chartsTwo.labels.temporary")}</span>
                 <span>{temporary}</span>
               </p>
             </div>
@@ -143,4 +147,4 @@ class ChartTwo extends Component {
   }
 }
 
-export default withTranslation('dashboard')(ChartTwo);
+export default withTranslation("dashboard")(ChartTwo);

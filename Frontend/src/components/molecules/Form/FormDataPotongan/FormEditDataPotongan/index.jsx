@@ -11,7 +11,7 @@ import { useErrorMessage } from "../../../../../hooks/useErrorMessage";
 import useCurrencyByUser from "../../../../../config/currency/useCurrencyByUser";
 import { getCurrentRate } from "../../../../../config/currency/currencyStore";
 
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
 
 
 const FormEditDataPotongan = () => {

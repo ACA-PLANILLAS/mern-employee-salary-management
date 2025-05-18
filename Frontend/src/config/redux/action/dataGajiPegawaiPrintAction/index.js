@@ -1,60 +1,65 @@
 import axios from "axios";
 import {
-    GET_DATA_GAJI_SINGLE_PEGAWAI_SUCCESS,
-    GET_DATA_GAJI_SINGLE_PEGAWAI_FAILURE,
+  GET_DATA_GAJI_SINGLE_PEGAWAI_SUCCESS,
+  GET_DATA_GAJI_SINGLE_PEGAWAI_FAILURE,
 } from "./dataGajiPegawaiPrintActionTypes";
-//const API_URL = import.meta.env.VITE_API_URL;
-import { API_URL } from '@/config/env';
+//import { API_URL } from '@/config/env';
+import { API_URL } from "@/config/env";
 
 export const viewDataGajiSinglePegawaiSuccess = (data) => ({
-    type: GET_DATA_GAJI_SINGLE_PEGAWAI_SUCCESS,
-    payload: data,
+  type: GET_DATA_GAJI_SINGLE_PEGAWAI_SUCCESS,
+  payload: data,
 });
 
 export const viewDataGajiSinglePegawaiFailure = (error) => ({
-    type: GET_DATA_GAJI_SINGLE_PEGAWAI_FAILURE,
-    payload: error,
+  type: GET_DATA_GAJI_SINGLE_PEGAWAI_FAILURE,
+  payload: error,
 });
 
 export const viewGajiSinglePegawaiByYear = (dataYear) => async (dispatch) => {
-    try {
-        const response = await axios.get(
-            `${API_URL}/data_gaji/month/${dataYear}`
-        );
-        const data = response.data;
-        dispatch(viewDataGajiSinglePegawaiSuccess(data));
-    } catch (error) {
-        if (error.response && error.response.data) {
-            dispatch(viewDataGajiSinglePegawaiFailure("Terjadi kesalahan saat memuat data."));
-        }
+  try {
+    const response = await axios.get(`${API_URL}/data_gaji/month/${dataYear}`);
+    const data = response.data;
+    dispatch(viewDataGajiSinglePegawaiSuccess(data));
+  } catch (error) {
+    if (error.response && error.response.data) {
+      dispatch(
+        viewDataGajiSinglePegawaiFailure("Terjadi kesalahan saat memuat data.")
+      );
     }
+  }
 };
 
 export const viewGajiSinglePegawaiByMonth = (dataMonth) => async (dispatch) => {
-    try {
-        const response = await axios.get(
-            `${API_URL}/data_gaji/month/${dataMonth}`
-        );
-        const data = response.data;
-        dispatch(viewDataGajiSinglePegawaiSuccess(data));
-    } catch (error) {
-        if (error.response && error.response.data) {
-            dispatch(viewDataGajiSinglePegawaiFailure("Terjadi kesalahan saat memuat data."));
-        }
+  try {
+    const response = await axios.get(`${API_URL}/data_gaji/month/${dataMonth}`);
+    const data = response.data;
+    dispatch(viewDataGajiSinglePegawaiSuccess(data));
+  } catch (error) {
+    if (error.response && error.response.data) {
+      dispatch(
+        viewDataGajiSinglePegawaiFailure("Terjadi kesalahan saat memuat data.")
+      );
     }
+  }
 };
 
-export const viewGajiSinglePegawaiByName = (nama_pegawai) => async (dispatch) => {
+export const viewGajiSinglePegawaiByName =
+  (nama_pegawai) => async (dispatch) => {
     try {
-        const response = await axios.get(
-            `${API_URL}/data_gaji/name/${nama_pegawai}`
-        );
-        const data = response.data;
-        dispatch(viewDataGajiSinglePegawaiSuccess(data));
+      const response = await axios.get(
+        `${API_URL}/data_gaji/name/${nama_pegawai}`
+      );
+      const data = response.data;
+      dispatch(viewDataGajiSinglePegawaiSuccess(data));
     } catch (error) {
-        console.log(error);
-        if (nama_pegawai) {
-            dispatch(viewDataGajiSinglePegawaiFailure("Terjadi kesalahan saat memuat data."));
-        }
+      console.log(error);
+      if (nama_pegawai) {
+        dispatch(
+          viewDataGajiSinglePegawaiFailure(
+            "Terjadi kesalahan saat memuat data."
+          )
+        );
+      }
     }
-};
+  };

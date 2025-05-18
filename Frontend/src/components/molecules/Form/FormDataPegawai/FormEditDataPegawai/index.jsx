@@ -10,7 +10,7 @@ import { getMe } from "../../../../../config/redux/action";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { useErrorMessage } from "../../../../../hooks/useErrorMessage";
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
 
 const FormEditDataPegawai = () => {
   const { id } = useParams();
