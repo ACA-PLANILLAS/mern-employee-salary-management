@@ -2,7 +2,7 @@ name: Mern Employee Management CI/CD
 
 on:
   push:
-    branches: [main, uat]
+    branches: [main, uat, feat/ci-cd]
 
 jobs:
   test-backend:
