@@ -101,7 +101,11 @@ SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE data_pegawai;
 SET FOREIGN_KEY_CHECKS = 1;
 
-INSERT INTO data_peagwai (
+ALTER TABLE `data_pegawai`
+  DROP COLUMN `nama_pegawai`,
+  DROP COLUMN `tanggal_masuk`;
+
+INSERT INTO data_pegawai (
       id_pegawai,
       hire_date,
       nik,
