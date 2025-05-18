@@ -20,15 +20,15 @@ const DataJabatan = db.define(
       allowNull: false,
     },
     gaji_pokok: {
-      type: DataTypes.DECIMAL(15, 2),
+      type: DataTypes.DECIMAL(15, 7),
       allowNull: false,
     },
     tj_transport: {
-      type: DataTypes.DECIMAL(15, 2),
+      type: DataTypes.DECIMAL(15, 7),
       allowNull: false,
     },
     uang_makan: {
-      type: DataTypes.DECIMAL(15, 2),
+      type: DataTypes.DECIMAL(15, 7),
     },
     userId: {
       type: DataTypes.INTEGER,

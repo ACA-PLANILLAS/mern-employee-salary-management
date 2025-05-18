@@ -11,8 +11,7 @@ import { useErrorMessage } from "../../../../../hooks/useErrorMessage";
 import useCurrencyByUser from "../../../../../config/currency/useCurrencyByUser";
 import { getCurrentRate } from "../../../../../config/currency/currencyStore";
 
-import { API_URL } from '@/config/env';
-
+import { API_URL } from "@/config/env";
 
 const FormEditDataPotongan = () => {
   const { id } = useParams();
@@ -22,6 +21,8 @@ const FormEditDataPotongan = () => {
   const { t } = useTranslation("dataPotonganAddForm");
   const getErrorMessage = useErrorMessage();
   const { currency, symbol, toUSD } = useCurrencyByUser();
+
+  const [isUntilInfinite, setIsUntilInfinite] = useState(false);
 
   const [formData, setFormData] = useState({
     potongan: "",
@@ -92,7 +93,14 @@ const FormEditDataPotongan = () => {
 
   const handleFocus = (e) => e.target.select();
 
-  const renderMoneyInput = (name, label, value, usdValue, placeholder) => (
+  const renderMoneyInput = (
+    name,
+    label,
+    value,
+    usdValue,
+    placeholder,
+    disabled = false
+  ) => (
     <div className="mb-4 w-full">
       <label className="mb-4 block text-black dark:text-white">
         {label} <span className="text-meta-1">*</span>
@@ -104,14 +112,20 @@ const FormEditDataPotongan = () => {
         <input
           type="text"
           name={name}
-          value={value}
+          value={!disabled ? value : t("fromNowOn")}
           onChange={handleChange}
           onFocus={handleFocus}
           placeholder={placeholder}
-          required
-          className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 pl-10 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+          required={!disabled}
+          disabled={disabled}
+          className={`w-full rounded border-[1.5px] px-5 py-3 pl-10 font-medium outline-none transition
+          ${
+            disabled
+              ? "bg-gray-100 text-gray-500 border-gray-300 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600 cursor-not-allowed"
+              : "border-stroke bg-transparent text-black focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+          }`}
         />
-        {currency !== "USD" && value && (
+        {currency !== "USD" && value && !disabled && (
           <span className="text-gray-700 dark:text-gray-300 bg-gray-50 h-full whitespace-nowrap rounded border border-stroke px-3 py-2 text-sm dark:border-strokedark dark:bg-boxdark">
             ≈ ${toUSD(Number(value)).toFixed(2)} USD
           </span>
@@ -131,12 +145,21 @@ const FormEditDataPotongan = () => {
         type: data.type,
         jmlPotongan: String((data.jml_potongan ?? 0) * 100),
         from: data.from != null ? (data.from * rate).toFixed(2) : "",
-        until: data.until != null ? (data.until * rate).toFixed(2) : "",
+        until:
+          data.until != null
+            ? data.until == -1
+              ? 0.0
+              : (data.until * rate).toFixed(2)
+            : "",
         valueD: data.value_d != null ? (data.value_d * rate).toFixed(2) : "",
         paymentFrequency:
           data.payment_frequency != null ? String(data.payment_frequency) : "1",
         deductionGroup: data.deduction_group ?? "",
       });
+
+      if (data.until == -1) {
+        setIsUntilInfinite(true);
+      }
 
       setFromUSD(Number(data.from));
       setUntilUSD(Number(data.until));
@@ -199,6 +222,19 @@ const FormEditDataPotongan = () => {
         });
         return;
       }
+
+      if (!isUntilInfinite) {
+        const fromValue = parseFloat(from);
+        const untilValue = parseFloat(until);
+        if (fromValue > untilValue) {
+          Swal.fire({
+            icon: "error",
+            title: t("error"),
+            text: t("fromMustBeLessThanOrEqualUntil"),
+          });
+          return;
+        }
+      }
     }
 
     try {
@@ -210,7 +246,7 @@ const FormEditDataPotongan = () => {
         payload.append("jml_potongan", String(parseFloat(jmlPotongan) / 100));
       } else {
         payload.append("from", toUSD(Number(from)));
-        payload.append("until", toUSD(Number(until)));
+        payload.append("until", isUntilInfinite ? -1 : toUSD(Number(until)));
         payload.append("jml_potongan", String(parseFloat(jmlPotongan) / 100));
         payload.append("value_d", toUSD(Number(valueD)));
         payload.append("payment_frequency", paymentFrequency);
@@ -329,8 +365,24 @@ const FormEditDataPotongan = () => {
                         t("until"),
                         until,
                         untilUSD,
-                        t("enterUntil")
+                        t("enterUntil"),
+                        isUntilInfinite
                       )}
+                    </div>
+
+                    {/* Checkbox: sin límite superior */}
+                    <div className="mb-4 ml-auto flex w-full items-center justify-end">
+                      <label className="inline-flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={isUntilInfinite}
+                          onChange={() => setIsUntilInfinite((prev) => !prev)}
+                          className="form-checkbox h-5 w-5 text-primary"
+                        />
+                        <span className="ml-2 text-black dark:text-white">
+                          {t("noUpperLimit")}
+                        </span>
+                      </label>
                     </div>
 
                     {/* Porcentaje sobre el exceso */}

@@ -32,5 +32,8 @@
   "percentageRequired": "The entered percentage is not valid.",
   "percentageOutOfRange": "The percentage must be between 0.00 and 100.00.",
   "monetaryFieldsInvalid": "Monetary values must be numeric, non-negative, and with up to two decimal places.",
-  "deductionRequired": "The deduction name is required."
+  "deductionRequired": "The deduction name is required.",
+  "noUpperLimit": "No upper limit",
+  "fromMustBeLessThanOrEqualUntil": "\"From\" must be less than or equal to \"Until\"",
+  "fromNowOn": "From now on"
 }
