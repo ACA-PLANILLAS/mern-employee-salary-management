@@ -57,7 +57,7 @@ const DataGaji = () => {
     //  filtramos por año/mes
     const relevant = dataGaji.filter(
       (d) =>
-        d.year.toString() === filterTahun && d.month.toString() === filterBulan
+        d?.year?.toString() === filterTahun && d?.month?.toString() === filterBulan
     );
     // extraemos strings únicos "YYYY-M-D"
     const combos = Array.from(
@@ -75,7 +75,7 @@ const DataGaji = () => {
   const filteredDataGaji = dataGaji.filter((d) => {
     // primero por año/mes (como ya hacías en el useEffect)
     const byMonthYear =
-      d.year.toString() === filterTahun && d.month.toString() === filterBulan;
+      d?.year?.toString() === filterTahun && d?.month?.toString() === filterBulan;
     if (!byMonthYear) return false;
     // si hay fecha seleccionada, comparar full string
     if (filterDate) {

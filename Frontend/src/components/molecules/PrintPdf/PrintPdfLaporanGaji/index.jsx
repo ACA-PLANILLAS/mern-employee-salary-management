@@ -145,55 +145,55 @@ const PrintPdfLaporanGaji = () => {
             </thead>
             <tbody>
               {data.map((row, i) => (
-                <tr key={row.attendanceId}>
+                <tr key={row?.attendanceId}>
                   <td className="border px-2 py-1 text-center dark:border-white">
                     {i + 1}
                   </td>
                   <td className="border px-2 py-1 dark:border-white">
-                    {row.dui_or_nit}
+                    {row?.dui_or_nit}
                   </td>
                   <td className="border px-2 py-1 dark:border-white">
-                    {row.document_type}
+                    {row?.document_type}
                   </td>
                   <td className="border px-2 py-1 dark:border-white">
                     {[
-                      row.first_name,
-                      row.middle_name,
-                      row.last_name,
-                      row.second_last_name,
-                      row.maiden_name,
+                      row?.first_name,
+                      row?.middle_name,
+                      row?.last_name,
+                      row?.second_last_name,
+                      row?.maiden_name,
                     ]
                       .filter(Boolean)
                       .join(" ")}
                   </td>
                   <td className="border px-2 py-1 dark:border-white">
-                    {row.nama_jabatan}
+                    {row?.nama_jabatan}
                   </td>
                   <td className="border px-2 py-1 dark:border-white">
                     {" "}
                     {symbol}
-                    {toLocal(row.salarioBruto)}
+                    {toLocal(row?.salarioBruto)}
                   </td>
                   <td className="border px-2 py-1 dark:border-white">
-                    {row.hadir}
+                    {row?.hadir}
                   </td>
                   <td className="border px-2 py-1 dark:border-white">
-                    {row.sakit}
+                    {row?.sakit}
                   </td>
                   <td className="border px-2 py-1 dark:border-white">
-                    {row.alpha}
-                  </td>
-                  <td className="border px-2 py-1 dark:border-white">
-                    {symbol}
-                    {toLocal(row.totalDeductions)}
+                    {row?.alpha}
                   </td>
                   <td className="border px-2 py-1 dark:border-white">
                     {symbol}
-                    {toLocal(row.castigo_ausencias)}
+                    {toLocal(row?.totalDeductions)}
                   </td>
                   <td className="border px-2 py-1 dark:border-white">
                     {symbol}
-                    {toLocal(row.total)}
+                    {toLocal(row?.castigo_ausencias)}
+                  </td>
+                  <td className="border px-2 py-1 dark:border-white">
+                    {symbol}
+                    {toLocal(row?.total)}
                   </td>
                 </tr>
               ))}
