@@ -1,6 +1,6 @@
 {
   "formAddDataPegawai": "Employee Data Form",
-  "nik": "NIK",
+  "nik": "DUI",
   "masukkanNik": "Enter NIK number",
   "duiOrNit": "Document Number",
   "masukkanDuiOrNit": "Enter the document number",
@@ -8,8 +8,8 @@
   "masukkanDocumentType": "Enter document type",
   "isssAffiliationNumber": "ISSS Affiliation Number",
   "masukkanIsssAffiliationNumber": "Enter ISSS affiliation number",
-  "pensionInstitutionCode": "Pension Institution Code",
-  "masukkanPensionInstitutionCode": "Enter pension institution code",
+  "pensionInstitutionCode": "Pension Institution",
+  "masukkanPensionInstitutionCode": "Enter pension institution",
   "firstName": "First Name",
   "masukkanFirstName": "Enter first name",
   "middleName": "Middle Name",
@@ -63,5 +63,14 @@
   "kembali": "Back",
   "berhasil": "Successful",
   "gagal": "Failed",
-  "terjadiKesalahan": "An error occurred"
+  "terjadiKesalahan": "An error occurred",
+  "fieldRequired": "The {{field}} field is required",
+  "fotoRequired": "You must upload a photo",
+  "passwordMismatch": "Passwords do not match",
+  "dui": "DUI",
+  "passport": "Passport",
+  "minorIdCard": "Minor ID Card",
+  "residentCard": "Resident Card",
+  "pilihJabatan": "Select a position",
+  "pilihPensionInstitution": "Select a Pension Institution"
 }

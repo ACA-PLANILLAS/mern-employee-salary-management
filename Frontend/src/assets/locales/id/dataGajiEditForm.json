@@ -48,5 +48,8 @@
   "kembali": "Kembali",
   "berhasil": "Berhasil",
   "gagal": "Gagal",
-  "dataTidakDitemukan": "Data tidak ditemukan"
+  "dataTidakDitemukan": "Data tidak ditemukan",
+  "fieldRequired": "Kolom {{field}} wajib diisi",
+  "fotoRequired": "Anda harus mengunggah foto",
+  "passwordMismatch": "Kata sandi tidak cocok"
 }

@@ -5,11 +5,24 @@
     "positions": "Datos de Puestos",
     "admin": "Datos de Administradores"
   },
-
   "chartsOne": {
     "dataMale": "Datos Masculinos",
     "dataFemale": "Datos Femeninos",
     "dateRange": "14.04.2023 - 14.05.2023",
+    "months": {
+      "jan": "Ene",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Abr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Ago",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dic"
+    },
     "viewOptions": {
       "day": "Día",
       "week": "Semana",
@@ -26,5 +39,8 @@
       "permanent": "Empleados Permanentes",
       "temporary": "Empleados Temporales"
     }
-  }
+  },
+  "navigation": {
+      "dashboard": "Panel de control /"
+    }
 }

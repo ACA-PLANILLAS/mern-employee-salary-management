@@ -764,6 +764,12 @@ export const getDataGajiPegawai = async (year, month) => {
           hadir: attendanceEmployee.hadir,
           sakit: attendanceEmployee.sakit,
           alpha: attendanceEmployee.alpha,
+          worked_hours: attendanceEmployee.worked_hours,
+          additional_payments: attendanceEmployee.additional_payments,
+          vacation_payments: attendanceEmployee.vacation_payments,
+          vacation_days: attendanceEmployee.vacation_days,
+          comment_01: attendanceEmployee.comment_01,
+          comment_02: attendanceEmployee.comment_02,
 
           // Datos salarios
           salarioEmpleo: datosPuesto?.gaji_pokok, // El salario sin nada
@@ -1172,5 +1178,100 @@ export const dataLaporanGajiByYear = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
+  }
+};
+
+export const viewChartDataSalaryByGender = async (req, res) => {
+  try {
+    const { year = new Date().getFullYear() } = req.query;
+
+    const allKehadiran = await DataKehadiran.findAll({
+      attributes: ["bulan", "tahun", "nik"],
+      where: { tahun: parseInt(year) },
+      raw: true,
+    });
+
+    const allPegawai = await DataPegawai.findAll({
+      attributes: ["id", "monthly_salary", "jenis_kelamin"],
+      raw: true,
+    });
+
+    // Mapear empleados por ID para acceso rápido
+    const pegawaiMap = {};
+    allPegawai.forEach((p) => {
+      pegawaiMap[String(p.id)] = {
+        salary: parseFloat(p.monthly_salary || 0),
+        gender: (p.jenis_kelamin || "").toLowerCase().replace(/\s+/g, ''),
+      };
+    });
+
+    const salarioPorGeneroYMes = {
+      laki: Array(12).fill(0),
+      perempuan: Array(12).fill(0),
+    };
+
+    allKehadiran.forEach((entry) => {
+      const nik = String(entry.nik);
+      const pegawai = pegawaiMap[nik];
+      if (!pegawai) return;
+
+      
+
+      const { salary, gender } = pegawai;
+      const monthIndex = parseInt(entry.bulan, 10) - 1;
+
+      console.log("> gender", gender)
+
+      if (gender.includes("laki-laki")) {
+        salarioPorGeneroYMes.laki[monthIndex] += 1;
+      } else if (gender.includes("perempuan")) {
+        salarioPorGeneroYMes.perempuan[monthIndex] += 1;
+      }
+    });
+
+    res.json({
+      labels: [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+      ],
+      series: [
+        {
+          name: "Laki-Laki",
+          data: salarioPorGeneroYMes.laki.map((v) => Number(v.toFixed(2))),
+        },
+        {
+          name: "Perempuan",
+          data: salarioPorGeneroYMes.perempuan.map((v) => Number(v.toFixed(2))),
+        },
+      ],
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al obtener datos del gráfico de salario por género" });
+  }
+};
+
+export const viewChartDataEmployeeStatus = async (req, res) => {
+  try {
+    const allEmployees = await DataPegawai.findAll({
+      attributes: ["status"],
+      raw: true,
+    });
+
+    let permanent = 0;
+    let temporary = 0;
+
+    allEmployees.forEach((emp) => {
+      const status = (emp.status || "").toLowerCase().replace(/\s+/g, "");
+      if (status.includes("karyawantetap")) permanent++;
+      else if (status.includes("karyawantidaktetap")) temporary++;
+    });
+
+    res.json({
+      series: [permanent, temporary],
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: "Error al contar empleados por tipo" });
   }
 };

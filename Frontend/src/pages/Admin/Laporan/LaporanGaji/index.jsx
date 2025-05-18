@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import Layout from '../../../../layout';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,8 @@ import Swal from 'sweetalert2';
 import { getMe, fetchLaporanGajiByMonth, fetchLaporanGajiByYear } from '../../../../config/redux/action';
 import { BiSearch } from 'react-icons/bi';
 import { useTranslation } from 'react-i18next';
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const LaporanGaji = () => {
     const { t } = useTranslation('laporanGaji');
@@ -17,8 +19,10 @@ const LaporanGaji = () => {
     const [showMessage, setShowMessage] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const componentRef = useRef();
 
     const { isError, user } = useSelector((state) => state.auth);
+    const { dataLaporanGaji } = useSelector((state) => state.laporanGaji);
 
     const handleSearchMonth = (event) => {
         setSearchMonth(event.target.value);
@@ -69,6 +73,48 @@ const LaporanGaji = () => {
             navigate('/dashboard');
         }
     }, [isError, user, navigate]);
+
+    const handleExportExcel = async (event) => {
+        event.preventDefault();
+
+        try {
+            if(searchMonth != ''){
+            await dispatch(fetchLaporanGajiByMonth(searchMonth)),
+            console.log('Datos del laporan gaji:', dataLaporanGaji);
+
+            const worksheet = XLSX.utils.json_to_sheet(dataLaporanGaji);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
+        
+            const excelBuffer = XLSX.write(workbook, {
+              bookType: "xlsx",
+              type: "array",
+            });
+        
+            const blob = new Blob([excelBuffer], {
+              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+        
+            saveAs(blob, "datos.xlsx");
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: t('swalTitle'),
+                text: t('swalText'),
+                timer: 2000,
+            });
+        }
+
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: t('swalTitle'),
+                text: t('swalText'),
+                timer: 2000,
+            });
+        }
+    };
+
 
     return (
         <Layout>
@@ -142,6 +188,12 @@ const LaporanGaji = () => {
                                 <div className='flex flex-col md:flex-row w-full gap-3 text-center'>
                                     <ButtonOne type='submit'>
                                         <span>{t('printButton')}</span>
+                                        <span>
+                                            <TfiPrinter />
+                                        </span>
+                                    </ButtonOne>
+                                    <ButtonOne type="button" onClick={handleExportExcel}>
+                                        <span>{t('printButtonExcel')}</span>
                                         <span>
                                             <TfiPrinter />
                                         </span>

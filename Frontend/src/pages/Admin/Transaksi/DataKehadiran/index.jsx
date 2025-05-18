@@ -11,33 +11,8 @@ import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdOutlineKeyboar
 import { deleteDataKehadiran, getDataKehadiran, getMe } from '../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
 import { useDisplayValue } from '../../../../hooks/useDisplayValue';
-
-const OBSERVATION_CODES = [
-  { code: '00', label: 'Sin observación' },
-  { code: '01', label: 'Sin cambios con respecto al mes anterior' },
-  { code: '02', label: 'Pagos adicionales' },
-  { code: '03', label: 'Aprendices' },
-  { code: '04', label: 'Pensionado' },
-  { code: '05', label: 'Licencia' },
-  { code: '06', label: 'Incapacidad' },
-  { code: '07', label: 'Retiro del Trabajador de la empresa' },
-  { code: '08', label: 'Ingreso o Reingreso del Trabajador' },
-  { code: '09', label: 'Vacaciones' },
-  { code: '10', label: 'Vacaciones más pagos adicionales' },
-  { code: '11', label: 'Planillas catorcenales y semanales fraccionadas' },
-  { code: '12', label: 'Cotizaciones patronales por subsidios del ISSS' },
-  { code: '13', label: 'Cotizante al IPSFA' },
-  { code: '14', label: 'Cotizante Bienestar Magisterial' },
-  { code: '15', label: 'Régimen especial del Sector Doméstico' },
-  { code: '16', label: 'Régimen especial de Marino mercante' },
-  { code: '17', label: 'Régimen especial de regidores' },
-  { code: '18', label: 'Complemento de salario' },
-  { code: '19', label: 'Retiro por fallecimiento del trabajador' },
-  { code: '20', label: 'Vacaciones Salario Mixto' },
-  { code: '21', label: 'Pagos Adicionales y Vacaciones Salario Mixto' },
-  { code: '22', label: 'Pago de complemento por subsidio' },
-  { code: '23', label: 'Trabajador independiente régimen general' },
-];
+import useCurrencyByUser from '../../../../config/currency/useCurrencyByUser';
+import { OBSERVATION_CODES } from '../../../../shared/Const';
 
 const ITEMS_PER_PAGE = 4;
 
@@ -48,6 +23,8 @@ const DataKehadiran = () => {
   const [filterNama, setFilterNama] = useState('');
   const { t } = useTranslation('dataKehadiran');
   const getDisplayValue = useDisplayValue();
+  
+  const { toLocal, symbol, currency } = useCurrencyByUser();
 
   const { dataKehadiran } = useSelector((state) => state.dataKehadiran);
   const { isError, user } = useSelector((state) => state.auth);
@@ -186,18 +163,18 @@ const DataKehadiran = () => {
                   <td className="py-5 px-4 text-center">{data.sakit}</td>
                   <td className="py-5 px-4 text-center">{data.alpha}</td>
                   <td className="py-5 px-4 text-center">{data.worked_hours}</td>
-                  <td className="py-5 px-4 text-center">{data.additional_payments}</td>
+                  <td className="py-5 px-4 text-center">{symbol}{toLocal(data.additional_payments)}</td>
                   <td className="py-5 px-4 text-center">{data.vacation_days}</td>
-                  <td className="py-5 px-4 text-center">{data.vacation_payments}</td>
+                  <td className="py-5 px-4 text-center">{symbol}{toLocal(data.vacation_payments)}</td>
                   <td className="py-5 px-4 text-center">
-                    {OBSERVATION_CODES.find(c => c.code === data.comment_01)?.label || data.comment_01}
+                    {getDisplayValue(OBSERVATION_CODES.find(c => c.code === data.comment_01)?.label) || data.comment_01}
                   </td>
                   <td className="py-5 px-4 text-center">
-                    {OBSERVATION_CODES.find(c => c.code === data.comment_02)?.label || data.comment_02}
+                    {getDisplayValue(OBSERVATION_CODES.find(c => c.code === data.comment_02)?.label) || data.comment_02}
                   </td>
                   <td className="py-5 px-4">
                     <div className="flex space-x-3">
-                      <Link to={`/data-kehadiran/form-data-kehadiran/edit/${data.id}">`} className="hover:text-black">
+                      <Link to={`/data-kehadiran/form-data-kehadiran/edit/${data.id}`} className="hover:text-black">
                         <FaRegEdit className="text-primary text-xl"/>
                       </Link>
                       <button onClick={()=>handleDelete(data.id)} className="hover:text-black">

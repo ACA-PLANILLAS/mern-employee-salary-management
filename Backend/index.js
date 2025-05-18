@@ -7,6 +7,7 @@ import db from './config/Database.js';
 import SequelizeStore from 'connect-session-sequelize';
 import FileUpload from 'express-fileupload';
 
+import "./models/index.js"
 import UserRoute from './routes/UserRoute.js';
 import AuthRoute from './routes/AuthRoute.js';
 import ParamRoute from './routes/ParamRoute.js';
@@ -48,8 +49,19 @@ app.use(UserRoute);
 app.use(AuthRoute);
 app.use(ParamRoute);
 
-// store.sync();
+const main = async () => {
+    try {
+        await db.authenticate();
+        console.log('✅ Conectado a la base de datos');
+        await db.sync();
+        await store.sync();
+        console.log('✅ Tablas sincronizadas');
+        app.listen(process.env.APP_PORT, () => {
+            console.log('🚀 Server up and running on port', process.env.APP_PORT);
+        });
+    } catch (err) {
+        console.error('❌ Error al conectar a la base de datos:', err.message);
+    }
+}
 
-app.listen(process.env.APP_PORT, () => {
-    console.log('Server up and running...');
-});
+main();

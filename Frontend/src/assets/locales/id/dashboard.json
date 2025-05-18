@@ -9,6 +9,20 @@
     "dataMale": "Data Laki-Laki",
     "dataFemale": "Data Perempuan",
     "dateRange": "14.04.2023 - 14.05.2023",
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "Mei",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Agu",
+      "sep": "Sep",
+      "oct": "Okt",
+      "nov": "Nov",
+      "dec": "Des"
+    },
     "viewOptions": {
       "day": "Hari",
       "week": "Minggu",
@@ -25,5 +39,8 @@
       "permanent": "Karyawan Tetap",
       "temporary": "Karyawan Tidak Tetap"
     }
-  }
+  },
+  "navigation": {
+      "dashboard": "Dasbor /"
+    }
 }

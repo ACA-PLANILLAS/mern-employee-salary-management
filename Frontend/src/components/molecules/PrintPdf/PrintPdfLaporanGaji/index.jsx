@@ -4,204 +4,212 @@ import LogoSipeka from "../../../../assets/images/logo/logo-sipeka.png";
 import { useReactToPrint } from "react-to-print";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchLaporanGajiByMonth,
-  fetchLaporanGajiByYear,
-  getMe,
-} from "../../../../config/redux/action";
+import { getMe } from "../../../../config/redux/action";
 import { ButtonOne, ButtonTwo } from "../../../atoms";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
+import { useDisplayValue } from "../../../../hooks/useDisplayValue";
+import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const PrintPdfLaporanGaji = () => {
   const componentRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const month = searchParams.get("month");
-  const year = searchParams.get("year");
-  const [bulan, setBulan] = useState("");
-  const [tahun, setTahun] = useState("");
+  const { t } = useTranslation("dataGaji");
+  const { isError, user } = useSelector((s) => s.auth);
 
-  const { isError, user } = useSelector((state) => state.auth);
-  const { dataLaporanGaji } = useSelector((state) => state.laporanGaji);
-  const { t } = useTranslation("printPdfLaporanGaji");
+  const getDisplayValue = useDisplayValue();
+  const { toLocal, symbol, currency } = useCurrencyByUser();
 
-  const getDataByYear = async (selectedYear) => {
-    dispatch(fetchLaporanGajiByYear(selectedYear));
-  };
+  const [data, setData] = useState([]);
 
-  const getDataByMonth = async (selectedMonth) => {
-    dispatch(fetchLaporanGajiByMonth(selectedMonth));
-  };
+  const params = new URLSearchParams(location.search);
+  const monthParam = params.get("month");
+  const yearParam = params.get("year");
 
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-    documentTitle: "Data_Gaji_Pegawai_PT. Humpuss Karbometil Selulosa",
-  });
+  const [day, setDay] = useState("");
+  const [monthName, setMonthName] = useState("");
+  const [year, setYear] = useState("");
 
   useEffect(() => {
-    getDataByYear(year);
-    getDataByMonth(month);
-  }, [year, month]);
+    const today = new Date();
+    const m = monthParam ? Number(monthParam) : today.getMonth() + 1;
+    const y = yearParam ? Number(yearParam) : today.getFullYear();
 
+    const monthNames = [
+      "Januari",
+      "Februari",
+      "Maret",
+      "April",
+      "Mei",
+      "Juni",
+      "Juli",
+      "Agustus",
+      "September",
+      "Oktober",
+      "November",
+      "Desember",
+    ];
+
+    setDay(today.getDate());
+    setMonthName(monthNames[m - 1]);
+    setYear(y);
+
+    // Fetch directo a la API unificada
+    fetch(`${API_URL}/data_gaji_pegawai?year=${y}&month=${m}`)
+      .then((res) => res.json())
+      .then((json) => setData(json))
+      .catch((err) => console.error(err));
+  }, [monthParam, yearParam]);
+
+  // Control de acceso y print automático
+  const handlePrint = useReactToPrint({ content: () => componentRef.current });
+  
   useEffect(() => {
     dispatch(getMe());
   }, [dispatch]);
 
   useEffect(() => {
-    if (isError) {
-      navigate("/login");
-    }
-    if (user && user.hak_akses !== "admin") {
-      navigate("/dashboard");
-    } else {
-      handlePrint();
-    }
+    if (isError) return navigate("/login");
+    if (user && user.hak_akses !== "admin") return navigate("/dashboard");
+    handlePrint();
   }, [isError, user, navigate, handlePrint]);
-
-  useEffect(() => {
-    const today = new Date();
-    const monthNames = [
-      "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-      "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-    ];
-    const month = monthNames[today.getMonth()];
-    const year = today.getFullYear();
-    setBulan(month);
-    setTahun(year);
-  }, []);
 
   return (
     <>
-      <div className="flex flex-col md:flex-row w-full gap-3 text-center p-6 bg-white dark:bg-meta-4">
-        <div>
-          <ButtonOne onClick={handlePrint}>
-            <span>{t('printSalaryReport')}</span>
-          </ButtonOne>
-        </div>
-        <div>
-          <ButtonTwo
-            onClick={() => navigate(-1)}
-          >
-            <span>{t('back')}</span>
-          </ButtonTwo>
-        </div>
+      {/* Botones de acción */}
+      <div className="flex gap-3 bg-white p-6 text-center dark:bg-meta-4">
+        <ButtonOne onClick={handlePrint}>{t("printSalaryList")}</ButtonOne>
+        <ButtonTwo onClick={() => navigate(-1)}>{t("back")}</ButtonTwo>
       </div>
-      <div ref={componentRef} className="w-200% h-100% p-10 bg-white dark:bg-meta-4">
-        <div className="flex items-center gap-24 object-cover border-b-4 border-black dark:border-white">
-          <img className="w-35"
-            src={LogoSipeka}
-            title="Logo SiPeKa"
-            alt="Logo SiPeKa" />
-          <h1 className="text-black text-2xl font-bold boder dark:text-white">
-            PT. Humpuss Karbometil Selulosa
-          </h1>
-          <img className="w-35"
-            src={LogoPt}
-            title="Logo PT.Humpuss Karbometil Selulosa"
-            alt="Logo PT.Humpuss Karbometil Selulosa"
-          />
+
+      {/* Contenido a imprimir */}
+      <div ref={componentRef} className="bg-white p-10 dark:bg-meta-4">
+        {/* Encabezado con logos */}
+        <div className="flex items-center justify-between border-b-4 border-black pb-4 dark:border-white">
+          <img src={LogoSipeka} alt="SiPeKa" className="w-32" />
         </div>
-        <h1 className="text-center text-black my-4 text-xl font-medium boder py-2 dark:text-white">
-          {t('salaryList')}
-        </h1>
-        <div className="w-full md:text-lg">
-          <h2 className="font-medium mb-4 block text-black dark:text-white">
-            <span className="inline-block w-32 md:w-40">{t('month')}</span>
-            <span className="pl-[-8] md:pl-0"></span>
-            <span className="inline-block w-7">:</span>
-            {month}
-          </h2>
-          <h2 className="font-medium mb-4 block text-black dark:text-white">
-            <span className="inline-block w-32 md:w-40">{t('year')}</span>
-            <span className="inline-block w-7">:</span>
-            {year}
-            <span className="pl-[-8] md:pl-0"></span>
-          </h2>
+
+        {/* Título y fecha */}
+        <h2 className="my-4 text-center text-xl font-medium dark:text-white">
+          {t("employeeSalaryData")}
+        </h2>
+        <div className="mb-6 dark:text-white">
+          <strong>{t("date")}:</strong> {`${day} ${monthName} ${year}`}
         </div>
-        <div className="max-w-full overflow-x-auto py-4">
-          <table className="w-full table-auto-full">
+
+        {/* Tabla con mismas columnas y traducciones que DataGaji */}
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto">
             <thead>
               <tr>
-                <th className="font-medium text-black border-b border-t border-l  border-black dark:border-white dark:text-white">
-                  No
+                <th className="border px-2 py-1 dark:border-white dark:text-white">
+                  {t("no")}
                 </th>
-                <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  {t('nik')}
+                <th className="border px-2 py-1 dark:border-white dark:text-white">
+                  {t("duiOrNit")}
                 </th>
-                <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  {t('employeeName')}
+                <th className="border px-2 py-1 dark:border-white dark:text-white">
+                  {t("documentType")}
                 </th>
-                <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  {t('position')}
+                <th className="border px-2 py-1 dark:border-white dark:text-white">
+                  {t("name")}
                 </th>
-                <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  {t('salary')}
+                <th className="border px-2 py-1 dark:border-white dark:text-white">
+                  {t("positionName")}
                 </th>
-                <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  {t('transportAllowance')}
+                <th className="border px-2 py-1 dark:border-white dark:text-white">
+                  {t("grossSalary")}
                 </th>
-                <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  {t('mealAllowance')}
+                <th className="border px-2 py-1 dark:border-white dark:text-white">
+                  {t("presentDays")}
                 </th>
-                <th className="font-medium text-black border-t border-l border-b border-black dark:border-white dark:text-white">
-                  {t('deduction')}
+                <th className="border px-2 py-1 dark:border-white dark:text-white">
+                  {t("sickDays")}
                 </th>
-                <th className="font-medium text-black border-t border-l border-b border-r border-black dark:border-white dark:text-white">
-                  {t('totalSalary')}
+                <th className="border px-2 py-1 dark:border-white dark:text-white">
+                  {t("alpha")}
+                </th>
+                <th className="border px-2 py-1 dark:border-white dark:text-white">
+                  {t("deductions")}
+                </th>
+                <th className="border px-2 py-1 dark:border-white dark:text-white">
+                  {t("absencePenalty")}
+                </th>
+                <th className="border px-2 py-1 dark:border-white dark:text-white">
+                  {t("total")}
                 </th>
               </tr>
             </thead>
             <tbody>
-              {dataLaporanGaji.map((data, index) => {
-                return (
-                  <tr key={index}>
-                    <td className="border-b border-l border-black dark:border-white py-5 text-center">
-                      <p className="text-black dark:text-white">{index + 1}</p>
-                    </td>
-                    <td className="border-b border-l border-black dark:border-white py-5 text-center">
-                      <p className="text-black dark:text-white">{data.nik}</p>
-                    </td>
-                    <td className="border-b border-l border-black dark:border-white py-5 text-center">
-                      <p className="text-black dark:text-white">{data.nama_pegawai}</p>
-                    </td>
-                    <td className="border-b border-l border-black dark:border-white py-5 text-center">
-                      <p className="text-black dark:text-white">{data.jabatan_pegawai}</p>
-                    </td>
-                    <td className="border-b border-l border-black dark:border-white py-5 text-center">
-                      <p className="text-black dark:text-white">Rp. {data.gaji_pokok}</p>
-                    </td>
-                    <td className="border-b border-l border-black dark:border-white py-5 text-center">
-                      <p className="text-black dark:text-white">Rp. {data.tj_transport}</p>
-                    </td>
-                    <td className="border-b border-l border-black dark:border-white py-5 text-center">
-                      <p className="text-black dark:text-white">Rp. {data.uang_makan}</p>
-                    </td>
-                    <td className="border-b border-l border-black dark:border-white py-5 text-center">
-                      <p className="text-black dark:text-white">Rp. {data.potongan}</p>
-                    </td>
-                    <td className="border-b border-l border-r border-black dark:border-white py-5 text-center">
-                      <p className="text-black dark:text-white">Rp. {data.total_gaji}</p>
-                    </td>
-                  </tr>
-                );
-              })}
+              {data.map((row, i) => (
+                <tr key={row.attendanceId}>
+                  <td className="border px-2 py-1 text-center dark:border-white">
+                    {i + 1}
+                  </td>
+                  <td className="border px-2 py-1 dark:border-white">
+                    {row.dui_or_nit}
+                  </td>
+                  <td className="border px-2 py-1 dark:border-white">
+                    {row.document_type}
+                  </td>
+                  <td className="border px-2 py-1 dark:border-white">
+                    {[
+                      row.first_name,
+                      row.middle_name,
+                      row.last_name,
+                      row.second_last_name,
+                      row.maiden_name,
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                  </td>
+                  <td className="border px-2 py-1 dark:border-white">
+                    {row.nama_jabatan}
+                  </td>
+                  <td className="border px-2 py-1 dark:border-white">
+                    {" "}
+                    {symbol}
+                    {toLocal(row.salarioBruto)}
+                  </td>
+                  <td className="border px-2 py-1 dark:border-white">
+                    {row.hadir}
+                  </td>
+                  <td className="border px-2 py-1 dark:border-white">
+                    {row.sakit}
+                  </td>
+                  <td className="border px-2 py-1 dark:border-white">
+                    {row.alpha}
+                  </td>
+                  <td className="border px-2 py-1 dark:border-white">
+                    {symbol}
+                    {toLocal(row.totalDeductions)}
+                  </td>
+                  <td className="border px-2 py-1 dark:border-white">
+                    {symbol}
+                    {toLocal(row.castigo_ausencias)}
+                  </td>
+                  <td className="border px-2 py-1 dark:border-white">
+                    {symbol}
+                    {toLocal(row.total)}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
-        <div className="py-6">
-          <div className="font-medium text-black text-right dark:text-white">
-            <span>Karawang, {`${new Date().getDate()} ${bulan} ${tahun}`}</span>
-            <br />
-            <span className="p-26">{t('finance')}</span>
-            <br />
-            <br />
-            <span className="p-8 italic text-black dark:text-white">{t('signature')}</span>
-          </div>
+
+        {/* Firma */}
+        <div className="mt-6 text-right dark:text-white">
+          <p>{`${day} ${getDisplayValue(monthName)} ${year}`}</p>
+          <p className="italic">{t("signature")}</p>
         </div>
-        <div className="italic text-black dark:text-white mt-40">
-          {t('printedOn')}: {`${new Date().getDate()} ${bulan} ${tahun}`}
+
+        {/* Pie de impresión */}
+        <div className="mt-10 italic dark:text-white">
+          {t("printedOn")}: {`${day} ${getDisplayValue(monthName)} ${year}`}
         </div>
       </div>
     </>

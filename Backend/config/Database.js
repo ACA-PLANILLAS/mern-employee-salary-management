@@ -1,5 +1,4 @@
 import { Sequelize } from 'sequelize';
-
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -15,6 +14,5 @@ const db = new Sequelize(
     }
 );
 
-await db.sync();
 console.log('Database connected...');
 export default db

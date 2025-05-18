@@ -1,19 +1,14 @@
-// src/pages/Parametros.jsx
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Layout from "../../layout";
-import { Breadcrumb } from "../../components";
+import { Breadcrumb, ButtonOne, ButtonTwo } from "../../components";
 import Swal from "sweetalert2";
-import { Button } from "@mui/material";
-import {
-  ModalEditParametro,
-  ModalViewParametro,
-} from "../../components/molecules/Modals/Parametros";
 import { getMe } from "../../config/redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import ModalEditParametro from "../../components/molecules/Modals/Parametros/ModalEditParametro";
 
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from "@/config/env";
 
 const Parametros = () => {
   const [parameters, setParameters] = useState([]);
@@ -24,6 +19,26 @@ const Parametros = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
+
+  const fetchParameters = async () => {
+    try {
+      const { data } = await axios.get(`${API_URL}/parameters`);
+      setParameters(data);
+    } catch (error) {
+      console.error(error);
+      Swal.fire("Error", "No se pudieron cargar los parámetros", "error");
+    }
+  };
+
+  useEffect(() => {
+    fetchParameters();
+    dispatch(getMe());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isError) navigate("/login");
+    if (user && user.hak_akses !== "admin") navigate("/dashboard");
+  }, [isError, user, navigate]);
 
   const handleOpenViewModal = (param) => {
     setSelectedParam(param);
@@ -41,38 +56,13 @@ const Parametros = () => {
     setSelectedParam(null);
   };
 
-  const fetchParameters = async () => {
-    try {
-      const { data } = await axios.get(`${API_URL}/parameters`);
-      setParameters(data);
-    } catch (error) {
-      console.error(error);
-      Swal.fire("Error", "No se pudieron cargar los parámetros", "error");
-    }
-  };
-
-  useEffect(() => {
-    fetchParameters();
-  }, []);
-
-  useEffect(() => {
-    dispatch(getMe());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (isError) navigate("/login");
-    if (user && user.hak_akses !== "admin") navigate("/dashboard");
-  }, [isError, user, navigate]);
-
   const handleUpdateParam = async (updated) => {
     try {
-      // Asumo ruta PUT /parameters/
       await axios.put(`${API_URL}/parameters/`, {
         id: updated.id,
         name: updated.name,
         value: updated.value,
       });
-      // Refrescar estado local
       setParameters((params) =>
         params.map((p) => (p.id === updated.id ? { ...p, ...updated } : p))
       );
@@ -132,20 +122,9 @@ const Parametros = () => {
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                       <div className="flex gap-2">
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          onClick={() => handleOpenViewModal(param)}
-                        >
-                          Ver
-                        </Button>
-                        <Button
-                          variant="contained"
-                          size="small"
-                          onClick={() => handleOpenEditModal(param)}
-                        >
+                        <ButtonOne onClick={() => handleOpenEditModal(param)}>
                           Editar
-                        </Button>
+                        </ButtonOne>
                       </div>
                     </td>
                   </tr>
@@ -155,14 +134,6 @@ const Parametros = () => {
           </table>
         </div>
       </div>
-
-      {openViewModal && selectedParam && (
-        <ModalViewParametro
-          open={openViewModal}
-          onClose={handleCloseModals}
-          data={selectedParam}
-        />
-      )}
 
       {openEditModal && selectedParam && (
         <ModalEditParametro

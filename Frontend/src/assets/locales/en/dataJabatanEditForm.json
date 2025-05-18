@@ -12,5 +12,9 @@
   "back": "Back",
   "success": "Successful",
   "error": "Failed",
-  "errorOccurred": "An error occurred"
+  "errorOccurred": "An error occurred",
+  "allFieldsRequired": "All fields are required",
+  "requiredAndGreaterThanZero": "This field is required and must be greater than zero",
+  "invalidFormat": "Invalid format. Use only numbers with up to 2 decimal places",
+  "invalidMoneyFields": "Check monetary fields. Only positive numeric values are allowed"
 }

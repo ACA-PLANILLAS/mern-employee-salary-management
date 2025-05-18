@@ -10,7 +10,7 @@ import { getMe } from "../../../../../config/redux/action";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { useErrorMessage } from "../../../../../hooks/useErrorMessage";
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '@/config/env';
 
 const FormEditDataPegawai = () => {
   const { id } = useParams();
@@ -186,9 +186,30 @@ const FormEditDataPegawai = () => {
     if (val !== "" && val != null && val !== "Invalid date")
       fd.append(key, val);
   };
+  
+
+  const validateForm = () => {
+    const requiredFields = [
+      'dui_or_nit', 'document_type', 'isss_affiliation_number',
+      'pension_institution_code', 'first_name', 'last_name',
+      'jenis_kelamin', 'hire_date', 'status', 'jabatan',
+      'hak_akses'
+    ];
+
+    for (const field of requiredFields) {
+      if (!formData[field] || String(formData[field])?.trim() === "") {
+        Swal.fire({ icon: "error", title: t("gagal"), text: t("fieldRequired", { field: t(field) }) });
+        return false;
+      }
+    }
+
+    return true;
+  };
 
   const submitDataPegawai = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     const newFormData = new FormData();
     if (file) newFormData.append("photo", file);
     newFormData.append("title", title);
@@ -274,7 +295,7 @@ const FormEditDataPegawai = () => {
                   {/* <div className='w-full xl:w-1/2'>…nik{/*/}
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("documentType")}
+                      {t("documentType")} <span className="text-meta-1">*</span>
                     </label>
                     <select
                       name="document_type"
@@ -283,15 +304,15 @@ const FormEditDataPegawai = () => {
                       className="w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input"
                     >
                       <option value="">{t("documentType")}</option>
-                      <option value="DUI">DUI</option>
-                      <option value="Pasaporte">Pasaporte</option>
-                      <option value="Minoridad">Carné de Minoridad</option>
-                      <option value="Residente">Carné de Residente</option>
+                      <option value="DUI">{t("dui")}</option>
+                      <option value="Pasaporte">{t("passport")}</option>
+                      <option value="Minoridad">{t("minorIdCard")}</option>
+                      <option value="Residente">{t("residentCard")}</option>
                     </select>
                   </div>
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("duiOrNit")}
+                      {t("duiOrNit")} <span className="text-meta-1">*</span>
                     </label>
                     <input
                       type="text"
@@ -307,7 +328,7 @@ const FormEditDataPegawai = () => {
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("pensionInstitutionCode")}
+                      {t("pensionInstitutionCode")} <span className="text-meta-1">*</span>
                     </label>
                     <select
                       name="pension_institution_code"
@@ -325,7 +346,7 @@ const FormEditDataPegawai = () => {
                   </div>
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("isssAffiliationNumber")}
+                      {t("isssAffiliationNumber")} <span className="text-meta-1">*</span>
                     </label>
                     <input
                       type="text"
