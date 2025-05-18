@@ -193,7 +193,7 @@ const FormEditDataPegawai = () => {
       'dui_or_nit', 'document_type', 'isss_affiliation_number',
       'pension_institution_code', 'first_name', 'last_name',
       'jenis_kelamin', 'hire_date', 'status', 'jabatan',
-      'username', 'password', 'confPassword', 'hak_akses'
+      'hak_akses'
     ];
 
     for (const field of requiredFields) {
@@ -304,10 +304,10 @@ const FormEditDataPegawai = () => {
                       className="w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input"
                     >
                       <option value="">{t("documentType")}</option>
-                      <option value="DUI">DUI</option>
-                      <option value="Pasaporte">Pasaporte</option>
-                      <option value="Minoridad">Carné de Minoridad</option>
-                      <option value="Residente">Carné de Residente</option>
+                      <option value="DUI">{t("dui")}</option>
+                      <option value="Pasaporte">{t("passport")}</option>
+                      <option value="Minoridad">{t("minorIdCard")}</option>
+                      <option value="Residente">{t("residentCard")}</option>
                     </select>
                   </div>
                   <div className="w-full xl:w-1/2">
