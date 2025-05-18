@@ -14,4 +14,7 @@ const db = new Sequelize(
         logging: false,
     }
 );
+
+await db.sync();
+console.log('Database connected...');
 export default db
