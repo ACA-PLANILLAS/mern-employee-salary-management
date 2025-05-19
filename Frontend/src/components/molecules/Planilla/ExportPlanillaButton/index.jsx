@@ -80,10 +80,10 @@ export default function ExportPlanillaButton({ data, month, year }) {
       const lines = [csvHeader];
       data.forEach((row) => {
         const cols = [
-          "TODO: DUI/NIT empleador",
-          "TODO: número patronal ISSS",
+          row.duiEmpleador,
+          row.numeroPatronalISSS,
           `${month}-${year}`,
-          "TODO: correlativo CT ISSS",
+          row.correlativoCentroTrabajoISSS,
           row.attendanceId,
           row.document_type,
           row.isss_affiliation_number,
