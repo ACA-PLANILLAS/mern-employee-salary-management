@@ -24,6 +24,7 @@ import { FaUser } from "react-icons/fa";
 
 import defaultAvatar from "../../../../assets/images/defaultAvatar.png";
 import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
+import { useErrorMessage } from "../../../../hooks/useErrorMessage";
 
 const ITEMS_PER_PAGE = 4;
 
@@ -37,6 +38,7 @@ const DataPegawai = () => {
   const { dataPegawai } = useSelector((state) => state.dataPegawai);
   const { t } = useTranslation("dataPegawai");
   const getDisplayValue = useDisplayValue();
+  const getErrorMessage = useErrorMessage();
 
   const { toLocal, symbol, currency } = useCurrencyByUser();
 
@@ -84,6 +86,35 @@ const DataPegawai = () => {
           });
           dispatch(getDataPegawai());
         });
+
+        dispatch(deleteDataPegawai(id))
+          .then((response) => {
+            if (response.status === 200) {
+              Swal.fire({
+                title: t("toast.deleteSuccess.title"),
+                text: t("toast.deleteSuccess.message"),
+                icon: "success",
+                timer: 1000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+              });
+              dispatch(getDataPegawai());
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: t("toast.deleteError.title"),
+                text: getErrorMessage(response?.msg),
+              }).then(() => {});
+            }
+          })
+          .catch((error) => {
+            const status = error.response?.data?.msg || "desconocido";
+            Swal.fire({
+              icon: "error",
+              title: t("toast.deleteError.title"),
+              text: getErrorMessage(status),
+            }).then(() => {});
+          });
       }
     });
   };
