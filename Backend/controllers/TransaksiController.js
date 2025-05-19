@@ -826,7 +826,8 @@ export const getDataGajiPegawai = async (year, month) => {
       })
     );
 
-    return salariosConDeducciones;
+    const salariosClean = salariosConDeducciones.filter(item => item != null);
+    return salariosClean;
   } catch (error) {
     console.error(error);
   }
