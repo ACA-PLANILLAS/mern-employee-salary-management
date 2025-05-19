@@ -272,7 +272,8 @@ const DetailDataGaji = () => {
                 {rentas.map((d, i) => (
                   <tr key={`din-${i}`}>
                     <td className="px-4 py-2">
-                      Tramo {i + 1} ({d.from} – {d.until})
+                      Tramo {i + 1} ({symbol + toLocal(d.from)} –{" "}
+                      {symbol + toLocal(d.until)})
                     </td>
                     <td className="text-red-500 px-4 py-2 text-right">
                       {symbol}

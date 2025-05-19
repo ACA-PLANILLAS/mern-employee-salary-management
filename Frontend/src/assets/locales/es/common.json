@@ -58,6 +58,5 @@
     "alt": { "employeePhoto": "Foto de empleado" },
     "error": { "loadingEmployeeData": "Error al cargar datos de empleado" }
   },
-
-  "copyright": "© Copyright 2023, PT. Humpuss Carboximetil Celulosa. Todos los Derechos Reservados"
+  "copyright": "© Copyright 2023. Todos los derechos reservados"
 }

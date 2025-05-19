@@ -267,21 +267,18 @@ export const createDataPotonganGaji = async (req, res) => {
     deduction_group,
   } = req.body;
 
-  console.log("req.body", req.body);
 
   try {
     // Si tienen el mismo nombre y mismo alias
     let nama_potongan;
 
     if (deduction_group == undefined || deduction_group == null) {
-      console.log("1");
       await PotonganGaji.findOne({
         where: {
           potongan: potongan,
         },
       });
     } else {
-      console.log("2");
       await PotonganGaji.findOne({
         where: {
           potongan: potongan,
@@ -879,6 +876,9 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
         });
       });
 
+      
+          console.log("totalValueDeducted sta", totalValueDeducted)
+
     const salarioStandarRestante = baseSalary - subtotalStandarDeductions;
 
     resultDataPotongan
@@ -912,6 +912,8 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
           valueDeducted,
         });
       });
+
+      console.log("totalValueDeducted DIN", totalValueDeducted)
 
     const valueDeducted = salarioStandarRestante - subtotalDynamicDeductions;
 
@@ -1215,12 +1217,8 @@ export const viewChartDataSalaryByGender = async (req, res) => {
       const pegawai = pegawaiMap[nik];
       if (!pegawai) return;
 
-      
-
       const { salary, gender } = pegawai;
       const monthIndex = parseInt(entry.bulan, 10) - 1;
-
-      console.log("> gender", gender)
 
       if (gender.includes("laki-laki")) {
         salarioPorGeneroYMes.laki[monthIndex] += 1;
