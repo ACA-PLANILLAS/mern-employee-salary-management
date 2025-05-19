@@ -13,5 +13,8 @@
     "showing": "Mostrando",
     "of": "de",
     "dataNotFoundDescription": "Lo sentimos, los datos que busca no fueron encontrados",
-    "errorLoadingData": "Ocurrió un error al cargar los datos."
+    "errorLoadingData": "Ocurrió un error al cargar los datos.",
+    "printButtonExcel": "Imprimir en Excel",
+    "swalTitle": "Error",
+    "swalText": "No se encontraron datos para exportar a Excel"
   }

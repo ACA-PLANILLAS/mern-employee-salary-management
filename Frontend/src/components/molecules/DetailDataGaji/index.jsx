@@ -7,7 +7,10 @@ import Layout from '../../../layout';
 import { Breadcrumb, ButtonOne, ButtonTwo } from '../../../components';
 import { TfiPrinter } from 'react-icons/tfi';
 import { useTranslation } from 'react-i18next';
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 const API_URL = import.meta.env.VITE_API_URL;
+import Swal from 'sweetalert2';
 
 const DetailDataGaji = () => {
     const [data, setData] = useState({
@@ -61,6 +64,50 @@ const DetailDataGaji = () => {
             navigate('/dashboard');
         }
     }, [isError, user, navigate]);
+
+    const handleExportExcel = async (event) => {
+        event.preventDefault();
+        console.log(data);
+        try {
+            if(data){
+
+                const worksheet = XLSX.utils.json_to_sheet([data]);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
+        
+            const excelBuffer = XLSX.write(workbook, {
+              bookType: "xlsx",
+              type: "array",
+            });
+        
+            const blob = new Blob([excelBuffer], {
+              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+        
+            saveAs(blob, "datos.xlsx");
+        }else{
+       
+            Swal.fire({
+                icon: 'error',
+                title: t('swalTitle'),
+                text: t('swalText'),
+                timer: 2000,
+            });
+        }
+
+        } catch (error) {
+            console.log(error);
+
+            Swal.fire({
+                icon: 'error',
+                title: t('swalTitle'),
+                text: t('swalText'),
+                timer: 2000,
+            });
+        }
+        
+        
+    }
 
     return (
         <Layout>
@@ -187,6 +234,12 @@ const DetailDataGaji = () => {
                                 <span>
                                     <TfiPrinter />
                                 </span>
+                            </ButtonOne>
+                            <ButtonOne type="button" onClick={handleExportExcel} className='ml-2'>
+                                        <span>{t('printButtonExcel')}</span>
+                                        <span>
+                                            <TfiPrinter />
+                                        </span>
                             </ButtonOne>
                         </div>
                     </div>

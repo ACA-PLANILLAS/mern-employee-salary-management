@@ -2,13 +2,15 @@ import { useState, useEffect } from "react";
 import Layout from "../../../layout";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Breadcrumb } from "../../../components";
+import { Breadcrumb, ButtonOne } from "../../../components";
 import Swal from "sweetalert2";
 import { getMe, viewGajiSinglePegawaiByMonth, viewGajiSinglePegawaiByName, viewGajiSinglePegawaiByYear } from "../../../config/redux/action";
 import axios from "axios";
 import { TfiPrinter } from "react-icons/tfi";
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from "react-icons/md";
 import { useTranslation } from 'react-i18next';
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ITEMS_PER_PAGE = 4;
@@ -150,6 +152,51 @@ const DataGajiPegawai = () => {
     }
   }, [isError, user, navigate]);
 
+  const handleExportExcel = async (event) => {
+    event.preventDefault();
+    console.log(dataGajiPegawai);
+    try {
+        if(dataGajiPegawai){
+
+            const worksheet = XLSX.utils.json_to_sheet(dataGajiPegawai);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
+    
+        const excelBuffer = XLSX.write(workbook, {
+          bookType: "xlsx",
+          type: "array",
+        });
+    
+        const blob = new Blob([excelBuffer], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+    
+        saveAs(blob, "datos.xlsx");
+    }else{
+   
+        Swal.fire({
+            icon: 'error',
+            title: t('swalTitle'),
+            text: t('swalText'),
+            timer: 2000,
+        });
+    }
+
+    } catch (error) {
+        console.log(error);
+
+        Swal.fire({
+            icon: 'error',
+            title: t('swalTitle'),
+            text: t('swalText'),
+            timer: 2000,
+        });
+    }
+    
+    
+}
+
+
 
   return (
     <Layout>
@@ -242,6 +289,12 @@ const DataGajiPegawai = () => {
                 })}
             </tbody>
           </table>
+          <ButtonOne type="button" onClick={handleExportExcel}>
+            <span>{t('printButtonExcel')}</span>
+            <span>
+              <TfiPrinter />
+            </span>
+          </ButtonOne>
         </div>
 
         <div className="mt-4 flex flex-col items-center justify-between md:flex-row md:justify-between">

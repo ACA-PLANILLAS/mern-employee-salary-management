@@ -13,5 +13,8 @@
     "showing": "Menampilkan",
     "of": "dari",
     "dataNotFoundDescription": "Maaf, data yang anda cari tidak ditemukan",
-    "errorLoadingData": "Terjadi kesalahan saat memuat data."
+    "errorLoadingData": "Terjadi kesalahan saat memuat data.",
+    "printButtonExcel": "Cetak dalam Excel",
+    "swalTitle": "Error",
+    "swalText": "Tidak ada data untuk diekspor ke Excel"
 }

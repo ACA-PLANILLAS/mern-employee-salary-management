@@ -10,6 +10,8 @@ import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdOutlineKeyboar
 import { TfiPrinter } from 'react-icons/tfi'
 import { fetchLaporanGajiByMonth, fetchLaporanGajiByYear, getDataGaji, getMe } from '../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 const ITEMS_PER_PAGE = 4;
 
@@ -117,6 +119,48 @@ const DataGaji = () => {
             navigate('/dashboard');
         }
     }, [isError, user, navigate]);
+
+    const handleExportExcel = async (event) => {
+        try {
+            if(dataGaji){
+
+            const worksheet = XLSX.utils.json_to_sheet(dataGaji);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
+        
+            const excelBuffer = XLSX.write(workbook, {
+              bookType: "xlsx",
+              type: "array",
+            });
+        
+            const blob = new Blob([excelBuffer], {
+              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+        
+            saveAs(blob, "datos.xlsx");
+        }else{
+       
+            Swal.fire({
+                icon: 'error',
+                title: t('swalTitle'),
+                text: t('swalText'),
+                timer: 2000,
+            });
+        }
+
+        } catch (error) {
+            console.log(error);
+
+            Swal.fire({
+                icon: 'error',
+                title: t('swalTitle'),
+                text: t('swalText'),
+                timer: 2000,
+            });
+        }
+        
+        
+    }
 
     const paginationItems = () => {
         const items = [];
@@ -351,6 +395,12 @@ const DataGaji = () => {
                             })}
                         </tbody>
                     </table>
+                    <ButtonOne type="button" onClick={handleExportExcel}>
+                                        <span>{t('printButtonExcel')}</span>
+                                        <span>
+                                            <TfiPrinter />
+                                        </span>
+                    </ButtonOne>
                 </div>
 
                 <div className="flex justify-between items-center mt-4 flex-col md:flex-row md:justify-between">

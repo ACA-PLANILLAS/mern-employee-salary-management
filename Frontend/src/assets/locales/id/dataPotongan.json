@@ -14,5 +14,8 @@
     "searchPlaceholder": "Cari Potongan..",
     "showing": "Menampilkan",
     "of": "dari",
-    "deductionData": "Data Potongan"
+    "deductionData": "Data Potongan",
+    "printButtonExcel": "Cetak dalam Excel",
+    "swalTitle": "Error",
+    "swalText": "Tidak ada data untuk diekspor ke Excel"
 }

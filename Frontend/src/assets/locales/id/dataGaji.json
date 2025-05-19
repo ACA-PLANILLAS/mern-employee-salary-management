@@ -24,5 +24,8 @@
   "filter": "Filter",
   "view": "Lihat",
   "displayingSalaryDataMonth": "Menampilkan Data Gaji untuk Bulan",
-  "year": "Tahun"
+  "year": "Tahun",
+  "printButtonExcel": "Cetak dalam Excel",
+  "swalTitle": "Error",
+  "swalText": "Tidak ada data untuk diekspor ke Excel"
 }

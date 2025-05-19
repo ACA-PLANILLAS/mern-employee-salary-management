@@ -24,5 +24,8 @@
   "filter": "Filter",
   "view": "View",
   "displayingSalaryDataMonth": "Displaying Salary Data for the Month",
-  "year": "Year"
+  "year": "Year",
+  "printButtonExcel": "Print in Excel",
+  "swalTitle": "Error",
+  "swalText": "No data found to export to Excel"
 }

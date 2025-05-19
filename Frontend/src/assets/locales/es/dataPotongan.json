@@ -14,5 +14,8 @@
     "searchPlaceholder": "Buscar Deducción...",
     "showing": "Mostrando",
     "of": "de",
-    "deductionData": "Datos de Deducción"
+    "deductionData": "Datos de Deducción",
+    "printButtonExcel": "Imprimir en Excel",
+    "swalTitle": "Error",
+    "swalText": "No se encontraron datos para exportar a Excel"
   }

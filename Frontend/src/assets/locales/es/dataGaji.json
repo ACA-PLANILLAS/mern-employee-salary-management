@@ -24,5 +24,8 @@
   "filter": "Filtrar",
   "view": "Ver",
   "displayingSalaryDataMonth": "Mostrando Datos de Salario para el Mes",
-  "year": "Año"
+  "year": "Año",
+  "printButtonExcel": "Imprimir en Excel",
+  "swalTitle": "Error",
+  "swalText": "No se encontraron datos para exportar a Excel"
 }

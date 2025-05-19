@@ -14,5 +14,8 @@
     "searchPlaceholder": "Search Deduction...",
     "showing": "Showing",
     "of": "of",
-    "deductionData": "Deduction Data"
+    "deductionData": "Deduction Data",
+    "printButtonExcel": "Print in Excel",
+    "swalTitle": "Error",
+    "swalText": "No data found to export to Excel"
   }

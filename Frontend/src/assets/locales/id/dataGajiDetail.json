@@ -6,6 +6,9 @@
     "mealAllowance": "Uang Makan",
     "deduction": "Potongan",
     "totalSalary": "Total Gaji",
-    "printSalarySlip": "Cetak Gaji Pegawai"
+    "printSalarySlip": "Cetak Gaji Pegawai",
+    "printButtonExcel": "Cetak dalam Excel",
+    "swalTitle": "Error",
+    "swalText": "Tidak ada data untuk diekspor ke Excel"
   }
   

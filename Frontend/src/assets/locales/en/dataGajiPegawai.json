@@ -13,5 +13,8 @@
     "showing": "Showing",
     "of": "of",
     "dataNotFoundDescription": "Sorry, the data you are looking for was not found",
-    "errorLoadingData": "An error occurred while loading data."
+    "errorLoadingData": "An error occurred while loading data.",
+    "printButtonExcel": "Print in Excel",
+    "swalTitle": "Error",
+    "swalText": "No data found to export to Excel"
 }

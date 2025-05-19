@@ -6,5 +6,8 @@
   "mealAllowance": "Asignación de Comida",
   "deduction": "Deducción",
   "totalSalary": "Salario Total",
-  "printSalarySlip": "Imprimir Recibo de Salario"
+  "printSalarySlip": "Imprimir Recibo de Salario",
+  "printButtonExcel": "Imprimir en Excel",
+  "swalTitle": "Error",
+  "swalText": "No se encontraron datos para exportar a Excel"
 }

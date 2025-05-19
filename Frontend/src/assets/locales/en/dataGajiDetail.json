@@ -6,5 +6,8 @@
   "mealAllowance": "Meal Allowance",
   "deduction": "Deduction",
   "totalSalary": "Total Salary",
-  "printSalarySlip": "Print Salary Slip"
+  "printSalarySlip": "Print Salary Slip",
+  "printButtonExcel": "Print in Excel",
+  "swalTitle": "Error",
+  "swalText": "No data found to export to Excel"
 }
