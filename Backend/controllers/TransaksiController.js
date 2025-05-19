@@ -24,6 +24,8 @@ function toFloatOrZero(value) {
   return isNaN(parsed) ? 0 : parsed;
 }
 
+const roundUp2 = (value) => Math.ceil(value * 100) / 100;
+
 //TODO. modifier by month
 // method untuk menampilkan semua Data Kehadiran
 export const viewDataKehadiran = async (req, res) => {
@@ -266,7 +268,6 @@ export const createDataPotonganGaji = async (req, res) => {
     payment_frequency,
     deduction_group,
   } = req.body;
-
 
   try {
     // Si tienen el mismo nombre y mismo alias
@@ -645,6 +646,12 @@ export const getDataGajiPegawai = async (year, month) => {
       where: { type: PARAMS.PMON },
     });
 
+    // Parámetros de la empresa (DUI, ISSS, CCTS, Nombre)
+    const paramDUIN = await Parameter.findOne({ where: { type: "DUIN" } });
+    const paramNPIS = await Parameter.findOne({ where: { type: "NPIS" } });
+    const paramCCTS = await Parameter.findOne({ where: { type: "CCTS" } });
+    const paramCOMP = await Parameter.findOne({ where: { type: "COMP" } });
+
     const salariosConDeducciones = await Promise.all(
       attendance.map(async (attendanceEmployee) => {
         // 4a) datos del empleado
@@ -680,18 +687,31 @@ export const getDataGajiPegawai = async (year, month) => {
           where: { id: idPuesto },
         });
 
-        // SALARIO BASE
-        const grossSalary = toFloatOrZero(datosPuesto?.gaji_pokok);
+        // SALARIO BASE entre el tipo de pago
+        const rawSalary = toFloatOrZero(datosPuesto?.gaji_pokok);
+        const payCount = totalPaymentsInMonth?.value || 1;
+        const grossSalary = rawSalary / payCount;
 
-        // CASTIGOS POR INASISTENCIAS
+        // Ausencias y penalización (Sí sujetos a ISSS e ISR)
         const unjustifiedAbsence = parseFloat(attendanceEmployee.alpha) || 0;
         const justifiedAbsence = parseFloat(attendanceEmployee.sakit) || 0; // Por el momento ignorar
         const totalAbsences = unjustifiedAbsence; // + enfermedad;
-        const workDays = workDaysPerPeriod?.value || 30;
-        const dailyRate = grossSalary / workDays;
+        const workDaysInPeriod = { 1: 30, 2: 15, 4: 7 }[payCount] || 0; // 1 para 30, 2 para 15 y 4 para 7
+        const dailyRate = grossSalary / workDaysInPeriod;
         const absencePenalty = dailyRate * totalAbsences;
 
-        const baseSalary = grossSalary - absencePenalty;
+        // Viáticos (transporte + alimentación) (NO sujetos a ISSS ni ISR)
+        const viaticos =
+          toFloatOrZero(datosPuesto?.tj_transport) +
+            toFloatOrZero(datosPuesto?.uang_makan) || 0;
+
+        // Pagos extra (Sí sujetos a ISSS e ISR)
+        const additional =
+          toFloatOrZero(attendanceEmployee.additional_payments) || 0;
+        const vacation =
+          toFloatOrZero(attendanceEmployee.vacation_payments) || 0;
+
+        const baseSalary = grossSalary + additional + vacation - absencePenalty;
 
         const totalDeductions = [];
         let totalValueDeducted = 0;
@@ -751,6 +771,10 @@ export const getDataGajiPegawai = async (year, month) => {
         const valueDeducted =
           salarioStandarRestante - subtotalDynamicDeductions;
 
+        const totalQuitado = totalValueDeducted + absencePenalty;
+
+        const total = roundUp2(valueDeducted < 0 ? 0 : valueDeducted);
+
         return {
           ...pegawai,
           ...datosPuesto?.dataValues,
@@ -770,20 +794,29 @@ export const getDataGajiPegawai = async (year, month) => {
 
           // Datos salarios
           salarioEmpleo: datosPuesto?.gaji_pokok, // El salario sin nada
-          salarioBruto: grossSalary.toFixed(2),
-          salarioInicial: baseSalary,
-          salarioDeduccionesStandar: salarioStandarRestante,
-          salarioDeduccionesDinamicas: valueDeducted,
-          salarioTotal: valueDeducted,
-          total: (valueDeducted < 0 ? 0 : valueDeducted)
-            .toFixed(2)
-            .toLocaleString(),
+          salarioInicial: roundUp2(baseSalary), // El salario mas pagos adicionales - sanciones
+          salarioBruto:roundUp2(grossSalary), // El salario quinsenal, o semanal
+          salarioDeduccionesStandar: roundUp2(salarioStandarRestante),
+          salarioDeduccionesDinamicas: roundUp2(valueDeducted),
+          salarioTotal: roundUp2(valueDeducted),
+          total: roundUp2(total),
+          totalWithViatics: roundUp2(total + viaticos),
 
-          castigo_ausencias: absencePenalty.toLocaleString(),
+          // Datos adicionales
+          viaticos: roundUp2(viaticos),
+          castigo_ausencias: roundUp2(absencePenalty),
+          extras: roundUp2(additional + vacation),
 
-          subtotalStandarDeductions: subtotalStandarDeductions.toLocaleString(),
-          subtotalDynamicDeductions: subtotalDynamicDeductions.toLocaleString(),
-          totalDeductions: totalValueDeducted.toLocaleString(),
+          subtotalStandarDeductions: roundUp2(subtotalStandarDeductions),
+          subtotalDynamicDeductions: roundUp2(subtotalDynamicDeductions),
+          totalDeductions: roundUp2(totalValueDeducted),
+          totalQuitado: roundUp2(totalQuitado),
+
+          // parámetros empresa
+          duiEmpleador: paramDUIN?.value,
+          numeroPatronalISSS: paramNPIS?.value,
+          correlativoCentroTrabajoISSS: paramCCTS?.value,
+          nombreEmpresa: paramCOMP?.value,
 
           // Fechas
           year: attendanceEmployee.tahun,
@@ -824,6 +857,12 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
       where: { type: PARAMS.PMON },
     });
 
+    // Parámetros de la empresa (DUI, ISSS, CCTS, Nombre)
+    const paramDUIN = await Parameter.findOne({ where: { type: "DUIN" } });
+    const paramNPIS = await Parameter.findOne({ where: { type: "NPIS" } });
+    const paramCCTS = await Parameter.findOne({ where: { type: "CCTS" } });
+    const paramCOMP = await Parameter.findOne({ where: { type: "COMP" } });
+
     // Procesar asistencia individual
     const attDate = new Date(att.tahun, parseInt(att.bulan, 10) - 1, att.day);
 
@@ -845,7 +884,12 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
       where: { id: idPuesto },
     });
 
-    const grossSalary = toFloatOrZero(datosPuesto?.gaji_pokok);
+    // SALARIO BASE entre el tipo de pago
+    const rawSalary = toFloatOrZero(datosPuesto?.gaji_pokok);
+    const payCount = totalPaymentsInMonth?.value || 1;
+    const grossSalary = rawSalary / payCount;
+
+    // Ausencias y penalización (Sí sujetos a ISSS e ISR)
 
     const unjustifiedAbsence = parseFloat(att.alpha) || 0;
     const justifiedAbsence = parseFloat(att.sakit) || 0;
@@ -854,7 +898,16 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
     const dailyRate = grossSalary / workDays;
     const absencePenalty = dailyRate * totalAbsences;
 
-    const baseSalary = grossSalary - absencePenalty;
+    // Viáticos (transporte + alimentación) (NO sujetos a ISSS ni ISR)
+    const viaticos =
+      toFloatOrZero(datosPuesto?.tj_transport) +
+      toFloatOrZero(datosPuesto?.uang_makan);
+
+    // Pagos extra (Sí sujetos a ISSS e ISR)
+    const additional = toFloatOrZero(att.additional_payments) || 0;
+    const vacation = toFloatOrZero(att.vacation_payments) || 0;
+
+    const baseSalary = grossSalary + additional + vacation - absencePenalty;
 
     const totalDeductions = [];
     let totalValueDeducted = 0;
@@ -875,9 +928,6 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
           valueDeducted,
         });
       });
-
-      
-          console.log("totalValueDeducted sta", totalValueDeducted)
 
     const salarioStandarRestante = baseSalary - subtotalStandarDeductions;
 
@@ -913,9 +963,11 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
         });
       });
 
-      console.log("totalValueDeducted DIN", totalValueDeducted)
-
     const valueDeducted = salarioStandarRestante - subtotalDynamicDeductions;
+
+    const totalQuitado = totalValueDeducted + absencePenalty;
+
+    const total = roundUp2(valueDeducted < 0 ? 0 : valueDeducted);
 
     return {
       ...pegawai,
@@ -929,21 +981,31 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
       alpha: att.alpha,
 
       salarioEmpleo: datosPuesto?.gaji_pokok,
-      salarioBruto: grossSalary.toFixed(2),
-      salarioInicial: baseSalary,
-      salarioDeduccionesStandar: salarioStandarRestante,
-      salarioDeduccionesDinamicas: valueDeducted,
-      salarioTotal: valueDeducted,
-      total: (valueDeducted < 0 ? 0 : valueDeducted)
-        .toFixed(2)
-        .toLocaleString(),
+      salarioInicial: roundUp2(baseSalary), // El salario mas pagos adicionales - sanciones
+      salarioBruto: roundUp2(grossSalary), // El salario quinsenal, o semanal
+      salarioDeduccionesStandar: roundUp2(salarioStandarRestante),
+      salarioDeduccionesDinamicas: roundUp2(valueDeducted),
+      salarioTotal: roundUp2(valueDeducted),
+      total: roundUp2(total),
+      totalWithViatics: roundUp2(total + viaticos),
 
-      castigo_ausencias: absencePenalty.toLocaleString(),
+      // Datos adicionales
+      viaticos: roundUp2(viaticos),
+      castigo_ausencias: roundUp2(absencePenalty),
+      extras: roundUp2(additional + vacation),
 
-      subtotalStandarDeductions: subtotalStandarDeductions.toLocaleString(),
-      subtotalDynamicDeductions: subtotalDynamicDeductions.toLocaleString(),
-      totalDeductions: totalValueDeducted.toLocaleString(),
+      subtotalStandarDeductions: roundUp2(subtotalStandarDeductions),
+      subtotalDynamicDeductions: roundUp2(subtotalDynamicDeductions),
+      totalDeductions: roundUp2(totalValueDeducted),
+      totalQuitado: roundUp2(totalQuitado),
 
+      // parámetros empresa
+      duiEmpleador: paramDUIN?.value,
+      numeroPatronalISSS: paramNPIS?.value,
+      correlativoCentroTrabajoISSS: paramCCTS?.value,
+      nombreEmpresa: paramCOMP?.value,
+
+      // Fechas
       year: att.tahun,
       month: att.bulan,
       day: att.day,
@@ -1203,7 +1265,7 @@ export const viewChartDataSalaryByGender = async (req, res) => {
     allPegawai.forEach((p) => {
       pegawaiMap[String(p.id)] = {
         salary: parseFloat(p.monthly_salary || 0),
-        gender: (p.jenis_kelamin || "").toLowerCase().replace(/\s+/g, ''),
+        gender: (p.jenis_kelamin || "").toLowerCase().replace(/\s+/g, ""),
       };
     });
 
@@ -1229,8 +1291,18 @@ export const viewChartDataSalaryByGender = async (req, res) => {
 
     res.json({
       labels: [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
       ],
       series: [
         {
@@ -1245,7 +1317,9 @@ export const viewChartDataSalaryByGender = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: "Error al obtener datos del gráfico de salario por género" });
+    res.status(500).json({
+      msg: "Error al obtener datos del gráfico de salario por género",
+    });
   }
 };
 

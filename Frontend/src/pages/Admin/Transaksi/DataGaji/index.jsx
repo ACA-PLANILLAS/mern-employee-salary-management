@@ -55,7 +55,7 @@ const DataGaji = () => {
 
   const dateOptions = useMemo(() => {
     //  filtramos por año/mes
-    const relevant = dataGaji.filter(
+    const relevant = dataGaji?.filter(
       (d) =>
         d?.year?.toString() === filterTahun && d?.month?.toString() === filterBulan
     );
