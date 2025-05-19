@@ -75,18 +75,6 @@ const DataPegawai = () => {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteDataPegawai(id)).then(() => {
-          Swal.fire({
-            title: t("toast.deleteSuccess.title"),
-            text: t("toast.deleteSuccess.message"),
-            icon: "success",
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-          });
-          dispatch(getDataPegawai());
-        });
-
         dispatch(deleteDataPegawai(id))
           .then((response) => {
             if (response.status === 200) {

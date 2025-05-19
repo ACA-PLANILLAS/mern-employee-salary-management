@@ -6,6 +6,8 @@
   "noText": "No",
   "success": "Success",
   "deleteSuccess": "Attendance data successfully deleted.",
+  "error": "Error!",
+  "deleteError": "Could not delete the data. Please try again.",
   "filterTitle": "Filter Employee Attendance Data",
   "month": "Month",
   "selectMonth": "Select Month",
