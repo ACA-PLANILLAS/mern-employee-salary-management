@@ -28,5 +28,8 @@
   "comment01": "Obs. 1",
   "comment02": "Obs. 2",
   "invalidNumber": "Enter a valid number equal to or greater than zero",
-  "invalidAmount": "Enter a valid amount with up to two decimal places"
+  "invalidAmount": "Enter a valid amount with up to two decimal places",
+  "duiOrNit": "Document",
+  "documentType": "Document Type",
+  "name": "Name"
 }

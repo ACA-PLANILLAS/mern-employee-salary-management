@@ -6,6 +6,8 @@
   "noText": "No",
   "success": "Éxito",
   "deleteSuccess": "Los datos de asistencia se eliminaron correctamente.",
+  "error": "¡Error!",
+  "deleteError": "No se pudieron eliminar los datos. Inténtalo de nuevo.",
   "filterTitle": "Filtrar Datos de Asistencia de Empleados",
   "month": "Mes",
   "selectMonth": "Seleccionar Mes",

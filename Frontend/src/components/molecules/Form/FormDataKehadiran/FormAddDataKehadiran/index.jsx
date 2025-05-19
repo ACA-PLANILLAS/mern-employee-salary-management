@@ -323,10 +323,10 @@ const FormAddDataKehadiran = () => {
               <thead>
                 <tr className="bg-gray-2 text-left dark:bg-meta-4">
                   <th className="px-4 py-4">{t("no")}</th>
-                  <th className="px-4 py-4">{t("nik")}</th>
-                  <th className="px-4 py-4">{t("employeeName")}</th>
-                  <th className="px-4 py-4">{t("jobTitle")}</th>
-                  <th className="px-4 py-4">{t("gender")}</th>
+                  <th className="px-4 py-4">{t("duiOrNit")}</th>
+                  <th className="px-4 py-4">{t("documentType")}</th>
+                  <th className="px-4 py-4">{t("name")}</th>
+                  {/* <th className="px-4 py-4">{t("positionName")}</th> */}
                   <th className="px-4 py-4">{t("present")}</th>
                   <th className="px-4 py-4">{t("sick")}</th>
                   <th className="px-4 py-4">{t("alpha")}</th>
@@ -363,10 +363,11 @@ const FormAddDataKehadiran = () => {
                         <td className="px-4 py-5 text-center">
                           {globalIndex + 1}
                         </td>
-                        <td className="px-4 py-5">{emp.nik}</td>
-                        <td className="px-4 py-5">{emp.nama_pegawai}</td>
-                        <td className="px-4 py-5">{emp.jabatan}</td>
-                        <td className="px-4 py-5">{emp.jenis_kelamin}</td>
+                        <td className="px-4 py-5">{emp.dui_or_nit}</td>
+                        <td className="px-4 py-5">{emp.document_type}</td>
+                        <td className="px-4 py-5">{emp.first_name} {emp.middle_name} {emp.last_name}{" "}
+                      {emp.second_last_name} {emp.maiden_name}</td>
+                        {/* <td className="px-4 py-5">{emp.nama_jabatan}</td> */}
                         <td className="px-4 py-5">
                           <input
                             type="number"

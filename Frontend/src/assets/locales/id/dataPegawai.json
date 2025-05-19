@@ -40,6 +40,8 @@
   "modal.confirmDelete.no": "Tidak",
   "toast.deleteSuccess.title": "Berhasil",
   "toast.deleteSuccess.message": "Data pegawai berhasil dihapus.",
+  "toast.deleteError.title": "Kesalahan!",
+  "toast.deleterror.text": "Data gagal dihapus. Silakan coba lagi.",
   "pagination.displaying": "Menampilkan",
   "pagination.of": "dari",
   "pagination.totalEmployeeData": "Data Pegawai"

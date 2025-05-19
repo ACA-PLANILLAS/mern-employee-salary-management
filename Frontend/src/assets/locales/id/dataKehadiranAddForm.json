@@ -28,5 +28,8 @@
   "comment01": "Ket. 1",
   "comment02": "Ket. 2",
   "invalidNumber": "Masukkan angka yang valid, sama dengan atau lebih besar dari nol",
-  "invalidAmount": "Masukkan jumlah yang valid dengan maksimal dua angka desimal"
+  "invalidAmount": "Masukkan jumlah yang valid dengan maksimal dua angka desimal",
+  "duiOrNit": "Dokumen",
+  "documentType": "Jenis Dokumen",
+  "name": "Nama"
 }

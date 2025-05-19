@@ -55,7 +55,7 @@ const DataGaji = () => {
 
   const dateOptions = useMemo(() => {
     //  filtramos por año/mes
-    const relevant = dataGaji.filter(
+    const relevant = dataGaji?.filter(
       (d) =>
         d?.year?.toString() === filterTahun && d?.month?.toString() === filterBulan
     );
@@ -262,7 +262,7 @@ const DataGaji = () => {
               {/* Fecha */}
               <div className="relative flex-1">
                 <label className="mb-1 block px-2 text-sm font-medium">
-                  Fecha
+                  {t("date")}
                 </label>
                 <select
                   value={filterDate}

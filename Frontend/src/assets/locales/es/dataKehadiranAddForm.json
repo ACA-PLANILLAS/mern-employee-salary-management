@@ -28,5 +28,8 @@
   "comment01": "Obs. 1",
   "comment02": "Obs. 2",
   "invalidNumber": "Ingrese un número válido igual o mayor a cero",
-  "invalidAmount": "Ingrese un monto válido con hasta dos decimales"
+  "invalidAmount": "Ingrese un monto válido con hasta dos decimales",
+  "duiOrNit": "Documento",
+  "documentType": "Tipo de Documento",
+  "name": "Nombre"
 }
