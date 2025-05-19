@@ -21,15 +21,6 @@ import {
 import { useTranslation } from "react-i18next";
 import { useDisplayValue } from "../../../../hooks/useDisplayValue";
 import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
-import { useDispatch, useSelector } from 'react-redux';
-import { Breadcrumb, ButtonOne } from '../../../../components';
-import { FaRegEye } from 'react-icons/fa'
-import { BiSearch } from 'react-icons/bi'
-import Swal from 'sweetalert2';
-import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdOutlineKeyboardArrowDown } from 'react-icons/md'
-import { TfiPrinter } from 'react-icons/tfi'
-import { fetchLaporanGajiByMonth, fetchLaporanGajiByYear, getDataGaji, getMe } from '../../../../config/redux/action';
-import { useTranslation } from 'react-i18next';
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 

@@ -15,17 +15,32 @@ import { TfiPrinter } from 'react-icons/tfi';
 
 import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
 
+const ITEMS_PER_PAGE = 4;
+
 const DataPotongan = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const { t } = useTranslation('dataPotongan');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [currentPage, setCurrentPage] = useState(1);
   const { isError, user } = useSelector((state) => state.auth);
   const { dataPotongan } = useSelector((state) => state.dataPotongan);
 
+  const totalPages = Math.ceil(dataPotongan.length / ITEMS_PER_PAGE);
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+
   const { toLocal, symbol, currency } = useCurrencyByUser();
+
+  const filteredDataPotongan = dataPotongan.filter((potonganGaji) => {
+    const { potongan } = potonganGaji;
+    const keyword = searchKeyword.toLowerCase();
+    return (
+        potongan.toLowerCase().includes(keyword)
+    );
+});
 
   useEffect(() => {
     dispatch(getMe());
@@ -298,12 +313,7 @@ const DataPotongan = () => {
                             })}
                         </tbody>
                     </table>
-                    <ButtonOne type="button" onClick={handleExportExcel}>
-                                        <span>{t('printButtonExcel')}</span>
-                                        <span>
-                                            <TfiPrinter />
-                                        </span>
-                    </ButtonOne>
+
                 </div>
 
         {/* Tablas de dinámicos agrupados y ordenados por from */}
@@ -356,7 +366,12 @@ const DataPotongan = () => {
             </div>
           );
         })}
-
+                        <ButtonOne type="button" onClick={handleExportExcel}>
+                                        <span>{t('printButtonExcel')}</span>
+                                        <span>
+                                            <TfiPrinter />
+                                        </span>
+                    </ButtonOne>
       </div>
     </Layout>
   );

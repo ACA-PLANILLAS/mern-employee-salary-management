@@ -54,8 +54,8 @@ const LaporanAbsensi = () => {
             setShowMessage(false);
             Swal.fire({
                 icon: 'error',
-                title: t('laporanAbsensi.swalTitle'),
-                text: t('laporanAbsensi.swalText'),
+                title: t('swalTitle'),
+                text: t('swalText'),
                 timer: 2000,
             });
         }

@@ -42,5 +42,8 @@
   "vacationDays": "Días Vacaciones",
   "vacationPayments": "Monto Vacaciones",
   "observation1": "Observación 1",
-  "observation2": "Observación 2"
+  "observation2": "Observación 2",
+  "printButtonExcel": "Exportar a Excel",
+  "swalTitle": "Datos no encontrados",
+  "swalText": "Lo sentimos, no se encontraron los datos que buscabas"
 }

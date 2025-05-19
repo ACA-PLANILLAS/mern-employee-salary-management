@@ -42,5 +42,8 @@
   "vacationDays": "Hari Cuti",
   "vacationPayments": "Pembayaran Cuti",
   "observation1": "Observasi 1",
-  "observation2": "Observasi 2"
+  "observation2": "Observasi 2",
+  "printButtonExcel": "Ekspor ke Excel",
+  "swalTitle": "Data tidak ditemukan",
+  "swalText": "Maaf, data yang Anda cari tidak ditemukan"
 }

@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useErrorMessage } from "../../../../../hooks/useErrorMessage";
 import { OBSERVATION_CODES } from "../../../../../shared/Const";
 import { useDisplayValue } from "../../../../../hooks/useDisplayValue";
+import useCurrencyByUser from "../../../../../config/currency/useCurrencyByUser";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -21,7 +22,7 @@ const FormEditDataKehadiran = () => {
   const { t } = useTranslation("dataKehadiranEditForm");
   const getErrorMessage = useErrorMessage();
   const getDisplayValue = useDisplayValue();
-
+  const { toLocal, symbol, currency } = useCurrencyByUser();
   const [form, setForm] = useState({
     nik: "",
     nama_pegawai: "",
