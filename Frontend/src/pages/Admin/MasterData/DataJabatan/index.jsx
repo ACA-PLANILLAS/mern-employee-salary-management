@@ -10,10 +10,13 @@ import { BiSearch } from 'react-icons/bi';
 import { deleteDataJabatan, getDataJabatan, getMe } from '../../../../config/redux/action';
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
+import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
+import { CurrencySwitcher } from '../../../../components/atoms';
 
 const ITEMS_PER_PAGE = 4;
 
 const DataJabatan = () => {
+    const { toLocal, symbol, currency } = useCurrencyByUser();
     const [currentPage, setCurrentPage] = useState(1);
     const [searchKeyword, setSearchKeyword] = useState('');
 
@@ -174,13 +177,16 @@ const DataJabatan = () => {
                                         <p className='text-black dark:text-white'>{data.nama_jabatan}</p>
                                     </td>
                                     <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                                        <p className='text-black dark:text-white'>Rp. {data.gaji_pokok}</p>
+                                        {/* Salario Base */}
+                                        <p className='text-black dark:text-white'>{symbol} {toLocal(data.gaji_pokok)}</p>
                                     </td>
                                     <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                                        <p className='text-black dark:text-white'>Rp. {data.tj_transport}</p>
+                                        {/* Subsidio de Transporte */}
+                                        <p className='text-black dark:text-white'>{symbol} {toLocal(data.tj_transport)}</p>
                                     </td>
                                     <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
-                                        <p className='text-black dark:text-white'>Rp. {data.uang_makan}</p>
+                                        {/* Subsidio de Alimentación */}
+                                        <p className='text-black dark:text-white'>{symbol} {toLocal(data.uang_makan)}</p>
                                     </td>
                                     <td className='border-b border-[#eee] py-5 px-4 dark:border-strokedark'>
                                         <div className='flex items-center space-x-3.5'>

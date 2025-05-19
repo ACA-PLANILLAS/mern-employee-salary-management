@@ -16,7 +16,7 @@
       "contact": "Kontak"
     },
     "login": "Login"
-  },
+  },  
   "sidebar": {
     "dashboard": "Dashboard",
     "masterData": "Master Data",
@@ -32,9 +32,12 @@
     "paySlipReport": "Slip Gaji",
     "settings": "Pengaturan",
     "changePassword": "Ubah Password",
+    "parameters": "Parameter",
     "logout": "Log Out",
     "logoutConfirmationTitle": "Konfirmasi",
     "logoutConfirmationText": "Apakah Anda yakin ingin keluar?",
+    "yes": "Ya",
+    "no": "Tidak",
     "logoutSuccessTitle": "Logout Berhasil",
     "logoutSuccessText": "Anda telah berhasil keluar."
   },

@@ -6,6 +6,7 @@ import About from '../../pages/About';
 import Contact from '../../pages/Contact';
 import Login from '../../pages/Login';
 import Dashboard from '../../pages/Dashboard';
+import Parametros from '../../pages/Parametros';
 import {
   FormAddDataJabatan,
   FormEditDataJabatan,
@@ -34,6 +35,7 @@ import {
   UbahPasswordPegawai,
   DataPotongan
 } from '../../pages'
+import PrintPdfBoleta from '../../components/molecules/PrintPdf/PrintPdfBoleta';
 
 const AppRoutes = () => {
   return (
@@ -45,8 +47,11 @@ const AppRoutes = () => {
       <Route path='/login' element={<Login />} />
       <Route path='/dashboard' element={<Dashboard />} />
 
+
       {/* Route Admin */}
       {/* Master Data Admin */}
+      <Route path='/parameters' element={<Parametros />} />
+
       <Route
         path='/data-pegawai'
         element={<DataPegawai />}
@@ -72,7 +77,7 @@ const AppRoutes = () => {
         element={<FormEditDataJabatan />}
       />
 
-      {/* Transaksi Admin */}
+      {/* Transaksi Admin */} {/* Transacción Admin */}
       <Route
         path='/data-kehadiran'
         element={<DataKehadiran />}
@@ -100,7 +105,7 @@ const AppRoutes = () => {
         element={<DataGaji />}
       />
       <Route
-        path='/data-gaji/detail-data-gaji/name/:name'
+        path='/data-gaji/detail-data-gaji/id/:id'
         element={<DetailDataGaji />}
       />
       <Route
@@ -132,6 +137,10 @@ const AppRoutes = () => {
       <Route
         path='/laporan/slip-gaji/print-page'
         element={<PrintPdfSlipGaji />}
+      />
+       <Route
+        path='/print-employee-receipt/:id'
+        element={<PrintPdfBoleta />}
       />
 
       {/* Pengaturan Admin */}

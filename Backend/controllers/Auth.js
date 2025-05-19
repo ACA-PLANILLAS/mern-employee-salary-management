@@ -31,6 +31,11 @@ export const Login = async (req, res) => {
 
   req.session.userId = pegawai.id_pegawai;
 
+  // Build display name
+  const names = [pegawai.first_name, pegawai.middle_name, pegawai.last_name, pegawai.second_last_name, pegawai.maiden_name]
+    .filter(Boolean)
+    .join(" ");
+
   user = {
     id_pegawai: pegawai.id,
     nama_pegawai: pegawai.nama_pegawai,
@@ -39,11 +44,13 @@ export const Login = async (req, res) => {
   }
 
   res.status(200).json({
-    id_pegawai: user.id_pegawai,
-    nama_pegawai: user.nama_pegawai,
-    username: user.username,
-    hak_akses: user.hak_akses,
-    msg: LOGIN.LOGIN_SUCCESS.code
+    id: pegawai.id,
+    id_pegawai: pegawai.id_pegawai,
+    fullName: names,
+    username: pegawai.username,
+    accessRights: pegawai.hak_akses,
+    code: LOGIN.LOGIN_SUCCESS.code,
+    message: LOGIN.LOGIN_SUCCESS.message
   });
 };
 
@@ -52,7 +59,11 @@ export const Me = async (req, res) => {
     return res.status(401).json({ msg: ME.NOT_LOGGED_IN.code });
   }
   const pegawai = await DataPegawai.findOne({
-    attributes: ['id', 'nik', 'nama_pegawai', 'username', 'hak_akses'],
+    attributes: [
+      'id_pegawai','nik','dui_or_nit','document_type','isss_affiliation_number','pension_institution_code',
+      'first_name','middle_name','last_name','second_last_name','maiden_name',
+      'username','hak_akses'
+    ],
     where: {
       id_pegawai: req.session.userId
     }

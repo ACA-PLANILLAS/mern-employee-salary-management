@@ -18,12 +18,32 @@ import {
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import React from "react";
+import { getDataPegawai, getMe } from "../../../../config/redux/action";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+const MONTH_MAP = {
+  Januari: 1,
+  Februari: 2,
+  Maret: 3,
+  April: 4,
+  Mei: 5,
+  Juni: 6,
+  Juli: 7,
+  Agustus: 8,
+  September: 9,
+  Oktober: 10,
+  November: 11,
+  Desember: 12,
+};
 
 const SlipGaji = () => {
   const [searchMonth, setSearchMonth] = useState("");
   const [searchYear, setSearchYear] = useState("");
-  const [searchName, setSearchName] = useState("");
+  const [searchId, setSearchId] = useState("");
+  const [results, setResults] = useState([]);
   const [showMessage, setShowMessage] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation("slipGaji");
@@ -32,37 +52,42 @@ const SlipGaji = () => {
   const { dataPegawai } = useSelector((state) => state.dataPegawai);
    const { dataSlipGaji } = useSelector((state) => state.slipGaji);
 
-  const handleSearchMonth = (event) => setSearchMonth(event.target.value);
-  const handleSearchYear = (event) => setSearchYear(event.target.value);
-  const handleSearchName = (event) => setSearchName(event.target.value);
+  const handleSearchMonth = (e) => setSearchMonth(e.target.value);
+  const handleSearchYear = (e) => setSearchYear(e.target.value);
+  const handleSearchId = (e) => setSearchId(e.target.value);
 
-  const handleSearch = async (event) => {
-    event.preventDefault();
+  const handleSearch = async (e) => {
+    e.preventDefault();
 
-    const selectedMonth = searchMonth;
-    const selectedYear = searchYear;
-    const selectedName = searchName;
+    const monthInt = MONTH_MAP[searchMonth];
 
-    let yearDataFound = false;
-    let monthDataFound = false;
-    let nameDataFound = false;
+    if (!monthInt || !searchYear || !searchId) {
+      Swal.fire({
+        icon: "error",
+        title: t("notFoundShort"),
+        text: t("notFoundLong"),
+        timer: 2000,
+      });
+      return;
+    }
 
-    await Promise.all([
-      dispatch(fetchSlipGajiByYear(selectedYear, () => (yearDataFound = true))),
-      dispatch(
-        fetchSlipGajiByMonth(selectedMonth, () => (monthDataFound = true))
-      ),
-      dispatch(fetchSlipGajiByName(selectedName, () => (nameDataFound = true))),
-    ]);
-    setShowMessage(true);
-
-    if (yearDataFound && monthDataFound && nameDataFound) {
-      setShowMessage(false);
-      navigate(
-        `/laporan/slip-gaji/print-page?month=${selectedMonth}&year=${selectedYear}&name=${selectedName}`
+    try {
+      const res = await fetch(
+        `${API_URL}/data_gaji_pegawai?year=${searchYear}&month=${monthInt}`
       );
-    } else {
-      setShowMessage(false);
+      const data = await res.json();
+
+      const filtered = data.filter((item) => String(item.id) === searchId);
+
+      if (filtered.length > 0) {
+        setResults(filtered);
+        setShowMessage(false);
+      } else {
+        setResults([]);
+        setShowMessage(true);
+      }
+    } catch (error) {
+      console.error(error);
       Swal.fire({
         icon: "error",
         title: t("notFoundShort"),
@@ -72,18 +97,9 @@ const SlipGaji = () => {
     }
   };
 
-  const nameOptions = dataPegawai.map((pegawai) => (
-    <option key={pegawai.id} value={pegawai.nama_pegawai}>
-      {pegawai.nama_pegawai}
-    </option>
-  ));
-
-  useEffect(() => {
-    dispatch(getDataPegawai());
-  }, [dispatch]);
-
   useEffect(() => {
     dispatch(getMe());
+    dispatch(getDataPegawai());
   }, [dispatch]);
 
   useEffect(() => {
@@ -150,9 +166,6 @@ const SlipGaji = () => {
               </h3>
             </div>
             <form onSubmit={handleSearch}>
-              {showMessage && (
-                <p className="text-meta-1">{t("notFoundShort")}</p>
-              )}
               <div className="p-6.5">
                 <div className="mb-4.5">
                   <div className="mb-4 w-full">
@@ -167,18 +180,11 @@ const SlipGaji = () => {
                         required
                       >
                         <option value="">{t("pilihBulan")}</option>
-                        <option value="Januari">{t("januari")}</option>
-                        <option value="Februari">{t("februari")}</option>
-                        <option value="Maret">{t("maret")}</option>
-                        <option value="April">{t("april")}</option>
-                        <option value="Mei">{t("mei")}</option>
-                        <option value="Juni">{t("juni")}</option>
-                        <option value="Juli">{t("juli")}</option>
-                        <option value="Agustus">{t("agustus")}</option>
-                        <option value="September">{t("september")}</option>
-                        <option value="Oktober">{t("oktober")}</option>
-                        <option value="November">{t("november")}</option>
-                        <option value="Desember">{t("desember")}</option>
+                        {Object.keys(MONTH_MAP).map((month) => (
+                          <option key={month} value={month}>
+                            {t(month.toLowerCase())}
+                          </option>
+                        ))}
                       </select>
                       <span className="absolute right-4 top-1/2 z-30 -translate-y-1/2 text-2xl">
                         <MdOutlineKeyboardArrowDown />
@@ -212,12 +218,18 @@ const SlipGaji = () => {
                     <div className="relative z-20 bg-transparent dark:bg-form-input">
                       <select
                         className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                        value={searchName}
-                        onChange={handleSearchName}
+                        value={searchId}
+                        onChange={(e) => setSearchId(e.target.value)}
                         required
                       >
                         <option value="">{t("pilihNamaPegawai")}</option>
-                        {nameOptions}
+                        {dataPegawai.map((pegawai) => (
+                          <option key={pegawai.id} value={pegawai.id}>
+                            {`${pegawai.first_name || ""} ${
+                              pegawai.last_name || ""
+                            }`}
+                          </option>
+                        ))}
                       </select>
                       <span className="absolute right-4 top-1/2 z-30 -translate-y-1/2 text-2xl">
                         <MdOutlineKeyboardArrowDown />
@@ -228,18 +240,52 @@ const SlipGaji = () => {
 
                 <div className="flex w-full flex-col gap-3 text-center md:flex-row">
                   <ButtonOne type="submit">
-                    <span>{t("cetakSlipGaji")}</span>
-                    <span>
-                      <TfiPrinter />
-                    </span>
-                  </ButtonOne>
-                  <ButtonOne type="button" onClick={handleExportExcel}>
-                    <span>{t("printButtonExcel")}</span>
-                    <span>
-                      <TfiPrinter />
-                    </span>
+                    <span>{t("consultar")}</span>
                   </ButtonOne>
                 </div>
+
+                {showMessage && (
+                  <div className="border-red-300 bg-red-50 dark:border-red-600 dark:bg-red-700/20 mt-4 rounded-md border p-4">
+                    <h5 className="text-red-700 dark:text-red-300 font-semibold">
+                      {t("notFoundShort")}
+                    </h5>
+                    <p className="text-red-600 dark:text-red-400 text-sm">
+                      {t("notFoundLong")}
+                    </p>
+                  </div>
+                )}
+
+                {results.length > 0 && (
+                  <div className="mt-6 space-y-4">
+                    <h4 className="font-semibold text-black dark:text-white">
+                      {t("resultadosEncontrados")}
+                    </h4>
+                    {results.map((r) => (
+                      <div
+                        key={r.attendanceId}
+                        className="flex items-center justify-between rounded-lg border border-stroke bg-white p-4 shadow dark:border-strokedark dark:bg-boxdark"
+                      >
+                        <div>
+                          <p className="font-medium text-black dark:text-white">
+                            {t("verReciboDe")} {r.first_name} {r.last_name}
+                          </p>
+                          <span className="text-gray-500 dark:text-gray-400 text-sm">
+                            {t("attendanceId")}: {r.attendanceId}
+                          </span>
+                        </div>
+                        <a
+                          href={`/print-employee-receipt/${r.attendanceId}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 rounded bg-meta-3 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-90"
+                        >
+                          <TfiPrinter className="text-lg" />
+                          {t("imprimir")}
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </form>
           </div>
