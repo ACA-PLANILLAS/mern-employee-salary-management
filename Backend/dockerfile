@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Exponer el puerto
-EXPOSE 5000
+EXPOSE 8080
 
 # Comando para iniciar la API
 CMD ["npx", "nodemon", "index.js"]

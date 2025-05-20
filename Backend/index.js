@@ -56,8 +56,8 @@ const main = async () => {
         await db.sync();
         await store.sync();
         console.log('✅ Tablas sincronizadas');
-        app.listen(process.env.APP_PORT, () => {
-            console.log('🚀 Server up and running on port', process.env.APP_PORT);
+        app.listen(process.env.PORT || 5000, () => {
+            console.log('🚀 Server up and running on port', process.env.PORT);
         });
     } catch (err) {
         console.error('❌ Error al conectar a la base de datos:', err.message);
