@@ -11,10 +11,13 @@ import { useTranslation } from "react-i18next";
 import { useErrorMessage } from "../../../../../hooks/useErrorMessage";
 import axios from "axios";
 import { API_URL } from "@/config/env";
+import { useDisplayValue } from "../../../../../hooks/useDisplayValue";
 
 const FormAddDataPegawai = () => {
   const [jabatanOptions, setJabatanOptions] = useState([]);
   const [pensionOptions, setPensionOptions] = useState([]);
+
+  const getDisplayValue = useDisplayValue();
 
   const [formData, setFormData] = useState({
     //nik: '',
@@ -317,7 +320,7 @@ const FormAddDataPegawai = () => {
                       <option value="">{t("pilihPensionInstitution")}</option>,
                       {pensionOptions?.map((inst) => (
                         <option key={inst.code} value={inst.code}>
-                          {inst.name}
+                          {getDisplayValue(inst.name)}
                         </option>
                       ))}
                     </select>
