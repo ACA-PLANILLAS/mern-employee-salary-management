@@ -93,6 +93,9 @@ const DetailDataGaji = () => {
   // Filtrar deducciones por tipo
   const seguros = data.detallesDeducciones.filter((d) => d.type === "STA");
   const rentas = data.detallesDeducciones.filter((d) => d.type === "DIN");
+  const rentasConDeduccion = rentas?.filter(
+    (d) => d.valueDeducted > 0
+  );
 
   // Calcular totales al momento
   const totalSeguro = seguros
@@ -169,9 +172,159 @@ const DetailDataGaji = () => {
             {t("salaryBreakdownStepByStep")}
           </h2>
 
-          {/* Paso 1: Ingresos */}
+          {/* Ingresos */}
           <div className="mb-4">
-            <h3 className="mb-2 text-lg font-semibold">{t("step1_income")}</h3>
+            <h3 className="mb-2 text-lg font-semibold">{t("income")}</h3>
+            <table className="mb-2 w-full table-auto">
+              <thead>
+                <tr className="bg-gray-2 dark:bg-meta-4">
+                  <th className="px-4 py-2 text-left">{t("description")}</th>
+                  <th className="px-4 py-2 text-right">{t("amount")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="px-4 py-2">{t("salaryPosition")}</td>
+                  <td className="px-4 py-2 text-right">
+                    {symbol}
+                    {toLocal(data.salarioEmpleo)}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2">
+                    {t("salaryPerPayroll", {
+                      salary: `${symbol}${toLocal(data.salarioEmpleo)}`,
+                      payments: data.cantidadPagos,
+                    })}
+                  </td>
+                  <td className="px-4 py-2 text-right">
+                    {symbol}
+                    {toLocal(data.salarioBruto)}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2">{t("extraPayments")}</td>
+                  <td className="px-4 py-2 text-right">
+                    {symbol}
+                    {toLocal(data.additional_payments)}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2">{t("vacationPayments")}</td>
+                  <td className="px-4 py-2 text-right">
+                    {symbol}
+                    {toLocal(data.vacation_payments)}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2">{t("absencesPenalty")}</td>
+                  <td className="px-4 py-2 text-right">
+                    ( - ) {symbol}
+                    {toLocal(data.castigo_ausencias)}
+                  </td>
+                </tr>
+                <tr className="bg-green-50 font-semibold">
+                  <td className="px-4 py-2">{t("grossSalary")}</td>
+                  <td className="px-4 py-2 text-right">
+                    {symbol}
+                    {toLocal(data.salarioInicial)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <br />
+          <br />
+          {/* Deducciones Estándar (ISS/AFF) */}
+          <div className="mb-4">
+            <h3 className="mb-2 text-lg font-semibold">
+              {t("standardDeductions")}
+            </h3>
+            <table className="mb-2 w-full table-auto">
+              <thead>
+                <tr className="bg-gray-2 dark:bg-meta-4">
+                  <th className="px-4 py-2 text-left">{t("deduction")}</th>
+                  <th className="px-4 py-2 text-right">{t("amount")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {seguros.map((d, i) => (
+                  <tr key={`sta-${i}`}>
+                    <td className="px-4 py-2">
+                      - {d.nama_potongan} (%{d.jml_potongan * 100})
+                    </td>
+                    <td className="text-red-500 px-4 py-2 text-right">
+                      {symbol}
+                      {toLocal(d.valueDeducted.toFixed(2))}
+                    </td>
+                  </tr>
+                ))}
+                <tr className="bg-red-50 font-semibold">
+                  <td className="px-4 py-2">{t("subtotalInsurance")}</td>
+                  <td className="px-4 py-2 text-right">
+                    {symbol}
+                    {toLocal(data.subtotalStandarDeductions)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <br />
+          <br />
+          {/* Deducciones por Renta */}
+          <div className="mb-4">
+            <h3 className="mb-2 text-lg font-semibold">
+              {t("dynamicDeductions")}
+            </h3>
+            <table className="mb-2 w-full table-auto">
+              <thead>
+                <tr className="bg-gray-2 dark:bg-meta-4">
+                  <th className="px-4 py-2 text-left">{t("range")}</th>
+                  <th className="px-4 py-2 text-right">{t("amount")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rentasConDeduccion.map((d, i) => (
+                  <tr key={`din-${i}`}>
+                    <td className="px-4 py-2">
+                      {d.nama_potongan} ({symbol + toLocal(d.from)} –{" "}
+                      {d.until === -1
+                        ? t("fromNowOn")
+                        : `${symbol}${toLocal(d.until)}`}
+                      )
+                    </td>
+                    <td className="text-red-500 px-4 py-2 text-right">
+                      {symbol}
+                      {toLocal(d.valueDeducted.toFixed(2))}
+                    </td>
+                  </tr>
+                ))}
+                {rentasConDeduccion.length === 0 && (
+                  <tr>
+                    <td className="px-4 py-2">{t("noDeductionInRange")}</td>
+                  </tr>
+                )}
+                <tr className="bg-red-50 font-semibold">
+                  <td className="px-4 py-2">{t("subtotalRenta")}</td>
+                  <td className="px-4 py-2 text-right">
+                    {symbol}
+                    {toLocal(data.subtotalDynamicDeductions)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <br />
+          <br />
+
+          {/* Total Deducciones */}
+          <div className="mb-4">
+            <h3 className="mb-2 text-lg font-semibold">
+              {t("deductionsCalculation")}
+            </h3>
             <table className="mb-2 w-full table-auto">
               <thead>
                 <tr className="bg-gray-2 dark:bg-meta-4">
@@ -184,126 +337,33 @@ const DetailDataGaji = () => {
                   <td className="px-4 py-2">{t("baseSalary")}</td>
                   <td className="px-4 py-2 text-right">
                     {symbol}
-                    {toLocal(data.gaji_pokok)}
+                    {toLocal(data.salarioInicial)}
                   </td>
                 </tr>
                 <tr>
-                  <td className="px-4 py-2">{t("transportAllowance")}</td>
+                  <td className="px-4 py-2">{t("deductionsStandard")}</td>
                   <td className="px-4 py-2 text-right">
-                    {symbol}
-                    {toLocal(data.tj_transport)}
+                    ( - ) {symbol}
+                    {toLocal(data.subtotalStandarDeductions)}
                   </td>
                 </tr>
                 <tr>
-                  <td className="px-4 py-2">{t("mealAllowance")}</td>
+                  <td className="px-4 py-2">{t("deductionsByRange")}</td>
                   <td className="px-4 py-2 text-right">
-                    {symbol}
-                    {toLocal(data.uang_makan)}
+                    ( - ) {symbol}
+                    {toLocal(data.subtotalDynamicDeductions)}
                   </td>
                 </tr>
+
                 <tr className="bg-green-50 font-semibold">
-                  <td className="px-4 py-2">{t("grossSalary")}</td>
+                  <td className="px-4 py-2">{t("totalSalary")}</td>
                   <td className="px-4 py-2 text-right">
                     {symbol}
-                    {toLocal(data.salarioBruto)}
+                    {toLocal(data.total)}
                   </td>
                 </tr>
               </tbody>
             </table>
-          </div>
-
-          {/* Paso 2: Penalización por Ausencias */}
-          <div className="mb-4">
-            <h3 className="mb-2 text-lg font-semibold">
-              {t("step4_absencePenalty")}
-            </h3>
-            <p>
-              {symbol}
-              {toLocal(data.castigo_ausencias)}
-            </p>
-          </div>
-
-          {/* Paso3: Deducciones Estándar (ISS/AFF) */}
-          <div className="mb-4">
-            <h3 className="mb-2 text-lg font-semibold">
-              {t("step2_standardDeductions")}
-            </h3>
-            <table className="mb-2 w-full table-auto">
-              <thead>
-                <tr className="bg-gray-2 dark:bg-meta-4">
-                  <th className="px-4 py-2 text-left">{t("deduction")}</th>
-                  <th className="px-4 py-2 text-right">{t("amount")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {seguros.map((d, i) => (
-                  <tr key={`sta-${i}`}>
-                    <td className="px-4 py-2">- {d.nama_potongan}</td>
-                    <td className="text-red-500 px-4 py-2 text-right">
-                      {symbol}
-                      {toLocal(d.valueDeducted.toFixed(2))}
-                    </td>
-                  </tr>
-                ))}
-                <tr className="bg-red-50 font-semibold">
-                  <td className="px-4 py-2">{t("subtotalInsurance")}</td>
-                  <td className="px-4 py-2 text-right">
-                    {symbol}
-                    {toLocal(totalSeguro)}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          {/* Paso 4: Deducciones por Renta */}
-          <div className="mb-4">
-            <h3 className="mb-2 text-lg font-semibold">
-              {t("step3_dynamicDeductions")}
-            </h3>
-            <table className="mb-2 w-full table-auto">
-              <thead>
-                <tr className="bg-gray-2 dark:bg-meta-4">
-                  <th className="px-4 py-2 text-left">{t("range")}</th>
-                  <th className="px-4 py-2 text-right">{t("amount")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rentas.map((d, i) => (
-                  <tr key={`din-${i}`}>
-                    <td className="px-4 py-2">
-                      Tramo {i + 1} ({d.from} – {d.until})
-                    </td>
-                    <td className="text-red-500 px-4 py-2 text-right">
-                      {symbol}
-                      {toLocal(d.valueDeducted.toFixed(2))}
-                    </td>
-                  </tr>
-                ))}
-                <tr className="bg-red-50 font-semibold">
-                  <td className="px-4 py-2">{t("subtotalRenta")}</td>
-                  <td className="px-4 py-2 text-right">
-                    {symbol}
-                    {toLocal(totalRenta)}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          {/* Paso 5: Total Deducciones */}
-          <div className="mb-4">
-            <h3 className="mb-2 text-lg font-semibold">
-              {t("step5_totalDeductions")}
-            </h3>
-            <p>
-              {symbol}
-              {toLocal(
-                parseFloat(data.subtotalStandarDeductions) +
-                  parseFloat(data.subtotalDynamicDeductions) +
-                  parseFloat(data.castigo_ausencias)
-              )}
-            </p>
           </div>
 
           {/* Resultado final: Salario Neto */}

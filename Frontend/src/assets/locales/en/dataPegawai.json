@@ -40,6 +40,8 @@
   "modal.confirmDelete.no": "No",
   "toast.deleteSuccess.title": "Success",
   "toast.deleteSuccess.message": "Employee data successfully deleted.",
+  "toast.deleteError.title": "Error!",
+  "toast.deleterror.text": "Could not delete the data. Please try again.",
   "pagination.displaying": "Showing",
   "pagination.of": "of",
   "pagination.totalEmployeeData": "Employee Data"

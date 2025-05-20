@@ -186,7 +186,7 @@ const DataPotongan = () => {
                         <td className="border-b px-4 py-5">
                           {symbol}
                           {toLocal(d.from)} – {" "}
-                          {d.until ==+ -1 ? t("fromNowOn") :  symbol + toLocal(d.until)}
+                          {d.until == -1 ? t("fromNowOn") :  symbol + toLocal(d.until)}
                         </td>
                         <td className="border-b px-4 py-5">
                           {(d.jml_potongan * 100).toFixed(2)}%

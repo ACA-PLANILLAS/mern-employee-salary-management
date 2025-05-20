@@ -6,6 +6,8 @@
   "noText": "Tidak",
   "success": "Berhasil",
   "deleteSuccess": "Data kehadiran berhasil dihapus.",
+  "error": "Kesalahan!",
+  "deleteError": "Data gagal dihapus. Silakan coba lagi.",
   "filterTitle": "Filter Data Kehadiran Pegawai",
   "month": "Bulan",
   "selectMonth": "Pilih Bulan",

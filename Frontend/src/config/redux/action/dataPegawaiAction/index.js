@@ -159,11 +159,15 @@ export const deleteDataPegawai = (id) => {
         type: DELETE_DATA_PEGAWAI_SUCCESS,
         payload: response.data,
       });
+
+      return response;
     } catch (error) {
       dispatch({
         type: DELETE_DATA_PEGAWAI_FAILURE,
         payload: error.message,
       });
+
+      throw error;
     }
   };
 };
