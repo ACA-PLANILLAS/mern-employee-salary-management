@@ -547,6 +547,9 @@ const DataGaji = () => {
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("absencePenalty")}
                 </th>
+                 <th className="px-2 py-2 font-medium text-black dark:text-white">
+                  {t("extras")}
+                </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("total")}
                 </th>
@@ -685,6 +688,10 @@ const DataGaji = () => {
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {symbol}
                       {toLocal(data.castigo_ausencias)}
+                    </td>
+                    <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
+                      {symbol}
+                      {toLocal(data.extras)}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {symbol}

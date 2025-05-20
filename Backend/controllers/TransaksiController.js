@@ -795,7 +795,7 @@ export const getDataGajiPegawai = async (year, month) => {
           // Datos salarios
           salarioEmpleo: datosPuesto?.gaji_pokok, // El salario sin nada
           salarioInicial: roundUp2(baseSalary), // El salario mas pagos adicionales - sanciones
-          salarioBruto:roundUp2(grossSalary), // El salario quinsenal, o semanal
+          salarioBruto: roundUp2(grossSalary), // El salario quinsenal, o semanal
           salarioDeduccionesStandar: roundUp2(salarioStandarRestante),
           salarioDeduccionesDinamicas: roundUp2(valueDeducted),
           salarioTotal: roundUp2(valueDeducted),
@@ -822,11 +822,15 @@ export const getDataGajiPegawai = async (year, month) => {
           year: attendanceEmployee.tahun,
           month: attendanceEmployee.month,
           day: attendanceEmployee.day,
+
+          cantidadPagos: payCount,
+          diasTrabajo: workDaysInPeriod,
+          dailyRate: dailyRate,
         };
       })
     );
 
-    const salariosClean = salariosConDeducciones.filter(item => item != null);
+    const salariosClean = salariosConDeducciones.filter((item) => item != null);
     return salariosClean;
   } catch (error) {
     console.error(error);
@@ -891,12 +895,11 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
     const grossSalary = rawSalary / payCount;
 
     // Ausencias y penalización (Sí sujetos a ISSS e ISR)
-
     const unjustifiedAbsence = parseFloat(att.alpha) || 0;
-    const justifiedAbsence = parseFloat(att.sakit) || 0;
-    const totalAbsences = unjustifiedAbsence;
-    const workDays = workDaysPerPeriod?.value || 30;
-    const dailyRate = grossSalary / workDays;
+    const justifiedAbsence = parseFloat(att.sakit) || 0; // Por el momento ignorar
+    const totalAbsences = unjustifiedAbsence; // + enfermedad;
+    const workDaysInPeriod = { 1: 30, 2: 15, 4: 7 }[payCount] || 0; // 1 para 30, 2 para 15 y 4 para 7
+    const dailyRate = grossSalary / workDaysInPeriod;
     const absencePenalty = dailyRate * totalAbsences;
 
     // Viáticos (transporte + alimentación) (NO sujetos a ISSS ni ISR)
@@ -1010,6 +1013,10 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
       year: att.tahun,
       month: att.bulan,
       day: att.day,
+
+      cantidadPagos: payCount,
+      diasTrabajo: workDaysInPeriod,
+      dailyRate: dailyRate,
 
       detallesDeducciones: totalDeductions,
     };
