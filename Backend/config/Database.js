@@ -10,9 +10,12 @@ const db = new Sequelize(
         host: process.env.DB_HOST,
         port: parseInt(process.env.DB_PORT, 10),
         dialect: 'mysql',
+        dialectOptions: process.env.DB_HOST.includes("/cloudsql")
+            ? { socketPath: process.env.DB_HOST }
+            : {},
         logging: false,
     }
 );
 
 console.log('Database connected...');
-export default db
+export default db;
