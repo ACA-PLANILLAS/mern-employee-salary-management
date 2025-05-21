@@ -94,6 +94,12 @@ export const changePassword = async (req, res) => {
 
   if (password !== confPassword) return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH.code });
 
+   const isSameAsOld = await argon2.verify(pegawai.password, password);
+  if (isSameAsOld) {
+    return res.status(PASSWORD.SAME_AS_OLD.status)
+              .json({ msg: PASSWORD.SAME_AS_OLD.code });
+  }
+
   try {
     const hashPassword = await argon2.hash(password);
 

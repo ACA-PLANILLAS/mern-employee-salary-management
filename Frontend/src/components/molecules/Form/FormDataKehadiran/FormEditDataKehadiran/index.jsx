@@ -107,7 +107,9 @@ const FormEditDataKehadiran = () => {
         {symbol}
       </span>
       <input
-        type="text"
+        type="number"
+        inputMode="decimal"           
+        pattern="^\d+(\.\d{1,2})?$"
         name={name}
         value={value}
         onChange={onChange}

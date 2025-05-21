@@ -43,7 +43,9 @@ const FormAddDataKehadiran = () => {
         {symbol}
       </span>
       <input
-        type="text"
+        type="number"
+        inputMode="decimal"           
+        pattern="^\d+(\.\d{1,2})?$"
         value={value}
         onChange={onChange}
         onFocus={(e) => e.target.select()}
