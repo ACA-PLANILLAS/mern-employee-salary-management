@@ -36,10 +36,10 @@ const PrintPdfBoleta = () => {
             case "1":
               setTipoBoleta("boleta_mensual");
               break;
-            case "1":
+            case "2":
               setTipoBoleta("boleta_quincenal");
               break;
-            case "1":
+            case "4":
               setTipoBoleta("boleta_semanal");
               break;
             default:
@@ -138,7 +138,7 @@ const PrintPdfBoleta = () => {
               </td>
               <td>
                 {symbol}
-                {toLocal(data.gaji_pokok)}
+                {toLocal(data.salarioBruto)}
               </td>
               <td>
                 <strong>{t("isss")}</strong>
