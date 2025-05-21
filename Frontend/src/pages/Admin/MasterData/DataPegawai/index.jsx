@@ -49,10 +49,18 @@ const DataPegawai = () => {
   const filteredDataPegawai = dataPegawai.filter((pegawai) => {
     const keyword = searchKeyword.toLowerCase();
     const statusKeyword = filterStatus.toLowerCase();
-    return (
-      // si prefieres buscar también por username o nombres, agrégalos aquí
-      filterStatus === "" || pegawai.status.toLowerCase() === statusKeyword
-    );
+
+    const matchesStatus =
+      filterStatus === "" || pegawai.status.toLowerCase() === statusKeyword;
+      
+    const matchesSearch =
+      keyword === "" ||
+      pegawai.first_name.toLowerCase().includes(keyword) ||
+      pegawai.middle_name?.toLowerCase().includes(keyword) ||
+      pegawai.last_name.toLowerCase().includes(keyword) ||
+      pegawai.username.toLowerCase().includes(keyword);
+
+    return matchesStatus && matchesSearch;
   });
 
   const goToPrevPage = () => {
