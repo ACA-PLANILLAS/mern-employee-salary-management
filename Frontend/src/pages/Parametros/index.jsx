@@ -28,7 +28,7 @@ const Parametros = () => {
       setParameters(data);
     } catch (error) {
       console.error(error);
-      Swal.fire(t("common.error"), t("common.loadParamsError"), "error");
+      Swal.fire(t("parameter.error"), t("parameter.loadParamsError"), "error");
     }
   };
 
@@ -68,10 +68,10 @@ const Parametros = () => {
       setParameters((params) =>
         params.map((p) => (p.id === updated.id ? { ...p, ...updated } : p))
       );
-      Swal.fire(t("common.success"), t("common.updateSuccess"), "success");
+      Swal.fire(t("parameter.success"), t("parameter.updateSuccess"), "success");
     } catch (error) {
       console.error(error);
-      Swal.fire(t("common.error"), t("common.updateError"), "error");
+      Swal.fire(t("parameter.error"), t("parameter.updateError"), "error");
     } finally {
       handleCloseModals();
     }
@@ -79,7 +79,7 @@ const Parametros = () => {
 
   return (
     <Layout>
-      <Breadcrumb pageName={t("common.systemParameters")} />
+      <Breadcrumb pageName={t("parameter.systemParameters")} />
 
       <div className="mt-6 rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto py-4">
@@ -87,16 +87,16 @@ const Parametros = () => {
             <thead>
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t("common.colNumber")}
+                  {t("parameter.colNumber")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t("common.colName")}
+                  {t("parameter.colName")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t("common.colValue")}
+                  {t("parameter.colValue")}
                 </th>
                 <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t("common.colAction")}
+                  {t("parameter.colAction")}
                 </th>
               </tr>
             </thead>
@@ -107,7 +107,7 @@ const Parametros = () => {
                     colSpan="4"
                     className="text-gray-400 dark:text-gray-500 py-4 text-center"
                   >
-                    {t("common.noParamsRegistered")}
+                    {t("parameter.noParamsRegistered")}
                   </td>
                 </tr>
               ) : (
@@ -125,7 +125,7 @@ const Parametros = () => {
                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                       <div className="flex gap-2">
                         <ButtonOne onClick={() => handleOpenEditModal(param)}>
-                          {t("common.edit")}
+                          {t("parameter.edit")}
                         </ButtonOne>
                       </div>
                     </td>

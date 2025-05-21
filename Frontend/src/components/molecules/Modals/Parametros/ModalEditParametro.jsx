@@ -57,15 +57,15 @@ const ModalEditParametro = ({ open, onClose, data, onSave }) => {
     if (form.value_type === "INT") {
       if (!Number.isInteger(form.value)) {
         return Swal.fire(
-          t("common.error"),
-          t("common.valueMustBeInteger"),
+          t("parameter.error"),
+          t("parameter.valueMustBeInteger"),
           "error"
         );
       }
       if (form.value < MIN_INT || form.value > MAX_INT) {
         return Swal.fire(
-          t("common.error"),
-          t("common.integerRange", { min: MIN_INT, max: MAX_INT }),
+          t("parameter.error"),
+          t("parameter.integerRange", { min: MIN_INT, max: MAX_INT }),
           "error"
         );
       }
@@ -73,8 +73,8 @@ const ModalEditParametro = ({ open, onClose, data, onSave }) => {
     if (form.value_type === "DOUBLE") {
       if (typeof form.value !== "number" || isNaN(form.value)) {
         return Swal.fire(
-          t("common.error"),
-          t("common.valueMustBeNumber"),
+          t("parameter.error"),
+          t("parameter.valueMustBeNumber"),
           "error"
         );
       }
@@ -85,8 +85,8 @@ const ModalEditParametro = ({ open, onClose, data, onSave }) => {
       // horas en una semana: 0–168
       if (form.value < 0 || form.value > 168) {
         return Swal.fire(
-          t("common.error"),
-          t("common.weeklyHoursRange"),
+          t("parameter.error"),
+          t("parameter.weeklyHoursRange"),
           "error"
         );
       }
@@ -95,8 +95,8 @@ const ModalEditParametro = ({ open, onClose, data, onSave }) => {
       // días en una semana: 0–7
       if (form.value < 0 || form.value > 7) {
         return Swal.fire(
-          t("common.error"),
-          t("common.weeklyDaysRange"),
+          t("parameter.error"),
+          t("parameter.weeklyDaysRange"),
           "error"
         );
       }
@@ -105,8 +105,8 @@ const ModalEditParametro = ({ open, onClose, data, onSave }) => {
       // pagos al mes permitidos: 4, 2 o 1
       if (![4, 2, 1].includes(form.value)) {
         return Swal.fire(
-          t("common.error"),
-          t("common.invalidPaymentScheme"),
+          t("parameter.error"),
+          t("parameter.invalidPaymentScheme"),
           "error"
         );
       }
@@ -141,7 +141,7 @@ const ModalEditParametro = ({ open, onClose, data, onSave }) => {
         </button>
 
         <div className="text-center text-lg font-bold text-black dark:text-white py-4">
-          {t("common.editParameter")}
+          {t("parameter.editParameter")}
         </div>
 
         <div className="px-6 pb-6">
@@ -149,7 +149,7 @@ const ModalEditParametro = ({ open, onClose, data, onSave }) => {
             {/* Nombre */}
             <div>
               <label className="mb-1 block text-black dark:text-white">
-                {t("common.name")}
+                {t("parameter.name")}
               </label>
               <input
                 type="text"
@@ -164,8 +164,8 @@ const ModalEditParametro = ({ open, onClose, data, onSave }) => {
             <div>
               <label className="mb-1 block text-black dark:text-white">
                 {form.type === "PMON"
-                  ? t("common.paymentFrequency")
-                  : t("common.value")}
+                  ? t("parameter.paymentFrequency")
+                  : t("parameter.value")}
               </label>
 
               {/* SELECT para pagos al mes (PMON) */}
@@ -177,11 +177,11 @@ const ModalEditParametro = ({ open, onClose, data, onSave }) => {
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-4 outline-none focus:border-primary"
                 >
                   <option value="" disabled>
-                    {t("common.selectPlaceholder")}
+                    {t("parameter.selectPlaceholder")}
                   </option>
-                  <option value={4}>{t("common.weekly4Payments")}</option>
-                  <option value={2}>{t("common.biweekly2Payments")}</option>
-                  <option value={1}>{t("common.monthly1Payment")}</option>
+                  <option value={4}>{t("parameter.weekly4Payments")}</option>
+                  <option value={2}>{t("parameter.biweekly2Payments")}</option>
+                  <option value={1}>{t("parameter.monthly1Payment")}</option>
                 </select>
               ) : (
                 <input
@@ -200,10 +200,10 @@ const ModalEditParametro = ({ open, onClose, data, onSave }) => {
 
           <div className="mt-6 flex gap-4">
             <ButtonTwo onClick={onClose} className="w-full">
-              {t("common.cancel")}
+              {t("parameter.cancel")}
             </ButtonTwo>
             <ButtonOne onClick={handleSave} className="w-full">
-              {t("common.save")}
+              {t("parameter.save")}
             </ButtonOne>
           </div>
         </div>
