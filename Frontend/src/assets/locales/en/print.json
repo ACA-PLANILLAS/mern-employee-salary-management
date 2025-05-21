@@ -25,5 +25,8 @@
   "observations": "OBSERVATIONS",
   "accounting": "ACCOUNTING",
   "audit": "AUDIT",
-  "loading": "Loading..."
+  "loading": "Loading...",
+  "extraPayments": "Extra payments",
+  "vacationPayments": "Vacations",
+  "absencesPenalty": "Penalty for absences"
 }

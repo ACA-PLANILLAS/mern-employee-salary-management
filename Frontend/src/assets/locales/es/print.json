@@ -25,5 +25,8 @@
   "observations": "OBSERVACIONES",
   "accounting": "CONTABILIDAD",
   "audit": "AUDITORIA",
-  "loading": "Cargando..."
+  "loading": "Cargando...",
+  "extraPayments": "Pagos extra",
+  "vacationPayments": "Vacaciones",
+  "absencesPenalty": "Penalización por ausencias"
 }
