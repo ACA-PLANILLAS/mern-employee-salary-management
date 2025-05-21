@@ -14,7 +14,8 @@ INSERT INTO parameters (id, name, value, value_type, type) VALUES
   (4, 'DUI/NIT del Empleador',             '0614200595',      'STRING', 'DUIN'),
   (5, 'Número patronal ISSS',              '12345678',        'STRING', 'NPIS'),
   (6, 'Correlativo Centro de Trabajo ISSS','876543',          'INT',    'CCTS'),
-  (7, 'Nombre de la empresa',              'AdventureWorks S.A.','STRING','COMP');
+  (7, 'Nombre de la empresa',              'AdventureWorks S.A.','STRING','COMP'),
+  (8, 'Ubicación de la empresa',           'Acajutla, Sonsonate','STRING','ADCO');
 
 
 TRUNCATE potongan_gaji;

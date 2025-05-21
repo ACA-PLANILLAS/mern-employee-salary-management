@@ -651,6 +651,7 @@ export const getDataGajiPegawai = async (year, month) => {
     const paramNPIS = await Parameter.findOne({ where: { type: "NPIS" } });
     const paramCCTS = await Parameter.findOne({ where: { type: "CCTS" } });
     const paramCOMP = await Parameter.findOne({ where: { type: "COMP" } });
+    const paramADCO = await Parameter.findOne({ where: { type: "ADCO" } });
 
     const salariosConDeducciones = await Promise.all(
       attendance.map(async (attendanceEmployee) => {
@@ -819,6 +820,7 @@ export const getDataGajiPegawai = async (year, month) => {
           numeroPatronalISSS: paramNPIS?.value,
           correlativoCentroTrabajoISSS: paramCCTS?.value,
           nombreEmpresa: paramCOMP?.value,
+          ubicacionEmpresa: paramADCO?.value,
 
           // Fechas
           year: attendanceEmployee.tahun,
@@ -869,6 +871,7 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
     const paramNPIS = await Parameter.findOne({ where: { type: "NPIS" } });
     const paramCCTS = await Parameter.findOne({ where: { type: "CCTS" } });
     const paramCOMP = await Parameter.findOne({ where: { type: "COMP" } });
+    const paramADCO = await Parameter.findOne({ where: { type: "ADCO" } });
 
     // Procesar asistencia individual
     const attDate = new Date(att.tahun, parseInt(att.bulan, 10) - 1, att.day);
@@ -1018,6 +1021,7 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
       numeroPatronalISSS: paramNPIS?.value,
       correlativoCentroTrabajoISSS: paramCCTS?.value,
       nombreEmpresa: paramCOMP?.value,
+      ubicacionEmpresa: paramADCO?.value,
 
       // Fechas
       year: att.tahun,
