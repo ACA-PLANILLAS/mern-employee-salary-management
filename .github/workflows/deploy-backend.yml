@@ -81,8 +81,8 @@ jobs:
           instance: mern-salary-magament:us-central1:root
           # instance: ${{ secrets.CLOUD_SQL_INSTANCE }}
 
-      - name: Deploy to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v1
+      - name: Setup Cloud SQL Auth Proxy
+        uses: google-github-actions/setup-cloud-sql-proxy@main
         with:
           service: mern-backend
           image: docker.io/${{ secrets.DOCKER_USERNAME }}/mern-backend
