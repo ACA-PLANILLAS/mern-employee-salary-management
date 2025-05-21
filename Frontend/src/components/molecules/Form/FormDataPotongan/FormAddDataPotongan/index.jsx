@@ -172,6 +172,15 @@ const FormAddDataPotongan = () => {
           return;
         }
       }
+
+      if (fromValue == 0 && untilValue == 0) {
+        Swal.fire({
+          icon: "error",
+          title: t("error"),
+          text: t("fromUntilCannotBeZero"),
+        });
+        return;
+      }
     }
 
     const payload = new FormData();
