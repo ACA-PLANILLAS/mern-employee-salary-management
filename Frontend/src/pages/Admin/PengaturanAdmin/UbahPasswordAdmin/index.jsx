@@ -29,6 +29,9 @@ const UbahPasswordAdmin = () => {
                     showConfirmButton: false,
                     timer: 1500,
                 });
+
+                setPassword('');
+                setConfPassword('');
             } catch (error) {
                 Swal.fire({
                     icon: 'error',

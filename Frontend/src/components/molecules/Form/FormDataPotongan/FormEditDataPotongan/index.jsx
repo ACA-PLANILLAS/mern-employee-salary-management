@@ -110,7 +110,9 @@ const FormEditDataPotongan = () => {
           {symbol}
         </span>
         <input
-          type="text"
+          type="number"
+          inputMode="decimal"           
+          pattern="^\d+(\.\d{1,2})?$"
           name={name}
           value={!disabled ? value : t("fromNowOn")}
           onChange={handleChange}
@@ -234,6 +236,15 @@ const FormEditDataPotongan = () => {
           });
           return;
         }
+      }
+
+      if (fromValue === 0 && untilValue === 0) {
+        Swal.fire({
+          icon: "error",
+          title: t("error"),
+          text: t("fromUntilCannotBeZero"),
+        });
+        return;
       }
     }
 
