@@ -87,5 +87,6 @@
   "mySalarySlips": "My Salary Slips",
   "yearPlaceholder": "YYYY",
   "noRecords": "No records found for {{filterMonth}}/{{filterYear}}.",
-  "monthYear": "Month/Year"
+  "monthYear": "Month/Year",
+  "extraPayments": "Extra payments"
 }

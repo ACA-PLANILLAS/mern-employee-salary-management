@@ -66,7 +66,7 @@ const PrintPdfLaporanGaji = () => {
 
   // Control de acceso y print automático
   const handlePrint = useReactToPrint({ content: () => componentRef.current });
-  
+
   useEffect(() => {
     dispatch(getMe());
   }, [dispatch]);
@@ -102,7 +102,7 @@ const PrintPdfLaporanGaji = () => {
 
         {/* Tabla con mismas columnas y traducciones que DataGaji */}
         <div className="overflow-x-auto">
-          <table className="min-w-full table-auto">
+          <table className="min-w-full table-auto dark:text-white">
             <thead>
               <tr>
                 <th className="border px-2 py-1 dark:border-white dark:text-white">
@@ -131,6 +131,9 @@ const PrintPdfLaporanGaji = () => {
                 </th>
                 <th className="border px-2 py-1 dark:border-white dark:text-white">
                   {t("alpha")}
+                </th>
+                <th className="border px-2 py-1 dark:border-white dark:text-white">
+                  {t("extraPayments")}
                 </th>
                 <th className="border px-2 py-1 dark:border-white dark:text-white">
                   {t("deductions")}
@@ -182,6 +185,10 @@ const PrintPdfLaporanGaji = () => {
                   </td>
                   <td className="border px-2 py-1 dark:border-white">
                     {row?.alpha}
+                  </td>
+                  <td className="border px-2 py-1 dark:border-white">
+                    {symbol}
+                    {toLocal(row.extras)}
                   </td>
                   <td className="border px-2 py-1 dark:border-white">
                     {symbol}

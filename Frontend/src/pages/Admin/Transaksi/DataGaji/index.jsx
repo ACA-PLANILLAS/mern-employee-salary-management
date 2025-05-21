@@ -57,7 +57,8 @@ const DataGaji = () => {
     //  filtramos por año/mes
     const relevant = dataGaji?.filter(
       (d) =>
-        d?.year?.toString() === filterTahun && d?.month?.toString() === filterBulan
+        d?.year?.toString() === filterTahun &&
+        d?.month?.toString() === filterBulan
     );
     // extraemos strings únicos "YYYY-M-D"
     const combos = Array.from(
@@ -75,7 +76,8 @@ const DataGaji = () => {
   const filteredDataGaji = dataGaji.filter((d) => {
     // primero por año/mes (como ya hacías en el useEffect)
     const byMonthYear =
-      d?.year?.toString() === filterTahun && d?.month?.toString() === filterBulan;
+      d?.year?.toString() === filterTahun &&
+      d?.month?.toString() === filterBulan;
     if (!byMonthYear) return false;
     // si hay fecha seleccionada, comparar full string
     if (filterDate) {
@@ -542,13 +544,13 @@ const DataGaji = () => {
                   {t("alpha")}
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
+                  {t("extraPayments")}
+                </th>
+                <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("deductions")}
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("absencePenalty")}
-                </th>
-                 <th className="px-2 py-2 font-medium text-black dark:text-white">
-                  {t("extras")}
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("total")}
@@ -683,15 +685,15 @@ const DataGaji = () => {
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {symbol}
+                      {toLocal(data.extras)}
+                    </td>
+                    <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
+                      {symbol}
                       {toLocal(data.totalDeductions)}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {symbol}
                       {toLocal(data.castigo_ausencias)}
-                    </td>
-                    <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                      {symbol}
-                      {toLocal(data.extras)}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {symbol}
