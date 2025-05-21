@@ -87,5 +87,6 @@
   "mySalarySlips": "Slip Gaji Saya",
   "yearPlaceholder": "YYYY",
   "noRecords": "Tidak ada data untuk {{filterMonth}}/{{filterYear}}.",
-  "monthYear": "Bulan/Tahun"
+  "monthYear": "Bulan/Tahun",
+  "extraPayments": "Pembayaran Tambahan"
 }

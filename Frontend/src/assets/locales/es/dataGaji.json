@@ -87,5 +87,6 @@
   "mySalarySlips": "Mis planillas de salario",
   "yearPlaceholder": "YYYY",
   "noRecords": "No se encontraron registros para {{filterMonth}}/{{filterYear}}.",
-  "monthYear": "Mes/Año"
+  "monthYear": "Mes/Año",
+  "extraPayments": "Pagos extra"
 }

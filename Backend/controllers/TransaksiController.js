@@ -983,6 +983,12 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
       hadir: att.hadir,
       sakit: att.sakit,
       alpha: att.alpha,
+      worked_hours: att.worked_hours,
+      additional_payments: att.additional_payments,
+      vacation_payments: att.vacation_payments,
+      vacation_days: att.vacation_days,
+      comment_01: att.comment_01,
+      comment_02: att.comment_02,
 
       salarioEmpleo: datosPuesto?.gaji_pokok,
       salarioInicial: roundUp2(baseSalary), // El salario mas pagos adicionales - sanciones
