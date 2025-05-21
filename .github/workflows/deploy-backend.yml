@@ -79,7 +79,6 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_KEY_JSON }}
           instance: mern-salary-magament:us-central1:root
-          # instance: ${{ secrets.CLOUD_SQL_INSTANCE }}
 
       - name: Setup Cloud SQL Auth Proxy
         uses: google-github-actions/setup-cloud-sql-proxy@main
@@ -96,7 +95,3 @@ jobs:
             DB_DIALECT=mysql
             PORT=8080
           flags: --platform managed --allow-unauthenticated
-# DB_HOST=${{ secrets.DB_HOST }}
-#DB_USER=${{ secrets.DB_USER }}
-#DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-#DB_NAME=${{ secrets.DB_NAME }}
