@@ -1,15 +1,21 @@
 USE db_penggajian3;
 
-ALTER TABLE data_jabatan
-MODIFY COLUMN gaji_pokok DECIMAL(15,7) NOT NULL,
-MODIFY COLUMN tj_transport DECIMAL(15,7) NOT NULL,
-MODIFY COLUMN uang_makan DECIMAL(15,7) DEFAULT NULL;
+ALTER TABLE parameters
+  MODIFY COLUMN value VARCHAR(255) NULL,
+  ADD COLUMN value_type ENUM('INT', 'DOUBLE', 'STRING') NOT NULL
+    DEFAULT 'INT';
 
-ALTER TABLE potongan_gaji
-MODIFY COLUMN jml_potongan DECIMAL(15,7) DEFAULT 0,
-MODIFY COLUMN `from` DECIMAL(15,7) DEFAULT 0,
-MODIFY COLUMN `until` DECIMAL(15,7) DEFAULT 0,
-MODIFY COLUMN value_d DECIMAL(15,7) DEFAULT 0;
+TRUNCATE TABLE parameters;
+
+INSERT INTO parameters (id, name, value, value_type, type) VALUES
+  (1, 'Horas semanales',                   '44',              'INT',    'HWEK'),
+  (2, 'Dias semanales',                    '6',               'INT',    'DWEK'),
+  (3, 'Pagos en mes',                      '2',               'INT',    'PMON'),
+  (4, 'DUI/NIT del Empleador',             '0614200595',      'STRING', 'DUIN'),
+  (5, 'Número patronal ISSS',              '12345678',        'STRING', 'NPIS'),
+  (6, 'Correlativo Centro de Trabajo ISSS','876543',          'INT',    'CCTS'),
+  (7, 'Nombre de la empresa',              'AdventureWorks S.A.','STRING','COMP'),
+  (8, 'Ubicación de la empresa',           'Acajutla, Sonsonate','STRING','ADCO');
 
 
 TRUNCATE potongan_gaji;
@@ -41,25 +47,10 @@ VALUES
   ('III Tramo',0.2000, 895.25, 2038.10,  60.00, 'DIN', NOW(), NOW(), 1, 'Remuneraciones mensuales'),
   ('IV Tramo', 0.3000,2038.11,    -1, 288.57, 'DIN', NOW(), NOW(), 1, 'Remuneraciones mensuales');
 
--- Aportaciones legales (pago mensual)
+  -- Aportaciones legales (pago mensual)
 INSERT INTO potongan_gaji
   (potongan, jml_potongan, type, createdAt, updatedAt, payment_frequency, deduction_group)
 VALUES
   ('ISSS',      0.0300, 'STA', NOW(), NOW(), 4, 'Deducciones mayo 2025'),
   ('AFP',       0.0725, 'STA', NOW(), NOW(), 4, 'Deducciones mayo 2025');
 -- ('INSAFORP',  0.0100, 'STA', NOW(), NOW(), 4, 'Deducciones mayo 2025')
-
-
-
-INSERT INTO parameters (id, name, value, type)
-VALUES
-  (4, 'DUI/NIT del Empleador', 0614200595, 'DUIN');
-INSERT INTO parameters (id, name, value, type)
-VALUES
-  (5, 'Número patronal ISSS', 12345678, 'NPIS');
-INSERT INTO parameters (id, name, value, type)
-VALUES
-  (6, 'Correlativo Centro de Trabajo ISSS', 876543, 'CCTS');
-INSERT INTO parameters (id, name, value, type)
-VALUES
-  (7, 'Nombre de la empresa', 1, 'COMP');

@@ -4,31 +4,34 @@ import { saveAs } from "file-saver";
 import { OBSERVATION_CODES } from "../../../../shared/Const";
 import { ButtonOne } from "../../../atoms";
 import { TfiPrinter } from "react-icons/tfi";
+import { useDisplayValue } from "../../../../hooks/useDisplayValue";
 
 export default function ExportPlanillaButton({ data, month, year }) {
+  const getDisplayValue = useDisplayValue();
+
   // Cabecera “bonita” para Excel (objetos JSON)
   const excelHeader = [
-    "DUI/NIT del Empleador",
-    "Número patronal ISSS",
-    "Período Mes-Año",
-    "Correlativo Centro de Trabajo ISSS",
-    "Número de Documento",
-    "Tipo de Documento",
-    "Número de Afiliación ISSS",
-    "Institución Previsional",
-    "Primer Nombre",
-    "Segundo Nombre",
-    "Primer Apellido",
-    "Segundo Apellido",
-    "Apellido de Casada",
-    "Salario",
-    "Pago Adicional",
-    "Monto de Vacación",
-    "Días",
-    "Horas",
-    "Días de Vacación",
-    "Código de Observación 01",
-    "Código de Observación 02",
+    getDisplayValue("dui/nit del empleador"),
+    getDisplayValue("número patronal isss"),
+    getDisplayValue("período mes-año"),
+    getDisplayValue("correlativo centro de trabajo isss"),
+    getDisplayValue("número de documento"),
+    getDisplayValue("tipo de documento"),
+    getDisplayValue("número de afiliación isss"),
+    getDisplayValue("institución previsional"),
+    getDisplayValue("primer nombre"),
+    getDisplayValue("segundo nombre"),
+    getDisplayValue("primer apellido"),
+    getDisplayValue("segundo apellido"),
+    getDisplayValue("apellido de casada"),
+    getDisplayValue("salario"),
+    getDisplayValue("pago adicional"),
+    getDisplayValue("monto de vacación"),
+    getDisplayValue("días"),
+    getDisplayValue("horas"),
+    getDisplayValue("días de vacación"),
+    getDisplayValue("código de observación 01"),
+    getDisplayValue("código de observación 02"),
   ];
 
   const csvHeader = excelHeader.join(";");
@@ -41,10 +44,10 @@ export default function ExportPlanillaButton({ data, month, year }) {
   const handleExport = (format) => {
     if (format === "xlsx") {
       const rows = data.map((row) => ({
-        [excelHeader[0]]: "TODO: DUI/NIT empleador",
-        [excelHeader[1]]: "TODO: número patronal ISSS",
+        [excelHeader[0]]: row.duiEmpleador,
+        [excelHeader[1]]: row.numeroPatronalISSS,
         [excelHeader[2]]: `${month}-${year}`,
-        [excelHeader[3]]: "TODO: correlativo CT ISSS",
+        [excelHeader[3]]: row.correlativoCentroTrabajoISSS,
         [excelHeader[4]]: row.attendanceId,
         [excelHeader[5]]: row.document_type,
         [excelHeader[6]]: row.isss_affiliation_number,
@@ -60,8 +63,8 @@ export default function ExportPlanillaButton({ data, month, year }) {
         [excelHeader[16]]: row.hadir,
         [excelHeader[17]]: row.worked_hours,
         [excelHeader[18]]: row.vacation_days,
-        [excelHeader[19]]: getObsLabel(row.comment_01),
-        [excelHeader[20]]: getObsLabel(row.comment_02),
+        [excelHeader[19]]: getDisplayValue(getObsLabel(row.comment_01)),
+        [excelHeader[20]]: getDisplayValue(getObsLabel(row.comment_02)),
       }));
 
       // Generar Sheet y Workbook
@@ -117,7 +120,7 @@ export default function ExportPlanillaButton({ data, month, year }) {
       <ButtonOne
         type="button"
         onClick={() => handleExport("xlsx")}
-        className="py-3 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 flex w-full items-center justify-center space-x-2 rounded-lg text-white"
+        className="bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 flex w-full items-center justify-center space-x-2 rounded-lg py-3 text-white"
       >
         Exportar Excel
         <TfiPrinter />
@@ -126,7 +129,7 @@ export default function ExportPlanillaButton({ data, month, year }) {
       <ButtonOne
         type="button"
         onClick={() => handleExport("csv")}
-        className="py-3 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 flex w-full items-center justify-center space-x-2 rounded-lg text-white"
+        className="bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 flex w-full items-center justify-center space-x-2 rounded-lg py-3 text-white"
       >
         Exportar CSV
         <TfiPrinter />

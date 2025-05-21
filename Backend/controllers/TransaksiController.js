@@ -651,6 +651,7 @@ export const getDataGajiPegawai = async (year, month) => {
     const paramNPIS = await Parameter.findOne({ where: { type: "NPIS" } });
     const paramCCTS = await Parameter.findOne({ where: { type: "CCTS" } });
     const paramCOMP = await Parameter.findOne({ where: { type: "COMP" } });
+    const paramADCO = await Parameter.findOne({ where: { type: "ADCO" } });
 
     const salariosConDeducciones = await Promise.all(
       attendance.map(async (attendanceEmployee) => {
@@ -749,10 +750,12 @@ export const getDataGajiPegawai = async (year, month) => {
             const totalPayments = totalPaymentsInMonth?.value || -1;
             const payment_frequency = deduction?.payment_frequency || 0;
 
+            const upperBound = until === -1 ? Infinity : until;
+
             if (
-              salarioStandarRestante > from &&
-              (until < 0 || salarioStandarRestante <= until) &&
-              (payment_frequency === totalPayments || payment_frequency === -1)
+              salarioStandarRestante > from && // mayor que el mínimo
+              salarioStandarRestante <= upperBound && // dentro del tope (o sin tope)
+              (payment_frequency == totalPayments || payment_frequency == -1) // coincide freq.
             ) {
               const baseGravable = salarioStandarRestante - from;
 
@@ -817,6 +820,7 @@ export const getDataGajiPegawai = async (year, month) => {
           numeroPatronalISSS: paramNPIS?.value,
           correlativoCentroTrabajoISSS: paramCCTS?.value,
           nombreEmpresa: paramCOMP?.value,
+          ubicacionEmpresa: paramADCO?.value,
 
           // Fechas
           year: attendanceEmployee.tahun,
@@ -867,6 +871,7 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
     const paramNPIS = await Parameter.findOne({ where: { type: "NPIS" } });
     const paramCCTS = await Parameter.findOne({ where: { type: "CCTS" } });
     const paramCOMP = await Parameter.findOne({ where: { type: "COMP" } });
+    const paramADCO = await Parameter.findOne({ where: { type: "ADCO" } });
 
     // Procesar asistencia individual
     const attDate = new Date(att.tahun, parseInt(att.bulan, 10) - 1, att.day);
@@ -948,10 +953,12 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
         const totalPayments = totalPaymentsInMonth?.value || -1;
         const payment_frequency = deduction?.payment_frequency || 0;
 
+        const upperBound = until == -1 ? Infinity : until;
+        
         if (
-          salarioStandarRestante > from &&
-          (until < 0 || salarioStandarRestante <= until) &&
-          (payment_frequency === totalPayments || payment_frequency === -1)
+          salarioStandarRestante > from && // mayor que el mínimo
+          salarioStandarRestante <= upperBound && // dentro del tope (o sin tope)
+          (payment_frequency == totalPayments || payment_frequency == "-1") // coincide freq.
         ) {
           const baseGravable = salarioStandarRestante - from;
 
@@ -983,6 +990,12 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
       hadir: att.hadir,
       sakit: att.sakit,
       alpha: att.alpha,
+      worked_hours: att.worked_hours,
+      additional_payments: att.additional_payments,
+      vacation_payments: att.vacation_payments,
+      vacation_days: att.vacation_days,
+      comment_01: att.comment_01,
+      comment_02: att.comment_02,
 
       salarioEmpleo: datosPuesto?.gaji_pokok,
       salarioInicial: roundUp2(baseSalary), // El salario mas pagos adicionales - sanciones
@@ -1008,6 +1021,7 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
       numeroPatronalISSS: paramNPIS?.value,
       correlativoCentroTrabajoISSS: paramCCTS?.value,
       nombreEmpresa: paramCOMP?.value,
+      ubicacionEmpresa: paramADCO?.value,
 
       // Fechas
       year: att.tahun,
