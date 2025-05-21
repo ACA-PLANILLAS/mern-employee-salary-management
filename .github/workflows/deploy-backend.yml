@@ -5,7 +5,7 @@ on:
     branches: [main, uat, feat/ci-cd]
     paths:
       - "Backend/**"
-      - ".github/workflows/backend.yml"
+      - ".github/workflows/deploy-backend.yml"
 
 jobs:
   test-backend:
