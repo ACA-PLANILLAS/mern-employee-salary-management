@@ -749,10 +749,12 @@ export const getDataGajiPegawai = async (year, month) => {
             const totalPayments = totalPaymentsInMonth?.value || -1;
             const payment_frequency = deduction?.payment_frequency || 0;
 
+            const upperBound = until === -1 ? Infinity : until;
+
             if (
-              salarioStandarRestante > from &&
-              (until < 0 || salarioStandarRestante <= until) &&
-              (payment_frequency === totalPayments || payment_frequency === -1)
+              salarioStandarRestante > from && // mayor que el mínimo
+              salarioStandarRestante <= upperBound && // dentro del tope (o sin tope)
+              (payment_frequency == totalPayments || payment_frequency == -1) // coincide freq.
             ) {
               const baseGravable = salarioStandarRestante - from;
 
@@ -948,10 +950,12 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
         const totalPayments = totalPaymentsInMonth?.value || -1;
         const payment_frequency = deduction?.payment_frequency || 0;
 
+        const upperBound = until == -1 ? Infinity : until;
+        
         if (
-          salarioStandarRestante > from &&
-          (until < 0 || salarioStandarRestante <= until) &&
-          (payment_frequency === totalPayments || payment_frequency === -1)
+          salarioStandarRestante > from && // mayor que el mínimo
+          salarioStandarRestante <= upperBound && // dentro del tope (o sin tope)
+          (payment_frequency == totalPayments || payment_frequency == "-1") // coincide freq.
         ) {
           const baseGravable = salarioStandarRestante - from;
 

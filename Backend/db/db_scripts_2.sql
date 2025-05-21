@@ -18,10 +18,10 @@ TRUNCATE potongan_gaji;
 INSERT INTO potongan_gaji
   (potongan, jml_potongan, `from`, `until`, value_d, type, createdAt, updatedAt, payment_frequency, deduction_group)
 VALUES
-  ('I Tramo',   0.000,  0.01,  137.50, 0.00, 'DIN', NOW(), NOW(), 1, 'Remuneraciones semanales'),
-  ('II Tramo', 0.1000, 137.51, 223.81, 4.42, 'DIN', NOW(), NOW(), 1, 'Remuneraciones semanales'),
-  ('III Tramo',0.2000, 223.82, 509.52,15.00, 'DIN', NOW(), NOW(), 1, 'Remuneraciones semanales'),
-  ('IV Tramo', 0.3000, 509.53,  -1,  72.14, 'DIN', NOW(), NOW(), 1, 'Remuneraciones semanales');
+  ('I Tramo',   0.000,  0.01,  137.50, 0.00, 'DIN', NOW(), NOW(), 4, 'Remuneraciones semanales'),
+  ('II Tramo', 0.1000, 137.51, 223.81, 4.42, 'DIN', NOW(), NOW(), 4, 'Remuneraciones semanales'),
+  ('III Tramo',0.2000, 223.82, 509.52,15.00, 'DIN', NOW(), NOW(), 4, 'Remuneraciones semanales'),
+  ('IV Tramo', 0.3000, 509.53,  -1,  72.14, 'DIN', NOW(), NOW(), 4, 'Remuneraciones semanales');
 
 -- 2) Remuneraciones quincenales (payment_frequency = 2)
 INSERT INTO potongan_gaji
@@ -36,10 +36,10 @@ VALUES
 INSERT INTO potongan_gaji
   (potongan, jml_potongan, `from`, `until`, value_d, type, createdAt, updatedAt, payment_frequency, deduction_group)
 VALUES
-  ('I Tramo',   0.000,    0.01,  550.00,   0.00, 'DIN', NOW(), NOW(), 4, 'Remuneraciones mensuales'),
-  ('II Tramo', 0.1000, 550.01,  895.24,  17.67, 'DIN', NOW(), NOW(), 4, 'Remuneraciones mensuales'),
-  ('III Tramo',0.2000, 895.25, 2038.10,  60.00, 'DIN', NOW(), NOW(), 4, 'Remuneraciones mensuales'),
-  ('IV Tramo', 0.3000,2038.11,    -1, 288.57, 'DIN', NOW(), NOW(), 4, 'Remuneraciones mensuales');
+  ('I Tramo',   0.000,    0.01,  550.00,   0.00, 'DIN', NOW(), NOW(), 1, 'Remuneraciones mensuales'),
+  ('II Tramo', 0.1000, 550.01,  895.24,  17.67, 'DIN', NOW(), NOW(), 1, 'Remuneraciones mensuales'),
+  ('III Tramo',0.2000, 895.25, 2038.10,  60.00, 'DIN', NOW(), NOW(), 1, 'Remuneraciones mensuales'),
+  ('IV Tramo', 0.3000,2038.11,    -1, 288.57, 'DIN', NOW(), NOW(), 1, 'Remuneraciones mensuales');
 
 -- Aportaciones legales (pago mensual)
 INSERT INTO potongan_gaji
