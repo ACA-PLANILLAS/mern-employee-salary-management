@@ -36,7 +36,7 @@ app.use(session({
 
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: 'https://mern-frontend-677888703036.us-central1.run.app'
 }));
 
 
