@@ -56,7 +56,7 @@ const main = async () => {
         await db.sync();
         await store.sync();
         console.log('✅ Tablas sincronizadas');
-        app.listen(process.env.PORT || 5000, () => {
+        app.listen(process.env.PORT || 8080, () => {
             console.log('🚀 Server up and running on port', process.env.PORT);
         });
     } catch (err) {
