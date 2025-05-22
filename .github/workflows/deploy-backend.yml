@@ -52,7 +52,7 @@ jobs:
           cd Backend
           npm test || echo "Tests failed, skipping build"
 
-   deploy-prod-backend:
+  deploy-prod-backend:
     name: 🚀 Deploy Backend to Cloud Run (Production)
     runs-on: ubuntu-latest
     needs: test-backend
