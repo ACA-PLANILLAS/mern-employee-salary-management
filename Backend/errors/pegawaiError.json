@@ -5,6 +5,11 @@
       "status": 404,
       "message": "Data Pegawai Tidak Ditemukan"
     },
+    "NOT_FOUND": {
+      "code": "AUTH-001",
+      "status": 404,
+      "message": "Data Pegawai Tidak Ditemukan"
+    },
     "FETCH_SUCCESS": {
       "code": "EMP-001",
       "status": 200,
