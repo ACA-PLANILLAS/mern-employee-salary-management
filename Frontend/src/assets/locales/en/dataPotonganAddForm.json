@@ -35,5 +35,6 @@
   "deductionRequired": "The deduction name is required.",
   "noUpperLimit": "No upper limit",
   "fromMustBeLessThanOrEqualUntil": "\"From\" must be less than or equal to \"Until\"",
+  "fromUntilCannotBeZero": "The ‘From’ and ‘Until’ fields cannot both be zero.",
   "fromNowOn": "From now on"
 }

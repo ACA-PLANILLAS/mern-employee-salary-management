@@ -9,6 +9,7 @@
   "AUTH-009": "Password and Confirm Password Do Not Match",
   "AUTH-010": "Password Successfully Updated",
   "AUTH-011": "Failed to Update Password",
+  "AUTH-012": "New password must not be the same as the old password",
   "DATAJAB-001": "Forbidden Access",
   "DATAJAB-002": "Position Data with That ID Not Found",
   "DATAJAB-003": "Position Data Successfully Retrieved",

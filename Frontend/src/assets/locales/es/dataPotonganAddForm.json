@@ -35,5 +35,6 @@
   "deductionRequired": "El nombre de la deducción es obligatorio.",
    "noUpperLimit": "Sin límite superior",
   "fromMustBeLessThanOrEqualUntil": "\"Desde\" debe ser menor o igual que \"Hasta\"",
-"fromNowOn": "En adelante"
+  "fromUntilCannotBeZero": "Los campos ‘Desde’ y ‘Hasta’ no pueden ser ambos cero.",
+  "fromNowOn": "En adelante"
 }

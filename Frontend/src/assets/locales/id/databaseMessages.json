@@ -9,6 +9,7 @@
   "AUTH-009": "Password dan Konfirmasi Password Tidak Cocok",
   "AUTH-010": "Password Berhasil di Perbarui",
   "AUTH-011": "Gagal memperbarui password",
+  "AUTH-012": "Password baru tidak boleh sama dengan password lama",
   "DATAJAB-001": "Akses terlarang",
   "DATAJAB-002": "Data jabatan dengan ID tersebut tidak ditemukan",
   "DATAJAB-003": "Data Jabatan Berhasil Diambil",

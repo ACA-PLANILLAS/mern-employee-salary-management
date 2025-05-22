@@ -35,5 +35,6 @@
   "deductionRequired": "Nama potongan wajib diisi.",
   "noUpperLimit": "Tanpa batas atas",
   "fromMustBeLessThanOrEqualUntil": "\"Dari\" harus kurang dari atau sama dengan \"Sampai\"",
+  "fromUntilCannotBeZero": "Kolom ‘Dari’ dan ‘Sampai’ tidak boleh keduanya nol.",
   "fromNowOn": "Mulai sekarang"
 }
