@@ -10,8 +10,9 @@ const db = new Sequelize(
         host: process.env.DB_HOST,
         port: parseInt(process.env.DB_PORT, 10),
         dialect: 'mysql',
-        dialectOptions:
-            { socketPath: process.env.DB_HOST },
+        dialectOptions: process.env.DB_HOST.includes("/cloudsql")
+            ? { socketPath: process.env.DB_HOST }
+            : {},
         logging: false,
     }
 );

@@ -79,10 +79,9 @@ jobs:
           image: docker.io/${{ secrets.DOCKER_USERNAME }}/mern-backend
           region: us-central1
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          add_cloudsql_instances: mern-salary-magament:us-central1:root
           env_vars: |
             NODE_ENV=production
-            DB_HOST=/cloudsql/mern-salary-magament:us-central1:root
+            DB_HOST=34.59.144.24
             DB_USER=root
             DB_PASSWORD=;EtA}0Gb0IT;y[>N
             DB_NAME=db_penggajian3
