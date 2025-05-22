@@ -17,6 +17,9 @@ COPY . .
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
+# Crear un archivo .env para que Vite lo lea correctamente
+RUN echo "VITE_API_URL=$VITE_API_URL" > .env
+
 # Compilar la aplicación React con Vite
 RUN npm run build
 
