@@ -86,3 +86,4 @@ jobs:
             DB_PASSWORD=;EtA}0Gb0IT;y[>N
             DB_NAME=db_penggajian3
             DB_DIALECT=mysql
+            SESS_SECRET=KlmCLd9MzrKyzvoXSmq29pFmH7GoFk_37842_asdfkwbGGG123
