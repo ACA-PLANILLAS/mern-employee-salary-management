@@ -56,6 +56,7 @@ export const Login = async (req, res) => {
 
 export const Me = async (req, res) => {
   if (!req.session.userId) {
+    console.log("sess", red?.session)
     return res.status(401).json({ msg: ME.NOT_LOGGED_IN.code });
   }
   const pegawai = await DataPegawai.findOne({
