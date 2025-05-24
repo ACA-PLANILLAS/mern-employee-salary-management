@@ -16,8 +16,8 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: secret
-          MYSQL_DATABASE: db_penggajian3
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.DB_NAME }}
         ports:
           - 3306:3306
         options: >-
@@ -44,9 +44,9 @@ jobs:
         env:
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
-          DB_USER: root
-          DB_PASSWORD: secret
-          DB_NAME: db_penggajian3
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
           DB_DIALECT: mysql
         run: |
           cd Backend
@@ -89,12 +89,12 @@ jobs:
           image: docker.io/${{ secrets.DOCKER_USERNAME }}/mern-backend
           region: us-central1
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          cloudsql-instances: mern-salary-magament:us-central1:root
+          cloudsql-instances: ${{ secrets.DB_HOST }}
           env_vars: |
             NODE_ENV=production
-            DB_HOST=/cloudsql/mern-salary-magament:us-central1:root
-            DB_USER=root
-            DB_PASSWORD=';EtA}0Gb0IT;y[>N'
-            DB_NAME=db_penggajian3
-            DB_DIALECT=mysql
-            SESS_SECRET=KlmCLd9MzrKyzvoXSmq29pFmH7GoFk_37842_asdfkwbGGG123
+            DB_HOST=/cloudsql/${{ secrets.DB_HOST }}
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_NAME=${{ secrets.DB_NAME }}
+            DB_DIALECT=${{ secrets.DB_DIALECT }}
+            SESS_SECRET= ${{ secrets.SESS_SECRET }}
