@@ -24,9 +24,9 @@ const store = new sessionStore({
 dotenv.config();
 
 const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:5173',
-  'https://mern-frontend-677888703036.us-central1.run.app'
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'https://mern-frontend-677888703036.us-central1.run.app'
 ];
 
 app.use(cors({
