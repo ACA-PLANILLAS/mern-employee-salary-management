@@ -47,6 +47,9 @@ const store = new (SequelizeStore(session.Store))({
     tableName: 'sessions'
 });
 
+console.log('Entorno:', process.env.NODE_ENV);
+console.log({ isproduction: process.env.NODE_ENV === 'production' })
+
 app.use(session({
     secret: process.env.SESS_SECRET,
     resave: false,
@@ -54,7 +57,7 @@ app.use(session({
     store,
     cookie: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',            // HTTPS obligatorio en prod
+        secure: process.env.NODE_ENV === 'production',
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     }
 }));
