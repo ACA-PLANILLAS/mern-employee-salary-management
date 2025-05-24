@@ -1,5 +1,4 @@
 import { Sequelize } from 'sequelize';
-
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -11,7 +10,12 @@ const db = new Sequelize(
         host: process.env.DB_HOST,
         port: parseInt(process.env.DB_PORT, 10),
         dialect: 'mysql',
+        dialectOptions: process.env.DB_HOST.includes("/cloudsql")
+            ? { socketPath: process.env.DB_HOST }
+            : {},
         logging: false,
     }
 );
-export default db
+
+console.log('Database connected... ');
+export default db;
