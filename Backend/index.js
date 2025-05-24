@@ -12,23 +12,22 @@ import UserRoute from './routes/UserRoute.js';
 import AuthRoute from './routes/AuthRoute.js';
 import ParamRoute from './routes/ParamRoute.js';
 
-const app = express();
-
-const sessionStore = SequelizeStore(session.Store);
-const store = new sessionStore({
-    db: db,
-    tableName: "sessions"
-});
-
 
 dotenv.config();
+const app = express();
+
+// Confía en la cabecera X-Forwarded-Proto que añade Cloud Run
+app.set('trust proxy', 1);
 
 const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:5173',
     'https://mern-frontend-677888703036.us-central1.run.app'
-];
+]
 
+const sessionStore = SequelizeStore(session.Store);
+
+// 1️⃣ Configuración de CORS
 app.use(cors({
     origin: (origin, cb) => {
         if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
@@ -39,16 +38,24 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Permitir todas las opciones de CORS para evitar problemas con preflight requests
 app.options('*', cors());
 
-// Middleware
+// 2️⃣ Sesiones con sameSite y secure según entorno
+const store = new (SequelizeStore(session.Store))({
+    db,
+    tableName: 'sessions'
+});
+
 app.use(session({
     secret: process.env.SESS_SECRET,
     resave: false,
-    saveUninitialized: true,
-    store: store,
+    saveUninitialized: false,  // no crear sesión hasta definir userId
+    store,
     cookie: {
-        secure: 'auto'
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',            // HTTPS obligatorio en prod
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
     }
 }));
 
