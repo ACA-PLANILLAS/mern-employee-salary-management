@@ -56,14 +56,14 @@ export const Login = async (req, res) => {
 
 export const Me = async (req, res) => {
   if (!req.session.userId) {
-    console.log("sess", red?.session)
+    console.log("sess", req?.session)
     return res.status(401).json({ msg: ME.NOT_LOGGED_IN.code });
   }
   const pegawai = await DataPegawai.findOne({
     attributes: [
-      'id_pegawai','nik','dui_or_nit','document_type','isss_affiliation_number','pension_institution_code',
-      'first_name','middle_name','last_name','second_last_name','maiden_name',
-      'username','hak_akses','id','photo','url'
+      'id_pegawai', 'nik', 'dui_or_nit', 'document_type', 'isss_affiliation_number', 'pension_institution_code',
+      'first_name', 'middle_name', 'last_name', 'second_last_name', 'maiden_name',
+      'username', 'hak_akses', 'id', 'photo', 'url'
     ],
     where: {
       id_pegawai: req.session.userId
@@ -95,10 +95,10 @@ export const changePassword = async (req, res) => {
 
   if (password !== confPassword) return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH.code });
 
-   const isSameAsOld = await argon2.verify(pegawai.password, password);
+  const isSameAsOld = await argon2.verify(pegawai.password, password);
   if (isSameAsOld) {
     return res.status(PASSWORD.SAME_AS_OLD.status)
-              .json({ msg: PASSWORD.SAME_AS_OLD.code });
+      .json({ msg: PASSWORD.SAME_AS_OLD.code });
   }
 
   try {
