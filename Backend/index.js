@@ -23,6 +23,15 @@ const store = new sessionStore({
 
 dotenv.config();
 
+app.use(cors({
+    origin: 'https://mern-frontend-677888703036.us-central1.run.app',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.options('*', cors());
+
 // Middleware
 app.use(session({
     secret: process.env.SESS_SECRET,
@@ -33,15 +42,6 @@ app.use(session({
         secure: 'auto'
     }
 }));
-
-app.use(cors({
-    origin: 'https://mern-frontend-677888703036.us-central1.run.app',
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-app.options('*', cors());
 
 app.use(express.json());
 
