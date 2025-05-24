@@ -1,9 +1,17 @@
 import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize('database_name', 'username', 'password', {
-  host: 'localhost',
-  dialect: 'mysql', // Cambia esto según tu base de datos (mysql, postgres, etc.)
-});
+import dotenv from 'dotenv';
+dotenv.config();
 
-export { Sequelize, sequelize }; // Exporta tanto Sequelize como la instancia sequelize
-export default sequelize;
+const db = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASSWORD,
+    {
+        host: process.env.DB_HOST,
+        port: parseInt(process.env.DB_PORT, 10),
+        dialect: 'mysql',
+        logging: false,
+    }
+);
+export default db
