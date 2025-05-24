@@ -4,6 +4,11 @@ import i18n from "../../../config/internalization/i18nTest"; // Usa el i18n de t
 import Banner from "./index.jsx";
 import { MemoryRouter } from "react-router-dom";
 
+jest.mock('sweetalert2', () => ({
+  fire: jest.fn(),
+  // otros métodos si los usas
+}));
+
 describe("Banner component", () => {
   test("renders translated content", () => {
     render(
