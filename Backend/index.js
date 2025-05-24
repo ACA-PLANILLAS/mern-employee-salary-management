@@ -35,10 +35,13 @@ app.use(session({
 }));
 
 app.use(cors({
+    origin: 'https://mern-frontend-677888703036.us-central1.run.app',
     credentials: true,
-    origin: 'https://mern-frontend-677888703036.us-central1.run.app'
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+app.options('*', cors());
 
 app.use(express.json());
 
