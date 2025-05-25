@@ -5,9 +5,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "jest --experimental-vm-modules",
-    "test2": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "test3": "node --experimental-vm-modules ./node_modules/.bin/jest",
+    "test": "jest",
+    "test_module": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test_backup": "node --experimental-vm-modules ./node_modules/.bin/jest",
     "start": "nodemon index.js"
   },
   "keywords": [],
