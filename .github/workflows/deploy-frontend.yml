@@ -31,6 +31,20 @@ jobs:
           cd Frontend
           npm run test || echo "Frontend tests failed, skipping build"
 
+      - name: Upload Jest test report
+        uses: actions/upload-artifact@v3
+        with:
+          name: jest-report
+          path: Frontend/reports/jest-junit.xml
+
+      - name: Report test results in GitHub
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Frontend Jest Tests
+          path: Frontend/reports/jest-junit.xml
+          reporter: jest-junit
+
   build-and-deploy-frontend:
     name: 🚀 Build & Deploy Frontend
     runs-on: ubuntu-latest
