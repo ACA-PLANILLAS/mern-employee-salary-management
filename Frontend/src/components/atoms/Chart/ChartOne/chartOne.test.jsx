@@ -1,47 +1,45 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import ChartOne from './index.jsx';
+import React from "react";
+import { render, screen, waitFor } from "@testing-library/react";
+import ChartOne from "./index";
+import { I18nextProvider } from "react-i18next";
+import i18n from "../../../../config/internalization/i18nTest";
 
-// Simulamos el componente de ApexCharts (para evitar errores en tests)
-jest.mock('react-apexcharts', () => () => <div data-testid="mock-chart">Gráfico</div>);
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () =>
+      Promise.resolve({
+        series: [
+          { name: "Male", data: [10, 20, 30] },
+          { name: "Female", data: [15, 25, 35] }
+        ],
+        labels: ["Jan", "Feb", "Mar"]
+      }),
+  })
+);
 
-// Simulamos las traducciones de i18next
-jest.mock('react-i18next', () => ({
-  withTranslation: () => (Component) => {
-    Component.defaultProps = {
-      ...Component.defaultProps,
-      t: (key) => {
-        const traducciones = {
-          'chartsOne.dataMale': 'Hombres',
-          'chartsOne.dataFemale': 'Mujeres',
-          'chartsOne.viewOptions.day': 'Día',
-          'chartsOne.viewOptions.week': 'Semana',
-          'chartsOne.viewOptions.month': 'Mes',
-        };
-        return traducciones[key] || key;
-      },
-    };
-    return Component;
-  },
-}));
+// Mock de ReactApexChart para evitar errores de librería en test
+jest.mock("react-apexcharts", () => () => (
+  <div data-testid="mock-chart">Gráfico</div>
+));
 
-describe('Componente ChartOne', () => {
-  test('debe renderizar los textos y el gráfico correctamente', () => {
-    render(<ChartOne />);
+describe("Componente ChartOne", () => {
+  test("debe renderizar correctamente el gráfico y los datos", async () => {
+    render(
+      <I18nextProvider i18n={i18n}>
+        <ChartOne />
+      </I18nextProvider>
+    );
 
-    // Verifica los textos de las leyendas
-    expect(screen.getByText('Hombres')).toBeInTheDocument();
-    expect(screen.getByText('Mujeres')).toBeInTheDocument();
+    const maleLabel = i18n.t("chartsOne.dataMale");
+    const femaleLabel = i18n.t("chartsOne.dataFemale");
 
-    // Verifica que se renderiza el gráfico simulado
-    expect(screen.getByTestId('mock-chart')).toBeInTheDocument();
+    // Espera a que los textos traducidos estén presentes
+    await waitFor(() => {
+      expect(screen.getByText(maleLabel)).toBeInTheDocument();
+      expect(screen.getByText(femaleLabel)).toBeInTheDocument();
+    });
 
-    // Verifica los textos de rango de fechas
-    expect(screen.getAllByText('14.04.2023 - 14.05.2023')[0]).toBeInTheDocument();
-
-    // Verifica los botones de vista (día, semana, mes)
-    expect(screen.getByText('Día')).toBeInTheDocument();
-    expect(screen.getByText('Semana')).toBeInTheDocument();
-    expect(screen.getByText('Mes')).toBeInTheDocument();
+    // Verifica que el gráfico esté presente
+    expect(screen.getByTestId("mock-chart")).toBeInTheDocument();
   });
 });

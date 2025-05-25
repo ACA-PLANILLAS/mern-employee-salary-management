@@ -7,3 +7,12 @@ global.ResizeObserver = class {
     unobserve() {}
     disconnect() {}
   };
+
+// Polyfill para testing
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+
+// Mock global para useCurrency
+globalThis.mockUseCurrency = {
+  currency: 'USD',
+  setCurrency: jest.fn()
+};
