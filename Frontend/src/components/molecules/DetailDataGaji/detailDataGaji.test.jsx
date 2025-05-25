@@ -123,6 +123,38 @@ describe("DetailDataGaji", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
+ beforeAll(() => {
+  jest.spyOn(console, 'error').mockImplementation((...args) => {
+    const fullMessage = args.join(' ');
+    if (
+      fullMessage.includes('act(...)') ||
+      fullMessage.includes('not wrapped in act') ||
+      fullMessage.includes('Warning:')
+    ) {
+      return;
+    }
+    console.error(...args);
+  });
+
+  jest.spyOn(console, 'warn').mockImplementation((...args) => {
+    const fullMessage = args.join(' ');
+    if (
+      fullMessage.includes('navigate() in a React.useEffect') ||
+      fullMessage.includes('not wrapped in act') ||
+      fullMessage.includes('Warning:')
+    ) {
+      return;
+    }
+    console.warn(...args);
+  });
+});
+
+afterAll(() => {
+  console.error.mockRestore();
+  console.warn.mockRestore();
+});
+
+
 
   test("muestra mensaje de carga inicialmente", () => {
     useParams.mockReturnValue({ id: "1" });

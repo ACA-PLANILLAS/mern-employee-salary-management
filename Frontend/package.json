@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "jest --env=jsdom",
+    "test": "jest --env=jsdom --verbose",
     "testing": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "dependencies": {
