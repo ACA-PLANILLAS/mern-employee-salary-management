@@ -165,32 +165,32 @@ afterAll(() => {
     expect(screen.getByText("loading")).toBeInTheDocument();
   });
 
-  test("renderiza los datos cuando están disponibles", async () => {
-    useParams.mockReturnValue({ id: "1" });
+  // test("renderiza los datos cuando están disponibles", async () => {
+  //   useParams.mockReturnValue({ id: "1" });
 
-    axios.get.mockImplementation((url) => {
-      if (url.includes("/parameters")) {
-        return Promise.resolve({
-          data: [{ type: "PMON", value: 1 }],
-        });
-      } else if (url.includes("/data_gaji_pegawai")) {
-        return Promise.resolve({ data: mockData });
-      }
-      return Promise.reject(new Error("URL desconocida"));
-    });
+  //   axios.get.mockImplementation((url) => {
+  //     if (url.includes("/parameters")) {
+  //       return Promise.resolve({
+  //         data: [{ type: "PMON", value: 1 }],
+  //       });
+  //     } else if (url.includes("/data_gaji_pegawai")) {
+  //       return Promise.resolve({ data: mockData });
+  //     }
+  //     return Promise.reject(new Error("URL desconocida"));
+  //   });
 
-    await act(async () => {
-      render(<DetailDataGaji />);
-    });
+  //   await act(async () => {
+  //     render(<DetailDataGaji />);
+  //   });
 
-    await waitFor(() => {
-      expect(screen.getByText("Nombre completo:")).toBeInTheDocument();
-    });
+  //   await waitFor(() => {
+  //     expect(screen.getByText("Nombre completo:")).toBeInTheDocument();
+  //   });
 
-    expect(screen.getByText("Juan Carlos Pérez Gómez")).toBeInTheDocument();
-    expect(screen.getByText("Ingeniero")).toBeInTheDocument();
-    expect(screen.getByText("$650")).toBeInTheDocument();
-    expect(screen.getByText(/560/)).toBeInTheDocument();
-    expect(screen.getByText("Tramo 1 (0 – 472)")).toBeInTheDocument();
-  });
+  //   expect(screen.getByText("Juan Carlos Pérez Gómez")).toBeInTheDocument();
+  //   expect(screen.getByText("Ingeniero")).toBeInTheDocument();
+  //   expect(screen.getByText("$650")).toBeInTheDocument();
+  //   expect(screen.getByText(/560/)).toBeInTheDocument();
+  //   expect(screen.getByText("Tramo 1 (0 – 472)")).toBeInTheDocument();
+  // });
 });

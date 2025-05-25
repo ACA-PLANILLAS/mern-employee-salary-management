@@ -17,4 +17,11 @@ export default {
     '^@/(.*)$': '<rootDir>/src/$1',
     '\\.(png|jpg|jpeg|gif|svg)$': '<rootDir>/__mocks__/fileMock.js',
   },
+   reporters: [
+    'default',
+    ['jest-junit', {
+      outputDirectory: './reports',
+      outputName: 'jest-junit.xml',
+    }]
+  ],
 }
