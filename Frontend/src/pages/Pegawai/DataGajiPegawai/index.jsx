@@ -155,10 +155,11 @@ const DataGajiPegawai = () => {
 
       {showMessage && (
         <div className="text-red-600 mb-4">
-          {t(
-            "noRecords",
-            `No se encontraron registros para ${filterMonth}/${filterYear}.`
-          )}
+          {t("noRecords", {
+            filterMonth,
+            filterYear,
+            defaultValue: `No se encontraron registros para ${filterMonth}/${filterYear}.`
+          })}
         </div>
       )}
 
