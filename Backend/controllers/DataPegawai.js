@@ -215,7 +215,6 @@ export const createEmployee = async (req, res) => {
 
     try {
       const hashed = await argon2.hash(password);
-
       const newEmp = await DataPegawai.create(
         {
           nik,
@@ -247,7 +246,6 @@ export const createEmployee = async (req, res) => {
         },
         { transaction: t }
       );
-
       // record initial position history
       await PositionHistory.create(
         {
@@ -259,7 +257,6 @@ export const createEmployee = async (req, res) => {
       );
 
       await t.commit(); // ✅ Si todo sale bien, confirmamos
-
       res
         .status(201)
         .json({ success: true, message: EMPLOYEE.CREATE_SUCCESS.code });
@@ -304,27 +301,19 @@ export const updateEmployee = async (req, res) => {
     position_id,
   } = req.body;
 
-  console.log(">>11111111");
   // Obtener el ultimo cambio de puesto del empleado
   const lastPositionHistory = await PositionHistory.findOne({
     where: { employee_id: emp.id },
     order: [["createdAt", "DESC"]],
   });
-  console.log(">>2222222222");
 
   const t = await db.transaction(); // 🔐 inicia transacción
 
   try {
     // if position changed, record history
     if (String(lastPositionHistory?.position_id) !== String(position_id)) {
-      console.log(
-        ">>>POSITION CHANGED",
-        last_position_change_date,
-        " . ",
-        hire_date
-      );
+      
       // Crear un nuevo registro de historial de posición
-      console.log(">>3333333333333333");
       await PositionHistory.create(
         {
           employee_id: emp.id,
@@ -334,11 +323,9 @@ export const updateEmployee = async (req, res) => {
         { transaction: t }
       );
 
-      console.log(">>444444444");
 
       // Actualizar el registro anterior para establecer la fecha de finalización
       if (lastPositionHistory && lastPositionHistory.position_id) {
-        console.log(">> 555");
         await PositionHistory.update(
           { end_date: Date.now() },
           {
@@ -350,11 +337,9 @@ export const updateEmployee = async (req, res) => {
             transaction: t,
           }
         );
-        console.log(">> 666");
       }
     }
 
-    console.log(">> aaaa");
     await DataPegawai.update(
       {
         nik,
