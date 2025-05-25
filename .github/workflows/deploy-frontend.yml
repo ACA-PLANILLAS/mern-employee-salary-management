@@ -32,7 +32,7 @@ jobs:
           npm run test || echo "Frontend tests failed, skipping build"
 
       - name: Upload Jest test report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: jest-report
           path: Frontend/reports/jest-junit.xml
