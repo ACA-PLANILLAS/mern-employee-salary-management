@@ -56,7 +56,7 @@ const DataGajiPegawai = () => {
 
     try {
       if (!user) return;
-      dispatch(getMe());
+      // dispatch(getMe());
 
       const res = await fetch(
         `${API_URL}/data_gaji_pegawai?year=${filterYear}&month=${filterMonth}`
@@ -88,10 +88,10 @@ const DataGajiPegawai = () => {
     dispatch(getMe());
   }, [dispatch]);
 
-  useEffect(() => {
-    // Al montar, hacemos la búsqueda por defecto en cuanto tengamos user
-    if (user) handleSearch({ preventDefault: () => {} });
-  }, [user]);
+  // useEffect(() => {
+  //   // Al montar, hacemos la búsqueda por defecto en cuanto tengamos user
+  //   if (user) handleSearch({ preventDefault: () => {} });
+  // }, [user]);
 
   useEffect(() => {
     if (isError) navigate("/login");
