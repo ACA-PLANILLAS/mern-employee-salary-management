@@ -79,11 +79,13 @@ export const deleteDataJabatan = (id) => {
         type: DELETE_DATA_JABATAN_SUCCESS,
         payload: response.data,
       });
+      return response; 
     } catch (error) {
       dispatch({
         type: DELETE_DATA_JABATAN_FAILURE,
         payload: error.message,
       });
+      throw error;
     }
   };
 };

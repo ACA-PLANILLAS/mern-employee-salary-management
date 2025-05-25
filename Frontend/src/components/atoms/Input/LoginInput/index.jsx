@@ -42,7 +42,7 @@ function LoginInput() {
       Swal.fire({
         icon: "success",
         title: t("swal.successTitle"),
-        text: getErrorMessage(message),
+        // text: getErrorMessage(message?.code || message),
         timer: 1500,
       }).then(() => {});
     }

@@ -9,6 +9,7 @@
   "AUTH-009": "La contraseña y la confirmación no coinciden",
   "AUTH-010": "Contraseña actualizada exitosamente",
   "AUTH-011": "Error al actualizar la contraseña",
+  "AUTH-012": "La nueva contraseña no debe ser la misma que la contraseña anterior",
   "DATAJAB-001": "Acceso prohibido",
   "DATAJAB-002": "Datos del puesto con ese ID no encontrados",
   "DATAJAB-003": "Datos del puesto recuperados exitosamente",

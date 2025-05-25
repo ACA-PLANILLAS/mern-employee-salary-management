@@ -24,6 +24,7 @@ import { FaUser } from "react-icons/fa";
 
 import defaultAvatar from "../../../../assets/images/defaultAvatar.png";
 import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
+import { useErrorMessage } from "../../../../hooks/useErrorMessage";
 
 const ITEMS_PER_PAGE = 4;
 
@@ -37,6 +38,7 @@ const DataPegawai = () => {
   const { dataPegawai } = useSelector((state) => state.dataPegawai);
   const { t } = useTranslation("dataPegawai");
   const getDisplayValue = useDisplayValue();
+  const getErrorMessage = useErrorMessage();
 
   const { toLocal, symbol, currency } = useCurrencyByUser();
 
@@ -47,10 +49,18 @@ const DataPegawai = () => {
   const filteredDataPegawai = dataPegawai.filter((pegawai) => {
     const keyword = searchKeyword.toLowerCase();
     const statusKeyword = filterStatus.toLowerCase();
-    return (
-      // si prefieres buscar también por username o nombres, agrégalos aquí
-      filterStatus === "" || pegawai.status.toLowerCase() === statusKeyword
-    );
+
+    const matchesStatus =
+      filterStatus === "" || pegawai.status.toLowerCase() === statusKeyword;
+      
+    const matchesSearch =
+      keyword === "" ||
+      pegawai.first_name.toLowerCase().includes(keyword) ||
+      pegawai.middle_name?.toLowerCase().includes(keyword) ||
+      pegawai.last_name.toLowerCase().includes(keyword) ||
+      pegawai.username.toLowerCase().includes(keyword);
+
+    return matchesStatus && matchesSearch;
   });
 
   const goToPrevPage = () => {
@@ -73,17 +83,34 @@ const DataPegawai = () => {
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteDataPegawai(id)).then(() => {
-          Swal.fire({
-            title: t("toast.deleteSuccess.title"),
-            text: t("toast.deleteSuccess.message"),
-            icon: "success",
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false,
+        dispatch(deleteDataPegawai(id))
+          .then((response) => {
+            if (response.status === 200) {
+              Swal.fire({
+                title: t("toast.deleteSuccess.title"),
+                text: t("toast.deleteSuccess.message"),
+                icon: "success",
+                timer: 1000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+              });
+              dispatch(getDataPegawai());
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: t("toast.deleteError.title"),
+                text: getErrorMessage(response?.msg),
+              }).then(() => {});
+            }
+          })
+          .catch((error) => {
+            const status = error.response?.data?.msg || "desconocido";
+            Swal.fire({
+              icon: "error",
+              title: t("toast.deleteError.title"),
+              text: getErrorMessage(status),
+            }).then(() => {});
           });
-          dispatch(getDataPegawai());
-        });
       }
     });
   };

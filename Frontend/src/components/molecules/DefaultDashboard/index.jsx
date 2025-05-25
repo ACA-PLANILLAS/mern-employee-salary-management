@@ -11,100 +11,147 @@ import {
   Breadcrumb,
 } from "../../../components";
 import axios from "axios";
-//import { API_URL } from '@/config/env';
 import { API_URL } from "@/config/env";
+import { useTranslation } from "react-i18next";
 
 const DefaultDashboard = () => {
+  const { t } = useTranslation("common");
   const { user } = useSelector((state) => state.auth);
   const [dataPegawai, setDataPegawai] = useState(null);
 
   useEffect(() => {
     const getDataPegawai = async () => {
       try {
-        const response = await axios.get(
-          `${API_URL}/data_pegawai/name/${user.nama_pegawai}`
-        );
-        const data = response.data;
-        setDataPegawai(data);
+        // Descomenta para usar la API real:
+        // const response = await axios.get(
+        //   `${API_URL}/data_pegawai/${user.id}`
+        // );
+        // setDataPegawai(response.data);
+
+        // Mock con user
+        setDataPegawai(user);
       } catch (error) {
-        console.log(error);
+        console.error(t("dashboard.error.loadingEmployeeData"), error);
       }
     };
 
     if (user && user.hak_akses === "pegawai") {
       getDataPegawai();
     }
-  }, [user]);
+  }, [user, t]);
+
+  const documento = dataPegawai
+    ? dataPegawai.nik || dataPegawai.dui_or_nit
+    : "";
+
+  const nombreCompleto = dataPegawai
+    ? [
+        dataPegawai.first_name,
+        dataPegawai.middle_name,
+        dataPegawai.last_name,
+        dataPegawai.second_last_name,
+      ]
+        .filter((n) => n && n.trim())
+        .join(" ")
+    : "";
 
   return (
     <Layout>
-      <Breadcrumb pageName="Dashboard" />
-      {user && user.hak_akses === "admin" && (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-          <CardOne />
-          <CardTwo />
-          <CardThree />
-          <CardFour />
-        </div>
-      )}
-      {user && user.hak_akses === "admin" && (
-        <div className="mt-4 grid grid-cols-12 gap-6 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-          <div className="col-span-12 sm:col-span-7">
-            <ChartOne />
-          </div>
-          <div className="col-span-12 sm:col-span-5">
-            <ChartTwo />
-          </div>
-        </div>
-      )}
-      {user && user.hak_akses === "pegawai" && dataPegawai && (
+      <Breadcrumb pageName={t("dashboard.breadcrumb.dashboard")} />
+
+      {user?.hak_akses === "admin" && (
         <>
-          <div className="mt-6">
-            <h2 className="px-4 py-2 text-center font-medium text-meta-3 md:text-left">
-              Selamat Datang di SiPeKa Anda Login Sebagai Pegawai.
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <CardOne />
+            <CardTwo />
+            <CardThree />
+            <CardFour />
+          </div>
+          <div className="mt-6 grid grid-cols-12 gap-6">
+            <div className="col-span-12 sm:col-span-7">
+              <ChartOne />
+            </div>
+            <div className="col-span-12 sm:col-span-5">
+              <ChartTwo />
+            </div>
+          </div>
+        </>
+      )}
+
+      {user?.hak_akses === "pegawai" && dataPegawai && (
+        <>
+          <div className="mt-6 px-4 py-2 text-center md:text-left">
+            <h2 className="font-medium text-meta-3">
+              {t("dashboard.welcome", {
+                pegawai: t("dashboard.pegawai"),
+              })}
             </h2>
           </div>
-          <div className="px-4 py-2 text-lg dark:border-strokedark md:px-6">
-            <h3 className="text-center font-medium text-black dark:text-white md:text-left">
-              Data Pegawai
-            </h3>
-          </div>
-          <div className="mt-2 flex flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark md:flex-row">
-            <div className="flex w-full justify-center px-4 py-4 md:w-1/3 md:justify-start">
+
+          <div className="mt-4 rounded-sm border bg-white shadow-default dark:border-strokedark dark:bg-boxdark md:flex">
+            <div className="w-full md:w-1/3 flex justify-center p-4">
               <img
-                className="h-80 w-full rounded-xl object-cover md:w-80"
-                src={`${API_URL}/images/${dataPegawai.photo}`}
-                alt="People"
+                className="h-80 w-full max-w-[320px] rounded-xl object-cover"
+                src={dataPegawai.url}
+                alt={nombreCompleto || t("dashboard.alt.employeePhoto")}
               />
             </div>
-            <div className="px-4 py-4 md:w-2/3 md:px-20 md:py-20">
-              <div className="w-full md:text-lg">
-                <h2 className="mb-4 block font-medium text-black dark:text-white">
-                  <span className="inline-block w-32 md:w-40">Nik</span>
-                  <span className="inline-block w-7">:</span>
-                  {dataPegawai.nik}
-                </h2>
-                <h2 className="mb-4 block font-medium text-black dark:text-white">
-                  <span className="inline-block w-32 md:w-40">
-                    Nama Pegawai
+
+            <div className="w-full md:w-2/3 p-6">
+              <h3 className="mb-4 text-lg font-medium text-black dark:text-white">
+                {t("dashboard.title.employeeData")}
+              </h3>
+
+              <div className="space-y-3 md:text-base">
+                <div className="flex">
+                  <span className="w-32 font-medium">
+                    {t("dashboard.label.document")}
                   </span>
-                  <span className="inline-block w-7">:</span>{" "}
-                  <span className="pl-[-10] md:pl-0"></span>
-                  {dataPegawai.nama_pegawai}
-                </h2>
-                <h2 className="mb-4 block font-medium text-black dark:text-white">
-                  <span className="inline-block w-32 md:w-40">
-                    Tanggal Masuk
+                  <span className="px-2">:</span>
+                  <span>{documento || "-"}</span>
+                </div>
+
+                <div className="flex">
+                  <span className="w-32 font-medium">
+                    {t("dashboard.label.document_type")}
                   </span>
-                  <span className="inline-block w-7">:</span>
-                  {dataPegawai.tanggal_masuk}
-                </h2>
-                <h2 className="mb-4 block font-medium text-black dark:text-white">
-                  <span className="inline-block w-32 md:w-40">Jabatan</span>
-                  <span className="inline-block w-7">:</span>
-                  {dataPegawai.jabatan}
-                  <span className="pl-[-8] md:pl-0"></span>
-                </h2>
+                  <span className="px-2">:</span>
+                  <span>{dataPegawai.document_type || "-"}</span>
+                </div>
+
+                <div className="flex">
+                  <span className="w-32 font-medium">{t("dashboard.label.isss")}</span>
+                  <span className="px-2">:</span>
+                  <span>
+                    {dataPegawai.isss_affiliation_number || "-"}
+                  </span>
+                </div>
+
+                <div className="flex">
+                  <span className="w-32 font-medium">
+                    {t("dashboard.label.pension")}
+                  </span>
+                  <span className="px-2">:</span>
+                  <span>
+                    {dataPegawai.pension_institution_code || "-"}
+                  </span>
+                </div>
+
+                <div className="flex">
+                  <span className="w-32 font-medium">
+                    {t("dashboard.label.full_name")}
+                  </span>
+                  <span className="px-2">:</span>
+                  <span>{nombreCompleto || "-"}</span>
+                </div>
+
+                <div className="flex">
+                  <span className="w-32 font-medium">
+                    {t("dashboard.label.username")}
+                  </span>
+                  <span className="px-2">:</span>
+                  <span>{dataPegawai.username}</span>
+                </div>
               </div>
             </div>
           </div>

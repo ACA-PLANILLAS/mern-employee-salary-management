@@ -91,17 +91,21 @@ ALTER TABLE `data_pegawai`
   ADD COLUMN `loan_monthly_installment`   DECIMAL(11,2) DEFAULT NULL   AFTER `loan_outstanding_balance`,  -- “prestamo_cuota_mensual”
   ADD COLUMN `loan_start_date`            DATE          DEFAULT NULL   AFTER `loan_monthly_installment`; -- “prestamo_fecha_inicio”
 
-ALTER TABLE `data_pegawai`
+ --ALTER TABLE `data_pegawai`
   -- Identification
-  ADD COLUMN `dui_or_nit`                 VARCHAR(14)   DEFAULT NULL   AFTER `nik`,                         -- “nit_dui”
-  ADD COLUMN `document_type`              VARCHAR(16)       DEFAULT NULL   AFTER `dui_or_nit`;
-
+   --ADD COLUMN `dui_or_nit`                 VARCHAR(14)   DEFAULT NULL   AFTER `nik`,                         -- “nit_dui”
+   --ADD COLUMN `document_type`              VARCHAR(16)       DEFAULT NULL   AFTER `dui_or_nit`;
 
 SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE data_pegawai;
 SET FOREIGN_KEY_CHECKS = 1;
 
-INSERT INTO data_peagwai (
+ALTER TABLE `data_pegawai`
+  DROP COLUMN `nama_pegawai`,
+  DROP COLUMN `tanggal_masuk`,
+   DROP COLUMN `jabatan`;
+
+INSERT INTO data_pegawai (
       id_pegawai,
       hire_date,
       nik,

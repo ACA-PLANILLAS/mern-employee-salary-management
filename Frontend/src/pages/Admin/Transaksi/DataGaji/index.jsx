@@ -21,6 +21,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useDisplayValue } from "../../../../hooks/useDisplayValue";
 import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
+import ExportPlanillaButton from "../../../../components/molecules/Planilla/ExportPlanillaButton";
 
 const ITEMS_PER_PAGE = 4;
 
@@ -52,11 +53,12 @@ const DataGaji = () => {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
 
-    const dateOptions = useMemo(() => {
+  const dateOptions = useMemo(() => {
     //  filtramos por año/mes
-    const relevant = dataGaji.filter(
+    const relevant = dataGaji?.filter(
       (d) =>
-        d.year.toString() === filterTahun && d.month.toString() === filterBulan
+        d?.year?.toString() === filterTahun &&
+        d?.month?.toString() === filterBulan
     );
     // extraemos strings únicos "YYYY-M-D"
     const combos = Array.from(
@@ -70,20 +72,19 @@ const DataGaji = () => {
       return { value: str, label: `${dd}/${mm}/${yyyy}` };
     });
   }, [dataGaji, filterTahun, filterBulan]);
-  
-    const filteredDataGaji = dataGaji
-    .filter((d) => {
-      // primero por año/mes (como ya hacías en el useEffect)
-      const byMonthYear =
-        d.year.toString() === filterTahun &&
-        d.month.toString() === filterBulan;
-      if (!byMonthYear) return false;
-      // si hay fecha seleccionada, comparar full string
-      if (filterDate) {
-        return `${d.year}-${d.month}-${d.day}` === filterDate;
-      }
-      return true;
-    });
+
+  const filteredDataGaji = dataGaji.filter((d) => {
+    // primero por año/mes (como ya hacías en el useEffect)
+    const byMonthYear =
+      d?.year?.toString() === filterTahun &&
+      d?.month?.toString() === filterBulan;
+    if (!byMonthYear) return false;
+    // si hay fecha seleccionada, comparar full string
+    if (filterDate) {
+      return `${d.year}-${d.month}-${d.day}` === filterDate;
+    }
+    return true;
+  });
 
   const goToPrevPage = () => {
     if (currentPage > 1) {
@@ -212,7 +213,95 @@ const DataGaji = () => {
         </div>
         <form onSubmit={handleSearch}>
           {showMessage && <p className="text-meta-1">{t("dataNotFound")}</p>}
-          <div className="mt-4 flex flex-col items-center md:flex-row md:justify-between">
+
+          <div className="mt-4 flex flex-col space-y-6">
+            {/* --- FILTROS EN UNA SOLA FILA --- */}
+            <div className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+              {/* Mes */}
+              <div className="relative flex-1">
+                <label className="mb-1 block px-2 text-sm font-medium">
+                  {t("month")}
+                </label>
+                <select
+                  value={filterBulan}
+                  onChange={handleBulanChange}
+                  required
+                  className="w-full appearance-none rounded border border-stroke bg-transparent py-2 pl-10 pr-4 outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input"
+                >
+                  <option value="">{t("selectMonth")}</option>
+                  <option value="1">{t("january")}</option>
+                  <option value="2">{t("february")}</option>
+                  <option value="3">{t("march")}</option>
+                  <option value="4">{t("april")}</option>
+                  <option value="5">{t("may")}</option>
+                  <option value="6">{t("june")}</option>
+                  <option value="7">{t("july")}</option>
+                  <option value="8">{t("august")}</option>
+                  <option value="9">{t("september")}</option>
+                  <option value="10">{t("october")}</option>
+                  <option value="11">{t("november")}</option>
+                  <option value="12">{t("december")}</option>
+                </select>
+                <MdOutlineKeyboardArrowDown className="text-gray-400 pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 transform text-xl" />
+              </div>
+
+              {/* Año */}
+              <div className="relative flex-1">
+                <label className="mb-1 block px-2 text-sm font-medium">
+                  {t("year")}
+                </label>
+                <input
+                  type="number"
+                  placeholder={t("enterYear")}
+                  value={filterTahun}
+                  onChange={handleTahunChange}
+                  required
+                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 pl-10 pr-4 font-medium outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input"
+                />
+                <BiSearch className="text-gray-400 pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 transform text-xl" />
+              </div>
+
+              {/* Fecha */}
+              <div className="relative flex-1">
+                <label className="mb-1 block px-2 text-sm font-medium">
+                  {t("date")}
+                </label>
+                <select
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                  className="w-full appearance-none rounded border border-stroke bg-transparent py-2 pl-4 pr-10 outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input"
+                >
+                  <option value="">{t("allDates")}</option>
+                  {dateOptions.map(({ value, label }) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+                <MdOutlineKeyboardArrowDown className="text-gray-400 pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 transform text-xl" />
+              </div>
+            </div>
+
+            {/* --- BOTONES EN SEGUNDA FILA --- */}
+            <div className="flex flex-col space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0">
+              {/* Imprimir */}
+              <ButtonOne
+                type="submit"
+                className="bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 flex w-full items-center justify-center space-x-2 rounded-lg py-2 text-white"
+              >
+                <span>{t("printSalaryList")}</span>
+                <TfiPrinter />
+              </ButtonOne>
+
+              <ExportPlanillaButton
+                data={filteredDataGaji}
+                month={filterBulan}
+                year={filterTahun}
+              />
+            </div>
+          </div>
+
+          {/* <div className="mt-4 flex flex-col items-center md:flex-row md:justify-between">
             <div className="relative mb-4 w-full md:mb-0 md:mr-2 md:w-1/2">
               <div className="relative">
                 <span className="px-6">{t("month")}</span>
@@ -285,8 +374,16 @@ const DataGaji = () => {
                   </span>
                 </ButtonOne>
               </div>
+
+              <div className="mb-4">
+                <ExportPlanillaButton
+                  data={filteredDataGaji}
+                  month={filterBulan}
+                  year={filterTahun}
+                />
+              </div>
             </div>
-          </div>
+          </div> */}
         </form>
         <div className="mt-6 bg-gray-2 text-left dark:bg-meta-4">
           {filteredDataGaji
@@ -447,6 +544,9 @@ const DataGaji = () => {
                   {t("alpha")}
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
+                  {t("extraPayments")}
+                </th>
+                <th className="px-2 py-2 font-medium text-black dark:text-white">
                   {t("deductions")}
                 </th>
                 <th className="px-2 py-2 font-medium text-black dark:text-white">
@@ -467,7 +567,7 @@ const DataGaji = () => {
                   <tr key={data.attendanceId}>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {startIndex + index + 1}
-                    </td> 
+                    </td>
                     {/* <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.id}
                     </td>
@@ -571,7 +671,8 @@ const DataGaji = () => {
                       {data.dataPegawaiId}
                     </td> */}
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                      {symbol}{toLocal(data.salarioBruto)}
+                      {symbol}
+                      {toLocal(data.salarioBruto)}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       {data.hadir}
@@ -583,13 +684,20 @@ const DataGaji = () => {
                       {data.alpha}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                      {symbol}{toLocal(data.totalDeductions)}
+                      {symbol}
+                      {toLocal(data.extras)}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                      {data.castigo_ausencias}
+                      {symbol}
+                      {toLocal(data.totalDeductions)}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                      {symbol}{toLocal(data.total)}
+                      {symbol}
+                      {toLocal(data.castigo_ausencias)}
+                    </td>
+                    <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
+                      {symbol}
+                      {toLocal(data.total)}
                     </td>
                     <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
                       <div className="flex items-center space-x-3.5">

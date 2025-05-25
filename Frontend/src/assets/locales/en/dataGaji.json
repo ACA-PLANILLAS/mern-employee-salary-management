@@ -77,5 +77,16 @@
   "view": "View",
   "displayingSalaryDataMonth": "Displaying Salary Data for the Month",
   "year": "Year",
-  "allDates": "All Dates"
+  "allDates": "All Dates",
+  "printedOn": "Printed on",
+  "signature": "Signature",
+  "date": "Date",
+  "incompleteDataTitle": "Incomplete Data",
+  "incompleteDataText": "Please select month and year.",
+  "fetchErrorTitle": "Error fetching data",
+  "mySalarySlips": "My Salary Slips",
+  "yearPlaceholder": "YYYY",
+  "noRecords": "No records found for {{filterMonth}}/{{filterYear}}.",
+  "monthYear": "Month/Year",
+  "extraPayments": "Extra payments"
 }

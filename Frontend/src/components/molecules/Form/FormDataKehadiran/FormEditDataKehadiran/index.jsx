@@ -107,12 +107,14 @@ const FormEditDataKehadiran = () => {
         {symbol}
       </span>
       <input
-        type="text"
+        type="number"
+        inputMode="decimal"           
+        pattern="^\d+(\.\d{1,2})?$"
         name={name}
         value={value}
         onChange={onChange}
         onFocus={(e) => e.target.select()}
-        className="bg-gray-100 h-8 w-[7rem] rounded-md border border-stroke pl-10  dark:border-form-strokedark dark:bg-boxdark"
+        className="pl-8 w-full rounded border border-stroke px-4 py-2  dark:border-form-strokedark dark:bg-form-input"
       />
       {currency !== "USD" && (
         <span className="text-gray-700 dark:text-gray-300 bg-gray-50 ml-2 whitespace-nowrap rounded border border-stroke px-2 py-1 text-sm dark:border-strokedark dark:bg-boxdark">

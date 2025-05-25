@@ -41,5 +41,52 @@
     "logoutSuccessTitle": "Logout Successful",
     "logoutSuccessText": "You have successfully logged out."
   },
-  "copyright": "© Copyright 2023, PT. Humpuss Carboxymethyl Cellulose. All Rights Reserved"
+  "dashboard": {
+    "breadcrumb": { "dashboard": "Dashboard" },
+    "welcome": "Welcome to {{appName}}, you are logged in as {{role}}.",
+    "pegawai": "Employee",
+    "admin": "Admin",
+    "title": { "employeeData": "Employee Data" },
+    "label": {
+      "document": "Document",
+      "document_type": "Document Type",
+      "isss": "ISSS",
+      "pension": "Pension",
+      "full_name": "Full Name",
+      "username": "Username"
+    },
+    "alt": { "employeePhoto": "Employee Photo" },
+    "error": { "loadingEmployeeData": "Error loading employee data" }
+  },
+  "parameter": {
+    "error": "Error",
+    "valueMustBeInteger": "Value must be a valid integer",
+    "integerRange": "Integer must be between {{min}} and {{max}}",
+    "valueMustBeNumber": "Value must be a number (decimals allowed)",
+    "weeklyHoursRange": "Weekly hours must be between 0 and 168",
+    "weeklyDaysRange": "Weekly days must be between 0 and 7",
+    "invalidPaymentScheme": "Select a valid payment scheme (4, 2, or 1)",
+    "editParameter": "Edit Parameter",
+    "name": "Name",
+    "paymentFrequency": "Payment Frequency",
+    "value": "Value",
+    "selectPlaceholder": "--Select--",
+    "weekly4Payments": "Weekly (4 payments)",
+    "biweekly2Payments": "Biweekly (2 payments)",
+    "monthly1Payment": "Monthly (1 payment)",
+    "cancel": "Cancel",
+    "save": "Save",
+    "loadParamsError": "Failed to load parameters",
+    "success": "Done!",
+    "updateSuccess": "Parameter updated successfully.",
+    "updateError": "Failed to update parameter",
+    "systemParameters": "System Parameters",
+    "colNumber": "No.",
+    "colName": "Name",
+    "colValue": "Value",
+    "colAction": "Action",
+    "noParamsRegistered": "No parameters registered",
+    "edit": "Edit"
+  },
+  "copyright": "© Copyright 2023. All Rights Reserved"
 }

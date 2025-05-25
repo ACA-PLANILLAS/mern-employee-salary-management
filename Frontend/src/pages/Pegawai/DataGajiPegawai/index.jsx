@@ -2,288 +2,243 @@ import { useState, useEffect } from "react";
 import Layout from "../../../layout";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Breadcrumb } from "../../../components";
+import { Breadcrumb, ButtonOne } from "../../../components";
 import Swal from "sweetalert2";
-import {
-  getMe,
-  viewGajiSinglePegawaiByMonth,
-  viewGajiSinglePegawaiByName,
-  viewGajiSinglePegawaiByYear,
-} from "../../../config/redux/action";
-import axios from "axios";
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { BiSearch } from "react-icons/bi";
 import { TfiPrinter } from "react-icons/tfi";
-import {
-  MdKeyboardDoubleArrowLeft,
-  MdKeyboardDoubleArrowRight,
-} from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { API_URL } from "@/config/env";
+import { getMe } from "../../../config/redux/action";
+import useCurrencyByUser from "../../../config/currency/useCurrencyByUser";
 
-const ITEMS_PER_PAGE = 4;
+const MONTH_OPTIONS = [
+  { value: "1", label: "January" },
+  { value: "2", label: "February" },
+  { value: "3", label: "March" },
+  { value: "4", label: "April" },
+  { value: "5", label: "May" },
+  { value: "6", label: "June" },
+  { value: "7", label: "July" },
+  { value: "8", label: "August" },
+  { value: "9", label: "September" },
+  { value: "10", label: "October" },
+  { value: "11", label: "November" },
+  { value: "12", label: "December" },
+];
+
+const DEFAULT_MONTH = (new Date().getMonth() + 1).toString();
+const DEFAULT_YEAR = new Date().getFullYear().toString();
 
 const DataGajiPegawai = () => {
-  const [dataGajiPegawai, setDataGajiPegawai] = useState([]);
-  const [dataMonth, setDataMonth] = useState([]);
-  const [dataYear, setDataYear] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [filterMonth, setFilterMonth] = useState(DEFAULT_MONTH);
+  const [filterYear, setFilterYear] = useState(DEFAULT_YEAR);
+  const [dataGaji, setDataGaji] = useState([]);
+  const [showMessage, setShowMessage] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation("dataGaji");
   const { isError, user } = useSelector((state) => state.auth);
-  const { t } = useTranslation("dataGajiPegawai");
+  const { toLocal, symbol } = useCurrencyByUser();
 
-  const { nama_pegawai } = useSelector((state) => state.auth.user) || "";
-
-  const totalPages = Math.ceil(dataGajiPegawai.length / ITEMS_PER_PAGE);
-
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-
-  const goToPrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    }
-  };
-
-  const goToNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
-
-  const onSubmitPrint = async () => {
-    try {
-      const yearData = viewGajiSinglePegawaiByYear(dataYear);
-      const monthData = viewGajiSinglePegawaiByMonth(dataMonth);
-      const nameData = viewGajiSinglePegawaiByName(nama_pegawai);
-
-      if (yearData.length > 0 && monthData.length > 0 && nameData.length > 0) {
-        navigate(
-          `/data-gaji-pegawai/print-page?month=${dataMonth}&year=${dataYear}&name=${nama_pegawai}`
-        );
-      } else {
-        console.log("Data not found!");
-        Swal.fire({
-          icon: "error",
-          title: t("dataNotFound"),
-          text: t("dataNotFoundDescription"),
-          timer: 2000,
-        });
-      }
-    } catch (error) {
-      console.log(error.message);
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!filterMonth || !filterYear) {
       Swal.fire({
         icon: "error",
-        title: t("errorOccurred"),
-        text: t("errorLoadingData"),
+        title: t("incompleteDataTitle", "Datos incompletos"),
+        text: t("incompleteDataText", "Por favor selecciona mes y año."),
+        timer: 2000,
+      });
+      return;
+    }
+
+    try {
+      if (!user) return;
+      dispatch(getMe());
+
+      const res = await fetch(
+        `${API_URL}/data_gaji_pegawai?year=${filterYear}&month=${filterMonth}`
+      );
+      const all = await res.json();
+
+      // Filtramos solo las filas de este usuario
+      const results = all.filter((item) => item.id === user.id);
+
+      if (results.length > 0) {
+        setDataGaji(results);
+        setShowMessage(false);
+      } else {
+        setDataGaji([]);
+        setShowMessage(true);
+      }
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: t("fetchErrorTitle", "Error al obtener datos"),
+        text: error.message,
         timer: 2000,
       });
     }
   };
-
-  const paginationItems = () => {
-    const items = [];
-    const maxVisiblePages = 5;
-
-    const startPage = Math.max(
-      1,
-      currentPage - Math.floor(maxVisiblePages / 2)
-    );
-    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-    for (let page = startPage; page <= endPage; page++) {
-      items.push(
-        <button
-          key={page}
-          onClick={() => setCurrentPage(page)}
-          className={`border border-gray-2 px-4 py-2 font-semibold text-black dark:border-strokedark dark:text-white ${
-            currentPage === page
-              ? "bg-primary text-white hover:bg-primary dark:bg-primary dark:hover:bg-primary"
-              : "hover:bg-gray-2 dark:hover:bg-stroke"
-          } rounded-lg`}
-        >
-          {page}
-        </button>
-      );
-    }
-
-    if (startPage > 2) {
-      items.unshift(
-        <p
-          key="start-ellipsis"
-          className="border border-gray-2 bg-gray px-4 py-2 font-medium text-black dark:border-strokedark dark:bg-transparent dark:text-white"
-        >
-          ...
-        </p>
-      );
-    }
-
-    if (endPage < totalPages - 1) {
-      items.push(
-        <p
-          key="end-ellipsis"
-          className="border border-gray-2 bg-gray px-4 py-2 font-medium text-black dark:border-strokedark dark:bg-transparent dark:text-white"
-        >
-          ...
-        </p>
-      );
-    }
-
-    return items;
-  };
-
-  useEffect(() => {
-    const getDataPegawai = async () => {
-      try {
-        const response = await axios.get(
-          `${API_URL}/data_gaji/name/${nama_pegawai}`
-        );
-        const data = response.data;
-
-        setDataGajiPegawai(data);
-        setDataMonth(data[0].bulan);
-        setDataYear(data[0].tahun);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    if (nama_pegawai) {
-      getDataPegawai();
-    }
-  }, [nama_pegawai]);
 
   useEffect(() => {
     dispatch(getMe());
   }, [dispatch]);
 
   useEffect(() => {
-    if (isError) {
-      navigate("/login");
-    }
-    if (user && user.hak_akses !== "pegawai") {
-      navigate("/dashboard");
-    }
-  }, [isError, user, navigate]);
+    // Al montar, hacemos la búsqueda por defecto en cuanto tengamos user
+    if (user) handleSearch({ preventDefault: () => {} });
+  }, [user]);
+
+  useEffect(() => {
+    if (isError) navigate("/login");
+  }, [isError, navigate]);
 
   return (
     <Layout>
-      <Breadcrumb pageName={t("salaryData")} />
+      <Breadcrumb pageName={t("mySalarySlips", "Mis planillas de salario")} />
 
-      <div className="mt-6 rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-        <div className="max-w-full overflow-x-auto py-4">
-          <table className="w-full table-auto">
-            <thead>
-              <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t("no")}
-                </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t("monthYear")}
-                </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t("basicSalary")}
-                </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t("transportAllowance")}
-                </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t("mealAllowance")}
-                </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t("deductions")}
-                </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t("totalSalary")}
-                </th>
-                <th className="px-4 py-4 font-medium text-black dark:text-white">
-                  {t("printPayslip")}
-                </th>
+      {/* === Formulario de filtro === */}
+      <form onSubmit={handleSearch} className="mb-6 flex flex-wrap gap-4">
+        <div className="relative w-1/4">
+          <label className="mb-1 block text-sm font-medium">
+            {t("month", "Mes")}
+          </label>
+          <select
+            value={filterMonth}
+            onChange={(e) => setFilterMonth(e.target.value)}
+            className="w-full appearance-none rounded border border-stroke bg-transparent py-2 pl-10 pr-4 outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input"
+          >
+            <option value="">{t("selectMonth", "Seleccione mes")}</option>
+            <option value="1">{t("january")}</option>
+            <option value="2">{t("february")}</option>
+            <option value="3">{t("march")}</option>
+            <option value="4">{t("april")}</option>
+            <option value="5">{t("may")}</option>
+            <option value="6">{t("june")}</option>
+            <option value="7">{t("july")}</option>
+            <option value="8">{t("august")}</option>
+            <option value="9">{t("september")}</option>
+            <option value="10">{t("october")}</option>
+            <option value="11">{t("november")}</option>
+            <option value="12">{t("december")}</option>
+            {/* {MONTH_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {t(opt.label.toLowerCase(), opt.label)}
+              </option>
+            ))} */}
+          </select>
+          <MdOutlineKeyboardArrowDown className="pointer-events-none absolute right-3 top-10 text-xl" />
+        </div>
+
+        <div className="relative w-1/4">
+          <label className="mb-1 block text-sm font-medium">
+            {t("year", "Año")}
+          </label>
+          <input
+            type="number"
+            value={filterYear}
+            onChange={(e) => setFilterYear(e.target.value)}
+            placeholder={t("yearPlaceholder", "YYYY")}
+            className="w-full appearance-none rounded border border-stroke bg-transparent py-2 pl-10 pr-4 outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input"
+          />
+          <BiSearch className="pointer-events-none absolute left-3 top-10 text-xl" />
+        </div>
+
+        <div className="flex items-end">
+          <ButtonOne type="submit">{t("search", "Buscar")}</ButtonOne>
+        </div>
+      </form>
+
+      {showMessage && (
+        <div className="text-red-600 mb-4">
+          {t(
+            "noRecords",
+            `No se encontraron registros para ${filterMonth}/${filterYear}.`
+          )}
+        </div>
+      )}
+
+      {/* === Tabla de resultados === */}
+      <div className="overflow-x-auto">
+        <table className="w-full table-auto border-collapse">
+          <thead>
+            <tr className="bg-gray-2 dark:bg-meta-4">
+              <th className="px-2 py-4 font-medium text-black dark:text-white">
+                {t("no", "#")}
+              </th>
+              <th className="px-2 py-2 font-medium text-black dark:text-white">
+                {t("monthYear", "Mes/Año")}
+              </th>
+              <th className="px-2 py-2 font-medium text-black dark:text-white">
+                {t("grossSalary", "Salario Bruto")}
+              </th>
+              <th className="px-2 py-2 font-medium text-black dark:text-white">
+                {t("presentDays", "Días Presentes")}
+              </th>
+              <th className="px-2 py-2 font-medium text-black dark:text-white">
+                {t("sickDays", "Días Enfermo")}
+              </th>
+              <th className="px-2 py-2 font-medium text-black dark:text-white">
+                {t("alpha", "Ausencias")}
+              </th>
+              <th className="px-2 py-2 font-medium text-black dark:text-white">
+                {t("deductions", "Deducciones")}
+              </th>
+              <th className="px-2 py-2 font-medium text-black dark:text-white">
+                {t("absencePenalty", "Penalización")}
+              </th>
+              <th className="px-2 py-2 font-medium text-black dark:text-white">
+                {t("total", "Total")}
+              </th>
+              <th className="px-2 py-2 font-medium text-black dark:text-white">
+                {t("print", "Imprimir")}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {dataGaji.map((row, idx) => (
+              <tr key={row.attendanceId}>
+                <td className="px-4 py-2 text-center">{idx + 1}</td>
+                <td className="px-4 py-2 text-center">
+                  {row.month}/{row.year}
+                </td>
+                <td className="px-4 py-2 text-right">
+                  {symbol}
+                  {toLocal(row.salarioBruto)}
+                </td>
+                <td className="px-4 py-2 text-center">{row.hadir}</td>
+                <td className="px-4 py-2 text-center">{row.sakit}</td>
+                <td className="px-4 py-2 text-center">{row.alpha}</td>
+                <td className="px-4 py-2 text-right">
+                  {symbol}
+                  {toLocal(row.totalDeductions)}
+                </td>
+                <td className="px-4 py-2 text-right">
+                  {symbol}
+                  {toLocal(parseFloat(row.castigo_ausencias))}
+                </td>
+                <td className="px-4 py-2 text-right">
+                  {symbol}
+                  {toLocal(parseFloat(row.total))}
+                </td>
+                <td className="px-4 py-2 text-center">
+                  <a
+                    href={`/print-employee-receipt/${row.attendanceId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:bg-gray-200 inline-block rounded p-2"
+                  >
+                    <TfiPrinter className="text-xl" />
+                  </a>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {dataGajiPegawai
-                .slice(startIndex, endIndex)
-                .map((data, index) => {
-                  return (
-                    <tr key={data.id}>
-                      <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <p className="text-center text-black dark:text-white">
-                          {startIndex + index + 1}
-                        </p>
-                      </td>
-                      <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <p className="text-black dark:text-white">
-                          {data.bulan} / {data.tahun}
-                        </p>
-                      </td>
-                      <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <p className="text-black dark:text-white">
-                          Rp. {data.gaji_pokok}
-                        </p>
-                      </td>
-                      <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <p className="text-black dark:text-white">
-                          Rp. {data.tj_transport}
-                        </p>
-                      </td>
-                      <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <p className="text-black dark:text-white">
-                          Rp. {data.uang_makan}
-                        </p>
-                      </td>
-                      <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <p className="text-black dark:text-white">
-                          Rp. {data.potongan}
-                        </p>
-                      </td>
-                      <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <p className="text-black dark:text-white">
-                          Rp. {data.total}
-                        </p>
-                      </td>
-                      <td className="border-b border-[#eee] px-4 py-5 text-center dark:border-strokedark">
-                        <div className="items-center ">
-                          <button className="hover:text-black">
-                            <TfiPrinter
-                              onClick={onSubmitPrint}
-                              className="text-xl text-primary hover:text-black dark:hover:text-white"
-                            />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="mt-4 flex flex-col items-center justify-between md:flex-row md:justify-between">
-          <div className="flex items-center space-x-2">
-            <span className="text-gray-5 dark:text-gray-4 py-4 text-sm">
-              {t("showing")} {startIndex + 1}-
-              {Math.min(endIndex, dataGajiPegawai.length)} {t("of")}{" "}
-              {dataGajiPegawai.length} {t("salaryData")}
-            </span>
-          </div>
-          <div className="flex space-x-2 py-4">
-            <button
-              disabled={currentPage === 1}
-              onClick={goToPrevPage}
-              className="rounded-lg border border-primary px-6 py-2 font-semibold text-primary hover:bg-primary hover:text-white disabled:opacity-50 dark:border-primary dark:text-white dark:hover:bg-primary dark:hover:text-white"
-            >
-              <MdKeyboardDoubleArrowLeft />
-            </button>
-            {paginationItems()}
-            <button
-              disabled={currentPage === totalPages}
-              onClick={goToNextPage}
-              className="rounded-lg border border-primary px-6 py-2 font-semibold text-primary hover:bg-primary hover:text-white disabled:opacity-50 dark:border-primary dark:text-white dark:hover:bg-primary dark:hover:text-white"
-            >
-              <MdKeyboardDoubleArrowRight />
-            </button>
-          </div>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
     </Layout>
   );

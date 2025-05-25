@@ -1,6 +1,0 @@
-USE db_penggajian3;
-
-ALTER TABLE data_jabatan
-MODIFY COLUMN gaji_pokok DECIMAL(15,2) NOT NULL,
-MODIFY COLUMN tj_transport DECIMAL(15,2) NOT NULL,
-MODIFY COLUMN uang_makan DECIMAL(15,2) DEFAULT NULL;

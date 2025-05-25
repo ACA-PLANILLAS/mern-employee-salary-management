@@ -14,5 +14,7 @@
     "yes": "Sí",
     "no": "No",
     "success_title": "¡Eliminado!",
-    "success_text": "Los datos se han eliminado correctamente."
+    "success_text": "Los datos se han eliminado correctamente.",
+    "error_title": "¡Error!",
+    "error_text": "No se pudieron eliminar los datos. Inténtalo de nuevo."
   }

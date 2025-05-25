@@ -62,7 +62,7 @@ export const Me = async (req, res) => {
     attributes: [
       'id_pegawai','nik','dui_or_nit','document_type','isss_affiliation_number','pension_institution_code',
       'first_name','middle_name','last_name','second_last_name','maiden_name',
-      'username','hak_akses'
+      'username','hak_akses','id','photo','url'
     ],
     where: {
       id_pegawai: req.session.userId
@@ -93,6 +93,12 @@ export const changePassword = async (req, res) => {
   const { password, confPassword } = req.body;
 
   if (password !== confPassword) return res.status(400).json({ msg: PASSWORD.PASSWORD_MISMATCH.code });
+
+   const isSameAsOld = await argon2.verify(pegawai.password, password);
+  if (isSameAsOld) {
+    return res.status(PASSWORD.SAME_AS_OLD.status)
+              .json({ msg: PASSWORD.SAME_AS_OLD.code });
+  }
 
   try {
     const hashPassword = await argon2.hash(password);

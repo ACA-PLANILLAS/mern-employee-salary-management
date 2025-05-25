@@ -25,5 +25,8 @@
   "observations": "CATATAN",
   "accounting": "AKUNTANSI",
   "audit": "AUDIT",
-  "loading": "Memuat..."
+  "loading": "Memuat...",
+  "extraPayments": "Pembayaran Tambahan (lembur, bonus, dll.)",
+  "vacationPayments": "Liburan yang Dibayar",
+  "absencesPenalty": "Penalti karena Ketidakhadiran"
 }

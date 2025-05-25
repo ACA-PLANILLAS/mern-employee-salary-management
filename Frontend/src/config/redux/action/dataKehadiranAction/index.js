@@ -112,11 +112,13 @@ export const deleteDataKehadiran = (id) => {
           payload: response.data.message,
         });
       }
+      return response;
     } catch (error) {
       dispatch({
         type: DELETE_DATA_KEHADIRAN_FAILURE,
         payload: error.message,
       });
+      throw error;
     }
   };
 };

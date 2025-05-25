@@ -16,7 +16,7 @@
       "contact": "Kontak"
     },
     "login": "Login"
-  },  
+  },
   "sidebar": {
     "dashboard": "Dashboard",
     "masterData": "Master Data",
@@ -41,5 +41,52 @@
     "logoutSuccessTitle": "Logout Berhasil",
     "logoutSuccessText": "Anda telah berhasil keluar."
   },
-  "copyright": "© Hak Cipta 2023, PT. Humpuss Karbometil Selulosa. Hak Cipta Dilindungi"
+  "dashboard": {
+    "breadcrumb": { "dashboard": "Dasbor" },
+    "welcome": "Selamat datang di {{appName}}, Anda masuk sebagai {{role}}.",
+    "pegawai": "Pegawai",
+    "admin": "Admin",
+    "title": { "employeeData": "Data Karyawan" },
+    "label": {
+      "document": "Dokumen",
+      "document_type": "Jenis Dokumen",
+      "isss": "ISSS",
+      "pension": "Pensiun",
+      "full_name": "Nama Lengkap",
+      "username": "Nama Pengguna"
+    },
+    "alt": { "employeePhoto": "Foto Karyawan" },
+    "error": { "loadingEmployeeData": "Gagal memuat data karyawan" }
+  },
+  "parameter": {
+    "error": "Kesalahan",
+    "valueMustBeInteger": "Nilai harus berupa bilangan bulat yang valid",
+    "integerRange": "Bilangan bulat harus antara {{min}} dan {{max}}",
+    "valueMustBeNumber": "Nilai harus berupa angka (desimal diperbolehkan)",
+    "weeklyHoursRange": "Jam mingguan harus antara 0 dan 168",
+    "weeklyDaysRange": "Hari mingguan harus antara 0 dan 7",
+    "invalidPaymentScheme": "Pilih skema pembayaran yang valid (4, 2, atau 1)",
+    "editParameter": "Sunting Parameter",
+    "name": "Nama",
+    "paymentFrequency": "Frekuensi Pembayaran",
+    "value": "Nilai",
+    "selectPlaceholder": "--Pilih--",
+    "weekly4Payments": "Mingguan (4 pembayaran)",
+    "biweekly2Payments": "Dua Mingguan (2 pembayaran)",
+    "monthly1Payment": "Bulanan (1 pembayaran)",
+    "cancel": "Batal",
+    "save": "Simpan",
+    "loadParamsError": "Gagal memuat parameter",
+    "success": "Selesai!",
+    "updateSuccess": "Parameter berhasil diperbarui.",
+    "updateError": "Gagal memperbarui parameter",
+    "systemParameters": "Parameter Sistem",
+    "colNumber": "No.",
+    "colName": "Nama",
+    "colValue": "Nilai",
+    "colAction": "Aksi",
+    "noParamsRegistered": "Tidak ada parameter terdaftar",
+    "edit": "Sunting"
+  },
+  "copyright": "© Copyright 2023. Semua Hak Dilindungi"
 }

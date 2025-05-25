@@ -7,6 +7,7 @@ import { useDisplayValue } from "../../../../hooks/useDisplayValue";
 import useCurrencyByUser from "../../../../config/currency/useCurrencyByUser";
 
 import { API_URL } from "@/config/env";
+import { ButtonOne } from "../../../atoms";
 
 const PrintPdfBoleta = () => {
   const componentRef = useRef();
@@ -28,15 +29,17 @@ const PrintPdfBoleta = () => {
         setParametros(res.data);
 
         const pmon = res.data.find((p) => p.type === "PMON");
+
+        console.log("pmon.value", pmon.value)
         if (pmon) {
           switch (pmon.value) {
-            case 1:
+            case "1":
               setTipoBoleta("boleta_mensual");
               break;
-            case 2:
+            case "2":
               setTipoBoleta("boleta_quincenal");
               break;
-            case 4:
+            case "4":
               setTipoBoleta("boleta_semanal");
               break;
             default:
@@ -97,8 +100,11 @@ const PrintPdfBoleta = () => {
 
   return (
     <div>
-      <button onClick={handlePrint}>{t("print")}</button>
+      <div className="flex gap-3 bg-white p-6 text-center dark:bg-meta-4">
+        <ButtonOne onClick={handlePrint}>{t("print")}</ButtonOne>
+      </div>
 
+      <br />
       <div
         ref={componentRef}
         style={{
@@ -112,7 +118,9 @@ const PrintPdfBoleta = () => {
         <div style={{ textAlign: "right" }}>
           {t("receiptNumber")}: <strong>____________________</strong>
         </div>
-        <h3 style={{ textAlign: "center" }}>{t("receivedFrom")}</h3>
+        <h3 style={{ textAlign: "left" }}>
+          {t("receivedFrom")} <strong>{data.nombreEmpresa}</strong>
+        </h3>
         <p>
           {t("concept")}: <strong>{getDisplayValue(tipoBoleta)}</strong>
         </p>
@@ -130,7 +138,7 @@ const PrintPdfBoleta = () => {
               </td>
               <td>
                 {symbol}
-                {toLocal(data.gaji_pokok)}
+                {toLocal(data.salarioBruto)}
               </td>
               <td>
                 <strong>{t("isss")}</strong>
@@ -141,7 +149,7 @@ const PrintPdfBoleta = () => {
               </td>
             </tr>
             <tr>
-              <td>{t("extraHours")}</td>
+              <td>{t("extraPayments")}</td>
               <td>{symbol} -</td>
               <td>{t("isr")}</td>
               <td>
@@ -149,19 +157,32 @@ const PrintPdfBoleta = () => {
                 {toLocal(totalRenta)}
               </td>
             </tr>
+
+            <tr>
+              <td>{t("vacationPayments")}</td>
+              <td>{symbol} -</td>
+              <td>{t("totalDeductions")}</td>
+              <td>
+                {symbol}
+                {toLocal(totalDeducciones)}
+              </td>
+            </tr>
+
+            <tr>
+              <td>( - ) {t("absencesPenalty")}</td>
+              <td>{symbol} -</td>
+              <td></td>
+              <td></td>
+            </tr>
+
             <tr>
               <td>( - ) {t("totalDeductions")}</td>
               <td>
                 {symbol}
                 {toLocal(data.totalDeductions)}
               </td>
-              {/* <td>{t("otherDiscounts")}</td>
-              <td>$ -</td> */}
-              <td>{t("totalDeductions")}</td>
-              <td>
-                {symbol}
-                {toLocal(totalDeducciones)}
-              </td>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <td>
@@ -196,7 +217,7 @@ const PrintPdfBoleta = () => {
         </table>
 
         <p>
-          {t("placeDate")}: San Salvador, {fechaFormateada}
+          {t("placeDate")}: {data.ubicacionEmpresa}, {fechaFormateada}
         </p>
 
         <div
@@ -239,6 +260,8 @@ const PrintPdfBoleta = () => {
           </div>
         </div>
       </div>
+
+      <br />
     </div>
   );
 };

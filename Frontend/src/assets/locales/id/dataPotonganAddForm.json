@@ -32,5 +32,9 @@
   "percentageRequired": "Persentase yang dimasukkan tidak valid.",
   "percentageOutOfRange": "Persentase harus antara 0,00 dan 100,00.",
   "monetaryFieldsInvalid": "Nilai keuangan harus berupa angka, tidak negatif, dan maksimal dua angka desimal.",
-  "deductionRequired": "Nama potongan wajib diisi."
+  "deductionRequired": "Nama potongan wajib diisi.",
+  "noUpperLimit": "Tanpa batas atas",
+  "fromMustBeLessThanOrEqualUntil": "\"Dari\" harus kurang dari atau sama dengan \"Sampai\"",
+  "fromUntilCannotBeZero": "Kolom ‘Dari’ dan ‘Sampai’ tidak boleh keduanya nol.",
+  "fromNowOn": "Mulai sekarang"
 }

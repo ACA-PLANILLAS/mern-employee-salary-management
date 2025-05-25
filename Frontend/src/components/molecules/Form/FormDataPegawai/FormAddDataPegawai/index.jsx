@@ -11,10 +11,13 @@ import { useTranslation } from "react-i18next";
 import { useErrorMessage } from "../../../../../hooks/useErrorMessage";
 import axios from "axios";
 import { API_URL } from "@/config/env";
+import { useDisplayValue } from "../../../../../hooks/useDisplayValue";
 
 const FormAddDataPegawai = () => {
   const [jabatanOptions, setJabatanOptions] = useState([]);
   const [pensionOptions, setPensionOptions] = useState([]);
+
+  const getDisplayValue = useDisplayValue();
 
   const [formData, setFormData] = useState({
     //nik: '',
@@ -237,12 +240,12 @@ const FormAddDataPegawai = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    // if (isError) {
-    //   navigate("/login");
-    // }
-    // if (user && user.hak_akses !== "admin") {
-    //   navigate("/dashboard");
-    // }
+    if (isError) {
+      navigate("/login");
+    }
+    if (user && user.hak_akses !== "admin") {
+      navigate("/dashboard");
+    }
   }, [isError, user, navigate]);
 
   return (
@@ -273,16 +276,16 @@ const FormAddDataPegawai = () => {
                     >
                       <option value="">{t("documentType")}</option>
                       <option key={1} value={"DUI"}>
-                        DUI
+                        {t("dui")}
                       </option>
                       <option key={2} value={"Pasaporte"}>
-                        Pasaporte
+                         {t("passport")}
                       </option>
                       <option key={3} value={"Minoridad"}>
-                        Carné de Minoridad
+                        {t("minorIdCard")}
                       </option>
                       <option key={3} value={"Residente"}>
-                        Carné de Residente
+                        {t("residentCard")}
                       </option>
                     </select>
                   </div>
@@ -317,7 +320,7 @@ const FormAddDataPegawai = () => {
                       <option value="">{t("pilihPensionInstitution")}</option>,
                       {pensionOptions?.map((inst) => (
                         <option key={inst.code} value={inst.code}>
-                          {inst.name}
+                          {getDisplayValue(inst.name)}
                         </option>
                       ))}
                     </select>
