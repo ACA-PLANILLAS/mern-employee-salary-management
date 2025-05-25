@@ -50,7 +50,7 @@ jobs:
           DB_DIALECT: mysql
         run: |
           cd Backend
-          npm test || echo "Tests failed, skipping build"
+          npm run test_module || echo "Tests failed, skipping build"
 
   deploy-prod-backend:
     name: 🚀 Deploy Backend to Cloud Run (Production)
