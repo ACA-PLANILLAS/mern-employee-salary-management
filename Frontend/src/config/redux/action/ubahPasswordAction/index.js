@@ -42,7 +42,9 @@ export const changePassword = (password, confPassword) => async (dispatch) => {
     );
 
     dispatch(changePasswordSuccess(response.data.msg));
+    return response;
   } catch (error) {
     dispatch(changePasswordFailure(error.message));
+    throw error;
   }
 };

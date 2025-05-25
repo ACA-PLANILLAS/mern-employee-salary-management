@@ -206,6 +206,7 @@ const FormEditDataJabatan = () => {
                       onChange={(e) => setNamaJabatan(e.target.value)}
                       required
                       placeholder={t('enterJobTitle')}
+                      data-testid="job-title-input"
                       className='w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                     />
                   </div>
@@ -239,7 +240,7 @@ const FormEditDataJabatan = () => {
                 </div>
 
                 <div className='flex flex-col md:flex-row w-full gap-3 text-center'>
-                  <ButtonOne>
+                  <ButtonOne data-testid="submit-button">
                     <span>{t('update')}</span>
                   </ButtonOne>
                   <Link to="/data-jabatan">

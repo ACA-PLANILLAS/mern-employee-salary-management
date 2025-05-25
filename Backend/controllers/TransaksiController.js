@@ -479,7 +479,7 @@ export const getDataPegawai = async () => {
       };
     });
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
   }
 
   return resultDataPegawai;
@@ -504,7 +504,7 @@ export const getDataJabatan = async () => {
       return { nama_jabatan, gaji_pokok, tj_transport, uang_makan };
     });
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
   }
   return resultDataJabatan;
 };
@@ -568,7 +568,7 @@ export const getDataKehadiran = async () => {
 
     return resultDataKehadiran;
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
   }
 };
 
@@ -607,7 +607,7 @@ export const getDataPotongan = async () => {
       updatedAt: p.updatedAt,
     }));
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
   }
   return resultDataPotongan;
 };
@@ -837,7 +837,7 @@ export const getDataGajiPegawai = async (year, month) => {
     const salariosClean = salariosConDeducciones.filter((item) => item != null);
     return salariosClean;
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
   }
 };
 
@@ -1035,7 +1035,7 @@ export const getDataGajiPegawaiById = async (attendanceId) => {
       detallesDeducciones: totalDeductions,
     };
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     return null;
   }
 };
@@ -1065,7 +1065,7 @@ export const viewDataGajiPegawaiById = async (req, res) => {
     }
     return res.status(200).json(resultado);
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     return res.status(500).json({ error: SALARY.INTERNAL_ERROR.code });
   }
 };
@@ -1338,7 +1338,7 @@ export const viewChartDataSalaryByGender = async (req, res) => {
       ],
     });
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     res.status(500).json({
       msg: "Error al obtener datos del gráfico de salario por género",
     });
@@ -1365,7 +1365,7 @@ export const viewChartDataEmployeeStatus = async (req, res) => {
       series: [permanent, temporary],
     });
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     res.status(500).json({ msg: "Error al contar empleados por tipo" });
   }
 };

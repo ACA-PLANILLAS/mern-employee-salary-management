@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import DropdownDefault from './index.jsx';
+import React from 'react';
 
 describe('DropdownDefault', () => {
   it('muestra los botones Edit y Delete al hacer clic en el botón de menú', () => {
