@@ -12,6 +12,11 @@ jobs:
     name: 🧪 Test Frontend
     runs-on: ubuntu-latest
 
+    permissions:
+      checks: write
+      contents: read
+
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -37,13 +42,12 @@ jobs:
           name: jest-report
           path: Frontend/reports/jest-junit.xml
 
-      - name: Report test results in GitHub
-        uses: dorny/test-reporter@v1
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
-          name: Frontend Jest Tests
-          path: Frontend/reports/jest-junit.xml
-          reporter: jest-junit
+          files: Frontend/reports/jest-junit.xml
+
 
   build-and-deploy-frontend:
     name: 🚀 Build & Deploy Frontend
