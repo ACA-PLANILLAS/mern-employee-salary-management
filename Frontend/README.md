@@ -1,1 +1,1 @@
-FRONTED =>  Aplikasi Penggajian Karyawan Berbasis Web (MERN) 
+FRONTED =>  Aplikasi Penggajian Karyawan Berbasis Web (MERN)  
