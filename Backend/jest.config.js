@@ -5,4 +5,11 @@ export default {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1', // Para importar rutas relativas sin errores
   },
+  reporters: [
+    'default',
+    ['jest-junit', {
+      outputDirectory: './reports',
+      outputName: 'jest-junit.xml',
+    }],
+  ],
 };
