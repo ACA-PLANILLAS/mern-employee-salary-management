@@ -48,6 +48,14 @@ jobs:
         with:
           files: Frontend/reports/jest-junit.xml
 
+      - name: Publish Test Report 2
+        uses: ctrf-io/github-test-reporter@v1
+        if: always()
+        with:
+          name: Frontend Tests
+          path: Frontend/reports/jest-junit.xml
+          reporter: jest-junit
+          fail-on-error: false
 
   build-and-deploy-frontend:
     name: 🚀 Build & Deploy Frontend
