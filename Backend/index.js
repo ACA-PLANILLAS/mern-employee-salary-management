@@ -11,7 +11,8 @@ import "./models/index.js"
 import UserRoute from './routes/UserRoute.js';
 import AuthRoute from './routes/AuthRoute.js';
 import ParamRoute from './routes/ParamRoute.js';
-
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger.js';
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,7 @@ app.set('trust proxy', 1);
 
 const allowedOrigins = [
     'http://localhost:3000',
+    'http://localhost:5000',
     'http://localhost:5173',
     'https://mern-frontend-677888703036.us-central1.run.app'
 ]
@@ -70,6 +72,7 @@ app.use(express.static("public"));
 app.use(UserRoute);
 app.use(AuthRoute);
 app.use(ParamRoute);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const main = async () => {
     try {
