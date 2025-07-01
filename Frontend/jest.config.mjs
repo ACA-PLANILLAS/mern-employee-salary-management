@@ -10,6 +10,7 @@ export default {
   },
   moduleFileExtensions: ['js', 'jsx'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'], // Usa esto si usas RTL o jest-dom
+  //setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '^src/(.*)$': '<rootDir>/src/$1',

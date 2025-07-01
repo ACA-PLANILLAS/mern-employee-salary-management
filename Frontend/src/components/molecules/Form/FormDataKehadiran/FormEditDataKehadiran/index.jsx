@@ -132,11 +132,12 @@ const FormEditDataKehadiran = () => {
             { label: t("nik"), name: "nik" },
           ].map(({ label, name }) => (
             <div key={name}>
-              <label className="mb-2 block text-black dark:text-white">
+              <label htmlFor={name} className="mb-2 block text-black dark:text-white">
                 {label}
               </label>
               <input
                 type="text"
+                id={name}
                 name={name}
                 value={form[name] ?? ""}
                 disabled
@@ -148,12 +149,13 @@ const FormEditDataKehadiran = () => {
           {["hadir", "sakit", "alpha", "worked_hours", "vacation_days"].map(
             (name) => (
               <div key={name}>
-                <label className="mb-2 block text-black dark:text-white">
+                <label htmlFor={name} className="mb-2 block text-black dark:text-white">
                   {t(name)}
                 </label>
                 <input
                   type="number"
                   min="0"
+                  id={name}
                   name={name}
                   value={form[name] ?? 0}
                   onChange={handleChange}

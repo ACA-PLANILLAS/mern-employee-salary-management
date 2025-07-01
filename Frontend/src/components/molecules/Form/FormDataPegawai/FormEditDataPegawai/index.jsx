@@ -288,7 +288,7 @@ const FormEditDataPegawai = () => {
                 {t("formAddDataPegawai")}
               </h3>
             </div>
-            <form onSubmit={submitDataPegawai}>
+            <form onSubmit={submitDataPegawai}  data-testid="edit-employee-form" role="form" >
               <div className="p-6.5">
                 {/* — Identificación — */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">

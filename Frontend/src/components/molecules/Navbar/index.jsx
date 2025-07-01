@@ -94,7 +94,7 @@ export default function Navbar() {
                         </Link>
                     </ul>
                     <div className="block lg:hidden ">
-                        <button onClick={toggleDrawer} className="btn btn-ghost text-black dark:text-white dark:hover:text-primary hover:text-primary ">
+                        <button onClick={toggleDrawer} data-testid="menu-button" className="btn btn-ghost text-black dark:text-white dark:hover:text-primary hover:text-primary ">
                             <RiMenu3Fill></RiMenu3Fill>
                         </button>
                         <Drawer
@@ -106,6 +106,7 @@ export default function Navbar() {
                             <ul className="dark:bg-boxdark">
                                 <li className="mt-6 mb-10 ml-4 ">
                                     <GiCrossMark
+                                        data-testid="GiCrossMark"
                                         className="cursor-pointer hover:text-primary text-boxdark duration-300 dark:text-white dark:hover:text-primary"
                                         onClick={() => setIsOpen(!isOpen)}
                                     ></GiCrossMark>
@@ -138,7 +139,7 @@ export default function Navbar() {
                                     to={'/login'}
                                 >
                                     <ButtonThree
-                                        className="primary-button w-full text-white">
+                                        className="primary-button w-full text-white" data-testid="ButtonThree">
                                         <span>{t('navbar.login')}</span>
                                     </ButtonThree>
                                 </Link>

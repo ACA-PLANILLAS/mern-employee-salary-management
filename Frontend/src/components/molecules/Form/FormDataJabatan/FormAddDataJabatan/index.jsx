@@ -189,7 +189,7 @@ const FormAddDataJabatan = () => {
                 </div>
 
                 <div className='flex flex-col md:flex-row w-full gap-3 text-center'>
-                  <ButtonOne>
+                  <ButtonOne data-testid="submit-button">
                     <span>{t('save')}</span>
                   </ButtonOne>
                   <Link to="/data-jabatan">

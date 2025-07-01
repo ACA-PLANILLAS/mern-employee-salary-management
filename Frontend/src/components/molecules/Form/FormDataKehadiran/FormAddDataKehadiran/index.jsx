@@ -37,7 +37,7 @@ const FormAddDataKehadiran = () => {
 
   const validateMoneyInput = (value) => /^\d+(\.\d{0,2})?$/.test(value);
 
-  const renderMoneyInput = (name, value, onChange) => (
+  const renderMoneyInput = (name, value, onChange, index) => (
     <div className="relative flex items-center">
       <span className="absolute left-3 top-1/2 flex w-4 -translate-y-1/2 transform items-center justify-center text-black dark:text-white">
         {symbol}
@@ -47,6 +47,7 @@ const FormAddDataKehadiran = () => {
         value={value}
         onChange={onChange}
         onFocus={(e) => e.target.select()}
+        data-testid={`input-${name}-${index}`} 
         className="h-8 w-[7rem] rounded-md border pl-10 text-center disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input"
       />
       {currency !== "USD" && (
@@ -417,7 +418,8 @@ const FormAddDataKehadiran = () => {
                           {renderMoneyInput(
                             "additional_payments",
                             additionalPayments[idx] ?? 0,
-                            (e) => handleAdditionalPayments(idx, e.target.value)
+                            (e) => handleAdditionalPayments(idx, e.target.value),
+                            idx
                           )}
                         </td>
                         <td className="px-4 py-5">

@@ -99,7 +99,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className='flex items-center justify-center px-6 py-5.5 lg:py-6.5 object-cover'>
-        <NavLink to='/dashboard'>
+        <NavLink to='/dashboard'   data-testid="pengaturan-toggle">
           <img
             src={LogoSipeka}
             alt='Logo SiPeKa'
@@ -149,6 +149,7 @@ const SidebarAdmin = ({ sidebarOpen, setSidebarOpen }) => {
                     <React.Fragment>
                       <NavLink
                         to='#'
+                        data-testid="masterdata-toggle"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/masterdata' ||
                           pathname.includes('masterdata')) &&
                           'bg-graydark dark:bg-meta-4'

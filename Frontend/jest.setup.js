@@ -16,3 +16,11 @@ globalThis.mockUseCurrency = {
   currency: 'USD',
   setCurrency: jest.fn()
 };
+
+// Silencia todos los console de forma temporal
+beforeAll(() => {
+  jest.spyOn(console, "error").mockImplementation(() => {});
+  jest.spyOn(console, "log").mockImplementation(() => {});
+
+});
+

@@ -135,11 +135,12 @@ const LaporanGaji = () => {
                             <div className='p-6.5'>
                                 <div className='mb-4.5 '>
                                     <div className='w-full mb-4'>
-                                        <label className='mb-2.5 block text-black dark:text-white'>
+                                        <label htmlFor="month" className='mb-2.5 block text-black dark:text-white'>
                                             {t('labelMonth')} <span className='text-meta-1'>*</span>
                                         </label>
                                         <div className='relative z-20 bg-transparent dark:bg-form-input'>
                                             <select
+                                                id="month"
                                                 className='relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
                                                 value={searchMonth}
                                                 onChange={handleSearchMonth}
@@ -166,11 +167,12 @@ const LaporanGaji = () => {
                                     </div>
 
                                     <div className='w-full mb-4'>
-                                        <label className='mb-2.5 block text-black dark:text-white'>
+                                        <label htmlFor="year" className='mb-2.5 block text-black dark:text-white'>
                                             {t('labelYear')} <span className='text-meta-1'>*</span>
                                         </label>
                                         <div className='relative z-20 bg-transparent dark:bg-form-input'>
                                             <input
+                                                id="year"
                                                 type="number"
                                                 placeholder={t('placeholderYear')}
                                                 value={searchYear}
@@ -186,7 +188,7 @@ const LaporanGaji = () => {
                                 </div>
 
                                 <div className='flex flex-col md:flex-row w-full gap-3 text-center'>
-                                    <ButtonOne type='submit'>
+                                    <ButtonOne type='submit' data-testid="print-button">
                                         <span>{t('printButton')}</span>
                                         <span>
                                             <TfiPrinter />

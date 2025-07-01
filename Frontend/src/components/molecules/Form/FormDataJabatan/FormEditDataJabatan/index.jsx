@@ -11,7 +11,6 @@ import { useErrorMessage } from '../../../../../hooks/useErrorMessage';
 import useCurrencyByUser from '../../../../../config/currency/useCurrencyByUser';
 import { getCurrentRate } from '../../../../../config/currency/currencyStore';
 
-// import { API_URL } from '@/config/env';
 import { API_URL } from '@/config/env';
 
 const FormEditDataJabatan = () => {
@@ -238,7 +237,7 @@ const FormEditDataJabatan = () => {
                 </div>
 
                 <div className='flex flex-col md:flex-row w-full gap-3 text-center'>
-                  <ButtonOne data-testid="submit-button">
+                  <ButtonOne data-testid="submit-button" id="submit-button">
                     <span>{t('update')}</span>
                   </ButtonOne>
                   <Link to="/data-jabatan">

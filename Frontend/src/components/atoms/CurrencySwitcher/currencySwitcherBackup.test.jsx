@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import CurrencySwitcher from './index.jsx';
-import { CurrencyProvider } from '../../../config/currency/CurrencyContext';
+import { CurrencyProvider } from '../../../config/currency/CurrencyContext.jsx';
 
 jest.mock('../../../config/currency/currency_config.json', () => ({
   base_currency: 'USD',

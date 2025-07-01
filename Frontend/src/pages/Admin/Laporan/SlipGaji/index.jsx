@@ -159,15 +159,16 @@ const SlipGaji = () => {
                 {t("filterTitle")}
               </h3>
             </div>
-            <form onSubmit={handleSearch}>
+            <form data-testid="form-slipgaji" onSubmit={handleSearch}>
               <div className="p-6.5">
                 <div className="mb-4.5">
                   <div className="mb-4 w-full">
-                    <label className="mb-2.5 block text-black dark:text-white">
+                    <label htmlFor="selectBulan" className="mb-2.5 block text-black dark:text-white">
                       {t("bulan")} <span className="text-meta-1">*</span>
                     </label>
                     <div className="relative z-20 bg-transparent dark:bg-form-input">
                       <select
+                      id="selectBulan"
                         className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                         value={searchMonth}
                         onChange={handleSearchMonth}
@@ -187,11 +188,12 @@ const SlipGaji = () => {
                   </div>
 
                   <div className="mb-4 w-full">
-                    <label className="mb-2.5 block text-black dark:text-white">
+                    <label htmlFor="tahun" className="mb-2.5 block text-black dark:text-white">
                       {t("tahun")} <span className="text-meta-1">*</span>
                     </label>
                     <div className="relative z-20 bg-transparent dark:bg-form-input">
                       <input
+                        id="tahun"
                         type="number"
                         placeholder={t("masukkanTahun")}
                         value={searchYear}
@@ -206,11 +208,12 @@ const SlipGaji = () => {
                   </div>
 
                   <div className="mb-4 w-full">
-                    <label className="mb-2.5 block text-black dark:text-white">
+                    <label htmlFor="namaPegawai" className="mb-2.5 block text-black dark:text-white">
                       {t("namaPegawai")} <span className="text-meta-1">*</span>
                     </label>
                     <div className="relative z-20 bg-transparent dark:bg-form-input">
                       <select
+                        id="namaPegawai"
                         className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                         value={searchId}
                         onChange={(e) => setSearchId(e.target.value)}
@@ -260,7 +263,7 @@ const SlipGaji = () => {
                         className="flex items-center justify-between rounded-lg border border-stroke bg-white p-4 shadow dark:border-strokedark dark:bg-boxdark"
                       >
                         <div>
-                          <p className="font-medium text-black dark:text-white">
+                          <p data-testid="slip-title" className="font-medium text-black dark:text-white">
                             {t("verReciboDe")} {r.first_name} {r.last_name}
                           </p>
                           <span className="text-gray-500 dark:text-gray-400 text-sm">
