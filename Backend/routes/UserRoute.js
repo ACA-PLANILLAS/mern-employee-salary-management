@@ -10,7 +10,7 @@ import {
     createEmployee,
     updateEmployee,
     deleteEmployee,
-} from '../controllers/DataPegawai.js';
+} from '../controllers/DataPegawai.js'; 
 
 import {
     getAllPositionHistories,
