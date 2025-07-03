@@ -4,7 +4,7 @@ dotenv.config();
 
 const useSocket = !!process.env.DB_SOCKET;
 
-const sequelize = new Sequelize(
+const db = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
     process.env.DB_PASSWORD,
