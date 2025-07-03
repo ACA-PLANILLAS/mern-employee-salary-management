@@ -108,7 +108,7 @@ jobs:
           cloudsql-instances: ${{ secrets.DB_HOST }}
           env_vars: |
             NODE_ENV=production
-            DB_SOCKET=${{ secrets.DB_SOCKET }}
+            DB_SOCKET=/cloudsql/${{ secrets.DB_SOCKET }}
             DB_USER=${{ secrets.DB_USER }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             DB_NAME=${{ secrets.DB_NAME }}
