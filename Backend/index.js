@@ -22,7 +22,7 @@ app.set('trust proxy', 1);
 const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:5173',
-    'https://mern-frontend-677888703036.us-central1.run.app'
+    'https://mern-frontend-283773467884.europe-west1.run.app'
 ]
 
 const sessionStore = SequelizeStore(session.Store);
