@@ -11,7 +11,7 @@ const sequelize = new Sequelize(
     {
         dialect: 'mysql',
         logging: false,
-        ...(useSocket
+        ...(useSocket 
             ? {
                 dialectOptions: { socketPath: process.env.DB_SOCKET },
             }
