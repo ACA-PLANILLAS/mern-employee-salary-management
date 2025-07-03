@@ -13,7 +13,7 @@ ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
 # Reemplazar la constante API_URL en el archivo env.js
-RUN sed -i "s|export const API_URL = .*|export const API_URL = '$VITE_API_URL';|" src/config/env.js
+#RUN sed -i "s|export const API_URL = .*|export const API_URL = '$VITE_API_URL';|" src/config/env.js
 
 # Compilar React con Vite
 RUN npm run build
