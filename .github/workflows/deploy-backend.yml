@@ -12,6 +12,10 @@ jobs:
     name: 🧪 Test Backend with Local MySQL
     runs-on: ubuntu-latest
 
+    permissions:
+      checks: write
+      contents: read
+
     services:
       mysql:
         image: mysql:8.0
@@ -50,7 +54,22 @@ jobs:
           DB_DIALECT: mysql
         run: |
           cd Backend
-          npm test || echo "Tests failed, skipping build"
+          npm run test_module || echo "Tests failed, skipping build"
+
+      - name: Upload Jest test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-jest-report
+          path: Backend/reports/jest-junit.xml
+
+      - name: Report test results in GitHub
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Backend Jest Tests
+          path: Backend/reports/jest-junit.xml
+          reporter: jest-junit
 
   deploy-prod-backend:
     name: 🚀 Deploy Backend to Cloud Run (Production)

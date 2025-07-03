@@ -56,7 +56,7 @@ const DataGajiPegawai = () => {
 
     try {
       if (!user) return;
-      dispatch(getMe());
+      // dispatch(getMe());
 
       const res = await fetch(
         `${API_URL}/data_gaji_pegawai?year=${filterYear}&month=${filterMonth}`
@@ -88,10 +88,10 @@ const DataGajiPegawai = () => {
     dispatch(getMe());
   }, [dispatch]);
 
-  useEffect(() => {
-    // Al montar, hacemos la búsqueda por defecto en cuanto tengamos user
-    if (user) handleSearch({ preventDefault: () => {} });
-  }, [user]);
+  // useEffect(() => {
+  //   // Al montar, hacemos la búsqueda por defecto en cuanto tengamos user
+  //   if (user) handleSearch({ preventDefault: () => {} });
+  // }, [user]);
 
   useEffect(() => {
     if (isError) navigate("/login");
@@ -155,10 +155,11 @@ const DataGajiPegawai = () => {
 
       {showMessage && (
         <div className="text-red-600 mb-4">
-          {t(
-            "noRecords",
-            `No se encontraron registros para ${filterMonth}/${filterYear}.`
-          )}
+          {t("noRecords", {
+            filterMonth,
+            filterYear,
+            defaultValue: `No se encontraron registros para ${filterMonth}/${filterYear}.`
+          })}
         </div>
       )}
 
