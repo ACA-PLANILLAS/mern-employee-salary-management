@@ -24,15 +24,15 @@ const DataPegawai = db.define(
       allowNull: true,
     },
     dui_or_nit: {
-      type: DataTypes.STRING(14),
+      type: DataTypes.STRING(40),
       allowNull: true,
     },
     document_type: {
-      type: DataTypes.CHAR(2),
+      type: DataTypes.CHAR(16),
       allowNull: true,
     },
     isss_affiliation_number: {
-      type: DataTypes.CHAR(9),
+      type: DataTypes.CHAR(40),
       allowNull: true,
     },
     pension_institution_code: {

@@ -21,6 +21,7 @@
     "december": "Diciembre"
   },
   "printButton": "Imprimir Informe de Salarios",
+  "printButtonExcel": "Exportar a Excel",
   "swalTitle": "Datos no encontrados",
   "swalText": "Lo sentimos, los datos que buscas no fueron encontrados"
 }

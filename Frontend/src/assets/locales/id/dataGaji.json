@@ -76,5 +76,17 @@
   "filter": "Filter",
   "view": "Lihat",
   "displayingSalaryDataMonth": "Menampilkan Data Gaji untuk Bulan",
-  "year": "Tahun"
+  "year": "Tahun",
+  "allDates": "Semua tanggal",
+  "printedOn": "Dicetak pada",
+  "signature": "Tanda tangan",
+  "date": "Tanggal",
+  "incompleteDataTitle": "Data Tidak Lengkap",
+  "incompleteDataText": "Silakan pilih bulan dan tahun.",
+  "fetchErrorTitle": "Gagal mengambil data",
+  "mySalarySlips": "Slip Gaji Saya",
+  "yearPlaceholder": "YYYY",
+  "noRecords": "Tidak ada data untuk {{filterMonth}}/{{filterYear}}.",
+  "monthYear": "Bulan/Tahun",
+  "extraPayments": "Pembayaran Tambahan"
 }

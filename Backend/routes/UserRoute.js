@@ -43,6 +43,8 @@ import {
     deleteDataKehadiran,
     viewDataKehadiranByID,
     viewDataGajiByName,
+    viewChartDataSalaryByGender,
+    viewChartDataEmployeeStatus,
 } from "../controllers/TransaksiController.js";
 
 import {
@@ -55,6 +57,7 @@ import {
 
 import {
     viewDataGajiPegawai,
+    viewDataGajiPegawaiById,
     viewDataGajiPegawaiByMonth,
     viewDataGajiPegawaiByYear
 } from "../controllers/TransaksiController.js";
@@ -144,7 +147,8 @@ router.patch('/data_potongan/update/:id', adminOnly, verifyUser, updateDataPoton
 router.delete('/data_potongan/:id', adminOnly, verifyUser, deleteDataPotongan);
 // Data Gaji
 router.get('/data_gaji_pegawai', viewDataGajiPegawai);
-router.get('/data_gaji/name/:name', verifyUser, viewDataGajiByName);
+router.get('/data_gaji_pegawai/:attendanceId', verifyUser, viewDataGajiPegawaiById);
+//router.get('/data_gaji/name/:name', verifyUser, viewDataGajiByName);
 // router.get('/data_gaji_pegawai/month/:month', viewDataGajiPegawaiByMonth);
 // router.get('/data_gaji_pegawai/year/:year', viewDataGajiPegawaiByYear);
 
@@ -179,5 +183,7 @@ router.patch('/change_password', verifyUser, changePassword);
 /* ==== Logout ==== */
 router.delete('/logout', LogOut);
 
+router.get("/chart-data/salary-by-gender", viewChartDataSalaryByGender);
+router.get('/chart-data/employee-status', viewChartDataEmployeeStatus);
 
 export default router;

@@ -1,17 +1,20 @@
 {
-    "formAddJobTitle": "Form Data Jabatan",
-    "jobTitle": "Jabatan",
-    "basicSalary": "Gaji Pokok",
-    "transportAllowance": "Tunjangan Transport",
-    "mealAllowance": "Uang Makan",
-    "enterJobTitle": "Masukkan jabatan",
-    "enterBasicSalary": "Masukkan gaji pokok",
-    "enterTransportAllowance": "Masukkan tunjangan transport",
-    "enterMealAllowance": "Masukkan uang makan",
-    "save": "Simpan",
-    "back": "Kembali",
-    "success": "Berhasil",
-    "error": "Gagal",
-    "errorOccurred": "Terjadi kesalahan"
-  }
-  
+  "formAddJobTitle": "Form Data Jabatan",
+  "jobTitle": "Jabatan",
+  "basicSalary": "Gaji Pokok",
+  "transportAllowance": "Tunjangan Transport",
+  "mealAllowance": "Uang Makan",
+  "enterJobTitle": "Masukkan jabatan",
+  "enterBasicSalary": "Masukkan gaji pokok",
+  "enterTransportAllowance": "Masukkan tunjangan transport",
+  "enterMealAllowance": "Masukkan uang makan",
+  "save": "Simpan",
+  "back": "Kembali",
+  "success": "Berhasil",
+  "error": "Gagal",
+  "requiredAndGreaterThanZero": "Kolom ini wajib diisi dan harus lebih besar dari nol",
+  "invalidFormat": "Format tidak valid. Gunakan hanya angka dengan maksimal 2 angka desimal",
+  "invalidMoneyFields": "Periksa kolom keuangan, hanya nilai numerik positif yang diizinkan",
+  "allFieldsRequired": "Semua kolom wajib diisi",
+  "errorOccurred": "Terjadi kesalahan"
+}

@@ -10,11 +10,14 @@ import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { useErrorMessage } from "../../../../../hooks/useErrorMessage";
 import axios from "axios";
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from "@/config/env";
+import { useDisplayValue } from "../../../../../hooks/useDisplayValue";
 
 const FormAddDataPegawai = () => {
   const [jabatanOptions, setJabatanOptions] = useState([]);
   const [pensionOptions, setPensionOptions] = useState([]);
+
+  const getDisplayValue = useDisplayValue();
 
   const [formData, setFormData] = useState({
     //nik: '',
@@ -78,13 +81,11 @@ const FormAddDataPegawai = () => {
     hak_akses,
   } = formData;
 
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
   const { t } = useTranslation("dataGajiAddForm");
   const getErrorMessage = useErrorMessage();
-
 
   useEffect(() => {
     const fetchCatalogs = async () => {
@@ -132,19 +133,68 @@ const FormAddDataPegawai = () => {
   };
 
   const appendIfExists = (formData, key, value) => {
-    if (value !== '' && value !== null && value !== undefined && value !== 'Invalid date') {
+    if (
+      value !== "" &&
+      value !== null &&
+      value !== undefined &&
+      value !== "Invalid date"
+    ) {
       formData.append(key, value);
     }
   };
 
-
   const submitDataPegawai = (e) => {
     e.preventDefault();
+
+    const requiredFields = [
+      "dui_or_nit",
+      "document_type",
+      "isss_affiliation_number",
+      "pension_institution_code",
+      "first_name",
+      "last_name",
+      "jenis_kelamin",
+      "hire_date",
+      "status",
+      "jabatan",
+      "username",
+      "password",
+      "confPassword",
+      "hak_akses",
+    ];
+
+    for (const field of requiredFields) {
+      if (!formData[field] || String(formData[field])?.trim() === "") {
+        Swal.fire({
+          icon: "error",
+          title: t("gagal"),
+          text: t(`fieldRequired`, { field: t(field) }),
+        });
+        return;
+      }
+    }
+
+    if (!file) {
+      Swal.fire({
+        icon: "error",
+        title: t("gagal"),
+        text: t("fotoRequired"),
+      });
+      return;
+    }
+
+    if (password !== confPassword) {
+      Swal.fire({
+        icon: "error",
+        title: t("gagal"),
+        text: t("passwordMismatch"),
+      });
+      return;
+    }
+
     const newFormData = new FormData();
     newFormData.append("photo", file);
     newFormData.append("title", title);
-    // newFormData.append('nik', nik);
-    // newFormData.append("monthly_salary", monthly_salary);
     newFormData.append("dui_or_nit", dui_or_nit);
     newFormData.append("document_type", document_type);
     newFormData.append("isss_affiliation_number", isss_affiliation_number);
@@ -158,14 +208,6 @@ const FormAddDataPegawai = () => {
     newFormData.append("hire_date", hire_date);
     newFormData.append("status", status);
     newFormData.append("position_id", jabatan);
-
-    // appendIfExists(newFormData, 'last_position_change_date', last_position_change_date);
-    // newFormData.append("has_active_loan", has_active_loan);
-    // appendIfExists(newFormData, 'loan_original_amount', loan_original_amount);
-    // appendIfExists(newFormData, 'loan_outstanding_balance', loan_outstanding_balance);
-    // appendIfExists(newFormData, 'loan_monthly_installment', loan_monthly_installment);
-    // appendIfExists(newFormData, 'loan_start_date', loan_start_date);
-
     newFormData.append("username", username);
     newFormData.append("password", password);
     newFormData.append("confPassword", confPassword);
@@ -222,26 +264,9 @@ const FormAddDataPegawai = () => {
               <div className="p-6.5">
                 {/* — Identificación — */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                  {/*
-                  <div className='w-full xl:w-1/2'>
-                    <label className='mb-2.5 block text-black dark:text-white'>
-                      {t('nik')} <span className='text-meta-1'>*</span>
-                    </label>
-                    <input
-                      type='text'
-                      name='nik'
-                      value={nik}
-                      onChange={handleChange}
-                      required
-                      placeholder={t('masukkanNik')}
-                      className='w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary'
-                    />
-                  </div>
-                  */}
-
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("documentType")}
+                      {t("documentType")} <span className="text-meta-1">*</span>
                     </label>
                     <select
                       name="document_type"
@@ -251,23 +276,23 @@ const FormAddDataPegawai = () => {
                     >
                       <option value="">{t("documentType")}</option>
                       <option key={1} value={"DUI"}>
-                        DUI
+                        {t("dui")}
                       </option>
                       <option key={2} value={"Pasaporte"}>
-                        Pasaporte
+                         {t("passport")}
                       </option>
                       <option key={3} value={"Minoridad"}>
-                        Carné de Minoridad
+                        {t("minorIdCard")}
                       </option>
                       <option key={3} value={"Residente"}>
-                        Carné de Residente
+                        {t("residentCard")}
                       </option>
                     </select>
                   </div>
 
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("duiOrNit")}
+                      {t("duiOrNit")} <span className="text-meta-1">*</span>
                     </label>
                     <input
                       type="text"
@@ -283,7 +308,8 @@ const FormAddDataPegawai = () => {
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("pensionInstitutionCode")}
+                      {t("pensionInstitutionCode")}{" "}
+                      <span className="text-meta-1">*</span>
                     </label>
                     <select
                       name="pension_institution_code"
@@ -291,10 +317,10 @@ const FormAddDataPegawai = () => {
                       onChange={handleChange}
                       className="w-full appearance-none rounded border border-stroke bg-transparent px-5 py-3 outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input"
                     >
-                      <option value="">{t("pilihPensionInstitution")}</option>
+                      <option value="">{t("pilihPensionInstitution")}</option>,
                       {pensionOptions?.map((inst) => (
                         <option key={inst.code} value={inst.code}>
-                          {inst.name}
+                          {getDisplayValue(inst.name)}
                         </option>
                       ))}
                     </select>
@@ -302,7 +328,8 @@ const FormAddDataPegawai = () => {
 
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
-                      {t("isssAffiliationNumber")}
+                      {t("isssAffiliationNumber")}{" "}
+                      <span className="text-meta-1">*</span>
                     </label>
                     <input
                       type="text"
@@ -315,7 +342,9 @@ const FormAddDataPegawai = () => {
                   </div>
                 </div>
 
-                <br /><hr className="border-stroke dark:border-strokedark" /><br />
+                <br />
+                <hr className="border-stroke dark:border-strokedark" />
+                <br />
 
                 {/* — Nombres — */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -395,8 +424,10 @@ const FormAddDataPegawai = () => {
                   {/* campo vacío */}
                   <div className="w-full xl:w-1/2"></div>
                 </div>
-                
-                <br /><hr className="border-stroke dark:border-strokedark" /><br />
+
+                <br />
+                <hr className="border-stroke dark:border-strokedark" />
+                <br />
 
                 {/* — Credenciales & Rol — */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -470,7 +501,9 @@ const FormAddDataPegawai = () => {
                   </div>
                 </div>
 
-                <br /><hr className="border-stroke dark:border-strokedark" /><br />
+                <br />
+                <hr className="border-stroke dark:border-strokedark" />
+                <br />
 
                 {/* — Empleo — */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
@@ -635,7 +668,9 @@ const FormAddDataPegawai = () => {
 
                  */}
 
-                <br /><hr className="border-stroke dark:border-strokedark" /><br />
+                <br />
+                <hr className="border-stroke dark:border-strokedark" />
+                <br />
 
                 {/* — Estado & Acceso — */}
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">

@@ -1,16 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { BiLogOut } from 'react-icons/bi';
-import { FiSettings } from 'react-icons/fi';
-import { MdKeyboardArrowDown } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
-import Swal from 'sweetalert2';
-import 'sweetalert2/dist/sweetalert2.css';
-import { logoutUser } from '../../../../config/redux/action';
-import { reset } from '../../../../config/redux/reducer/authReducer';
+import React, { useState, useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { BiLogOut } from "react-icons/bi";
+import { FiSettings } from "react-icons/fi";
+import { MdKeyboardArrowDown } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.css";
+import { logoutUser } from "../../../../config/redux/action";
+import { reset } from "../../../../config/redux/reducer/authReducer";
 import axios from "axios";
-import { useTranslation } from 'react-i18next';
-const API_URL = import.meta.env.VITE_API_URL;
+import { useTranslation } from "react-i18next";
+//import { API_URL } from '@/config/env';
+import { API_URL } from "@/config/env";
 
 const DropdownProfil = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -24,26 +25,26 @@ const DropdownProfil = () => {
 
   const onLogout = () => {
     Swal.fire({
-      title: t('dropdown.confirm'),
-      text: t('dropdown.areYouSureLogout'),
-      icon: 'question',
+      title: t("dropdown.confirm"),
+      text: t("dropdown.areYouSureLogout"),
+      icon: "question",
       showCancelButton: true,
-      confirmButtonText: t('dropdown.yes'),
-      cancelButtonText: t('dropdown.no'),
+      confirmButtonText: t("dropdown.yes"),
+      cancelButtonText: t("dropdown.no"),
       reverseButtons: true,
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(logoutUser());
         dispatch(reset());
         Swal.fire({
-          title:  t('dropdown.logoutSuccessTitle'),
-          text: t('dropdown.logoutSuccessText'),
-          icon: 'success',
+          title: t("dropdown.logoutSuccessTitle"),
+          text: t("dropdown.logoutSuccessText"),
+          icon: "success",
           timer: 1500,
           timerProgressBar: true,
-          showConfirmButton: false
+          showConfirmButton: false,
         }).then(() => {
-          navigate('/login');
+          navigate("/login");
         });
       }
     });
@@ -80,9 +81,9 @@ const DropdownProfil = () => {
       }
     };
 
-    document.addEventListener('click', clickHandler);
+    document.addEventListener("click", clickHandler);
     return () => {
-      document.removeEventListener('click', clickHandler);
+      document.removeEventListener("click", clickHandler);
     };
   }, [dropdownOpen]);
 
@@ -92,59 +93,63 @@ const DropdownProfil = () => {
       setDropdownOpen(false);
     };
 
-    document.addEventListener('keydown', keyHandler);
-    return () => document.removeEventListener('keydown', keyHandler);
+    document.addEventListener("keydown", keyHandler);
+    return () => document.removeEventListener("keydown", keyHandler);
   }, [dropdownOpen]);
 
   return (
-    <div className='relative'>
+    <div className="relative">
       {dataPegawai && (
         <Link
           ref={trigger}
           onClick={() => setDropdownOpen(!dropdownOpen)}
-          className='flex items-center gap-4'
-          to='#'
+          className="flex items-center gap-4"
+          to="#"
         >
-          <span className='hidden lg:block'>
-            <span className='block text-sm font-medium text-black dark:text-white'>
+          <span className="hidden lg:block">
+            <span className="block text-sm font-medium text-black dark:text-white">
               {dataPegawai.nama_pegawai}
             </span>
-            <span className='block text-xs'>{dataPegawai.hak_akses}</span>
+            <span className="block text-xs">{dataPegawai.hak_akses}</span>
           </span>
 
-          <div className='h-12 w-12 rounded-full overflow-hidden'>
+          <div className="h-12 w-12 overflow-hidden rounded-full">
             <img
-              className='h-full w-full object-cover'
+              className="h-full w-full object-cover"
               src={`${API_URL}/images/${dataPegawai.photo}`}
-              alt='Profil'
+              alt="Profil"
             />
           </div>
-          <MdKeyboardArrowDown className='text-xl' />
+          <MdKeyboardArrowDown className="text-xl" />
         </Link>
       )}
 
       {dropdownOpen && (
         <div
           ref={dropdown}
-          className='absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark'
+          className="absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark"
         >
-          <ul className='flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark'>
+          <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
             <li>
               <Link
-                to={user?.hak_akses === 'admin' ? '/ubah-password' : '/ubah-password-pegawai'}
-                className='flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base'
+                to={
+                  user?.hak_akses === "admin"
+                    ? "/ubah-password"
+                    : "/ubah-password-pegawai"
+                }
+                className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
               >
-                <FiSettings className='text-xl' />
-                {t('dropdown.settings')}
+                <FiSettings className="text-xl" />
+                {t("dropdown.settings")}
               </Link>
             </li>
             <li>
               <button
                 onClick={onLogout}
-                className='flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base'
+                className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
               >
-                <BiLogOut className='text-xl' />
-                {t('dropdown.logout')}
+                <BiLogOut className="text-xl" />
+                {t("dropdown.logout")}
               </button>
             </li>
           </ul>

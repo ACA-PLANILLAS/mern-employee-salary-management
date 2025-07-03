@@ -35,6 +35,7 @@ import {
   UbahPasswordPegawai,
   DataPotongan
 } from '../../pages'
+import PrintPdfBoleta from '../../components/molecules/PrintPdf/PrintPdfBoleta';
 
 const AppRoutes = () => {
   return (
@@ -104,7 +105,7 @@ const AppRoutes = () => {
         element={<DataGaji />}
       />
       <Route
-        path='/data-gaji/detail-data-gaji/name/:name'
+        path='/data-gaji/detail-data-gaji/id/:id'
         element={<DetailDataGaji />}
       />
       <Route
@@ -136,6 +137,10 @@ const AppRoutes = () => {
       <Route
         path='/laporan/slip-gaji/print-page'
         element={<PrintPdfSlipGaji />}
+      />
+       <Route
+        path='/print-employee-receipt/:id'
+        element={<PrintPdfBoleta />}
       />
 
       {/* Pengaturan Admin */}

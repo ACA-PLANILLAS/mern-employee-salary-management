@@ -1,7 +1,7 @@
 {
   "banner": {
     "titleLine1": "Sistema de Nómina en Línea",
-    "titleLine2": "PT. Humpuss Carboximetil Celulosa",
+    "titleLine2": "PT. Humpuss Karbometil Selulosa",
     "description": "Una plataforma empresarial para gestionar el proceso de nómina de empleados de forma eficiente e integrada mediante una plataforma digital.",
     "login": "Iniciar sesión"
   },
@@ -25,7 +25,7 @@
       "sendButton": "Enviar"
     },
     "info": {
-      "company": "PT. Humpuss Carboximetil Celulosa",
+      "company": "PT. Humpuss Karbometil Selulosa",
       "phone": "021-044",
       "email": "info@hks.com",
       "address": "Karawang, Java Occidental, Indonesia"

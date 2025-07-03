@@ -9,6 +9,9 @@ import Swal from 'sweetalert2';
 import { BiSearch } from 'react-icons/bi';
 import { fetchLaporanAbsensiByMonth, fetchLaporanAbsensiByYear, getMe } from '../../../../config/redux/action';
 import { useTranslation } from 'react-i18next';
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+
 
 const LaporanAbsensi = () => {
     const { t } = useTranslation('laporanAbsensi');
@@ -19,6 +22,7 @@ const LaporanAbsensi = () => {
     const navigate = useNavigate();
 
     const { isError, user } = useSelector((state) => state.auth);
+    const {dataLaporanAbsensi} = useSelector((state) => state.laporanAbsensi)
 
     const handleSearchMonth = (event) => {
         setSearchMonth(event.target.value);
@@ -69,6 +73,50 @@ const LaporanAbsensi = () => {
             navigate('/dashboard');
         }
     }, [isError, user, navigate]);
+
+    const handleExportExcel = async (event) => {
+        event.preventDefault();
+        try {
+            if(searchMonth !== ''){
+            await  dispatch(fetchLaporanAbsensiByMonth(searchMonth));
+            console.log('Datos del laporan gaji:', dataLaporanAbsensi);
+
+            const worksheet = XLSX.utils.json_to_sheet(dataLaporanAbsensi);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
+        
+            const excelBuffer = XLSX.write(workbook, {
+              bookType: "xlsx",
+              type: "array",
+            });
+        
+            const blob = new Blob([excelBuffer], {
+              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+        
+            saveAs(blob, "datos.xlsx");
+        }else{
+       
+            Swal.fire({
+                icon: 'error',
+                title: t('swalTitle'),
+                text: t('swalText'),
+                timer: 2000,
+            });
+        }
+
+        } catch (error) {
+            console.log(error);
+
+            Swal.fire({
+                icon: 'error',
+                title: t('swalTitle'),
+                text: t('swalText'),
+                timer: 2000,
+            });
+        }
+    };
+
 
     return (
         <Layout>
@@ -142,6 +190,12 @@ const LaporanAbsensi = () => {
                                 <div className='flex flex-col md:flex-row w-full gap-3 text-center'>
                                     <ButtonOne type='submit'>
                                         <span>{t('printButton')}</span>
+                                        <span>
+                                            <TfiPrinter />
+                                        </span>
+                                    </ButtonOne>
+                                    <ButtonOne type="button" onClick={handleExportExcel}>
+                                        <span>{t('printButtonExcel')}</span>
                                         <span>
                                             <TfiPrinter />
                                         </span>

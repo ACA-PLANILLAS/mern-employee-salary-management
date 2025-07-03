@@ -11,7 +11,7 @@
   "employeeName": "Nombre del Empleado",
   "jobTitle": "Cargo",
   "gender": "Género",
-  "nik": "NIK",
+  "nik": "DUI",
   "showingData": "Mostrando",
   "from": "de",
   "of": "de",
@@ -19,5 +19,17 @@
   "paginationPrevious": "Anterior",
   "paginationNext": "Siguiente",
   "errorOccurred": "Ocurrió un error",
-  "successMessage": "Datos guardados correctamente"
+  "successMessage": "Datos guardados correctamente",
+  "no": "No",
+  "workedHours": "Horas Trabajadas",
+  "additionalPayments": "Pago Adicional",
+  "vacationPayments": "Monto Vacaciones",
+  "vacationDays": "Días Vacaciones",
+  "comment01": "Obs. 1",
+  "comment02": "Obs. 2",
+  "invalidNumber": "Ingrese un número válido igual o mayor a cero",
+  "invalidAmount": "Ingrese un monto válido con hasta dos decimales",
+  "duiOrNit": "Documento",
+  "documentType": "Tipo de Documento",
+  "name": "Nombre"
 }

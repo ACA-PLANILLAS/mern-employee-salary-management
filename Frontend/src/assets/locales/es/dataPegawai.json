@@ -10,7 +10,7 @@
   "table.header.photo": "Foto",
   "table.header.url": "URL de Foto",
   "table.header.id": "ID",
-  "table.header.nik": "NIK",
+  "table.header.nik": "DUI",
   "table.header.duiOrNit": "Documento",
   "table.header.documentType": "Tipo de Documento",
   "table.header.isssAffiliationNumber": "Número de Afiliación ISSS",
@@ -40,6 +40,8 @@
   "modal.confirmDelete.no": "No",
   "toast.deleteSuccess.title": "Éxito",
   "toast.deleteSuccess.message": "Los datos del empleado se eliminaron correctamente.",
+  "toast.deleteError.title": "¡Error!",
+  "toast.deleterror.text": "No se pudieron eliminar los datos. Inténtalo de nuevo.",
   "pagination.displaying": "Mostrando",
   "pagination.of": "de",
   "pagination.totalEmployeeData": "Datos del Empleado"

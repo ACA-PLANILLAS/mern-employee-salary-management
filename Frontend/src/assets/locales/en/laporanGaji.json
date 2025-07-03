@@ -21,6 +21,7 @@
     "december": "December"
   },
   "printButton": "Print Salary Report",
+  "printButtonExcel": "Export to Excel",
   "swalTitle": "Data not found",
   "swalText": "Sorry, the data you're looking for was not found"
 }

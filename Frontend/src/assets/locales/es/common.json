@@ -36,8 +36,57 @@
     "logout": "Cerrar Sesión",
     "logoutConfirmationTitle": "Confirmación",
     "logoutConfirmationText": "¿Estás seguro de que quieres cerrar sesión?",
+    "yes": "Sí",
+    "no": "No",
     "logoutSuccessTitle": "Cierre de sesión exitoso",
     "logoutSuccessText": "Has cerrado sesión con éxito."
   },
-  "copyright": "© Copyright 2023, PT. Humpuss Carboximetil Celulosa. Todos los Derechos Reservados"
+  "dashboard": {
+    "breadcrumb": { "dashboard": "Dashboard" },
+    "welcome": "Eestás logueado como {{pegawai}}.",
+    "pegawai": "Empleado",
+    "admin": "Admin",
+    "title": { "employeeData": "Datos del Empleado" },
+    "label": {
+      "document": "Documento",
+      "document_type": "Tipo Documento",
+      "isss": "ISSS",
+      "pension": "Pensión",
+      "full_name": "Nombre Completo",
+      "username": "Usuario"
+    },
+    "alt": { "employeePhoto": "Foto de empleado" },
+    "error": { "loadingEmployeeData": "Error al cargar datos de empleado" }
+  },
+  "parameter": {
+    "error": "Error",
+    "valueMustBeInteger": "El valor debe ser un entero válido",
+    "integerRange": "El entero debe estar entre {{min}} y {{max}}",
+    "valueMustBeNumber": "El valor debe ser un número (acepta decimales)",
+    "weeklyHoursRange": "Horas semanales debe estar entre 0 y 168",
+    "weeklyDaysRange": "Días semanales debe estar entre 0 y 7",
+    "invalidPaymentScheme": "Selecciona un esquema de pagos válido (4, 2 o 1)",
+    "editParameter": "Editar Parámetro",
+    "name": "Nombre",
+    "paymentFrequency": "Frecuencia de pagos",
+    "value": "Valor",
+    "selectPlaceholder": "--Seleccione--",
+    "weekly4Payments": "Semanal (4 pagos)",
+    "biweekly2Payments": "Quincenal (2 pagos)",
+    "monthly1Payment": "Mensual (1 pago)",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "loadParamsError": "No se pudieron cargar los parámetros",
+    "success": "¡Listo!",
+    "updateSuccess": "Parámetro actualizado correctamente.",
+    "updateError": "No se pudo actualizar el parámetro",
+    "systemParameters": "Parámetros del Sistema",
+    "colNumber": "N.º",
+    "colName": "Nombre",
+    "colValue": "Valor",
+    "colAction": "Acción",
+    "noParamsRegistered": "No hay parámetros registrados",
+    "edit": "Editar"
+  },
+  "copyright": "© Copyright 2023. Todos los derechos reservados"
 }

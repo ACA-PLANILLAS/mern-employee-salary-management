@@ -1,7 +1,7 @@
 {
   "no": "No",
   "id": "ID",
-  "nik": "NIK",
+  "nik": "DUI",
   "duiOrNit": "Document",
   "documentType": "Document Type",
   "isssAffiliationNumber": "ISSS Affiliation Number",
@@ -76,5 +76,17 @@
   "filter": "Filter",
   "view": "View",
   "displayingSalaryDataMonth": "Displaying Salary Data for the Month",
-  "year": "Year"
+  "year": "Year",
+  "allDates": "All Dates",
+  "printedOn": "Printed on",
+  "signature": "Signature",
+  "date": "Date",
+  "incompleteDataTitle": "Incomplete Data",
+  "incompleteDataText": "Please select month and year.",
+  "fetchErrorTitle": "Error fetching data",
+  "mySalarySlips": "My Salary Slips",
+  "yearPlaceholder": "YYYY",
+  "noRecords": "No records found for {{filterMonth}}/{{filterYear}}.",
+  "monthYear": "Month/Year",
+  "extraPayments": "Extra payments"
 }

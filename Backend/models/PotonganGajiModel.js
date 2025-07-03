@@ -15,21 +15,21 @@ const PotonganGaji = db.define(
         },
         jml_potongan: {
 
-            type: DataTypes.DECIMAL(10, 2),
+            type: DataTypes.DECIMAL(15, 7),
             defaultValue: 0,
         },
         from: {
-            type: DataTypes.DECIMAL(10, 2),
+            type: DataTypes.DECIMAL(15, 7),
             field: "from",
             defaultValue: 0,
         },
         until: {
-            type: DataTypes.DECIMAL(10, 2),
+            type: DataTypes.DECIMAL(15, 7),
             field: "until",
             defaultValue: 0,
         },
         value_d: {
-            type: DataTypes.DECIMAL(10, 2),
+            type: DataTypes.DECIMAL(15, 7),
             defaultValue: 0,
         },
         type: {

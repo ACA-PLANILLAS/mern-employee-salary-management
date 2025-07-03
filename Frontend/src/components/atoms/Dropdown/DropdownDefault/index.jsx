@@ -32,7 +32,7 @@ const DropdownDefault = () => {
 
   return (
     <div className='relative'>
-      <button ref={trigger} onClick={() => setDropdownOpen(!dropdownOpen)}>
+      <button data-testid="menu-toggle-button" ref={trigger} onClick={() => setDropdownOpen(!dropdownOpen)}>
         <svg
           width='18'
           height='18'
@@ -62,7 +62,7 @@ const DropdownDefault = () => {
           dropdownOpen === true ? 'block' : 'hidden'
         }`}
       >
-        <button className='flex w-full items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4'>
+        <button data-testid="menu-edit-button" className='flex w-full items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4'>
           <svg
             className='fill-current'
             width='16'
@@ -85,7 +85,7 @@ const DropdownDefault = () => {
           </svg>
           Edit
         </button>
-        <button className='flex w-full items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4'>
+        <button data-testid="menu-delete-button" className='flex w-full items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4'>
           <svg
             className='fill-current'
             width='16'

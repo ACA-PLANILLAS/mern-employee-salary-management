@@ -18,7 +18,8 @@ import {
   DELETE_DATA_PEGAWAI_SUCCESS,
   DELETE_DATA_PEGAWAI_FAILURE,
 } from "./dataPegawaiActionTypes";
-const API_URL = import.meta.env.VITE_API_URL;
+//import { API_URL } from '@/config/env';
+import { API_URL } from "@/config/env";
 
 export const getDataPegawai = () => {
   return async (dispatch) => {
@@ -158,11 +159,15 @@ export const deleteDataPegawai = (id) => {
         type: DELETE_DATA_PEGAWAI_SUCCESS,
         payload: response.data,
       });
+
+      return response;
     } catch (error) {
       dispatch({
         type: DELETE_DATA_PEGAWAI_FAILURE,
         payload: error.message,
       });
+
+      throw error;
     }
   };
 };

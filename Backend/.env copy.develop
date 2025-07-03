@@ -1,0 +1,13 @@
+# Puerto donde correrá Express
+APP_PORT=5000
+
+# Semilla para las sesiones
+SESS_SECRET=KlmCLd9MzrKyzvoXSmq29pFmH7GoFk_3
+
+# Credenciales de tu base de datos MySQL
+DB_HOST=127.0.0.1
+DB_PORT=32783
+DB_USER=root
+DB_PASSWORD=root_sql
+DB_NAME=mernDB
+DB_DIALECT=mysql
