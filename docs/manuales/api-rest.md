@@ -11,6 +11,6 @@ Swagger es una herramienta que permite visualizar, probar y comprender de forma 
 - Ver ejemplos de respuestas con estructura JSON.
 - Conocer los códigos de estado HTTP posibles para cada petición.
 
-[Manual de API](http://localhost:5000/api-docs)  
+[Manual de API](https://mern-backend-prod-283773467884.us-central1.run.app/api-docs/)  
 
 ![Swagger API](../img/manual-api.png)
