@@ -27,7 +27,9 @@
     "moment": "^2.29.4",
     "mysql2": "^3.3.0",
     "nodemon": "^2.0.22",
-    "sequelize": "^6.31.1"
+    "sequelize": "^6.31.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.27.1",

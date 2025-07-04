@@ -6,6 +6,8 @@ import db from './config/Database.js';
 
 import SequelizeStore from 'connect-session-sequelize';
 import FileUpload from 'express-fileupload';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger.js';
 
 import UserRoute from './routes/UserRoute.js';
 import AuthRoute from './routes/AuthRoute.js';
@@ -41,17 +43,17 @@ app.use(cors({
     origin: 'http://localhost:5173'
 }));
 
-
 app.use(express.json());
 
 app.use(FileUpload());
 app.use(express.static("public"));
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// store.sync();
+
 app.use(UserRoute);
 app.use(AuthRoute);
 app.use(ParamRoute);
-
-// store.sync();
 
 app.listen(process.env.APP_PORT, () => {
     console.log('Server up and running...');
