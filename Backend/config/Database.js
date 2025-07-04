@@ -2,19 +2,24 @@ import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 dotenv.config();
 
+const useSocket = !!process.env.DB_SOCKET;
+
 const db = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
     process.env.DB_PASSWORD,
     {
-        host: process.env.DB_HOST,
-        port: parseInt(process.env.DB_PORT, 10),
         dialect: 'mysql',
-        dialectOptions: process.env.DB_HOST.includes("/cloudsql")
-            ? { socketPath: process.env.DB_HOST }
-            : {},
         logging: false,
-    }
+        ...(useSocket
+            ? {
+                dialectOptions: { socketPath: process.env.DB_SOCKET },
+            }
+            : {
+                host: process.env.DB_HOST,
+                port: parseInt(process.env.DB_PORT || '3306', 10),
+            }),
+    },
 );
 
 console.log('Database connected... ');

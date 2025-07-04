@@ -16,7 +16,6 @@ jobs:
       checks: write
       contents: read
 
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -64,7 +63,7 @@ jobs:
       - name: Build Frontend Image
         run: |
           docker build \
-            --build-arg VITE_API_URL=https://mern-backend-prod-677888703036.us-central1.run.app \
+            --build-arg VITE_API_URL=https://mern-backend-prod-283773467884.us-central1.run.app \
             -t docker.io/${{ secrets.DOCKER_USERNAME }}/mern-frontend ./Frontend
 
       - name: Push Frontend Image

@@ -1,0 +1,39 @@
+site_name: SiPeKa Docs
+theme:
+  name: material
+  logo: img/logo.png
+  favicon: img/favicon.png
+  palette:
+    primary: black
+    accent: blue
+  language: es
+  features:
+    - content.code.copy
+
+site_description: Documentation for SiPeKa API, a RESTful API for managing employee data and payments.
+site_author: Galactic Studio Team
+
+nav:
+  - Inicio: index.md
+  - Usando SiPeKa:
+      - Manual de Usuario: manuales/manual-usuario.md
+      - Manual Técnico: manuales/manual-tecnico.md
+      - Manual de API REST: manuales/api-rest.md
+      - Manual de DevOps: manuales/devops.md
+  - Testing y Calidad:
+      - Testing y QA: testing/intro-test.md
+  - Preguntas Frecuentes: preguntas/preguntas-frecuentes.md    
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.snippets
+  - pymdownx.inlinehilite
+  - toc:
+      permalink: "#"
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: true
+      pygments_lang_class: true
