@@ -69,10 +69,10 @@ app.use(express.json());
 app.use(FileUpload());
 app.use(express.static("public"));
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(UserRoute);
 app.use(AuthRoute);
 app.use(ParamRoute);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const main = async () => {
     try {
